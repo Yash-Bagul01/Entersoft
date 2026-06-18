@@ -102,7 +102,7 @@ export default function Hero() {
       {/* Background Layer Container (Always rendered and pinned, supports fallback image/poster) */}
       <div
         ref={videoContainerRef}
-        className="absolute inset-0 w-full h-full bg-[#060606] bg-[url('/images/hero/poster.jpg')] bg-cover bg-center z-0 overflow-hidden pointer-events-none"
+        className="absolute inset-0 w-full h-full bg-[#060606] z-0 overflow-hidden pointer-events-none"
         style={{ clipPath: "inset(0% 0% 0% 0% rounded 0px)" }}
       >
         {shouldReduceMotion ? (
@@ -116,12 +116,16 @@ export default function Hero() {
             loop
             playsInline
             preload="auto"
-            onCanPlay={() => setVideoReady(true)}
+            onCanPlay={() => {
+              setVideoReady(true);
+              if (videoRef.current) {
+                videoRef.current.play().catch(() => {});
+              }
+            }}
             onError={(e) => {
               console.error("Hero video load error:", e);
               setVideoError(true);
             }}
-            poster="/images/hero/poster.jpg"
             className="absolute inset-0 w-full h-full object-cover origin-center"
             aria-hidden="true"
           >

@@ -92,9 +92,11 @@ export default function Footer() {
           {/* Brand Info Column */}
           <div className="col-span-2 flex flex-col justify-between gap-6 md:pr-12">
             <div className="flex flex-col gap-4">
-              <span className="font-display font-bold text-lg tracking-[0.16em] uppercase text-[#F6F5F0]">
-                ENTERSOFT<span className="text-[var(--accent)] font-mono">.</span>
-              </span>
+              <img
+                src="https://d2ghx8biuioax8.cloudfront.net/main-website-images/entersoftLogo.svg"
+                alt="Entersoft"
+                className="h-6 w-auto object-contain self-start"
+              />
               <p className="text-[12px] leading-relaxed max-w-[320px]">
                 Providing expert-led, proof-backed vulnerability research and application security audits. Safeguarding assets globally since 2013.
               </p>

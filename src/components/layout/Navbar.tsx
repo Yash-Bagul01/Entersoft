@@ -158,10 +158,12 @@ export default function Navbar() {
       >
         <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex items-center justify-between">
           {/* Logo */}
-          <a href="#" className="flex items-center gap-3 z-50 text-text-primary" data-cursor="link">
-            <span className="font-display font-bold text-lg tracking-[0.16em] uppercase">
-              ENTERSOFT<span className="text-[var(--accent)] font-mono">.</span>
-            </span>
+          <a href="#" className="flex items-center z-50 text-text-primary" data-cursor="link">
+            <img
+              src="https://d2ghx8biuioax8.cloudfront.net/main-website-images/entersoftLogo.svg"
+              alt="Entersoft"
+              className="h-5.5 w-auto object-contain"
+            />
           </a>
 
           {/* Desktop Navigation */}
