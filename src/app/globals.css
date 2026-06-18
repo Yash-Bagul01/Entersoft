@@ -1,0 +1,262 @@
+@import "tailwindcss";
+@import "../styles/tokens.css";
+
+@theme {
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-border-subtle: var(--border-subtle);
+  
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+  
+  --color-accent: var(--accent);
+  --color-accent-dim: var(--accent-dim);
+  --color-accent-hover: var(--accent-hover);
+  
+  --font-sans: var(--font-body);
+  --font-display: var(--font-heading);
+  --font-mono: var(--font-mono);
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Hide scrollbar entirely for Lenis control */
+::-webkit-scrollbar {
+  display: none;
+}
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* Custom global rules for typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
+/* Lenis smooth scroll active classes */
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis-stopped {
+  overflow: hidden;
+}
+.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Hairline dividers between sections */
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background-color: var(--border-subtle);
+}
+
+/* Selection highlight color */
+::selection {
+  background-color: var(--accent-dim);
+  color: var(--text-primary);
+}
+
+/* Custom scroll reveal initial state class */
+.reveal-hidden {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+/* Infinite horizontal scrolling marquee classes */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 35s linear infinite;
+}
+
+.animate-marquee-hover-pause:hover {
+  animation-play-state: paused;
+}
+
+/* Button fill-sweep effects */
+.btn-sweep {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.btn-sweep-primary {
+  background-color: #F6F5F0 !important;
+  color: #060606 !important;
+  border: 1px solid #F6F5F0 !important;
+  transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.btn-sweep-primary::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: -1;
+}
+
+.btn-sweep-primary:hover {
+  color: #060606 !important;
+  border-color: var(--accent) !important;
+}
+
+.btn-sweep-primary:hover::before {
+  transform: scaleX(1);
+}
+
+.btn-sweep-secondary {
+  background-color: transparent !important;
+  color: #F6F5F0 !important;
+  border: 1px solid var(--border-subtle) !important;
+  transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.btn-sweep-secondary::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #F6F5F0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: -1;
+}
+
+.btn-sweep-secondary:hover {
+  color: #060606 !important;
+  border-color: #F6F5F0 !important;
+}
+
+.btn-sweep-secondary:hover::before {
+  transform: scaleX(1);
+}
+
+/* Label micro-shift */
+.btn-sweep-label {
+  display: inline-flex;
+  align-items: center;
+  gap: inherit;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-sweep:hover .btn-sweep-label {
+  transform: translateX(2px);
+}
+
+/* Custom cursor styles (desktop pointer devices only, active state) */
+@media (pointer: fine) {
+  body.custom-cursor-active,
+  body.custom-cursor-active * {
+    cursor: none !important;
+  }
+}
+
+.custom-cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  pointer-events: none;
+  z-index: 99999;
+  will-change: transform;
+  transition: background-color 0.25s ease, width 0.25s ease, height 0.25s ease;
+}
+
+.custom-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.75);
+  background-color: transparent;
+  pointer-events: none;
+  z-index: 99998;
+  will-change: transform;
+  transition: background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Service row base transitions */
+.service-row {
+  transition: border-bottom-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.service-row:hover {
+  border-bottom-color: var(--service-color) !important;
+}
+
+/* Hover interactive custom states */
+.custom-cursor-ring--button {
+  background-color: color-mix(in srgb, var(--accent) 15%, transparent);
+  border-color: var(--accent);
+  box-shadow: 0 0 15px rgba(0, 163, 255, 0.45);
+}
+
+.custom-cursor-ring--link {
+  background-color: color-mix(in srgb, var(--accent) 10%, transparent);
+  border-color: var(--accent);
+  box-shadow: 0 0 8px rgba(0, 163, 255, 0.25);
+}
+
+.custom-cursor-ring--card {
+  background-color: color-mix(in srgb, var(--accent) 12%, transparent);
+  border-color: rgba(255, 255, 255, 0.75);
+  box-shadow: 0 0 18px rgba(255, 255, 255, 0.15);
+}
+
+.custom-cursor-ring--section {
+  background-color: color-mix(in srgb, var(--accent) 4%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 60%, transparent);
+}
+
+.custom-cursor-ring--text {
+  background-color: transparent;
+  border-color: var(--text-primary);
+}
+
+/* Hide custom cursor when hovering over service rows in desktop mode */
+body:has(.service-row:hover) .custom-cursor-dot,
+body:has(.service-row:hover) .custom-cursor-ring {
+  opacity: 0 !important;
+  transform: scale(0) !important;
+  transition: opacity 0.25s ease, transform 0.25s ease !important;
+}
+

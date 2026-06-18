@@ -1,0 +1,28 @@
+:root {
+  /* Colors */
+  --bg-primary: #060606;
+  --bg-elevated: #0f0f0f;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  
+  --text-primary: #f6f5f0;
+  --text-secondary: #9c9c97;
+  --text-tertiary: #5e5e5a;
+  
+  --accent: #00A3FF; /* Cyan/blue family from Entersoft identity, desaturated slightly for restraint */
+  --accent-dim: rgba(0, 163, 255, 0.4);
+  --accent-hover: #33b5ff;
+  
+  /* Fonts */
+  --font-heading: var(--font-geist-sans), sans-serif;
+  --font-body: var(--font-inter), sans-serif;
+  --font-mono: var(--font-jetbrains-mono), monospace;
+  
+  /* Layout */
+  --max-width: 1400px;
+  --section-padding: clamp(80px, 10vw, 160px);
+  --border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Global animations adjustments can go here if needed */
+}

@@ -1,0 +1,124 @@
+"use client";
+
+import React from "react";
+import { motion } from "framer-motion";
+import { scrollRevealVariants, staggerContainerVariants } from "@/lib/animations";
+import { stats } from "@/data/stats";
+import AnimatedCounter from "../ui/AnimatedCounter";
+import SectionLabel from "../ui/SectionLabel";
+import { Shield, Clock, Search, Hourglass, Percent, AlertOctagon } from "lucide-react";
+
+export default function StatsCounter() {
+  // Map icons to statistical metrics
+  const getIcon = (id: number) => {
+    switch (id) {
+      case 0: return <Shield className="w-4 h-4 text-[var(--accent)]" />;
+      case 1: return <Clock className="w-4 h-4 text-[var(--accent)]" />;
+      case 2: return <Search className="w-4 h-4 text-[var(--accent)]" />;
+      case 3: return <Hourglass className="w-4 h-4 text-[var(--accent)]" />;
+      case 4: return <Percent className="w-4 h-4 text-[var(--accent)]" />;
+      case 5: return <AlertOctagon className="w-4 h-4 text-[var(--accent)]" />;
+      default: return <Shield className="w-4 h-4 text-[var(--accent)]" />;
+    }
+  };
+
+  return (
+    <section className="relative w-full bg-[#060606] overflow-hidden border-t border-[var(--border-subtle)]">
+      {/* Sleek cyber grid lines backdrop */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.003)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.003)_1px,transparent_1px)] bg-[size:40px_40px] opacity-40 pointer-events-none" />
+      
+      {/* Ambient gradient soft blur glows */}
+      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-[var(--accent)]/3 rounded-full filter blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-[350px] h-[350px] bg-purple-500/3 rounded-full filter blur-[100px] pointer-events-none" />
+
+      <div className="max-w-[1400px] mx-auto px-6 md:px-12 py-16 md:py-24 relative z-10">
+        
+        {/* Section Title */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-10%" }}
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.08 } }
+          }}
+          className="mb-16 flex flex-col items-start"
+        >
+          <div className="overflow-hidden">
+            <motion.div
+              variants={{
+                hidden: { y: "100%" },
+                visible: { y: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } }
+              }}
+            >
+              <SectionLabel color="secondary">VALIDATED TRACK RECORD</SectionLabel>
+            </motion.div>
+          </div>
+          <div className="overflow-hidden">
+            <motion.h2
+              variants={{
+                hidden: { y: "100%" },
+                visible: { y: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } }
+              }}
+              className="text-[clamp(1.4rem,3vw,2.4rem)] font-display font-medium text-[#F6F5F0] uppercase tracking-tight"
+            >
+              Defense Measured in Certainty
+            </motion.h2>
+          </div>
+        </motion.div>
+
+        {/* 6-Card Glassmorphic Border-Aligned Grid */}
+        <motion.div
+          variants={staggerContainerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+          {stats.map((stat, idx) => (
+            <motion.div
+              key={stat.label}
+              variants={scrollRevealVariants}
+              whileHover={{
+                y: -6,
+                borderColor: "rgba(0, 163, 255, 0.5)",
+                boxShadow: "0 15px 30px rgba(0, 163, 255, 0.12), inset 0 0 20px rgba(189, 0, 255, 0.15)",
+                transition: { duration: 0.35, ease: "easeOut" }
+              }}
+              className="p-8 md:p-10 bg-[#0F0F0F]/30 backdrop-blur-md border border-white/[0.04] rounded-[4px] flex flex-col justify-between gap-6 hover:bg-gradient-to-br hover:from-[#00A3FF]/15 hover:to-[#BD00FF]/10 transition-all duration-500 min-h-[220px] relative overflow-hidden group"
+            >
+              {/* Radial glow background on hover */}
+              <div className="absolute inset-0 bg-radial-[circle_at_center,rgba(0,163,255,0.03)_0%,transparent_70%] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+              {/* Card Header (Icon + Eyebrow Label) */}
+              <div className="flex items-center justify-between relative z-10">
+                <span className="font-mono text-[10px] font-bold text-[var(--text-tertiary)] uppercase tracking-widest">
+                  {stat.label}
+                </span>
+                <div className="p-2 bg-white/[0.01] border border-white/[0.04] rounded-[2px] group-hover:border-[var(--accent)] group-hover:bg-[var(--accent)]/10 transition-all duration-300 group-hover:scale-115 group-hover:rotate-6">
+                  {getIcon(idx)}
+                </div>
+              </div>
+
+              {/* Number and Suffix */}
+              <div className="flex items-baseline gap-0.5 relative z-10">
+                <span className="text-[clamp(2.5rem,5vw,4rem)] font-display font-bold text-[#F6F5F0] leading-none tracking-tighter">
+                  <AnimatedCounter value={stat.value} decimals={stat.decimals} />
+                </span>
+                <span className="text-[clamp(1.2rem,2.5vw,2rem)] font-display font-semibold text-[var(--accent)] leading-none">
+                  {stat.suffix}
+                </span>
+              </div>
+
+              {/* Description */}
+              <p className="text-[12px] text-[var(--text-secondary)] leading-relaxed max-w-[320px] font-sans relative z-10 group-hover:text-white transition-colors duration-300">
+                {stat.description}
+              </p>
+            </motion.div>
+          ))}
+        </motion.div>
+
+      </div>
+    </section>
+  );
+}
