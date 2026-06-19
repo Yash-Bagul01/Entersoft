@@ -17,6 +17,24 @@
   --font-sans: var(--font-body);
   --font-display: var(--font-heading);
   --font-mono: var(--font-mono);
+
+  --animate-cell-ripple: cell-ripple var(--duration, 200ms) ease-out none 1 var(--delay, 0ms);
+
+  @keyframes cell-ripple {
+    0% {
+      background-color: transparent;
+      opacity: 0.4;
+    }
+    50% {
+      background-color: var(--accent);
+      opacity: 1;
+      box-shadow: 0 0 10px var(--accent);
+    }
+    100% {
+      background-color: transparent;
+      opacity: 0.4;
+    }
+  }
 }
 
 body {
@@ -220,7 +238,7 @@ html.lenis, html.lenis body {
 }
 
 .service-row:hover {
-  border-bottom-color: var(--service-color) !important;
+  border-bottom-color: var(--text-primary) !important;
 }
 
 /* Hover interactive custom states */
@@ -258,5 +276,127 @@ body:has(.service-row:hover) .custom-cursor-ring {
   opacity: 0 !important;
   transform: scale(0) !important;
   transition: opacity 0.25s ease, transform 0.25s ease !important;
+}
+
+/* Custom marquee mask classes for CertificationsMarquee */
+.marquee-mask-left {
+  background: linear-gradient(to right, var(--bg-primary), transparent);
+}
+.marquee-mask-right {
+  background: linear-gradient(to left, var(--bg-primary), transparent);
+}
+
+/* Custom hero background overlay gradient class */
+.hero-gradient-overlay {
+  background: linear-gradient(180deg, rgba(6,6,6,0.8) 0%, rgba(6,6,6,0.55) 50%, rgba(6,6,6,0.85) 100%);
+}
+
+/* Light Theme overrides for hardcoded styles and elements */
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+[data-theme="light"] body {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Hardcoded background selectors */
+[data-theme="light"] .bg-\[\#060606\] {
+  background-color: var(--bg-primary) !important;
+}
+[data-theme="light"] .bg-\[\#0F0F0F\] {
+  background-color: var(--bg-elevated) !important;
+}
+[data-theme="light"] .bg-black {
+  background-color: var(--bg-elevated) !important;
+}
+
+/* Hardcoded text selectors */
+[data-theme="light"] .text-\[\#F6F5F0\] {
+  color: var(--text-primary) !important;
+}
+[data-theme="light"] .text-\[var\(--text-secondary\)\] {
+  color: var(--text-secondary) !important;
+}
+[data-theme="light"] .text-white {
+  color: var(--text-primary) !important;
+}
+
+/* Exclude text inside primary buttons and badges from dark override */
+[data-theme="light"] .btn-sweep-primary,
+[data-theme="light"] .btn-sweep-primary * {
+  color: #060606 !important;
+}
+[data-theme="light"] .btn-sweep-secondary {
+  border-color: var(--border-subtle) !important;
+  color: var(--text-primary) !important;
+}
+[data-theme="light"] .btn-sweep-secondary::before {
+  background-color: var(--text-primary) !important;
+}
+[data-theme="light"] .btn-sweep-secondary:hover {
+  color: var(--bg-primary) !important;
+}
+
+/* Testimonial slider navigation buttons */
+[data-theme="light"] button.border-white\/20,
+[data-theme="light"] button.border-white\/10 {
+  border-color: var(--border-subtle) !important;
+  color: var(--text-primary) !important;
+}
+[data-theme="light"] button.hover\:border-\[\#F6F5F0\]:hover {
+  border-color: var(--text-primary) !important;
+}
+
+/* Custom cursors */
+[data-theme="light"] .custom-cursor-ring {
+  border-color: rgba(6, 6, 6, 0.65) !important;
+}
+[data-theme="light"] .custom-cursor-dot {
+  background-color: #060606 !important;
+}
+
+/* Hero overlay shift */
+[data-theme="light"] .hero-gradient-overlay {
+  background: linear-gradient(180deg, rgba(246, 245, 240, 0.45) 0%, rgba(246, 245, 240, 0.15) 50%, rgba(246, 245, 240, 0.55) 100%) !important;
+}
+[data-theme="light"] .drop-shadow-\[0_4px_16px_rgba\(0\2c 0\2c 0\2c 0\.8\)\] {
+  filter: none !important;
+}
+[data-theme="light"] .drop-shadow-\[0_2px_8px_rgba\(0\2c 0\2c 0\2c 0\.6\)\] {
+  filter: none !important;
+}
+
+/* Form fields (Inputs, Textareas) */
+[data-theme="light"] input,
+[data-theme="light"] textarea {
+  background-color: var(--bg-elevated) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-subtle) !important;
+}
+[data-theme="light"] input::placeholder,
+[data-theme="light"] textarea::placeholder {
+  color: var(--text-tertiary) !important;
+}
+
+/* Dividers */
+[data-theme="light"] .bg-white\/5 {
+  background-color: var(--border-subtle) !important;
+}
+[data-theme="light"] .section-divider {
+  background-color: var(--border-subtle) !important;
+}
+
+/* Scrolled Navbar background in light mode */
+[data-theme="light"] header.bg-\[\#060606\]\/85 {
+  background-color: rgba(246, 245, 240, 0.85) !important;
+  border-bottom-color: var(--border-subtle) !important;
+}
+
+/* Logo SVG visibility in light mode */
+[data-theme="light"] img[alt="Entersoft"] {
+  filter: brightness(0) !important;
+  opacity: 0.85;
 }
 

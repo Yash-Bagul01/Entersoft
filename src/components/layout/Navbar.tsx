@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ChevronDown, Shield, Code, Cloud, CheckSquare, Server, Cpu, HelpCircle, Layers, FileText } from "lucide-react";
 import { Button } from "../ui/Button";
 import { cn } from "@/lib/utils";
+import ThemeToggle from "../ui/ThemeToggle";
 
 interface MegaItem {
   name: string;
@@ -177,7 +178,7 @@ export default function Navbar() {
               >
                 <a
                   href={item.href}
-                  className="flex items-center gap-1 font-mono text-[11px] font-bold uppercase tracking-wider text-[var(--text-secondary)] hover:text-[#F6F5F0] py-2 transition-colors relative"
+                  className="flex items-center gap-1 font-mono text-[11px] font-bold uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] py-2 transition-colors relative"
                   data-cursor="link"
                 >
                   {item.label}
@@ -199,22 +200,22 @@ export default function Navbar() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                      className="absolute top-full -left-24 w-[650px] bg-[#0F0F0F] border border-[var(--border-subtle)] p-8 mt-2 rounded-[4px] shadow-2xl flex gap-8"
+                      className="absolute top-full -left-36 w-[780px] bg-[var(--bg-glass)] border border-[var(--border-glass)] backdrop-blur-xl p-8 mt-2 rounded-[8px] shadow-2xl flex gap-8"
                     >
                       {/* Left Info Blurb */}
                       <div className="w-1/3 flex flex-col justify-between border-r border-[var(--border-subtle)] pr-6">
                         <div>
-                          <span className="font-mono text-[10px] font-bold text-[var(--accent)] uppercase tracking-widest block mb-2">
+                          <span className="font-mono text-[11.5px] font-bold text-[var(--accent)] uppercase tracking-widest block mb-2.5">
                             Overview
                           </span>
-                          <p className="text-[12px] text-[var(--text-secondary)] leading-relaxed font-sans">
+                          <p className="text-[13.5px] text-[var(--text-secondary)] leading-relaxed font-sans">
                             {item.megaMenu.blurb}
                           </p>
                         </div>
                         <div className="pt-4">
                           <a
                             href={item.href}
-                            className="text-[11px] font-mono text-[#F6F5F0] hover:text-[var(--accent)] underline transition-colors"
+                            className="text-[12.5px] font-mono text-[var(--text-primary)] hover:text-[var(--accent)] underline transition-colors"
                             data-cursor="link"
                           >
                             Explore Platform →
@@ -225,8 +226,8 @@ export default function Navbar() {
                       {/* Right Links Directory */}
                       <div className="w-2/3 grid grid-cols-2 gap-6">
                         {item.megaMenu.sections.map((section) => (
-                          <div key={section.title} className="flex flex-col gap-3">
-                            <span className="font-mono text-[10px] font-bold text-[var(--text-tertiary)] uppercase tracking-wider">
+                          <div key={section.title} className="flex flex-col gap-3.5">
+                            <span className="font-mono text-[11.5px] font-bold text-[var(--text-tertiary)] uppercase tracking-wider">
                               {section.title}
                             </span>
                             <div className="flex flex-col gap-2">
@@ -234,17 +235,17 @@ export default function Navbar() {
                                 <a
                                   key={subItem.name}
                                   href={subItem.href}
-                                  className="flex items-start gap-2.5 group p-1.5 hover:bg-white/[0.02] rounded transition-all"
+                                  className="flex items-start gap-2.5 group p-2 hover:bg-[var(--text-primary)]/[0.03] rounded transition-all"
                                   data-cursor="link"
                                 >
                                   <div className="text-[var(--text-secondary)] group-hover:text-[var(--accent)] mt-0.5 transition-colors">
                                     {subItem.icon}
                                   </div>
                                   <div className="flex flex-col">
-                                    <span className="text-[11px] font-bold text-[#F6F5F0] group-hover:text-[var(--accent)] transition-colors">
+                                    <span className="text-[12.5px] font-bold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors">
                                       {subItem.name}
                                     </span>
-                                    <span className="text-[10px] text-[var(--text-secondary)] leading-tight mt-0.5">
+                                    <span className="text-[11.5px] text-[var(--text-secondary)] leading-normal mt-0.5">
                                       {subItem.desc}
                                     </span>
                                   </div>
@@ -261,18 +262,20 @@ export default function Navbar() {
             ))}
           </nav>
 
-          {/* Right Button Action */}
-          <div className="hidden lg:block">
+          {/* Right Button Action & Theme Toggle */}
+          <div className="hidden lg:flex items-center gap-4">
+            <ThemeToggle />
             <Button variant="primary" size="sm" asLink href="#contact">
               Get a Free Scan
             </Button>
           </div>
 
-          {/* Mobile Menu Icon */}
-          <div className="lg:hidden z-50">
+          {/* Mobile Menu Icon & Theme Toggle */}
+          <div className="lg:hidden z-50 flex items-center gap-4">
+            <ThemeToggle />
             <button
               onClick={toggleMobileMenu}
-              className="text-[#F6F5F0] hover:text-[var(--accent)] transition-colors focus:outline-none"
+              className="text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors focus:outline-none"
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -315,7 +318,7 @@ export default function Navbar() {
                   <a
                     href={item.href}
                     onClick={toggleMobileMenu}
-                    className="font-display font-bold text-3xl uppercase tracking-wider text-[#F6F5F0] hover:text-[var(--accent)] transition-colors"
+                    className="font-display font-bold text-3xl uppercase tracking-wider text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors"
                   >
                     {item.label}
                   </a>

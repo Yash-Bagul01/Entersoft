@@ -1,12 +1,170 @@
 "use client";
 
-import React from "react";
+import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { scrollRevealVariants, staggerContainerVariants } from "@/lib/animations";
 import { stats } from "@/data/stats";
 import AnimatedCounter from "../ui/AnimatedCounter";
 import SectionLabel from "../ui/SectionLabel";
 import { Shield, Clock, Search, Hourglass, Percent, AlertOctagon } from "lucide-react";
+import { gsap } from "gsap";
+
+function StatCard({ stat, idx, getIcon }: { stat: any; idx: number; getIcon: (id: number) => React.ReactNode }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
+  const glareRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const card = cardRef.current;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const tiltX = ((y - centerY) / centerY) * 10;
+    const tiltY = ((centerX - x) / centerX) * 10;
+
+    gsap.to(card, {
+      rotateX: tiltX,
+      rotateY: tiltY,
+      scale: 1.02,
+      transformPerspective: 800,
+      transformStyle: "preserve-3d",
+      duration: 0.25,
+      ease: "power2.out",
+      overwrite: "auto",
+    });
+
+    if (glowRef.current) {
+      gsap.to(glowRef.current, {
+        left: x,
+        top: y,
+        duration: 0.15,
+        ease: "power2.out",
+        overwrite: "auto",
+      });
+    }
+
+    if (glareRef.current) {
+      const glareX = ((x - centerX) / centerX) * 15;
+      const glareY = ((y - centerY) / centerY) * 15;
+      gsap.to(glareRef.current, {
+        x: -glareX,
+        y: -glareY,
+        duration: 0.25,
+        ease: "power2.out",
+        overwrite: "auto",
+      });
+    }
+  };
+
+  const handleMouseEnter = () => {
+    if (glowRef.current) {
+      gsap.to(glowRef.current, {
+        opacity: 0.6,
+        duration: 0.2,
+      });
+    }
+    if (glareRef.current) {
+      gsap.to(glareRef.current, {
+        opacity: 0.15,
+        duration: 0.2,
+      });
+    }
+  };
+
+  const handleMouseLeave = () => {
+    const card = cardRef.current;
+    if (card) {
+      gsap.to(card, {
+        rotateX: 0,
+        rotateY: 0,
+        scale: 1,
+        transformPerspective: 800,
+        duration: 0.45,
+        ease: "power2.out",
+        overwrite: "auto",
+      });
+    }
+    if (glowRef.current) {
+      gsap.to(glowRef.current, {
+        opacity: 0,
+        duration: 0.4,
+      });
+    }
+    if (glareRef.current) {
+      gsap.to(glareRef.current, {
+        opacity: 0,
+        x: 0,
+        y: 0,
+        duration: 0.4,
+        ease: "power2.out",
+      });
+    }
+  };
+
+  return (
+    <motion.div
+      variants={scrollRevealVariants}
+      className="h-full"
+    >
+      <div
+        ref={cardRef}
+        onMouseMove={handleMouseMove}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        className="h-full p-8 md:p-10 bg-[#0F0F0F]/30 backdrop-blur-md border border-[var(--border-subtle)] rounded-[4px] flex flex-col justify-between gap-6 hover:border-[var(--text-primary)] transition-colors duration-300 min-h-[220px] relative overflow-hidden group select-none cursor-default"
+        style={{
+          transformStyle: "preserve-3d",
+        }}
+      >
+        {/* Dynamic Cursor Spotlight Glow */}
+        <div
+          ref={glowRef}
+          className="absolute pointer-events-none w-[300px] h-[300px] rounded-full bg-[var(--accent-dim)] opacity-0 filter blur-[80px] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300"
+          style={{ left: 0, top: 0 }}
+        />
+
+        {/* Diagonal glare element */}
+        <div
+          ref={glareRef}
+          className="absolute pointer-events-none inset-[-50px] opacity-0"
+          style={{
+            background: "radial-gradient(circle at 50% 50%, rgba(255,255,255,0.12), transparent 50%)",
+            mixBlendMode: "overlay",
+          }}
+        />
+
+        {/* Card Header (Icon + Eyebrow Label) */}
+        <div className="flex items-center justify-between relative z-10" style={{ transform: "translateZ(30px)" }}>
+          <span className="font-mono text-[10px] font-bold text-[var(--text-tertiary)] uppercase tracking-widest">
+            {stat.label}
+          </span>
+          <div className="p-2 bg-white/[0.01] border border-white/[0.04] rounded-[2px] group-hover:border-[var(--text-primary)] group-hover:bg-[var(--accent-dim)] transition-all duration-300 group-hover:scale-110">
+            {getIcon(idx)}
+          </div>
+        </div>
+
+        {/* Number and Suffix */}
+        <div className="flex items-baseline gap-0.5 relative z-10" style={{ transform: "translateZ(40px)" }}>
+          <span className="text-[clamp(2.5rem,5vw,4rem)] font-display font-bold text-[#F6F5F0] leading-none tracking-tighter">
+            <AnimatedCounter value={stat.value} decimals={stat.decimals} />
+          </span>
+          <span className="text-[clamp(1.2rem,2.5vw,2rem)] font-display font-semibold text-[var(--accent)] leading-none">
+            {stat.suffix}
+          </span>
+        </div>
+
+        {/* Description */}
+        <p className="text-[12px] text-[var(--text-secondary)] leading-relaxed max-w-[320px] font-sans relative z-10 group-hover:text-[var(--text-primary)] transition-colors duration-300" style={{ transform: "translateZ(20px)" }}>
+          {stat.description}
+        </p>
+      </div>
+    </motion.div>
+  );
+}
 
 export default function StatsCounter() {
   // Map icons to statistical metrics
@@ -76,45 +234,7 @@ export default function StatsCounter() {
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
         >
           {stats.map((stat, idx) => (
-            <motion.div
-              key={stat.label}
-              variants={scrollRevealVariants}
-              whileHover={{
-                y: -6,
-                borderColor: "rgba(0, 163, 255, 0.5)",
-                boxShadow: "0 15px 30px rgba(0, 163, 255, 0.12), inset 0 0 20px rgba(189, 0, 255, 0.15)",
-                transition: { duration: 0.35, ease: "easeOut" }
-              }}
-              className="p-8 md:p-10 bg-[#0F0F0F]/30 backdrop-blur-md border border-white/[0.04] rounded-[4px] flex flex-col justify-between gap-6 hover:bg-gradient-to-br hover:from-[#00A3FF]/15 hover:to-[#BD00FF]/10 transition-all duration-500 min-h-[220px] relative overflow-hidden group"
-            >
-              {/* Radial glow background on hover */}
-              <div className="absolute inset-0 bg-radial-[circle_at_center,rgba(0,163,255,0.03)_0%,transparent_70%] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-
-              {/* Card Header (Icon + Eyebrow Label) */}
-              <div className="flex items-center justify-between relative z-10">
-                <span className="font-mono text-[10px] font-bold text-[var(--text-tertiary)] uppercase tracking-widest">
-                  {stat.label}
-                </span>
-                <div className="p-2 bg-white/[0.01] border border-white/[0.04] rounded-[2px] group-hover:border-[var(--accent)] group-hover:bg-[var(--accent)]/10 transition-all duration-300 group-hover:scale-115 group-hover:rotate-6">
-                  {getIcon(idx)}
-                </div>
-              </div>
-
-              {/* Number and Suffix */}
-              <div className="flex items-baseline gap-0.5 relative z-10">
-                <span className="text-[clamp(2.5rem,5vw,4rem)] font-display font-bold text-[#F6F5F0] leading-none tracking-tighter">
-                  <AnimatedCounter value={stat.value} decimals={stat.decimals} />
-                </span>
-                <span className="text-[clamp(1.2rem,2.5vw,2rem)] font-display font-semibold text-[var(--accent)] leading-none">
-                  {stat.suffix}
-                </span>
-              </div>
-
-              {/* Description */}
-              <p className="text-[12px] text-[var(--text-secondary)] leading-relaxed max-w-[320px] font-sans relative z-10 group-hover:text-white transition-colors duration-300">
-                {stat.description}
-              </p>
-            </motion.div>
+            <StatCard key={stat.label} stat={stat} idx={idx} getIcon={getIcon} />
           ))}
         </motion.div>
 

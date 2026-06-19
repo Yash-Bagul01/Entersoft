@@ -1,16 +1,21 @@
-:root {
-  /* Colors */
-  --bg-primary: #060606;
-  --bg-elevated: #0f0f0f;
-  --border-subtle: rgba(255, 255, 255, 0.08);
+:root,
+:root[data-theme="light"] {
+  /* Colors - Light Theme default */
+  --bg-primary: #f6f5f0;
+  --bg-elevated: #ffffff;
+  --border-subtle: rgba(6, 6, 6, 0.08);
+  --bg-glass: rgba(255, 255, 255, 0.5);
+  --border-glass: rgba(255, 255, 255, 0.65);
   
-  --text-primary: #f6f5f0;
-  --text-secondary: #9c9c97;
-  --text-tertiary: #5e5e5a;
+  --text-primary: #060606;
+  --text-secondary: #5e5e5a;
+  --text-tertiary: #9c9c97;
   
-  --accent: #00A3FF; /* Cyan/blue family from Entersoft identity, desaturated slightly for restraint */
-  --accent-dim: rgba(0, 163, 255, 0.4);
-  --accent-hover: #33b5ff;
+  --accent: #0077c8;
+  --accent-dim: rgba(0, 119, 200, 0.12);
+  --accent-hover: #005fa0;
+  
+  --nav-link-color: rgba(6, 6, 6, 0.85);
   
   /* Fonts */
   --font-heading: var(--font-geist-sans), sans-serif;
@@ -21,6 +26,22 @@
   --max-width: 1400px;
   --section-padding: clamp(80px, 10vw, 160px);
   --border-radius: 4px;
+}
+
+:root[data-theme="dark"] {
+  --bg-primary: #060606;
+  --bg-elevated: #0f0f0f;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --bg-glass: rgba(15, 15, 15, 0.7);
+  --border-glass: rgba(255, 255, 255, 0.1);
+  
+  --text-primary: #f6f5f0;
+  --text-secondary: #9c9c97;
+  --text-tertiary: #5e5e5a;
+  
+  --accent: #00A3FF;
+  --accent-dim: rgba(0, 163, 255, 0.4);
+  --accent-hover: #33b5ff;
 }
 
 @media (prefers-reduced-motion: reduce) {

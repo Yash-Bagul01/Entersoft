@@ -73,25 +73,43 @@ export default function Hero() {
   // Video viewport lifecycle controller (IntersectionObserver)
   useEffect(() => {
     const video = videoRef.current;
-    const container = containerRef.current;
-    if (!video || !container || shouldReduceMotion) return;
+    if (!video || shouldReduceMotion) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          video.play().catch(() => {});
-        } else {
-          // Only pause the video if the user has scrolled past the hero threshold
-          if (typeof window !== "undefined" && window.scrollY > 100) {
-            video.pause();
-          }
-        }
-      },
-      { threshold: 0 }
-    );
+    // Explicitly enforce muted, loop and playsInline to override browser blockages
+    video.muted = true;
+    video.playsInline = true;
+    video.loop = true;
 
-    observer.observe(container);
-    return () => observer.disconnect();
+    const playVideo = () => {
+      video.play().catch((err) => {
+        console.warn("Autoplay was blocked or video loading failed, adding trigger...", err);
+      });
+    };
+
+    video.addEventListener("canplay", playVideo);
+    
+    // Play immediately if readyState permits
+    if (video.readyState >= 3) {
+      playVideo();
+    }
+
+    // Interaction fallback triggers
+    const handleTrigger = () => {
+      if (video.paused) {
+        playVideo();
+      }
+      window.removeEventListener("scroll", handleTrigger);
+      window.removeEventListener("click", handleTrigger);
+    };
+
+    window.addEventListener("scroll", handleTrigger, { passive: true });
+    window.addEventListener("click", handleTrigger, { passive: true });
+
+    return () => {
+      video.removeEventListener("canplay", playVideo);
+      window.removeEventListener("scroll", handleTrigger);
+      window.removeEventListener("click", handleTrigger);
+    };
   }, [shouldReduceMotion]);
 
   return (
@@ -111,35 +129,25 @@ export default function Hero() {
         ) : (
           <video
             ref={videoRef}
+            src="/videos/hero-bg.mp4"
             autoPlay
             muted
             loop
             playsInline
             preload="auto"
-            onCanPlay={() => {
-              setVideoReady(true);
-              if (videoRef.current) {
-                videoRef.current.play().catch(() => {});
-              }
-            }}
             onError={(e) => {
               console.error("Hero video load error:", e);
               setVideoError(true);
             }}
             className="absolute inset-0 w-full h-full object-cover origin-center"
             aria-hidden="true"
-          >
-            <source src="https://new-entersoft-website2026.s3.ap-south-1.amazonaws.com/entersoft-command-plane+%28online-video-cutter.com%29.mp4" type="video/mp4" />
-          </video>
+          />
         )}
 
         {/* Cinematic Linear Gradient Masks (Inside container so it clips/scales together) */}
         <div
           ref={overlayRef}
-          className="absolute inset-0 z-10 pointer-events-none transition-colors duration-300"
-          style={{
-            background: "linear-gradient(180deg, rgba(6,6,6,0.8) 0%, rgba(6,6,6,0.55) 50%, rgba(6,6,6,0.85) 100%)",
-          }}
+          className="absolute inset-0 z-10 pointer-events-none transition-all duration-300 hero-gradient-overlay"
         />
       </div>
 
@@ -172,20 +180,9 @@ export default function Hero() {
 
           {/* Headline: Line-Mask Reveal with drop-shadow for visibility */}
           <motion.h1
-            className="text-[clamp(2.3rem,5.5vw,5.5rem)] font-display font-semibold leading-[0.98] tracking-[-0.03em] text-[#F6F5F0] uppercase text-left whitespace-pre-line drop-shadow-[0_4px_16px_rgba(0,0,0,0.8)]"
+            className="text-[clamp(1.8rem,4vw,3.8rem)] font-display font-semibold leading-[1.05] tracking-[-0.02em] text-[#F6F5F0] uppercase text-left whitespace-pre-line drop-shadow-[0_4px_16px_rgba(0,0,0,0.8)]"
           >
             <span className="block overflow-hidden pb-[0.05em]">
-              <motion.span
-                variants={{
-                  hidden: { y: "100%" },
-                  visible: { y: 0, transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } }, // EASE.weighted
-                }}
-                className="block"
-              >
-                One Scan to Know Where You're Exposed.
-              </motion.span>
-            </span>
-            <span className="block overflow-hidden pb-[0.05em] text-[#F6F5F0] opacity-85">
               <motion.span
                 variants={{
                   hidden: { y: "100%" },
@@ -193,7 +190,29 @@ export default function Hero() {
                 }}
                 className="block"
               >
-                One Report to Fix It Fast.
+                AI-Native AppSec.
+              </motion.span>
+            </span>
+            <span className="block overflow-hidden pb-[0.05em] text-[#F6F5F0] opacity-90">
+              <motion.span
+                variants={{
+                  hidden: { y: "100%" },
+                  visible: { y: 0, transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } },
+                }}
+                className="block"
+              >
+                Expert-Governed.
+              </motion.span>
+            </span>
+            <span className="block overflow-hidden pb-[0.05em] text-[#F6F5F0] opacity-80">
+              <motion.span
+                variants={{
+                  hidden: { y: "100%" },
+                  visible: { y: 0, transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } },
+                }}
+                className="block"
+              >
+                Evidence-Backed.
               </motion.span>
             </span>
           </motion.h1>
@@ -207,7 +226,7 @@ export default function Hero() {
               }}
               className="text-[clamp(14px,1.6vw,17px)] font-sans text-[#F6F5F0] opacity-85 leading-relaxed max-w-[620px] text-left drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]"
             >
-              Automated repository scanning integrated into developer workflows, validated by senior analysts. 13 years of manual exploit experience delivering zero false-positive remediation code.
+              AI-Powered Application Security. Governed by Experts.
             </motion.p>
           </div>
 

@@ -6,6 +6,7 @@ import { Button } from "../ui/Button";
 import MagneticButton from "../ui/MagneticButton";
 import { ShieldCheck, Mail, Send, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { BackgroundRippleEffect } from "../ui/BackgroundRippleEffect";
 
 export default function FinalCTA() {
   const [email, setEmail] = useState("");
@@ -25,7 +26,18 @@ export default function FinalCTA() {
   };
 
   return (
-    <section id="contact" className="relative w-full bg-[#060606] overflow-hidden">
+    <section id="contact" className="relative w-full bg-bg-primary overflow-hidden">
+      {/* Background Ripple Effect Grid */}
+      <div 
+        className="absolute inset-0 h-full w-full overflow-hidden opacity-30 dark:opacity-20 z-0 pointer-events-auto"
+        style={{
+          maskImage: "radial-gradient(circle at center, black 40%, transparent 90%)",
+          WebkitMaskImage: "radial-gradient(circle at center, black 40%, transparent 90%)",
+        }}
+      >
+        <BackgroundRippleEffect rows={12} cols={32} cellSize={64} />
+      </div>
+
       {/* Muted Abstract Matrix Graphic Background */}
       <div className="absolute inset-0 z-0 pointer-events-none opacity-5">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,163,255,0.05)_0%,transparent_70%)]" />
