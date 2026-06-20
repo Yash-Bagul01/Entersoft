@@ -230,6 +230,31 @@ export default function Hero() {
             </motion.p>
           </div>
 
+          {/* Technical Specs Line */}
+          <div className="overflow-hidden mt-3">
+            <motion.p
+              variants={{
+                hidden: { y: "100%", opacity: 0 },
+                visible: { y: 0, opacity: 1, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.1 } },
+              }}
+              className="text-[clamp(11px,1.3vw,13.5px)] font-sans text-[#F6F5F0] opacity-85 tracking-wider flex flex-wrap items-center gap-x-2.5 gap-y-1 text-left drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]"
+            >
+              <span className="font-semibold">14 years of AppSec expertise</span>
+              <span className="opacity-50">|</span>
+              <span className="font-semibold">Human-validated AI</span>
+              <span className="opacity-50">|</span>
+              <span className="font-semibold">Web</span>
+              <span className="opacity-45">•</span>
+              <span className="font-semibold">API</span>
+              <span className="opacity-45">•</span>
+              <span className="font-semibold">Mobile</span>
+              <span className="opacity-45">•</span>
+              <span className="font-semibold">Code</span>
+              <span className="opacity-45">•</span>
+              <span className="font-semibold">Cloud</span>
+            </motion.p>
+          </div>
+
           {/* Call-to-actions */}
           <motion.div
             variants={{
@@ -240,11 +265,11 @@ export default function Hero() {
           >
             <MagneticButton>
               <Button variant="primary" size="lg" asLink href="#contact" className="gap-2">
-                Scan Now <ArrowRight className="w-3.5 h-3.5" />
+                REQUEST BRIEFING <ArrowRight className="w-3.5 h-3.5" />
               </Button>
             </MagneticButton>
             <Button variant="secondary" size="lg" asLink href="#contact">
-              Talk to an Expert
+              SEE ENPROBE
             </Button>
           </motion.div>
         </motion.div>

@@ -400,3 +400,18 @@ body:has(.service-row:hover) .custom-cursor-ring {
   opacity: 0.85;
 }
 
+/* Track Record section light theme overrides */
+[data-theme="light"] #track-record {
+  background-color: var(--bg-primary) !important;
+}
+
+[data-theme="light"] #track-record .grid > div > div {
+  background-color: var(--bg-elevated) !important;
+  border-color: var(--border-subtle) !important;
+}
+
+[data-theme="light"] #track-record .grid > div > div:hover {
+  background-color: rgba(0, 119, 200, 0.04) !important;
+  border-color: var(--accent) !important;
+}
+

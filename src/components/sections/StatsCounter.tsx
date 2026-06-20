@@ -181,7 +181,7 @@ export default function StatsCounter() {
   };
 
   return (
-    <section className="relative w-full bg-[#060606] overflow-hidden border-t border-[var(--border-subtle)]">
+    <section id="track-record" className="relative w-full bg-[#060606] overflow-hidden border-t border-[var(--border-subtle)]">
       {/* Sleek cyber grid lines backdrop */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.003)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.003)_1px,transparent_1px)] bg-[size:40px_40px] opacity-40 pointer-events-none" />
       

@@ -178,7 +178,7 @@ export default function Navbar() {
               >
                 <a
                   href={item.href}
-                  className="flex items-center gap-1 font-mono text-[11px] font-bold uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] py-2 transition-colors relative"
+                  className="flex items-center gap-1 font-mono text-[11px] font-bold uppercase tracking-wider text-text-primary hover:text-accent py-2 transition-colors relative"
                   data-cursor="link"
                 >
                   {item.label}

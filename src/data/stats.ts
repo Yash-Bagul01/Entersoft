@@ -15,7 +15,7 @@ export const stats: StatItem[] = [
     description: "Securing global enterprises across banking, logistics, and health sectors."
   },
   {
-    value: 13,
+    value: 14,
     decimals: 0,
     suffix: " Yrs",
     label: "TEAM STABILITY",
@@ -47,6 +47,6 @@ export const stats: StatItem[] = [
     decimals: 0,
     suffix: "",
     label: "BREACHES RECORDED",
-    description: "A pristine 13-year track record of comprehensive breach prevention."
+    description: "A pristine 14-year track record of comprehensive breach prevention."
   }
 ];

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useRef, useState } from "react";
 import SectionLabel from "../ui/SectionLabel";
 import { Button } from "../ui/Button";
 import MagneticButton from "../ui/MagneticButton";
@@ -11,6 +11,84 @@ interface DifferentiatorItem {
   title: string;
   proof: string;
   gridClass: string;
+}
+
+function DifferentiatorCard({ item }: { item: DifferentiatorItem }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const card = cardRef.current;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((centerY - y) / centerY) * 8; // Max 8 degrees tilt
+    const rotateY = ((x - centerX) / centerX) * 8;
+
+    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+    card.style.setProperty("--mouse-x", `${x}px`);
+    card.style.setProperty("--mouse-y", `${y}px`);
+  };
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    const card = cardRef.current;
+    if (!card) return;
+    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+    setIsHovered(false);
+  };
+
+  return (
+    <motion.div
+      variants={scrollRevealVariants}
+      className={`relative overflow-hidden group ${item.gridClass}`}
+      style={{ transformStyle: "preserve-3d" }}
+    >
+      <div
+        ref={cardRef}
+        onMouseMove={handleMouseMove}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        className="h-full p-8 md:p-10 border-r border-b border-[var(--border-subtle)] bg-[var(--bg-glass)] hover:bg-[var(--bg-elevated)] backdrop-blur-md transition-all duration-500 flex flex-col justify-between gap-4 cursor-default select-none"
+        style={{ transformStyle: "preserve-3d" }}
+      >
+        {/* Liquid Gradient Spotlight Mesh Backdrop */}
+        <div
+          className="absolute inset-0 z-0 pointer-events-none bg-[radial-gradient(400px_circle_at_var(--mouse-x)_var(--mouse-y),rgba(0,163,255,0.06),transparent_80%)] opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        />
+
+        {/* Grid pattern overlay */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.002)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.002)_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none opacity-30 group-hover:opacity-50 transition-opacity" />
+
+        {/* Card Header Title */}
+        <div style={{ transformStyle: "preserve-3d" }}>
+          <h3 
+            className="font-display font-bold text-lg md:text-xl text-[var(--text-primary)] uppercase tracking-tight group-hover:text-[var(--accent)] group-hover:translate-x-1.5 transition-all duration-300 relative z-10"
+            style={{ transform: "translateZ(25px)" }}
+          >
+            {item.title}
+          </h3>
+        </div>
+
+        {/* Description Proof */}
+        <div style={{ transformStyle: "preserve-3d" }}>
+          <p 
+            className="text-[12px] text-[var(--text-secondary)] leading-relaxed font-sans group-hover:text-[var(--text-primary)] transition-colors duration-300 relative z-10"
+            style={{ transform: "translateZ(15px)" }}
+          >
+            {item.proof}
+          </p>
+        </div>
+      </div>
+    </motion.div>
+  );
 }
 
 export default function Differentiators() {
@@ -89,7 +167,7 @@ export default function Differentiators() {
                   hidden: { y: "100%" },
                   visible: { y: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } }
                 }}
-                className="text-3xl md:text-4xl font-display font-medium text-[#F6F5F0] uppercase tracking-tight"
+                className="text-3xl md:text-4xl font-display font-medium text-[var(--text-primary)] uppercase tracking-tight"
               >
                 What Makes Working with Entersoft Different
               </motion.h2>
@@ -111,21 +189,7 @@ export default function Differentiators() {
           className="grid grid-cols-1 md:grid-cols-3 border-t border-l border-[var(--border-subtle)]"
         >
           {items.map((item) => (
-            <motion.div
-              key={item.title}
-              variants={scrollRevealVariants}
-              className={`p-8 md:p-10 border-r border-b border-[var(--border-subtle)] flex flex-col justify-between gap-4 hover:bg-white/[0.015] transition-all duration-300 min-h-[190px] relative overflow-hidden group ${item.gridClass}`}
-            >
-              {/* Radial glow background on hover */}
-              <div className="absolute inset-0 bg-radial-[circle_at_center,rgba(0,163,255,0.02)_0%,transparent_70%] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-              
-              <h3 className="font-display font-bold text-lg md:text-xl text-[#F6F5F0] uppercase tracking-tight group-hover:text-[var(--accent)] group-hover:translate-x-2 transition-all duration-300 relative z-10">
-                {item.title}
-              </h3>
-              <p className="text-[12px] text-[var(--text-secondary)] leading-relaxed font-sans group-hover:text-[#F6F5F0] transition-colors duration-300 relative z-10">
-                {item.proof}
-              </p>
-            </motion.div>
+            <DifferentiatorCard key={item.title} item={item} />
           ))}
         </motion.div>
 
