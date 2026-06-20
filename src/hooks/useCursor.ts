@@ -27,7 +27,9 @@ export function useCursor() {
 
     const isFine = window.matchMedia("(pointer: fine)").matches;
     if (isFine) {
-      setHasMouse(true);
+      setTimeout(() => {
+        setHasMouse(true);
+      }, 0);
     }
 
     const handleFirstMouseMove = () => {

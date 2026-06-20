@@ -26,7 +26,7 @@ export default function SectionLabel({
         className
       )}
     >
-      // {children}
+      {"// "}{children}
     </span>
   );
 }
