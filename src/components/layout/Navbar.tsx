@@ -266,7 +266,7 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-4">
             <ThemeToggle />
             <Button variant="primary" size="sm" asLink href="#contact">
-              Get a Free Scan
+              Request Briefing
             </Button>
           </div>
 
@@ -355,7 +355,7 @@ export default function Navbar() {
                 href="#contact"
                 onClick={toggleMobileMenu}
               >
-                Get a Free Scan
+                Request Briefing
               </Button>
               <div className="flex justify-between items-center text-[10px] font-mono text-[var(--text-tertiary)] uppercase tracking-widest pt-2">
                 <span>© ENTERSOFT SECURITY</span>
