@@ -393,6 +393,12 @@ body:has(.service-row:hover) .custom-cursor-ring {
   background-color: rgba(246, 245, 240, 0.85) !important;
   border-bottom-color: var(--border-subtle) !important;
 }
+[data-theme="light"] header.bg-\[\#060606\]\/85:hover {
+  background-color: rgba(246, 245, 240, 0.98) !important;
+}
+[data-theme="light"] .nav-dropdown-box {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(246, 245, 240, 0.98) 100%) !important;
+}
 
 /* Logo SVG visibility in light mode */
 [data-theme="light"] img[alt="Entersoft"] {
@@ -403,6 +409,7 @@ body:has(.service-row:hover) .custom-cursor-ring {
 /* Track Record section light theme overrides */
 [data-theme="light"] #track-record {
   background-color: var(--bg-primary) !important;
+  --accent-dim: rgba(235, 220, 195, 0.45) !important; /* Premium warm champagne-gold spotlight glow */
 }
 
 [data-theme="light"] #track-record .grid > div > div {
@@ -411,7 +418,7 @@ body:has(.service-row:hover) .custom-cursor-ring {
 }
 
 [data-theme="light"] #track-record .grid > div > div:hover {
-  background-color: rgba(0, 119, 200, 0.04) !important;
-  border-color: var(--accent) !important;
+  background-color: rgba(246, 245, 240, 0.75) !important; /* Soft, warm bone background tint */
+  border-color: var(--text-primary) !important; /* Premium dark border highlight */
 }
 

@@ -53,17 +53,18 @@ export default function Navbar() {
           {
             title: "Audits & Testing",
             items: [
-              { name: "VAPT Services", href: "#services", desc: "Expert-validated penetration auditing.", icon: <Shield className="w-4 h-4" /> },
-              { name: "AppSec Integrations", href: "#services", desc: "CI/CD automated vulnerability tests.", icon: <Code className="w-4 h-4" /> },
-              { name: "Managed Cloud", href: "#services", desc: "Continuous CSPM cloud posture checks.", icon: <Cloud className="w-4 h-4" /> }
+              { name: "VAPT Services", href: "/services/vapt", desc: "Expert-validated penetration auditing.", icon: <Shield className="w-4 h-4" /> },
+              { name: "AppSec Integrations", href: "/services/appsec", desc: "CI/CD automated vulnerability tests.", icon: <Code className="w-4 h-4" /> },
+              { name: "Managed Cloud", href: "/services/managed-cloud-security", desc: "Continuous CSPM cloud posture checks.", icon: <Cloud className="w-4 h-4" /> },
+              { name: "Compliance Management", href: "/services/compliance-management", desc: "Gap analysis & ISO 27001 readiness.", icon: <CheckSquare className="w-4 h-4" /> }
             ]
           },
           {
             title: "Specialized Solutions",
             items: [
-              { name: "Smart Contracts", href: "#services", desc: "Decentralized DeFi code stress-testing.", icon: <Cpu className="w-4 h-4" /> },
-              { name: "AI AST Security", href: "#services", desc: "LLM guardrails and prompt safety.", icon: <Layers className="w-4 h-4" /> },
-              { name: "Managed SIEM & Monitoring", href: "#services", desc: "24/7 incident SOC telemetry.", icon: <Server className="w-4 h-4" /> }
+              { name: "Smart Contracts", href: "/services/smart-contract-audits", desc: "Decentralized DeFi code stress-testing.", icon: <Cpu className="w-4 h-4" /> },
+              { name: "AI AST Security", href: "/services/ai-ast", desc: "LLM guardrails and prompt safety.", icon: <Layers className="w-4 h-4" /> },
+              { name: "Managed SIEM & Monitoring", href: "/services/siem", desc: "24/7 incident SOC telemetry.", icon: <Server className="w-4 h-4" /> }
             ]
           }
         ]
@@ -153,7 +154,7 @@ export default function Navbar() {
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-300 w-full",
           isScrolled
-            ? "bg-[#060606]/85 backdrop-blur-md border-b border-[var(--border-subtle)] py-4"
+            ? "bg-[#060606]/85 hover:bg-[#060606]/98 backdrop-blur-md hover:backdrop-blur-xl border-b border-[var(--border-subtle)] py-4"
             : "bg-transparent border-b border-transparent py-6"
         )}
       >
@@ -200,7 +201,7 @@ export default function Navbar() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                      className="absolute top-full -left-36 w-[780px] bg-[var(--bg-glass)] border border-[var(--border-glass)] backdrop-blur-xl p-8 mt-2 rounded-[8px] shadow-2xl flex gap-8"
+                      className="absolute top-full -left-36 w-[780px] bg-gradient-to-b from-[#060606]/98 to-[#0f0f0f]/98 border border-[var(--border-glass)] backdrop-blur-2xl p-8 mt-2 rounded-[8px] shadow-2xl flex gap-8 nav-dropdown-box"
                     >
                       {/* Left Info Blurb */}
                       <div className="w-1/3 flex flex-col justify-between border-r border-[var(--border-subtle)] pr-6">

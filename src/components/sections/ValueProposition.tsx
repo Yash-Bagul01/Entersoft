@@ -64,7 +64,7 @@ export default function ValueProposition() {
   };
 
   return (
-    <section className="relative w-full bg-bg-primary overflow-hidden">
+    <section id="value-proposition" className="relative w-full bg-bg-primary overflow-hidden">
       {/* Background radial highlight for premium touch */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,163,255,0.015)_0%,transparent_70%)] pointer-events-none" />
 

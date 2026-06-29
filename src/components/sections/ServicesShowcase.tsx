@@ -1,11 +1,25 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { services, ServiceItem } from "@/data/services";
 import SectionLabel from "../ui/SectionLabel";
 import { gsap } from "gsap";
 import { ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+
+const getServiceHref = (id: string) => {
+  switch (id) {
+    case "appsec": return "/services/appsec";
+    case "vapt": return "/services/vapt";
+    case "cloud": return "/services/managed-cloud-security";
+    case "compliance": return "/services/compliance-management";
+    case "siem": return "/services/siem";
+    case "smart-contract": return "/services/smart-contract-audits";
+    case "ai-ast": return "/services/ai-ast";
+    default: return `/services/${id}`;
+  }
+};
 
 // Unique premium neon colors for each cybersecurity service
 const getServiceColor = (id: string) => {
@@ -142,9 +156,10 @@ export default function ServicesShowcase() {
           <div className="relative">
             <div className="flex flex-col border-t border-[var(--border-subtle)]">
               {services.map((service) => (
-                <div
+                <Link
                   key={service.id}
-                  className="service-row group flex items-center justify-between py-10 border-b border-[var(--border-subtle)] relative cursor-none select-none px-4"
+                  href={getServiceHref(service.id)}
+                  className="service-row group flex items-center justify-between py-10 border-b border-[var(--border-subtle)] relative cursor-none select-none px-4 decoration-none"
                   style={{ "--service-color": getServiceColor(service.id) } as React.CSSProperties}
                   onMouseEnter={(e) => handleMouseEnter(service, e)}
                   onMouseLeave={handleMouseLeave}
@@ -161,7 +176,7 @@ export default function ServicesShowcase() {
                   <span className="font-mono text-xs font-bold text-[var(--text-tertiary)] opacity-30 group-hover:text-[var(--service-color)] group-hover:opacity-100 transition-all duration-300">
                     {service.tag}
                   </span>
-                </div>
+                </Link>
               ))}
             </div>
 
@@ -215,16 +230,16 @@ export default function ServicesShowcase() {
           <div className="grid grid-cols-[1.2fr_1fr] gap-8">
             <div className="flex flex-col border-t border-[var(--border-subtle)]">
               {services.map((service) => (
-                <button
+                <Link
                   key={service.id}
-                  className={`flex flex-col gap-1 py-6 border-b text-left transition-colors duration-300 px-4 ${
+                  href={getServiceHref(service.id)}
+                  className={`flex flex-col gap-1 py-6 border-b text-left transition-colors duration-300 px-4 decoration-none ${
                     activeService?.id === service.id ? "bg-white/[0.02]" : "hover:bg-white/[0.01]"
                   }`}
                   style={{
                     borderBottomColor: activeService?.id === service.id ? "var(--text-primary)" : "var(--border-subtle)"
                   }}
                   onMouseEnter={() => setActiveService(service)}
-                  onClick={() => setActiveService(service)}
                 >
                   <div className="flex items-center gap-4">
                     <span className="font-mono text-xs font-bold transition-colors duration-300"
@@ -245,7 +260,7 @@ export default function ServicesShowcase() {
                   <span className="font-mono text-[10px] text-[var(--text-tertiary)] opacity-55 pl-8">
                     {service.tag}
                   </span>
-                </button>
+                </Link>
               ))}
             </div>
 
@@ -347,6 +362,15 @@ export default function ServicesShowcase() {
                           alt={service.title} 
                           className="absolute inset-0 w-full h-full object-cover"
                         />
+                      </div>
+                      
+                      <div className="flex justify-start pt-2">
+                        <Link
+                          href={getServiceHref(service.id)}
+                          className="inline-flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-wider text-[var(--text-primary)] hover:text-[var(--accent)] underline transition-colors"
+                        >
+                          Explore Service <ArrowRight className="w-3 h-3" />
+                        </Link>
                       </div>
                     </div>
                   </motion.div>

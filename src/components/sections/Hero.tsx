@@ -7,6 +7,7 @@ import { Button } from "../ui/Button";
 import MagneticButton from "../ui/MagneticButton";
 import SectionLabel from "../ui/SectionLabel";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useSmoothScroll } from "@/components/layout/SmoothScrollProvider";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -20,6 +21,21 @@ export default function Hero() {
   const [videoReady, setVideoReady] = useState(false);
   const [videoError, setVideoError] = useState(false);
   const shouldReduceMotion = useReducedMotion();
+  const lenis = useSmoothScroll();
+
+  const handleScrollToNext = () => {
+    if (lenis) {
+      lenis.scrollTo("#value-proposition", {
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      });
+    } else {
+      const nextSection = document.getElementById("value-proposition");
+      if (nextSection) {
+        nextSection.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
 
   // GSAP Parallax scrolling animations
   useEffect(() => {
@@ -276,11 +292,19 @@ export default function Hero() {
       </div>
 
       {/* Bottom Scroll Cue */}
-      <motion.div
+      <motion.button
+        onClick={handleScrollToNext}
         initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.2, duration: 0.6 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-1.5 opacity-60"
+        animate={{ opacity: 0.6, y: 0 }}
+        whileHover={{ opacity: 1, scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        transition={{
+          opacity: { delay: 1.2, duration: 0.6 },
+          y: { delay: 1.2, duration: 0.6 },
+          scale: { duration: 0.2 },
+        }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-1.5 cursor-pointer bg-transparent border-none outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-lg px-4 py-2 select-none"
+        aria-label="Scroll to next section"
       >
         <span className="font-mono text-[9px] font-bold tracking-[0.2em] text-[var(--text-secondary)] uppercase">
           SCROLL
@@ -291,7 +315,7 @@ export default function Hero() {
         >
           <ChevronDown className="w-4 h-4 text-[#F6F5F0]" />
         </motion.div>
-      </motion.div>
+      </motion.button>
     </section>
   );
 }
