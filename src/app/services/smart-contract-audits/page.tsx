@@ -24,6 +24,8 @@ export default function SmartContractAuditsPage() {
         tagline={data.tagline}
         visual={<SmartContractVisual />}
         heroLayoutType="smart-contract"
+        col2Description={data.col2Description}
+        col3Metadata={data.col3Metadata}
       />
       
       {/* Bespoke pre-like Methodology section */}

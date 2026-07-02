@@ -36,6 +36,8 @@ export default function VAPTPage() {
         visual={<VAPTVisual />}
         heroLayoutType="vapt"
         statsNode={statsNode}
+        col2Description={data.col2Description}
+        col3Metadata={data.col3Metadata}
       />
       <ServiceProcess steps={data.process} />
       

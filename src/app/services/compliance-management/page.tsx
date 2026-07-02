@@ -24,6 +24,8 @@ export default function CompliancePage() {
         tagline={data.tagline}
         visual={<ComplianceVisual />}
         heroLayoutType="compliance"
+        col2Description={data.col2Description}
+        col3Metadata={data.col3Metadata}
       />
       <ServiceProcess steps={data.process} />
       <ServiceDeliverables deliverables={data.deliverables} integrations={data.integrations} />

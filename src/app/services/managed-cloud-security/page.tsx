@@ -33,6 +33,8 @@ export default function CloudSecurityPage() {
         tagline={data.tagline}
         visual={<CloudVisual />}
         heroLayoutType="cloud"
+        col2Description={data.col2Description}
+        col3Metadata={data.col3Metadata}
       />
       <ServiceProcess steps={data.process} />
       

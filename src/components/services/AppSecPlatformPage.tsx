@@ -164,35 +164,64 @@ function HeroCanvas() {
 function FindVisual() {
   const shouldReduceMotion = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
-  const nodes = Array.from({ length: 64 });
-  const flaggedIndices = [14, 27, 45, 52];
 
-  const handleNodeHover = (index: number) => {
-    const containerEl = containerRef.current;
-    if (shouldReduceMotion || !containerEl) return;
-    
-    // Trigger anime.js ripple wave centered at index
-    animate(containerEl.querySelectorAll(".find-grid-node"), {
-      scale: [
-        { value: 1.3, duration: 120, easing: "easeOutQuad" },
-        { value: 1.0, duration: 600, easing: "easeOutElastic(1, .8)" }
-      ],
-      borderColor: [
-        { value: "rgba(0, 163, 255, 0.7)", duration: 120 },
-        { value: "rgba(255, 255, 255, 0.05)", duration: 700 }
-      ],
-      backgroundColor: [
-        { value: "rgba(0, 163, 255, 0.25)", duration: 120 },
-        { value: "#151515", duration: 700 }
-      ],
-      delay: stagger(30, { grid: [8, 8], from: index })
+  const nodesData = [
+    { id: 0, label: "gateway.js", x: 50, y: 70, type: "Entrypoint Gateway", severity: "safe" },
+    { id: 1, label: "auth_service.py", x: 130, y: 150, type: "API Auth Endpoint", severity: "safe" },
+    { id: 2, label: "db_client.ts", x: 190, y: 60, type: "Database Connector", severity: "critical", vuln: "SQL Injection", cvss: "8.8" },
+    { id: 3, label: "user_controller.go", x: 210, y: 220, type: "Request Controller", severity: "safe" },
+    { id: 4, label: "session_cache.rs", x: 270, y: 140, type: "Redis Cache Layer", severity: "safe" },
+    { id: 5, label: "admin_handler.rb", x: 330, y: 220, type: "Admin Operations", severity: "critical", vuln: "Broken Auth Controls", cvss: "9.4" },
+    { id: 6, label: "api_gateway.bin", x: 350, y: 70, type: "Edge Reverse Proxy", severity: "safe" },
+    { id: 7, label: "jwt_helper.go", x: 410, y: 150, type: "Auth Token Signature", severity: "safe" }
+  ];
+
+  const connections = [
+    [0, 1], [0, 2], [1, 3], [2, 4], [3, 4], [4, 6], [4, 5], [5, 7], [6, 7]
+  ];
+
+  const [nodes] = useState(nodesData);
+  const [hoveredNode, setHoveredNode] = useState<number | null>(null);
+  const [sweepX, setSweepX] = useState(50);
+
+  // Sweep scan beam back and forth organically
+  useEffect(() => {
+    if (shouldReduceMotion) return;
+    let frameId: number;
+    let startTime = Date.now();
+    const update = () => {
+      const elapsed = Date.now() - startTime;
+      const x = 50 + Math.sin(elapsed / 1600) * 180 + 180; // Sweeps range 50 -> 410
+      setSweepX(x);
+      frameId = requestAnimationFrame(update);
+    };
+    frameId = requestAnimationFrame(update);
+    return () => cancelAnimationFrame(frameId);
+  }, [shouldReduceMotion]);
+
+  // Synchronize HUD print details with active node (hover or sweep overlap)
+  const getActiveDisplayNode = () => {
+    if (hoveredNode !== null) {
+      return nodes[hoveredNode];
+    }
+    let closestNode = nodes[0];
+    let minDistance = 9999;
+    nodes.forEach((n) => {
+      const dist = Math.abs(n.x - sweepX);
+      if (dist < minDistance) {
+        minDistance = dist;
+        closestNode = n;
+      }
     });
+    return closestNode;
   };
+
+  const activeNode = getActiveDisplayNode();
 
   return (
     <div 
       ref={containerRef}
-      className="w-full h-full min-h-[300px] md:min-h-[380px] bg-[#0f0f0f]/40 border border-[var(--border-subtle)] rounded-[4px] p-6 md:p-8 flex flex-col justify-between relative overflow-hidden backdrop-blur-md"
+      className="w-full h-full min-h-[380px] bg-[#0f0f0f]/40 border border-[var(--border-subtle)] rounded-[4px] p-5 md:p-6 flex flex-col justify-between relative overflow-hidden backdrop-blur-md font-mono"
     >
       {/* Sci-fi Corner Brackets */}
       <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-[var(--accent)] rounded-tl-[2px] opacity-75 pointer-events-none" />
@@ -200,49 +229,202 @@ function FindVisual() {
       <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-[var(--accent)] rounded-bl-[2px] opacity-75 pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-[var(--accent)] rounded-br-[2px] opacity-75 pointer-events-none" />
 
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.002)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.002)_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none opacity-20" />
-      
-      {!shouldReduceMotion && (
-        <>
-          <div 
-            className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[var(--accent)] to-transparent pointer-events-none opacity-80 shadow-[0_0_15px_rgba(0,163,255,0.5)] z-10"
-            style={{ animation: "scanBeam 5s linear infinite" }}
-          />
-          <style>{`
-            @keyframes scanBeam {
-              0% { top: 0%; opacity: 0; }
-              10% { opacity: 0.8; }
-              90% { opacity: 0.8; }
-              100% { top: 100%; opacity: 0; }
-            }
-          `}</style>
-        </>
-      )}
+      {/* Top Header */}
+      <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-2.5 text-[9.5px] text-zinc-400 select-none">
+        <span>ATTACK TOPOLOGY MAP // SCANNING</span>
+        <span className="text-[var(--accent)] text-[9px] font-bold tracking-widest uppercase">
+          FIND CAPABILITY
+        </span>
+      </div>
 
-      <div className="grid grid-cols-8 gap-3 my-auto w-full max-w-[340px] mx-auto relative z-0">
-        {nodes.map((_, i) => {
-          const isFlagged = flaggedIndices.includes(i);
-          return (
-            <div
-              key={i}
-              onMouseEnter={() => handleNodeHover(i)}
-              className={`find-grid-node aspect-square border rounded-[2px] flex items-center justify-center transition-colors duration-500 cursor-crosshair ${
-                isFlagged 
-                  ? "border-[var(--accent)] bg-[var(--accent-dim)] shadow-[0_0_10px_var(--accent-dim)]" 
-                  : "border-white/5 bg-[#151515]"
-              }`}
-            >
-              {isFlagged && (
-                <div className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-ping duration-[1200ms]" />
+      {/* Interactive Map and HUD detail grid */}
+      <div className="flex flex-col lg:flex-row gap-4 my-auto relative z-10 w-full items-stretch">
+        
+        {/* SVG Network Map */}
+        <div className="relative flex-1 bg-[#121212]/30 border border-white/5 rounded-[3px] p-2 min-h-[220px] flex items-center justify-center">
+          <svg viewBox="0 0 460 260" className="w-full h-full">
+            <defs>
+              <linearGradient id="sweepGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="var(--accent)" stopOpacity="0" />
+                <stop offset="100%" stopColor="var(--accent)" stopOpacity="0.16" />
+              </linearGradient>
+            </defs>
+
+            {/* Render Network Connections (Brighter default and active states) */}
+            {connections.map(([fromIdx, toIdx], index) => {
+              const fromNode = nodes[fromIdx];
+              const toNode = nodes[toIdx];
+              const isBeamNear = Math.abs(fromNode.x - sweepX) < 25 || Math.abs(toNode.x - sweepX) < 25;
+              const isActive = hoveredNode === fromIdx || hoveredNode === toIdx || isBeamNear;
+              return (
+                <line
+                  key={index}
+                  x1={fromNode.x}
+                  y1={fromNode.y}
+                  x2={toNode.x}
+                  y2={toNode.y}
+                  stroke={isActive ? "rgba(0, 163, 255, 0.65)" : "rgba(255,255,255,0.18)"}
+                  strokeWidth={isActive ? "2" : "1.25"}
+                  className="transition-all duration-300"
+                />
+              );
+            })}
+
+            {/* Sweep Scan Beam (Increased visibility and shadow) */}
+            {!shouldReduceMotion && (
+              <g>
+                <line
+                  x1={sweepX}
+                  y1="10"
+                  x2={sweepX}
+                  y2="250"
+                  stroke="var(--accent)"
+                  strokeWidth="2"
+                  strokeOpacity="0.95"
+                  style={{ filter: "drop-shadow(0 0 6px var(--accent))" }}
+                />
+                <rect
+                  x={sweepX - 35}
+                  y="10"
+                  width="35"
+                  height="240"
+                  fill="url(#sweepGrad)"
+                  pointerEvents="none"
+                />
+              </g>
+            )}
+
+            {/* Render Constellation Nodes (Enlarged node circles, brackets, and labels) */}
+            {nodes.map((node) => {
+              const isSwept = Math.abs(node.x - sweepX) < 18;
+              const isActive = hoveredNode === node.id || isSwept;
+              const isCritical = node.severity === "critical";
+
+              return (
+                <g key={node.id}>
+                  {/* Outer glowing target brackets (Enlarged size) */}
+                  {isActive && (
+                    <rect
+                      x={node.x - 10}
+                      y={node.y - 10}
+                      width="20"
+                      height="20"
+                      fill="transparent"
+                      stroke={isCritical ? "#ff4444" : "var(--accent)"}
+                      strokeWidth="1"
+                      strokeDasharray="4 1.5"
+                      className="animate-[spin_10s_linear_infinite]"
+                    />
+                  )}
+
+                  {/* Pulsing warning halo for critical targets */}
+                  {isCritical && (
+                    <circle
+                      cx={node.x}
+                      cy={node.y}
+                      r="15"
+                      fill="transparent"
+                      stroke="#ff4444"
+                      strokeWidth="1.25"
+                      className="animate-ping"
+                      style={{ animationDuration: "1.5s" }}
+                    />
+                  )}
+
+                  {/* Center Node dot (Increased radius) */}
+                  <circle
+                    cx={node.x}
+                    cy={node.y}
+                    r={isActive ? "8.5" : "6"}
+                    fill={isCritical ? "#ff4444" : "var(--accent)"}
+                    fillOpacity={isActive ? "1" : "0.75"}
+                    className="transition-all duration-300"
+                  />
+
+                  {/* Label tag (Enlarged font size and opacity) */}
+                  <text
+                    x={node.x}
+                    y={node.y - 14}
+                    textAnchor="middle"
+                    fill={isCritical ? "#ff4444" : "#f4f4f5"}
+                    fillOpacity={isActive ? "1" : "0.85"}
+                    className="text-[10px] font-mono select-none font-bold uppercase tracking-wider transition-colors duration-300"
+                  >
+                    {node.label}
+                  </text>
+
+                  {/* Invisible target area for pointer hover checks */}
+                  <circle
+                    cx={node.x}
+                    cy={node.y}
+                    r="20"
+                    fill="transparent"
+                    className="cursor-pointer"
+                    onMouseEnter={() => setHoveredNode(node.id)}
+                    onMouseLeave={() => setHoveredNode(null)}
+                  />
+                </g>
+              );
+            })}
+          </svg>
+        </div>
+
+        {/* HUD Details Terminal Panel */}
+        <div className="w-full lg:w-[170px] bg-[#121212]/50 border border-white/5 rounded-[3px] p-3 flex flex-col justify-between font-mono text-[8px] min-h-[220px]">
+          <div>
+            <span className="text-zinc-500 uppercase tracking-widest border-b border-white/5 pb-1 block select-none mb-3">
+              discovered_entity
+            </span>
+
+            <div className="flex flex-col gap-2.5">
+              <div className="flex flex-col">
+                <span className="text-zinc-500 uppercase select-none">Target File:</span>
+                <span className="text-zinc-200 font-bold text-[9px] mt-0.5">{activeNode.label}</span>
+              </div>
+
+              <div className="flex flex-col">
+                <span className="text-zinc-500 uppercase select-none">Classification:</span>
+                <span className="text-zinc-300 mt-0.5">{activeNode.type}</span>
+              </div>
+
+              <div className="flex flex-col">
+                <span className="text-zinc-500 uppercase select-none">Scan Status:</span>
+                <span className={`font-bold mt-0.5 ${
+                  activeNode.severity === "critical" 
+                    ? "text-red-400 animate-pulse" 
+                    : "text-emerald-400"
+                }`}>
+                  {activeNode.severity === "critical" ? "[✓ THREAT_ALERT]" : "[✓ STABLE_SECURE]"}
+                </span>
+              </div>
+
+              {activeNode.severity === "critical" && (
+                <>
+                  <div className="flex flex-col">
+                    <span className="text-red-500/80 uppercase select-none">Vulnerability:</span>
+                    <span className="text-red-400 font-bold mt-0.5">{activeNode.vuln}</span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-red-500/80 uppercase select-none">CVSS Level:</span>
+                    <span className="text-red-400 font-bold mt-0.5">{activeNode.cvss} / 10.0</span>
+                  </div>
+                </>
               )}
             </div>
-          );
-        })}
+          </div>
+
+          <div className="border-t border-white/5 pt-2 mt-4 text-[7px] text-zinc-500 flex flex-col gap-0.5 select-none">
+            <span>PORT: 443 // PROTOCOL</span>
+            <span>AUDIT STATE: ACTIVE</span>
+          </div>
+        </div>
+
       </div>
       
-      <div className="flex justify-between items-center w-full mt-4 font-mono text-[9px] text-[var(--text-tertiary)] uppercase tracking-widest border-t border-[var(--border-subtle)] pt-4">
+      {/* Bottom status bar */}
+      <div className="flex justify-between items-center w-full mt-3 font-mono text-[9px] text-[var(--text-tertiary)] uppercase tracking-widest border-t border-[var(--border-subtle)] pt-3 select-none">
         <span>COVERAGE STATE: SCANNING //</span>
-        <span className="text-[var(--accent)] font-bold">ACTIVE NODES: 64</span>
+        <span className="text-[var(--accent)] font-bold">ACTIVE NODES: 8</span>
       </div>
     </div>
   );
@@ -253,209 +435,139 @@ function FindVisual() {
 // ==========================================
 function ValidateVisual() {
   const shouldReduceMotion = useReducedMotion();
-  const containerRef = useRef<HTMLDivElement>(null);
-  const leftRef = useRef<HTMLDivElement>(null);
-  const centerRef = useRef<HTMLDivElement>(null);
-  const rightRef = useRef<HTMLDivElement>(null);
+  const [scaleVal, setScaleVal] = useState(0);
+  const [freqVal, setFreqVal] = useState(0.015);
+  const [isHovered, setIsHovered] = useState(false);
+  const [imgTransform, setImgTransform] = useState({ x: 0, y: 0, scale: 1.0 });
+  
+  const lastMousePos = useRef({ x: 0, y: 0 });
+  const speedRef = useRef(0);
 
-  const [rawLogs, setRawLogs] = useState<string[]>([
-    "AUTH_BYPASS_ATTEMPT",
-    "SQLI_DETECTED_L12",
-    "SCA_STALE_DEP_LOW"
-  ]);
-  const [confirmedThreats, setConfirmedThreats] = useState<string[]>([]);
-  const [logCounter, setLogCounter] = useState(0);
+  // Track mouse moves inside container to compute speed/direction and apply floating inertia
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    const dx = x - lastMousePos.current.x;
+    const dy = y - lastMousePos.current.y;
+    const speed = Math.sqrt(dx * dx + dy * dy);
+    
+    // Accumulate movement speed, capped for smooth aesthetic rendering
+    speedRef.current = Math.min(speedRef.current + speed * 0.45, 48);
+    lastMousePos.current = { x, y };
 
-  const logTemplates = [
-    "AUTH_BYPASS_ATTEMPT",
-    "SQLI_DETECTED_L12",
-    "SCA_STALE_DEP_LOW",
-    "XSS_CANDIDATE_R42",
-    "CVE-2026-9283_HIGH",
-    "SSRF_VERBAL_PATTERN",
-    "CSRF_TOKEN_MISSING",
-    "PATH_TRAVERSAL_L8"
-  ];
-
-  const threatTemplates = [
-    "SQL_INJECTION",
-    "AUTH_BYPASS",
-    "CROSS_SITE_SCRIPTING",
-    "SERVER_SIDE_RF"
-  ];
-
-  useEffect(() => {
-    if (shouldReduceMotion) {
-      setConfirmedThreats(["SQL_INJECTION", "AUTH_BYPASS"]);
-      setRawLogs(["SCA_STALE_DEP_LOW"]);
-      return;
+    // Obys Agency subtle image floating offset relative to container center
+    if (!shouldReduceMotion) {
+      const moveX = (x - rect.width / 2) * 0.08;
+      const moveY = (y - rect.height / 2) * 0.08;
+      setImgTransform({
+        x: moveX,
+        y: moveY,
+        scale: 1.06
+      });
     }
+  };
 
-    const interval = setInterval(() => {
-      const containerEl = containerRef.current;
-      const leftEl = leftRef.current;
-      const centerEl = centerRef.current;
-      const rightEl = rightRef.current;
-      if (!containerEl || !leftEl || !centerEl || !rightEl) return;
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+    // Initial organic entry splash trigger
+    speedRef.current = 35;
+  };
 
-      const containerRect = containerEl.getBoundingClientRect();
-      const leftRect = leftEl.getBoundingClientRect();
-      const centerRect = centerEl.getBoundingClientRect();
-      const rightRect = rightEl.getBoundingClientRect();
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setImgTransform({ x: 0, y: 0, scale: 1.0 });
+  };
 
-      const startX = leftRect.left - containerRect.left + leftRect.width / 2;
-      const startY = leftRect.top - containerRect.top + leftRect.height / 2;
-
-      const midX = centerRect.left - containerRect.left + centerRect.width / 2;
-      const midY = centerRect.top - containerRect.top + centerRect.height / 2;
-
-      const endX = rightRect.left - containerRect.left + rightRect.width / 2;
-      const endY = rightRect.top - containerRect.top + rightRect.height / 2;
-
-      const packet = document.createElement("div");
-      packet.className = "absolute w-2 h-2 rounded-full bg-[var(--accent)] shadow-[0_0_8px_var(--accent)] z-20 pointer-events-none";
-      packet.style.left = `${startX}px`;
-      packet.style.top = `${startY}px`;
-      containerEl.appendChild(packet);
-
-      const nextLogName = logTemplates[(logCounter + 3) % logTemplates.length];
-      setRawLogs((prev) => [...prev.slice(1), nextLogName]);
-      setLogCounter((prev) => prev + 1);
-
-      const isValidated = Math.random() < 0.45;
-
-      animate(packet, {
-        left: midX,
-        top: midY,
-        duration: 800,
-        easing: "easeOutQuad",
-        onComplete: () => {
-          animate(centerEl, {
-            scale: [1, 1.15, 1],
-            borderColor: ["rgba(0, 163, 255, 0.8)", "rgba(255,255,255,0.05)"],
-            duration: 300,
-            easing: "easeOutBack",
-          });
-
-          if (isValidated) {
-            packet.style.backgroundColor = "var(--accent)";
-            packet.style.boxShadow = "0 0 10px var(--accent)";
-
-            animate(packet, {
-              left: endX,
-              top: endY,
-              duration: 800,
-              easing: "easeInQuad",
-              onComplete: () => {
-                const nextThreatName = threatTemplates[Math.floor(Math.random() * threatTemplates.length)];
-                setConfirmedThreats((prev) => {
-                  const updated = [...prev, nextThreatName];
-                  if (updated.length > 3) updated.shift();
-                  return updated;
-                });
-
-                animate(rightEl, {
-                  scale: [1, 1.05, 1],
-                  borderColor: ["var(--accent)", "var(--border-subtle)"],
-                  duration: 250,
-                });
-
-                packet.remove();
-              }
-            });
-          } else {
-            packet.style.backgroundColor = "#ff5555";
-            packet.style.boxShadow = "0 0 10px #ff3333";
-
-            animate(packet, {
-              top: midY + 40,
-              opacity: 0,
-              duration: 600,
-              easing: "easeOutQuad",
-              onComplete: () => {
-                packet.remove();
-              }
-            });
-          }
-        }
+  // Organic physics decay loop for continuous interpolation
+  useEffect(() => {
+    if (shouldReduceMotion) return;
+    
+    let active = true;
+    const updateLoop = () => {
+      if (!active) return;
+      
+      setScaleVal((prev) => {
+        const target = speedRef.current * 1.6;
+        // Interpolate smoothly
+        const next = prev + (target - prev) * 0.09;
+        return Math.max(0, next < 0.15 ? 0 : next);
       });
 
-    }, 2400);
-
-    return () => clearInterval(interval);
-  }, [logCounter, shouldReduceMotion]);
+      setFreqVal(() => {
+        const targetFreq = 0.015 + speedRef.current * 0.0008;
+        return targetFreq;
+      });
+      
+      // Decay speed exponentially to settle back to normal state
+      speedRef.current = speedRef.current * 0.88;
+      
+      requestAnimationFrame(updateLoop);
+    };
+    
+    requestAnimationFrame(updateLoop);
+    return () => {
+      active = false;
+    };
+  }, [shouldReduceMotion]);
 
   return (
     <div 
-      ref={containerRef}
-      className="w-full h-full min-h-[350px] bg-[#0f0f0f]/40 border border-[var(--border-subtle)] rounded-[4px] p-6 md:p-8 flex flex-col justify-between relative overflow-hidden backdrop-blur-md"
+      className="relative w-full aspect-[4/3] max-w-[540px] rounded-[4px] overflow-hidden border border-white/10 shadow-[0_24px_48px_rgba(0,0,0,0.85)] group cursor-pointer select-none"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onMouseMove={handleMouseMove}
     >
       {/* Sci-fi Corner Brackets */}
-      <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-[var(--accent)] rounded-tl-[2px] opacity-75 pointer-events-none" />
-      <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-[var(--accent)] rounded-tr-[2px] opacity-75 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-[var(--accent)] rounded-bl-[2px] opacity-75 pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-[var(--accent)] rounded-br-[2px] opacity-75 pointer-events-none" />
+      <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-[var(--accent)] rounded-tl-[2px] opacity-75 z-10 pointer-events-none" />
+      <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-[var(--accent)] rounded-tr-[2px] opacity-75 z-10 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-[var(--accent)] rounded-bl-[2px] opacity-75 z-10 pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-[var(--accent)] rounded-br-[2px] opacity-75 z-10 pointer-events-none" />
 
-      <div className="grid grid-cols-[1.1fr_60px_1.1fr] items-center gap-2 md:gap-4 my-auto relative z-10">
-        
-        {/* Left: Candidates Container */}
-        <div ref={leftRef} className="flex flex-col gap-3 min-h-[170px] bg-[#121212]/50 border border-white/5 p-3 rounded-[3px]">
-          <span className="font-mono text-[8px] text-[var(--text-tertiary)] uppercase tracking-wider block border-b border-white/5 pb-1">
-            Candidates Stream
-          </span>
-          <div className="flex flex-col gap-2">
-            {rawLogs.map((cand, idx) => (
-              <div
-                key={cand + idx}
-                className="font-mono text-[9px] bg-[#141414] border border-white/5 px-2.5 py-1.5 rounded-[2px] flex items-center justify-between text-zinc-400"
-              >
-                <span className="truncate">{cand}</span>
-                <span className="w-1 h-1 rounded-full bg-orange-400/50 animate-pulse" />
-              </div>
-            ))}
-          </div>
-        </div>
+      {/* Cyber overlay gradient */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#060606] via-transparent to-transparent opacity-50 z-10 pointer-events-none" />
 
-        {/* Center: Classifier Engine */}
-        <div className="flex flex-col items-center justify-center">
-          <div 
-            ref={centerRef}
-            className="w-11 h-11 rounded-full border border-white/10 bg-[#161616] flex flex-col items-center justify-center relative shadow-[0_0_15px_rgba(255,255,255,0.01)]"
-          >
-            <div className="absolute inset-1 rounded-full border border-dashed border-[var(--accent)]/30 animate-spin duration-[10000ms]" />
-            <span className="font-mono text-[8px] text-[var(--accent)] font-bold">AI</span>
-          </div>
-          <span className="font-mono text-[7px] text-zinc-500 uppercase tracking-widest mt-2">Filter</span>
-        </div>
+      {/* Embedded SVG filter definitions for Obys Agency speed splash effect */}
+      <svg className="absolute w-0 h-0" aria-hidden="true">
+        <defs>
+          <filter id="validate-liquid-distortion-filter">
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency={freqVal}
+              numOctaves="3"
+              result="noise"
+            />
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="noise"
+              scale={scaleVal}
+              xChannelSelector="R"
+              yChannelSelector="G"
+            />
+          </filter>
+        </defs>
+      </svg>
 
-        {/* Right: Confirmed Container */}
-        <div ref={rightRef} className="flex flex-col gap-3 min-h-[170px] bg-[#121212]/50 border border-white/5 p-3 rounded-[3px]">
-          <span className="font-mono text-[8px] text-[var(--accent)] uppercase tracking-wider block border-b border-[var(--accent)]/10 pb-1">
-            Confirmed Threats
-          </span>
-          <div className="flex flex-col gap-2">
-            {confirmedThreats.map((conf, idx) => (
-              <div
-                key={conf + idx}
-                className="font-mono text-[9px] bg-[var(--bg-elevated)] border border-[var(--accent)]/40 text-[#F6F5F0] px-2.5 py-1.5 rounded-[2px] flex items-center justify-between shadow-[0_0_8px_rgba(0,163,255,0.05)]"
-              >
-                <span className="truncate">{conf}</span>
-                <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] shadow-[0_0_4px_var(--accent)]" />
-              </div>
-            ))}
-            {confirmedThreats.length === 0 && (
-              <div className="text-[8px] font-mono text-zinc-600 italic py-8 text-center">
-                Awaiting Engine Feed...
-              </div>
-            )}
-          </div>
-        </div>
+      {/* Hover background splash reveal overlay */}
+      <div 
+        className="absolute inset-0 bg-sky-950/20 mix-blend-overlay z-10 pointer-events-none group-hover:bg-transparent transition-all duration-500" 
+      />
 
-      </div>
+      <img
+        src="/images/entersoft_validate_illustration.png"
+        alt="Cyber threat validation illustration"
+        className="w-full h-full object-cover select-none pointer-events-none"
+        style={{
+          filter: scaleVal > 0 ? "url(#validate-liquid-distortion-filter)" : "none",
+          transform: `translate3d(${imgTransform.x}px, ${imgTransform.y}px, 0) scale(${isHovered ? imgTransform.scale : 1.0})`,
+          transition: "transform 0.1s ease-out, filter 0.05s ease-out",
+        }}
+      />
 
-      <div className="w-full border-t border-[var(--border-subtle)] pt-4 mt-4 flex items-center justify-between font-mono text-[9px] text-zinc-500 uppercase tracking-widest">
-        <span>Operational Stream // </span>
-        <span className="text-[var(--text-primary)]">847 Candidates → 12 Confirmed</span>
+      {/* Indicator tag */}
+      <div className="absolute bottom-3 left-3 z-10 font-mono text-[8.5px] text-zinc-400 bg-[#060606]/85 px-2.5 py-1 border border-white/5 uppercase tracking-widest rounded-[2px] pointer-events-none select-none opacity-85 group-hover:opacity-100 transition-opacity">
+        [ drag mouse to distort / audit ]
       </div>
     </div>
   );
@@ -689,80 +801,141 @@ function FixVisual() {
 // ==========================================
 function ProveVisual() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, margin: "-100px" });
+  const isInView = useInView(containerRef, { once: false, margin: "-100px" });
   const shouldReduceMotion = useReducedMotion();
 
+  const [currentStep, setCurrentStep] = useState<"idle" | "testing" | "passed" | "metrics">("idle");
+  const [activeTestIndex, setActiveTestIndex] = useState(-1);
+  const [testStates, setTestStates] = useState<("idle" | "loading" | "pass")[]>(["idle", "idle", "idle", "idle"]);
+  const [score, setScore] = useState(0);
   const [checks, setChecks] = useState(0);
   const [vulns, setVulns] = useState(0);
-  const [recurrence, setRecurrence] = useState(1.0);
+  const [recurrence, setRecurrence] = useState(100);
 
-  const radius = 30;
-  const strokeWidth = 2.5;
-  const circumference = 2 * Math.PI * radius;
-
-  const circleRef1 = useRef<SVGCircleElement>(null);
-  const circleRef2 = useRef<SVGCircleElement>(null);
-  const circleRef3 = useRef<SVGCircleElement>(null);
+  const testSuites = [
+    { id: 1, name: "SQL Injection Sanitization", desc: "Checks database input parametrization" },
+    { id: 2, name: "OAuth Authentication Bypass Patch", desc: "Validates callback authorization tokens" },
+    { id: 3, name: "SSRF Webhook Validation", desc: "Checks loopback filter ranges" },
+    { id: 4, name: "Path Traversal Checks", desc: "Evaluates directory resolving rules" }
+  ];
 
   useEffect(() => {
     if (shouldReduceMotion) {
+      setTestStates(["pass", "pass", "pass", "pass"]);
+      setScore(100);
       setChecks(70);
       setVulns(12000);
       setRecurrence(0.01);
+      setCurrentStep("metrics");
       return;
     }
 
-    if (isInView) {
-      const obj = { checks: 0, vulns: 0, recurrence: 1.00 };
+    if (!isInView) return;
 
-      gsap.to(obj, {
+    let active = true;
+
+    const runSequence = async () => {
+      // Step 1: Idle
+      if (!active) return;
+      setCurrentStep("idle");
+      setActiveTestIndex(-1);
+      setTestStates(["idle", "idle", "idle", "idle"]);
+      setScore(0);
+      setChecks(0);
+      setVulns(0);
+      setRecurrence(100);
+      await delay(1200);
+
+      // Step 2: Testing (run suites one by one)
+      if (!active) return;
+      setCurrentStep("testing");
+      
+      for (let i = 0; i < 4; i++) {
+        if (!active) return;
+        setActiveTestIndex(i);
+        setTestStates((prev) => prev.map((s, idx) => (idx === i ? "loading" : s)));
+        await delay(800);
+        
+        if (!active) return;
+        setTestStates((prev) => prev.map((s, idx) => (idx === i ? "pass" : s)));
+      }
+      await delay(600);
+
+      // Step 3: Passed & Score counts up
+      if (!active) return;
+      setCurrentStep("passed");
+      for (let s = 0; s <= 100; s += 5) {
+        if (!active) return;
+        setScore(s);
+        await delay(35);
+      }
+      await delay(1000);
+
+      // Step 4: Metrics count up
+      if (!active) return;
+      setCurrentStep("metrics");
+      
+      const metricsObj = { checks: 0, vulns: 0, recurrence: 100 };
+      gsap.to(metricsObj, {
         checks: 70,
         vulns: 12000,
         recurrence: 0.01,
-        duration: 2.2,
-        ease: "power3.out",
+        duration: 1.8,
+        ease: "power2.out",
         onUpdate: () => {
-          setChecks(Math.floor(obj.checks));
-          setVulns(Math.floor(obj.vulns));
-          setRecurrence(parseFloat(obj.recurrence.toFixed(2)));
+          if (!active) return;
+          setChecks(Math.floor(metricsObj.checks));
+          setVulns(Math.floor(metricsObj.vulns));
+          setRecurrence(parseFloat(metricsObj.recurrence.toFixed(2)));
         }
       });
 
-      const circleEl1 = circleRef1.current;
-      const circleEl2 = circleRef2.current;
-      const circleEl3 = circleRef3.current;
+      await delay(4500);
 
-      if (circleEl1) {
-        animate(circleEl1, {
-          strokeDashoffset: [circumference, 0],
-          duration: 2200,
-          easing: "easeOutCubic",
-        });
-      }
-      if (circleEl2) {
-        animate(circleEl2, {
-          strokeDashoffset: [circumference, 0],
-          duration: 2200,
-          easing: "easeOutCubic",
-          delay: 150
-        });
-      }
-      if (circleEl3) {
-        const targetOffset = circumference * (1 - 0.01);
-        animate(circleEl3, {
-          strokeDashoffset: [circumference, targetOffset],
-          duration: 2200,
-          easing: "easeOutCubic",
-          delay: 300
-        });
-      }
+      // Loop back
+      if (active) runSequence();
+    };
+
+    const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+    runSequence();
+
+    return () => {
+      active = false;
+    };
+  }, [isInView, shouldReduceMotion]);
+
+  const getStatusText = () => {
+    switch (currentStep) {
+      case "idle":
+        return "AWAITING COHORT INITIATION...";
+      case "testing":
+        return "REGRESSION SUITES RUNNING...";
+      case "passed":
+        return "COMPLIANCE CONTROLS ACTIVE";
+      case "metrics":
+        return "ZERO RECURRENCE RISK ASSURED";
     }
-  }, [isInView, shouldReduceMotion, circumference]);
+  };
+
+  const getStatusColor = () => {
+    switch (currentStep) {
+      case "idle":
+        return "text-zinc-500 border-zinc-800 bg-zinc-950/20";
+      case "testing":
+        return "text-amber-400 border-amber-500/20 bg-amber-950/20 animate-pulse";
+      case "passed":
+        return "text-cyan-400 border-cyan-500/20 bg-cyan-950/20";
+      case "metrics":
+        return "text-emerald-400 border-emerald-500/20 bg-emerald-950/20";
+    }
+  };
+
+  const badgeColor = getStatusColor();
 
   return (
     <div 
       ref={containerRef} 
-      className="w-full h-full min-h-[350px] bg-[#0f0f0f]/40 border border-[var(--border-subtle)] rounded-[4px] p-6 md:p-8 flex flex-col justify-between relative overflow-hidden backdrop-blur-md"
+      className="w-full h-full min-h-[360px] bg-[#0f0f0f]/40 border border-[var(--border-subtle)] rounded-[4px] p-5 md:p-6 flex flex-col justify-between relative overflow-hidden backdrop-blur-md font-mono"
     >
       {/* Sci-fi Corner Brackets */}
       <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-[var(--accent)] rounded-tl-[2px] opacity-75 pointer-events-none" />
@@ -770,113 +943,148 @@ function ProveVisual() {
       <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-[var(--accent)] rounded-bl-[2px] opacity-75 pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-[var(--accent)] rounded-br-[2px] opacity-75 pointer-events-none" />
 
-      <div className="flex flex-col md:flex-row gap-6 items-center justify-around my-auto py-4">
-        {/* Metric 1 */}
-        <div className="flex flex-col items-center gap-3">
-          <div className="relative w-24 h-24 flex items-center justify-center">
+      {/* Top Header */}
+      <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3 mb-3 text-[10px] text-zinc-500 select-none">
+        <div className="flex items-center gap-1.5">
+          <span className="w-2 h-2 rounded-full bg-zinc-800" />
+          <span className="w-2 h-2 rounded-full bg-zinc-800" />
+          <span className="w-2 h-2 rounded-full bg-zinc-800" />
+          <span className="ml-2 select-none">regression_test_runner.sh</span>
+        </div>
+        <span className="text-[var(--accent)] font-semibold text-[8px] tracking-widest">
+          PROVE PHASE //
+        </span>
+      </div>
+
+      {/* Main Area */}
+      <div className="grid grid-cols-1 md:grid-cols-[1.1fr_0.9fr] gap-4 my-auto relative z-10">
+        
+        {/* Left Column: Test Suites Checklist */}
+        <div className="flex flex-col gap-2 bg-[#121212]/40 border border-white/5 p-3 rounded-[3px] min-h-[190px]">
+          <span className="text-[8px] text-zinc-500 uppercase tracking-widest border-b border-white/5 pb-1 block select-none">
+            Sanitization Suites
+          </span>
+          <div className="flex flex-col gap-2 mt-1">
+            {testSuites.map((ts, idx) => {
+              const state = testStates[idx];
+              return (
+                <div 
+                  key={ts.id} 
+                  className={`flex items-start gap-2.5 p-2 rounded-[2px] border transition-all duration-300 ${
+                    activeTestIndex === idx
+                      ? "border-amber-500/35 bg-amber-950/10 text-zinc-200"
+                      : state === "pass"
+                      ? "border-emerald-500/20 bg-emerald-950/5 text-zinc-400"
+                      : "border-white/5 bg-[#141414]/40 text-zinc-600"
+                  }`}
+                >
+                  <div className="mt-0.5 select-none flex items-center justify-center w-3">
+                    {state === "loading" && (
+                      <span className="w-2 h-2 rounded-full border-2 border-t-transparent border-amber-400 animate-spin" />
+                    )}
+                    {state === "pass" && (
+                      <span className="text-emerald-400 font-bold text-[8.5px] select-none">[✓]</span>
+                    )}
+                    {state === "idle" && (
+                      <span className="w-1.5 h-1.5 rounded-full bg-zinc-800" />
+                    )}
+                  </div>
+                  <div className="flex flex-col flex-1">
+                    <span className={`text-[8.5px] font-bold ${state === "pass" ? "text-zinc-300" : ""}`}>
+                      {ts.name}
+                    </span>
+                    <span className="text-[7px] text-zinc-500 block truncate mt-0.5">{ts.desc}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Right Column: Security Score Ring */}
+        <div className="flex flex-col items-center justify-center bg-[#121212]/40 border border-white/5 p-4 rounded-[3px] min-h-[190px] relative">
+          <span className="text-[8px] text-zinc-500 uppercase tracking-widest border-b border-white/5 pb-1 block select-none w-full text-left absolute top-3 left-3">
+            Assurance Grade
+          </span>
+
+          <div className="relative w-20 h-20 flex items-center justify-center mt-3">
             <svg className="w-full h-full transform -rotate-90">
               <circle
-                cx="48"
-                cy="48"
-                r={radius}
+                cx="40"
+                cy="40"
+                r="30"
                 fill="transparent"
                 stroke="rgba(255,255,255,0.03)"
-                strokeWidth={strokeWidth}
+                strokeWidth="3.5"
               />
-              <circle
-                ref={circleRef1}
-                cx="48"
-                cy="48"
-                r={radius}
+              <motion.circle
+                cx="40"
+                cy="40"
+                r="30"
                 fill="transparent"
-                stroke="var(--accent)"
-                strokeWidth={strokeWidth}
-                strokeDasharray={circumference}
-                strokeDashoffset={shouldReduceMotion ? 0 : circumference}
+                stroke={currentStep === "metrics" ? "var(--accent)" : "var(--accent)"}
+                strokeWidth="3.5"
+                strokeDasharray={2 * Math.PI * 30}
+                strokeDashoffset={2 * Math.PI * 30 * (1 - score / 100)}
                 strokeLinecap="round"
+                animate={{ strokeDashoffset: 2 * Math.PI * 30 * (1 - score / 100) }}
+                transition={{ duration: 0.1 }}
               />
             </svg>
-            <div className="absolute font-mono text-2xl font-bold text-[#F6F5F0] select-none">
-              {checks}
+            <div className="absolute flex flex-col items-center select-none">
+              <span className="font-mono text-sm font-bold text-[#F6F5F0]">
+                {score}%
+              </span>
+              <span className="text-[6.5px] text-zinc-500 uppercase tracking-wider block mt-0.5">SCORE</span>
             </div>
           </div>
-          <span className="font-mono text-[8px] font-bold text-[var(--text-secondary)] uppercase tracking-[0.15em] text-center max-w-[120px] select-none">
-            Logical Checks Per Scope
-          </span>
+
+          <div className="mt-3 flex flex-col items-center select-none text-center">
+            <span className={`text-[9px] font-bold tracking-widest uppercase ${score === 100 ? "text-emerald-400" : "text-zinc-500"}`}>
+              {score === 100 ? "A+ GRADE ASSURED" : "EVALUATING CERTIFICATE..."}
+            </span>
+            <span className="text-[7px] text-zinc-500 block mt-1">Continuous Compliance Verified</span>
+          </div>
+        </div>
+
+      </div>
+
+      {/* Bottom Metrics Cards */}
+      <div className="grid grid-cols-3 gap-3 border-t border-[var(--border-subtle)] pt-4 select-none">
+        {/* Metric 1 */}
+        <div className="bg-[#121212]/40 border border-white/5 p-2 rounded-[2px] flex flex-col justify-between">
+          <span className="text-[7px] text-zinc-500 uppercase tracking-widest block select-none">Checks / Scope</span>
+          <span className="text-sm font-bold text-[#F6F5F0] mt-1">{checks}+</span>
+          <div className="w-full h-[2px] bg-white/5 rounded-full mt-2 overflow-hidden">
+            <div className="h-full bg-[var(--accent)] transition-all duration-300" style={{ width: `${Math.min(100, (checks / 70) * 100)}%` }} />
+          </div>
         </div>
 
         {/* Metric 2 */}
-        <div className="flex flex-col items-center gap-3">
-          <div className="relative w-24 h-24 flex items-center justify-center">
-            <svg className="w-full h-full transform -rotate-90">
-              <circle
-                cx="48"
-                cy="48"
-                r={radius}
-                fill="transparent"
-                stroke="rgba(255,255,255,0.03)"
-                strokeWidth={strokeWidth}
-              />
-              <circle
-                ref={circleRef2}
-                cx="48"
-                cy="48"
-                r={radius}
-                fill="transparent"
-                stroke="var(--accent)"
-                strokeWidth={strokeWidth}
-                strokeDasharray={circumference}
-                strokeDashoffset={shouldReduceMotion ? 0 : circumference}
-                strokeLinecap="round"
-              />
-            </svg>
-            <div className="absolute font-mono text-base font-bold text-[#F6F5F0] select-none">
-              {vulns.toLocaleString()}+
-            </div>
+        <div className="bg-[#121212]/40 border border-white/5 p-2 rounded-[2px] flex flex-col justify-between">
+          <span className="text-[7px] text-zinc-500 uppercase tracking-widest block select-none">Closed Risks</span>
+          <span className="text-sm font-bold text-[#F6F5F0] mt-1">{vulns.toLocaleString()}+</span>
+          <div className="w-full h-[2px] bg-white/5 rounded-full mt-2 overflow-hidden">
+            <div className="h-full bg-[var(--accent)] transition-all duration-300" style={{ width: `${Math.min(100, (vulns / 12000) * 100)}%` }} />
           </div>
-          <span className="font-mono text-[8px] font-bold text-[var(--text-secondary)] uppercase tracking-[0.15em] text-center max-w-[120px] select-none">
-            Risks Discovered & Closed
-          </span>
         </div>
 
         {/* Metric 3 */}
-        <div className="flex flex-col items-center gap-3">
-          <div className="relative w-24 h-24 flex items-center justify-center">
-            <svg className="w-full h-full transform -rotate-90">
-              <circle
-                cx="48"
-                cy="48"
-                r={radius}
-                fill="transparent"
-                stroke="rgba(255,255,255,0.03)"
-                strokeWidth={strokeWidth}
-              />
-              <circle
-                ref={circleRef3}
-                cx="48"
-                cy="48"
-                r={radius}
-                fill="transparent"
-                stroke="#ff5555"
-                strokeWidth={strokeWidth}
-                strokeDasharray={circumference}
-                strokeDashoffset={shouldReduceMotion ? circumference * 0.99 : circumference}
-                strokeLinecap="round"
-              />
-            </svg>
-            <div className="absolute font-mono text-lg font-bold text-[#F6F5F0] select-none">
-              {recurrence}%
-            </div>
-          </div>
-          <span className="font-mono text-[8px] font-bold text-[var(--text-secondary)] uppercase tracking-[0.15em] text-center max-w-[120px] select-none">
-            Post-Mitigation Recurrence
+        <div className="bg-[#121212]/40 border border-white/5 p-2 rounded-[2px] flex flex-col justify-between">
+          <span className="text-[7px] text-zinc-500 uppercase tracking-widest block select-none">Recurrence</span>
+          <span className={`text-sm font-bold mt-1 transition-colors duration-300 ${recurrence <= 1 ? "text-emerald-400" : "text-[#F6F5F0]"}`}>
+            {recurrence}%
           </span>
+          <div className="w-full h-[2px] bg-white/5 rounded-full mt-2 overflow-hidden">
+            <div className="h-full bg-[#ff5555] transition-all duration-300" style={{ width: `${recurrence}%` }} />
+          </div>
         </div>
       </div>
 
-      <div className="w-full border-t border-[var(--border-subtle)] pt-4 text-[9px] text-zinc-500 uppercase tracking-widest">
-        <span>DEVELOPER HUB // </span>
-        <span className="text-[var(--accent)]">ZERO GUESSWORK</span>
+      {/* Footer bar */}
+      <div className={`mt-4 border-t border-[var(--border-subtle)] pt-3 text-[8.5px] uppercase tracking-widest flex items-center justify-between transition-all duration-300 select-none ${badgeColor}`}>
+        <span>Automated Audit Status //</span>
+        <span className="font-bold tracking-wider">{getStatusText()}</span>
       </div>
     </div>
   );
@@ -1346,12 +1554,15 @@ export default function AppSecPlatformPage() {
         opacity: 0,
         ease: "none"
       }, 0.85); // Cross-fade effect out at scroll boundary
+
+      // Recalibrate trigger dimensions locally
+      ScrollTrigger.refresh();
     });
 
     return () => {
       ctx.revert();
     };
-  }, [isMounted, shouldReduceMotion]);
+  }, [isMounted, shouldReduceMotion, lenis]);
 
   const handleScrollToNext = () => {
     if (lenis) {
@@ -1389,7 +1600,7 @@ export default function AppSecPlatformPage() {
           <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-8 items-center w-full py-8 lg:py-0">
             {/* Left Column: Headline */}
             <div className="max-w-[720px] flex flex-col items-start gap-4">
-              <div className="overflow-hidden">
+              <div className="overflow-hidden flex flex-wrap items-center gap-x-3 gap-y-1 select-none">
                 <motion.div
                   initial={{ y: "100%" }}
                   animate={{ y: 0 }}
@@ -1397,6 +1608,15 @@ export default function AppSecPlatformPage() {
                 >
                   <SectionLabel color="accent">APPLICATION SECURITY</SectionLabel>
                 </motion.div>
+                <span className="text-zinc-700 text-[10px] font-mono font-bold">//</span>
+                <motion.span
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.9, delay: 0.2 }}
+                  className="font-mono text-[9px] font-bold text-zinc-300 tracking-[0.12em] uppercase block bg-white/5 border border-white/10 px-2 py-0.5 rounded-[2px]"
+                >
+                  Application Assurance Command
+                </motion.span>
               </div>
               
               <h1 className="text-[clamp(2rem,4.5vw,4rem)] lg:text-[clamp(2rem,5vw,4.4rem)] font-display font-semibold leading-[1.05] tracking-[-0.02em] uppercase text-left whitespace-pre-line drop-shadow-[0_4px_16px_rgba(0,0,0,0.8)]">
@@ -1421,6 +1641,25 @@ export default function AppSecPlatformPage() {
                   </motion.span>
                 </span>
               </h1>
+
+              {/* Col 3 Metadata Tags */}
+              <div className="overflow-hidden">
+                <motion.div
+                  initial={{ y: 15, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
+                  className="flex flex-wrap items-center gap-2 mt-1 select-none"
+                >
+                  {["Web", "Mobile", "API", "Release Security"].map((tagText, idx) => (
+                    <span 
+                      key={idx} 
+                      className="font-mono text-[9px] font-bold text-[var(--accent)] tracking-wider uppercase border border-[var(--accent)]/25 bg-[var(--accent)]/[0.04] px-2.5 py-1 rounded-[2px]"
+                    >
+                      {tagText}
+                    </span>
+                  ))}
+                </motion.div>
+              </div>
               
               <div className="overflow-hidden">
                 <motion.p
@@ -1519,21 +1758,48 @@ export default function AppSecPlatformPage() {
           ========================================== */}
       <section 
         id="appsec-find"
-        className="relative w-full min-h-[100vh] flex items-center bg-[#060606] px-6 md:px-12 py-20 border-b border-[var(--border-subtle)] z-20"
+        className="relative w-full min-h-[90vh] flex items-center bg-[#060606] px-6 md:px-12 py-20 border-b border-[var(--border-subtle)] z-20"
       >
-        <div className="max-w-[1400px] w-full mx-auto grid grid-cols-1 lg:grid-cols-[1.1fr_1.9fr] gap-12 lg:gap-16 items-center">
-          <div className="flex flex-col gap-4 max-w-[500px]">
-            <SectionLabel color="secondary">01. CAPABILITY // FIND</SectionLabel>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-medium uppercase text-[#F6F5F0] tracking-tight leading-none">
-              Every endpoint. Every dependency. Every line that ships.
+        <div className="max-w-[1400px] w-full mx-auto grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-12 lg:gap-16 items-center">
+          {/* Left Column: Abnormal-style High-Contrast Large Typography */}
+          <div className="flex flex-col gap-4 max-w-[640px]">
+            <span className="font-mono text-[10px] font-bold text-[var(--accent)] tracking-[0.25em] uppercase select-none">
+              THE CAPABILITY // FIND
+            </span>
+            <h2 className="text-[clamp(2.2rem,5vw,3.8rem)] font-sans font-bold text-[#F6F5F0] tracking-tight leading-[1.08] uppercase mt-2 select-none">
+              To stop modern threats you need <span className="text-[var(--accent)]">Continuous Finding.</span>
             </h2>
-            <p className="text-[12px] md:text-sm text-[var(--text-secondary)] font-sans leading-relaxed mt-2">
-              Continuous automated code scans mapping your entire software footprint. We evaluate SAST, DAST, IAST, and SCA configurations to verify exposure scope before deployment.
-            </p>
+            
+            <div className="mt-6 flex flex-col gap-4 select-none">
+              <p className="text-[clamp(18px,2vw,22px)] font-sans font-semibold text-[#F6F5F0] leading-snug">
+                Attack surfaces hide vulnerabilities.{" "}
+                <span className="underline decoration-2 decoration-[var(--accent)] underline-offset-8">
+                  We map them.
+                </span>
+              </p>
+              <p className="text-[clamp(18px,2vw,22px)] font-sans font-semibold text-zinc-400 leading-snug">
+                Continuous discovery unlocks automated application defense.
+              </p>
+            </div>
           </div>
+
+          {/* Right Column: Premium Relatable Technical Illustration */}
           <div className="w-full flex justify-center lg:justify-end">
-            <div className="w-full max-w-[580px]">
-              <FindVisual />
+            <div className="relative w-full aspect-[4/3] max-w-[540px] rounded-[4px] overflow-hidden border border-white/10 shadow-[0_24px_48px_rgba(0,0,0,0.85)] group">
+              {/* Sci-fi Corner Brackets */}
+              <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-[var(--accent)] rounded-tl-[2px] opacity-75 z-10 pointer-events-none" />
+              <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-[var(--accent)] rounded-tr-[2px] opacity-75 z-10 pointer-events-none" />
+              <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-[var(--accent)] rounded-bl-[2px] opacity-75 z-10 pointer-events-none" />
+              <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-[var(--accent)] rounded-br-[2px] opacity-75 z-10 pointer-events-none" />
+
+              {/* Cyber overlay gradient */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#060606] via-transparent to-transparent opacity-50 z-10 pointer-events-none" />
+
+              <img
+                src="/images/entersoft_find_illustration.png"
+                alt="Cyber threat mapping server scan illustration"
+                className="w-full h-full object-cover opacity-85 group-hover:opacity-100 transition-all duration-700 select-none pointer-events-none"
+              />
             </div>
           </div>
         </div>
@@ -1544,21 +1810,33 @@ export default function AppSecPlatformPage() {
           ========================================== */}
       <section 
         id="appsec-validate"
-        className="relative w-full min-h-[100vh] flex items-center bg-[#060606] px-6 md:px-12 py-20 border-b border-[var(--border-subtle)] z-20"
+        className="relative w-full min-h-[90vh] flex items-center bg-[#060606] px-6 md:px-12 py-20 border-b border-[var(--border-subtle)] z-20"
       >
-        <div className="max-w-[1400px] w-full mx-auto grid grid-cols-1 lg:grid-cols-[1.1fr_1.9fr] gap-12 lg:gap-16 items-center">
-          <div className="flex flex-col gap-4 max-w-[500px]">
-            <SectionLabel color="secondary">02. CAPABILITY // VALIDATE</SectionLabel>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-medium uppercase text-[#F6F5F0] tracking-tight leading-none">
-              AI finds candidates. People confirm threats.
-            </h2>
-            <p className="text-[12px] md:text-sm text-[var(--text-secondary)] font-sans leading-relaxed mt-2">
-              AI scan outputs generate candidates; our senior penetration engineers audit and cross-verify findings, removing duplicates and false positives completely.
-            </p>
+        <div className="max-w-[1400px] w-full mx-auto grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-12 lg:gap-16 items-center">
+          {/* Left Column: Premium box-like illustration with liquid splash distortion reveal on hover */}
+          <div className="w-full flex justify-start order-2 lg:order-1">
+            <ValidateVisual />
           </div>
-          <div className="w-full flex justify-center lg:justify-end">
-            <div className="w-full max-w-[580px]">
-              <ValidateVisual />
+
+          {/* Right Column: Abnormal-style High-Contrast Large Typography */}
+          <div className="flex flex-col gap-4 max-w-[640px] order-1 lg:order-2">
+            <span className="font-mono text-[10px] font-bold text-[var(--accent)] tracking-[0.25em] uppercase select-none">
+              THE CAPABILITY // VALIDATE
+            </span>
+            <h2 className="text-[clamp(2.2rem,5vw,3.8rem)] font-sans font-bold text-[#F6F5F0] tracking-tight leading-[1.08] uppercase mt-2 select-none">
+              To filter security noise you need <span className="text-[var(--accent)]">Expert Triage.</span>
+            </h2>
+            
+            <div className="mt-6 flex flex-col gap-4 select-none">
+              <p className="text-[clamp(18px,2vw,22px)] font-sans font-semibold text-[#F6F5F0] leading-snug">
+                AI models find threat candidates.{" "}
+                <span className="underline decoration-2 decoration-[var(--accent)] underline-offset-8">
+                  We audit them.
+                </span>
+              </p>
+              <p className="text-[clamp(18px,2vw,22px)] font-sans font-semibold text-zinc-400 leading-snug">
+                Human-in-the-loop validation removes false positives completely.
+              </p>
             </div>
           </div>
         </div>
@@ -1590,21 +1868,70 @@ export default function AppSecPlatformPage() {
       </section>
 
       {/* ==========================================
-          SCENE 4: PROVE (Assurance)
+          SCENE 4: PROVE (Verification)
           ========================================== */}
       <section 
         id="appsec-prove"
         className="relative w-full min-h-[100vh] flex items-center bg-[#060606] px-6 md:px-12 py-20 border-b border-[var(--border-subtle)] z-20"
       >
         <div className="max-w-[1400px] w-full mx-auto grid grid-cols-1 lg:grid-cols-[1.1fr_1.9fr] gap-12 lg:gap-16 items-center">
-          <div className="flex flex-col gap-4 max-w-[500px]">
+          <div className="flex flex-col gap-5 max-w-[500px]">
             <SectionLabel color="secondary">04. CAPABILITY // PROVE</SectionLabel>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-medium uppercase text-[#F6F5F0] tracking-tight leading-none">
-              70 checks per application. Zero guesswork.
+              Continuous validation, not a snapshot.
             </h2>
-            <p className="text-[12px] md:text-sm text-[var(--text-secondary)] font-sans leading-relaxed mt-2">
-              Every audit follows 70 logical vulnerability checks. With precise retest schedules and verified patches, vulnerability recurrence rates slide under 0.01%.
+            <p className="text-[11px] md:text-[12.5px] text-[var(--text-secondary)] font-sans leading-relaxed select-none">
+              We execute automated attacks against staging and prod environments to verify patches and seal security compliance.
             </p>
+
+            {/* Visual Step Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-2 font-mono">
+              <div className="border border-white/5 bg-[#121212]/30 p-3 rounded-[3px] flex flex-col justify-between min-h-[90px]">
+                <div className="flex items-center justify-between text-[var(--accent)]">
+                  <span className="text-[8px] font-bold tracking-wider select-none">01 // HOOK</span>
+                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M16 16v1a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v1" />
+                    <path d="M18 8h4a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-4" />
+                    <circle cx="8" cy="12" r="2" />
+                  </svg>
+                </div>
+                <div className="mt-2 select-none">
+                  <span className="text-[9px] font-bold text-zinc-300 block leading-tight">Commit Hook</span>
+                  <span className="text-[7.5px] text-zinc-500 block leading-normal mt-0.5">Triggers on push.</span>
+                </div>
+              </div>
+
+              <div className="border border-white/5 bg-[#121212]/30 p-3 rounded-[3px] flex flex-col justify-between min-h-[90px]">
+                <div className="flex items-center justify-between text-amber-400">
+                  <span className="text-[8px] font-bold tracking-wider select-none">02 // TEST</span>
+                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2" />
+                    <line x1="12" y1="22" x2="12" y2="15.5" />
+                    <polyline points="22 8.5 12 15.5 2 8.5" />
+                    <polyline points="2 15.5 12 8.5 22 15.5" />
+                    <line x1="12" y1="2" x2="12" y2="8.5" />
+                  </svg>
+                </div>
+                <div className="mt-2 select-none">
+                  <span className="text-[9px] font-bold text-zinc-300 block leading-tight">Active Re-test</span>
+                  <span className="text-[7.5px] text-zinc-500 block leading-normal mt-0.5">Attacks live routes.</span>
+                </div>
+              </div>
+
+              <div className="border border-white/5 bg-[#121212]/30 p-3 rounded-[3px] flex flex-col justify-between min-h-[90px]">
+                <div className="flex items-center justify-between text-emerald-400">
+                  <span className="text-[8px] font-bold tracking-wider select-none">03 // LOCK</span>
+                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                </div>
+                <div className="mt-2 select-none">
+                  <span className="text-[9px] font-bold text-zinc-300 block leading-tight">Block Relapse</span>
+                  <span className="text-[7.5px] text-zinc-500 block leading-normal mt-0.5">Assures fix holds.</span>
+                </div>
+              </div>
+            </div>
           </div>
           <div className="w-full flex justify-center lg:justify-end">
             <div className="w-full max-w-[580px]">

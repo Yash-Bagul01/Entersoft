@@ -25,6 +25,8 @@ export default function SIEMPage() {
         tagline={data.tagline}
         visual={<SIEMVisual />}
         heroLayoutType="siem"
+        col2Description={data.col2Description}
+        col3Metadata={data.col3Metadata}
       />
       <SIEMProofBand />
       <ServiceProcess steps={data.process} />

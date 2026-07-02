@@ -13,6 +13,8 @@ interface ServiceHeroProps {
   visual?: React.ReactNode;
   heroLayoutType?: "default" | "vapt" | "cloud" | "compliance" | "siem" | "smart-contract" | "ai-ast";
   statsNode?: React.ReactNode;
+  col2Description?: string;
+  col3Metadata?: string;
 }
 
 export default function ServiceHero({
@@ -22,6 +24,8 @@ export default function ServiceHero({
   visual,
   heroLayoutType = "default",
   statsNode,
+  col2Description,
+  col3Metadata,
 }: ServiceHeroProps) {
   const textRevealVariants = {
     hidden: { y: "100%" },
@@ -99,13 +103,24 @@ contract DeFiBridge {
             <ServiceBreadcrumb />
 
             {/* Category Eyebrow */}
-            <div className="overflow-hidden">
+            <div className="overflow-hidden flex flex-wrap items-center gap-x-3 gap-y-1 select-none">
               <motion.span
                 variants={textRevealVariants}
                 className="font-mono text-[10px] font-bold text-[var(--accent)] tracking-[0.25em] uppercase block"
               >
                 {category}
               </motion.span>
+              {col2Description && (
+                <>
+                  <span className="text-zinc-700 text-[10px] select-none font-mono font-bold">//</span>
+                  <motion.span
+                    variants={textRevealVariants}
+                    className="font-mono text-[9px] font-bold text-zinc-300 tracking-[0.12em] uppercase block bg-white/5 border border-white/10 px-2 py-0.5 rounded-[2px]"
+                  >
+                    {col2Description}
+                  </motion.span>
+                </>
+              )}
             </div>
 
             {/* Display Headline */}
@@ -118,6 +133,28 @@ contract DeFiBridge {
                 </span>
               ))}
             </h1>
+
+            {/* Col 3 Metadata Tags */}
+            {col3Metadata && (
+              <div className="overflow-hidden">
+                <motion.div
+                  variants={{
+                    hidden: { y: 15, opacity: 0 },
+                    visible: { y: 0, opacity: 1, transition: { duration: 0.8, ease: "easeOut" } }
+                  }}
+                  className="flex flex-wrap items-center gap-2 mt-1 select-none"
+                >
+                  {col3Metadata.split("•").map((tagText, idx) => (
+                    <span 
+                      key={idx} 
+                      className="font-mono text-[9px] font-bold text-[var(--accent)] tracking-wider uppercase border border-[var(--accent)]/20 bg-[var(--accent)]/[0.03] px-2.5 py-1 rounded-[2px]"
+                    >
+                      {tagText.trim()}
+                    </span>
+                  ))}
+                </motion.div>
+              </div>
+            )}
 
             {/* Tagline */}
             <div className="overflow-hidden">

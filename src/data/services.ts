@@ -6,6 +6,8 @@ export interface ServiceItem {
   link: string;
   tag: string;
   abstractType: "network" | "terminal" | "shield" | "compliance" | "binary" | "database" | "ai";
+  col2Description?: string;
+  col3Metadata?: string;
 }
 
 export const services: ServiceItem[] = [
@@ -16,7 +18,9 @@ export const services: ServiceItem[] = [
     description: "Continuous application security testing embedded directly into your CI/CD pipelines. Identify vulnerabilities at the commit level before they ever hit production.",
     link: "#contact",
     tag: "DEVSECOPPS PIPELINES",
-    abstractType: "terminal"
+    abstractType: "terminal",
+    col2Description: "Application Assurance Command",
+    col3Metadata: "Web • Mobile • API • Release Security"
   },
   {
     id: "vapt",
@@ -25,7 +29,9 @@ export const services: ServiceItem[] = [
     description: "Expert-driven vulnerability assessment and penetration testing providing real exploit proofs. CERT-In certified audit compliance with zero false-positive reports.",
     link: "#contact",
     tag: "HYBRID PEN-TESTING",
-    abstractType: "shield"
+    abstractType: "shield",
+    col2Description: "Exposure Validation Grid",
+    col3Metadata: "VAPT • Attack Surface • Retesting"
   },
   {
     id: "cloud",
@@ -34,7 +40,9 @@ export const services: ServiceItem[] = [
     description: "Continuous configuration audits, posture management (CSPM), and real-time threat response for complex multi-cloud deployments (AWS, Azure, GCP).",
     link: "#contact",
     tag: "CLOUD INFRASTRUCTURE",
-    abstractType: "network"
+    abstractType: "network",
+    col2Description: "Code-to-Cloud Control",
+    col3Metadata: "DevSecOps • Cloud • Identity"
   },
   {
     id: "compliance",
@@ -43,7 +51,9 @@ export const services: ServiceItem[] = [
     description: "Navigate global security frameworks with ease. Complete gap analysis and certification support for ISO 27001, GDPR, CERT-In, and RBI guidelines.",
     link: "#contact",
     tag: "GOVERNANCE & AUDIT",
-    abstractType: "compliance"
+    abstractType: "compliance",
+    col2Description: "Trust & Evidence Grid",
+    col3Metadata: "Governance • Audit • Compliance"
   },
   {
     id: "siem",
@@ -52,7 +62,9 @@ export const services: ServiceItem[] = [
     description: "24/7 security operations center (SOC) monitoring. Real-time log correlation, anomaly threat hunting, and automated incident response orchestration.",
     link: "#contact",
     tag: "SECURITY MONITORING",
-    abstractType: "database"
+    abstractType: "database",
+    col2Description: "Signal-to-Risk Operations",
+    col3Metadata: "SOC • SIEM • Threat Monitoring"
   },
   {
     id: "smart-contract",
@@ -61,7 +73,9 @@ export const services: ServiceItem[] = [
     description: "Deep mathematical and logic audits for Solidity, Rust, and Vyper smart contracts. Protect Web3 protocols against logic flaws, front-running, and flash loan attacks.",
     link: "#contact",
     tag: "DEFI & BLOCKCHAIN",
-    abstractType: "binary"
+    abstractType: "binary",
+    col2Description: "Chain Assurance",
+    col3Metadata: "Blockchain • DeFi • Smart Contracts"
   },
   {
     id: "ai-ast",
@@ -70,7 +84,9 @@ export const services: ServiceItem[] = [
     description: "Advanced application security testing tailored specifically for AI integrations, protecting LLM prompts against injection attacks and securing RAG architectures.",
     link: "#contact",
     tag: "AI SAFETY FRAMEWORK",
-    abstractType: "ai"
+    abstractType: "ai",
+    col2Description: "Agentic Application Shield",
+    col3Metadata: "LLM • RAG • Agents • Model Workflows"
   }
 ];
 
@@ -97,6 +113,8 @@ export type ServicePageData = {
   faqs: FAQItem[];
   stats: { value: string; label: string }[];
   category: string;
+  col2Description?: string;
+  col3Metadata?: string;
 };
 
 export const servicePagesData: Record<string, ServicePageData> = {
@@ -107,6 +125,8 @@ export const servicePagesData: Record<string, ServicePageData> = {
     tagline: "CI/CD-integrated scanning and manual vulnerability audits.",
     heroStatement: "Automated Pipeline Audits.\nHuman-Validated Findings.",
     overview: "Embed continuous application security testing directly into your developer workflows. Every automated finding is verified by a senior analyst before alert delivery to eliminate noise.",
+    col2Description: "Application Assurance Command",
+    col3Metadata: "Web • Mobile • API • Release Security",
     process: [
       { index: "01", title: "Pipeline Integration", description: "Embed SAST, DAST, and SCA analysis into your existing CI/CD gates." },
       { index: "02", title: "Automated Execution", description: "Run deep scans automatically at every git commit or merge request." },
@@ -140,6 +160,8 @@ export const servicePagesData: Record<string, ServicePageData> = {
     tagline: "Expert penetration testing with active exploitation proof.",
     heroStatement: "Targeted Vulnerability Analysis.\nProven Business Impact.",
     overview: "Move beyond standard automated scanning. Our expert auditors conduct thorough vulnerability assessments and active penetration testing to expose real-world business risks with zero noise.",
+    col2Description: "Exposure Validation Grid",
+    col3Metadata: "VAPT • Attack Surface • Retesting",
     process: [
       { index: "01", title: "Scoping & Recon", description: "Map your external attack surface, APIs, networks, and logical architecture." },
       { index: "02", title: "Active Vulnerability Scan", description: "Deploy automated engines to run high-throughput credentialed checks." },
@@ -173,6 +195,8 @@ export const servicePagesData: Record<string, ServicePageData> = {
     tagline: "Continuous cloud posture auditing and threat detection.",
     heroStatement: "Continuous Posture Monitoring.\nRuntime Threat Defense.",
     overview: "Secure your multi-cloud infrastructure (AWS, Azure, GCP) continuously. We monitor configurations, analyze access paths, detect leaked secrets, and provide automated remediation.",
+    col2Description: "Code-to-Cloud Control",
+    col3Metadata: "DevSecOps • Cloud • Identity",
     process: [
       { index: "01", title: "Telemetry Setup", description: "Connect read-only IAM access to AWS, Azure, and GCP via secure API." },
       { index: "02", title: "Configuration Review", description: "Audit cloud instances against CIS Benchmarks, SOC2, and ISO control frameworks." },
@@ -205,6 +229,8 @@ export const servicePagesData: Record<string, ServicePageData> = {
     tagline: "Framework readiness, gap analysis, and certification support.",
     heroStatement: "Rigorous Auditing Readiness.\nFramework Certification Support.",
     overview: "Achieve audit readiness for ISO 27001, GDPR, CERT-In, RBI guidelines, and SOC 2. We guide you through gap analyses, policy drafting, training, and liaison with auditors.",
+    col2Description: "Trust & Evidence Grid",
+    col3Metadata: "Governance • Audit • Compliance",
     process: [
       { index: "01", title: "Framework Scoping", description: "Define boundaries of your organization's compliance targets." },
       { index: "02", title: "Gap Identification", description: "Perform detailed audits against target controls to catalog missing links." },
@@ -240,6 +266,8 @@ export const servicePagesData: Record<string, ServicePageData> = {
     tagline: "Managed SIEM and 24/7 Security Operations Center monitoring.",
     heroStatement: "24/7 SOC Event Monitoring.\nManaged Threat Hunting.",
     overview: "Leverage our 24/7 Managed SIEM and SOC. We aggregate logs across endpoints, networks, databases, and clouds to run correlation rules and stop threats instantly.",
+    col2Description: "Signal-to-Risk Operations",
+    col3Metadata: "SOC • SIEM • Threat Monitoring",
     process: [
       { index: "01", title: "Log Source Setup", description: "Connect firewalls, directory services, databases, and servers to SIEM collector." },
       { index: "02", title: "Correlation Configuration", description: "Write custom security rules tailored to detect your specific threat surface." },
@@ -272,6 +300,8 @@ export const servicePagesData: Record<string, ServicePageData> = {
     tagline: "Solidity and Rust audits covering Web3 security vectors.",
     heroStatement: "Mathematical Code Verification.\nDeFi Protocol Auditing.",
     overview: "Ensure the integrity of your Web3 protocols. We perform rigorous manual and automated audits of smart contracts written in Solidity, Rust, and Vyper to prevent exploits and front-running.",
+    col2Description: "Chain Assurance",
+    col3Metadata: "Blockchain • DeFi • Smart Contracts",
     process: [
       { index: "01", title: "Code Compilation", description: "Analyze bytecode and build dependency call graphs of the contracts." },
       { index: "02", title: "Automated Checks", description: "Run static analysis, symbolic execution, and fuzzing tools." },
@@ -305,6 +335,8 @@ export const servicePagesData: Record<string, ServicePageData> = {
     tagline: "ML-augmented security testing for modern web architectures.",
     heroStatement: "ML-Powered Security Scans.\nExpert Validation Safeguards.",
     overview: "Accelerate your AppSec cycle using machine learning. We deploy AI-powered application security testing to detect complex vulnerability patterns, backed by expert validation to ensure zero false-positives.",
+    col2Description: "Agentic Application Shield",
+    col3Metadata: "LLM • RAG • Agents • Model Workflows",
     process: [
       { index: "01", title: "AI Engine Training", description: "Tune our scanning model to match the specific code paradigms of your stack." },
       { index: "02", title: "Continuous Scanning", description: "Feed AST findings to ML classifiers to search for logical anomalies." },

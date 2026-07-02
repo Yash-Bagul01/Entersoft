@@ -44,23 +44,7 @@ export default function SmoothScrollProvider({
       }
     });
 
-    // Configure scrollerProxy so ScrollTrigger aligns perfectly with smoothed scroll coords
-    ScrollTrigger.scrollerProxy(document.body, {
-      scrollTop(value) {
-        if (arguments.length) {
-          lenis.scrollTo(value as number, { immediate: true });
-        }
-        return lenis.scroll;
-      },
-      getBoundingClientRect() {
-        return {
-          top: 0,
-          left: 0,
-          width: typeof window !== "undefined" ? window.innerWidth : 0,
-          height: typeof window !== "undefined" ? window.innerHeight : 0,
-        };
-      },
-    });
+
 
     // Run Lenis tick within GSAP's ticker to prevent desync rubber-banding
     const updateTicker = (time: number) => {
@@ -92,6 +76,9 @@ export default function SmoothScrollProvider({
     };
 
     document.addEventListener("click", handleAnchorClick);
+
+    // Force GSAP ScrollTrigger to recalculate layout dimensions now that Lenis is fully configured
+    ScrollTrigger.refresh();
 
     return () => {
       lenis.destroy();

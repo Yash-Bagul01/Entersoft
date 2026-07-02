@@ -33,6 +33,8 @@ export default function AIASTPage() {
           tagline={data.tagline}
           visual={<AIASTVisual />}
           heroLayoutType="ai-ast"
+          col2Description={data.col2Description}
+          col3Metadata={data.col3Metadata}
         />
 
         {/* Ticker Row */}

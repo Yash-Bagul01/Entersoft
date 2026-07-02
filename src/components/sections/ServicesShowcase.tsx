@@ -142,7 +142,7 @@ export default function ServicesShowcase() {
         <div>
           <SectionLabel color="secondary">SECURITY CAPABILITIES</SectionLabel>
           <h2 className="text-3xl lg:text-4xl font-display font-medium text-[#F6F5F0] uppercase tracking-tight mt-2">
-            Our Security Spectrum
+            OUR ASSURANCE SYSTEM
           </h2>
         </div>
         <div className="font-mono text-[10px] text-[var(--text-tertiary)] uppercase tracking-widest pb-1">
@@ -218,6 +218,16 @@ export default function ServicesShowcase() {
                     <h4 className="text-sm font-display font-medium text-[var(--text-primary)] uppercase tracking-tight leading-tight">
                       {activeService.title}
                     </h4>
+                    {activeService.col2Description && (
+                      <div className="text-[11px] text-[#F6F5F0] font-sans leading-tight mt-1 font-semibold">
+                        {activeService.col2Description}
+                      </div>
+                    )}
+                    {activeService.col3Metadata && (
+                      <div className="text-[9px] font-mono text-[var(--accent)] mt-0.5 tracking-wider select-none">
+                        {activeService.col3Metadata}
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
@@ -294,10 +304,20 @@ export default function ServicesShowcase() {
                         </span>
                       </div>
 
-                      <div className="relative z-10 flex flex-col gap-1">
+                      <div className="relative z-10 flex flex-col gap-1.5">
                         <h3 className="text-xl font-display font-medium text-[var(--text-primary)] uppercase tracking-tight">
                           {activeService.title}
                         </h3>
+                        {activeService.col2Description && (
+                          <div className="text-[12.5px] text-[#F6F5F0] font-sans leading-tight mt-1 font-semibold">
+                            {activeService.col2Description}
+                          </div>
+                        )}
+                        {activeService.col3Metadata && (
+                          <div className="text-[10px] font-mono text-[var(--accent)] mt-0.5 tracking-wider select-none">
+                            {activeService.col3Metadata}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </motion.div>
@@ -363,6 +383,17 @@ export default function ServicesShowcase() {
                           className="absolute inset-0 w-full h-full object-cover"
                         />
                       </div>
+
+                      {service.col2Description && (
+                        <div className="text-[12.5px] text-[#F6F5F0] font-sans leading-tight font-semibold mt-1">
+                          {service.col2Description}
+                        </div>
+                      )}
+                      {service.col3Metadata && (
+                        <div className="text-[10px] font-mono text-[var(--accent)] tracking-wider">
+                          {service.col3Metadata}
+                        </div>
+                      )}
                       
                       <div className="flex justify-start pt-2">
                         <Link
