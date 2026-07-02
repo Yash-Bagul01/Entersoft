@@ -168,10 +168,11 @@ function FindVisual() {
   const flaggedIndices = [14, 27, 45, 52];
 
   const handleNodeHover = (index: number) => {
-    if (shouldReduceMotion || !containerRef.current) return;
+    const containerEl = containerRef.current;
+    if (shouldReduceMotion || !containerEl) return;
     
     // Trigger anime.js ripple wave centered at index
-    animate(containerRef.current.querySelectorAll(".find-grid-node"), {
+    animate(containerEl.querySelectorAll(".find-grid-node"), {
       scale: [
         { value: 1.3, duration: 120, easing: "easeOutQuad" },
         { value: 1.0, duration: 600, easing: "easeOutElastic(1, .8)" }
@@ -291,12 +292,16 @@ function ValidateVisual() {
     }
 
     const interval = setInterval(() => {
-      if (!containerRef.current || !leftRef.current || !centerRef.current || !rightRef.current) return;
+      const containerEl = containerRef.current;
+      const leftEl = leftRef.current;
+      const centerEl = centerRef.current;
+      const rightEl = rightRef.current;
+      if (!containerEl || !leftEl || !centerEl || !rightEl) return;
 
-      const containerRect = containerRef.current.getBoundingClientRect();
-      const leftRect = leftRef.current.getBoundingClientRect();
-      const centerRect = centerRef.current.getBoundingClientRect();
-      const rightRect = rightRef.current.getBoundingClientRect();
+      const containerRect = containerEl.getBoundingClientRect();
+      const leftRect = leftEl.getBoundingClientRect();
+      const centerRect = centerEl.getBoundingClientRect();
+      const rightRect = rightEl.getBoundingClientRect();
 
       const startX = leftRect.left - containerRect.left + leftRect.width / 2;
       const startY = leftRect.top - containerRect.top + leftRect.height / 2;
@@ -311,7 +316,7 @@ function ValidateVisual() {
       packet.className = "absolute w-2 h-2 rounded-full bg-[var(--accent)] shadow-[0_0_8px_var(--accent)] z-20 pointer-events-none";
       packet.style.left = `${startX}px`;
       packet.style.top = `${startY}px`;
-      containerRef.current.appendChild(packet);
+      containerEl.appendChild(packet);
 
       const nextLogName = logTemplates[(logCounter + 3) % logTemplates.length];
       setRawLogs((prev) => [...prev.slice(1), nextLogName]);
@@ -325,7 +330,7 @@ function ValidateVisual() {
         duration: 800,
         easing: "easeOutQuad",
         onComplete: () => {
-          animate(centerRef.current, {
+          animate(centerEl, {
             scale: [1, 1.15, 1],
             borderColor: ["rgba(0, 163, 255, 0.8)", "rgba(255,255,255,0.05)"],
             duration: 300,
@@ -349,7 +354,7 @@ function ValidateVisual() {
                   return updated;
                 });
 
-                animate(rightRef.current, {
+                animate(rightEl, {
                   scale: [1, 1.05, 1],
                   borderColor: ["var(--accent)", "var(--border-subtle)"],
                   duration: 250,
@@ -461,47 +466,105 @@ function ValidateVisual() {
 // ==========================================
 function FixVisual() {
   const ref = useRef<HTMLDivElement>(null);
-  const laserRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: false, margin: "-100px" });
   const shouldReduceMotion = useReducedMotion();
-  const [typedLine, setTypedLine] = useState("");
-  const targetLine = "db.query('SELECT * FROM users WHERE id = ?', [id]);";
+
+  const [animState, setAnimState] = useState<"vulnerable" | "scanning" | "fixing" | "merging" | "done">("vulnerable");
+  const [typedChars, setTypedChars] = useState(0);
+  const [gitLogs, setGitLogs] = useState<string[]>([]);
+  const securePart = "'SELECT * FROM users WHERE id = ?', [id]";
 
   useEffect(() => {
     if (shouldReduceMotion) {
-      setTypedLine(targetLine);
+      setAnimState("done");
       return;
     }
 
-    if (isInView) {
-      let index = 0;
-      const interval = setInterval(() => {
-        setTypedLine(targetLine.substring(0, index));
-        index++;
-        if (index > targetLine.length) {
-          clearInterval(interval);
-        }
-      }, 45);
+    if (!isInView) return;
 
-      if (laserRef.current) {
-        animate(laserRef.current, {
-          top: ["0%", "100%"],
-          opacity: [0.3, 0.9, 0.3],
-          duration: 3500,
-          loop: true,
-          direction: "alternate",
-          easing: "easeInOutSine"
-        });
+    let active = true;
+
+    const runSequence = async () => {
+      // Step 1: Vulnerable state
+      if (!active) return;
+      setAnimState("vulnerable");
+      setTypedChars(0);
+      setGitLogs([]);
+      await delay(2200);
+
+      // Step 2: Scanning state
+      if (!active) return;
+      setAnimState("scanning");
+      await delay(1800);
+
+      // Step 3: Fixing (typing secure code)
+      if (!active) return;
+      setAnimState("fixing");
+      for (let i = 0; i <= securePart.length; i++) {
+        if (!active) return;
+        setTypedChars(i);
+        await new Promise((resolve) => setTimeout(resolve, 35));
       }
+      await delay(1200);
 
-      return () => clearInterval(interval);
-    }
+      // Step 4: Merging (Git commit logs)
+      if (!active) return;
+      setAnimState("merging");
+      const logs = [
+        "$ git add db.ts",
+        "$ git commit -m \"fix: sanitize sql injection\"",
+        "  [main 4f128be] fix: sanitize sql injection",
+        "$ git push origin main",
+        "  To github.com:entersoft/api.git",
+        "     7a213e8..4f128be  main -> main",
+        "  ✓ All security checks passed."
+      ];
+
+      for (let i = 0; i < logs.length; i++) {
+        if (!active) return;
+        setGitLogs((prev) => [...prev, logs[i]]);
+        await delay(i === 1 || i === 3 ? 500 : 200);
+      }
+      await delay(1500);
+
+      // Step 5: Done
+      if (!active) return;
+      setAnimState("done");
+      await delay(3500);
+
+      // Loop back
+      if (active) runSequence();
+    };
+
+    const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+    runSequence();
+
+    return () => {
+      active = false;
+    };
   }, [isInView, shouldReduceMotion]);
+
+  const getBadgeStyle = () => {
+    switch (animState) {
+      case "vulnerable":
+        return { text: "CRITICAL: SQL_INJECTION", color: "text-red-400 bg-red-950/20 border-red-500/30 animate-pulse" };
+      case "scanning":
+        return { text: "AI DETECTED // SCANNING", color: "text-cyan-400 bg-cyan-950/20 border-cyan-500/30" };
+      case "fixing":
+        return { text: "REMEDIATION GENERATED", color: "text-amber-400 bg-amber-950/20 border-amber-500/30" };
+      case "merging":
+        return { text: "GIT HOOKS // DEPLOYING", color: "text-blue-400 bg-blue-950/20 border-blue-500/30" };
+      case "done":
+        return { text: "STATUS: SECURE", color: "text-emerald-400 bg-emerald-950/20 border-emerald-500/30" };
+    }
+  };
+
+  const badge = getBadgeStyle();
 
   return (
     <div 
       ref={ref} 
-      className="w-full h-full min-h-[300px] bg-[#0f0f0f]/40 border border-[var(--border-subtle)] rounded-[4px] p-6 md:p-8 flex flex-col justify-between relative overflow-hidden backdrop-blur-md font-mono"
+      className="w-full h-full min-h-[360px] bg-[#0f0f0f]/40 border border-[var(--border-subtle)] rounded-[4px] p-6 md:p-8 flex flex-col justify-between relative overflow-hidden backdrop-blur-md font-mono"
     >
       {/* Sci-fi Corner Brackets */}
       <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-[var(--accent)] rounded-tl-[2px] opacity-75 pointer-events-none" />
@@ -509,54 +572,113 @@ function FixVisual() {
       <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-[var(--accent)] rounded-bl-[2px] opacity-75 pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-[var(--accent)] rounded-br-[2px] opacity-75 pointer-events-none" />
 
-      {!shouldReduceMotion && (
-        <div 
-          ref={laserRef}
-          className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[var(--accent)] to-transparent opacity-0 pointer-events-none shadow-[0_0_8px_rgba(0,163,255,0.4)] z-20"
-          style={{ top: "0%" }}
+      {/* Scanning Laser Line */}
+      {animState === "scanning" && (
+        <motion.div 
+          initial={{ top: "0%" }}
+          animate={{ top: "100%" }}
+          transition={{ duration: 1.8, ease: "linear", repeat: Infinity }}
+          className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[var(--accent)] to-transparent shadow-[0_0_8px_rgba(0,163,255,0.8)] z-20"
         />
       )}
 
+      {/* Top Bar Status */}
       <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-4 mb-4 text-[10px] text-zinc-500">
         <div className="flex items-center gap-1.5">
           <span className="w-2 h-2 rounded-full bg-zinc-800" />
           <span className="w-2 h-2 rounded-full bg-zinc-800" />
           <span className="w-2 h-2 rounded-full bg-zinc-800" />
-          <span className="ml-2">db.ts — DIFF SUGGESTION</span>
+          <span className="ml-2 select-none">db.ts — REMEDIATION ENGINE</span>
         </div>
-        <span className="text-[var(--accent)] font-semibold">PR MERGE</span>
+        <span className={`px-2 py-0.5 border text-[8px] font-bold rounded-[2px] tracking-widest ${badge.color}`}>
+          {badge.text}
+        </span>
       </div>
 
-      <div className="my-auto text-[11px] md:text-[13px] leading-relaxed flex flex-col gap-3">
+      {/* Code Editor Body */}
+      <div className="my-auto text-[11px] md:text-[12.5px] leading-relaxed flex flex-col gap-4">
+        {/* Vulnerable Code block */}
         <div className="flex flex-col">
-          <span className="text-zinc-600 text-[9px] uppercase tracking-wider mb-1">// BEFORE (VULNERABLE)</span>
-          <div className="bg-red-950/10 border-l border-red-500/20 py-2 px-3 text-zinc-500 line-through decoration-red-900/30">
-            <span className="text-red-400/50 mr-3 select-none">-</span>
-            db.query(<span className="text-red-400/70">`SELECT * FROM users WHERE id = &apos;{"$"}{"{"}id{"}"}&apos;`</span>);
-          </div>
+          <span className="text-zinc-600 text-[8px] uppercase tracking-wider mb-1 select-none">// BEFORE (VULNERABLE)</span>
+          <motion.div 
+            animate={animState === "scanning" ? { x: [-1.5, 1.5, -1.5, 1.5, 0] } : {}}
+            transition={animState === "scanning" ? { repeat: Infinity, duration: 0.12 } : {}}
+            className={`py-2 px-3 border-l rounded-[2px] transition-all duration-300 ${
+              animState === "vulnerable" || animState === "scanning"
+                ? "bg-red-950/10 border-red-500/35 text-zinc-400"
+                : "bg-[#0b0b0d]/50 border-white/5 text-zinc-600 line-through decoration-zinc-800/40"
+            }`}
+          >
+            <span className="text-red-500/50 mr-3 select-none">-</span>
+            <span className="text-blue-300">db</span>
+            <span className="text-gray-400">.</span>
+            <span className="text-yellow-200">query</span>
+            <span className="text-gray-400">(</span>
+            <span className={animState === "vulnerable" || animState === "scanning" ? "text-red-400 font-semibold underline decoration-wavy decoration-red-500/80" : ""}>
+              `SELECT * FROM users WHERE id = &apos;{"$"}{"{"}id{"}"}&apos;`
+            </span>
+            <span className="text-gray-400">);</span>
+          </motion.div>
         </div>
 
+        {/* Secure Code block */}
         <div className="flex flex-col">
-          <span className="text-zinc-600 text-[9px] uppercase tracking-wider mb-1">// AFTER (SECURED)</span>
-          <div className="bg-zinc-900/40 border-l border-[var(--accent)]/50 py-2 px-3 text-[#F6F5F0]">
-            <span className="text-[var(--accent)] mr-3 select-none font-bold">+</span>
-            {typedLine ? (
+          <span className="text-zinc-600 text-[8px] uppercase tracking-wider mb-1 select-none">// AFTER (SECURED)</span>
+          <div className={`py-2 px-3 border-l rounded-[2px] transition-all duration-300 ${
+            animState === "fixing" || animState === "merging" || animState === "done"
+              ? "bg-emerald-950/5 border-emerald-500/40 text-zinc-100"
+              : "bg-[#0b0b0d]/50 border-white/5 text-zinc-600"
+          }`}>
+            <span className="text-emerald-500/60 mr-3 select-none">+</span>
+            {animState === "fixing" || animState === "merging" || animState === "done" ? (
               <>
-                db.query(<span className="text-[var(--accent)]">&apos;SELECT * FROM users WHERE id = ?&apos;</span>, [id]);
-                {!shouldReduceMotion && typedLine.length < targetLine.length && (
+                <span className="text-blue-300">db</span>
+                <span className="text-gray-400">.</span>
+                <span className="text-yellow-200">query</span>
+                <span className="text-gray-400">(</span>
+                <span className="text-emerald-400 font-semibold">
+                  {securePart.substring(0, typedChars)}
+                </span>
+                {typedChars < securePart.length && (
                   <span className="inline-block w-1.5 h-3.5 bg-[var(--accent)] ml-0.5 animate-pulse" />
                 )}
+                <span className="text-gray-400">);</span>
               </>
             ) : (
-              <span className="opacity-0">.</span>
+              <span className="opacity-25 font-mono text-[9px] italic">Awaiting AI patch...</span>
             )}
           </div>
         </div>
       </div>
 
-      <div className="flex justify-between items-center w-full mt-6 border-t border-[var(--border-subtle)] pt-4 text-[9px] text-zinc-500 uppercase tracking-widest">
+      {/* Terminal Overlay */}
+      <AnimatePresence>
+        {(animState === "merging" || animState === "done") && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.35, ease: "easeOut" }}
+            className="mt-4 bg-black/60 border border-white/5 rounded p-3 font-mono text-[9px] leading-relaxed text-zinc-400 overflow-y-auto max-h-[105px] scrollbar-none"
+          >
+            <div className="flex items-center gap-1.5 border-b border-white/5 pb-1.5 mb-1.5 text-zinc-500">
+              <div className="w-1.5 h-1.5 rounded-full bg-zinc-700" />
+              <span className="select-none">TERMINAL // GIT WORKFLOW</span>
+            </div>
+            {gitLogs.map((log, idx) => (
+              <div key={idx} className={log.startsWith("  ✓") ? "text-emerald-400 font-bold" : log.startsWith("$") ? "text-zinc-300" : "text-zinc-500"}>
+                {log}
+              </div>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="flex justify-between items-center w-full mt-6 border-t border-[var(--border-subtle)] pt-4 text-[9px] text-zinc-500 uppercase tracking-widest select-none">
         <span>DEVELOPER HUB // </span>
-        <span className="text-[var(--accent)]">PATCH PREPARED</span>
+        <span className="text-[var(--accent)] font-semibold select-none">
+          {animState === "done" ? "PR MERGED SUCCESSFULLY" : "AI REMEDIATION STAGE"}
+        </span>
       </div>
     </div>
   );
@@ -606,24 +728,28 @@ function ProveVisual() {
         }
       });
 
-      if (circleRef1.current) {
-        animate(circleRef1.current, {
+      const circleEl1 = circleRef1.current;
+      const circleEl2 = circleRef2.current;
+      const circleEl3 = circleRef3.current;
+
+      if (circleEl1) {
+        animate(circleEl1, {
           strokeDashoffset: [circumference, 0],
           duration: 2200,
           easing: "easeOutCubic",
         });
       }
-      if (circleRef2.current) {
-        animate(circleRef2.current, {
+      if (circleEl2) {
+        animate(circleEl2, {
           strokeDashoffset: [circumference, 0],
           duration: 2200,
           easing: "easeOutCubic",
           delay: 150
         });
       }
-      if (circleRef3.current) {
+      if (circleEl3) {
         const targetOffset = circumference * (1 - 0.01);
-        animate(circleRef3.current, {
+        animate(circleEl3, {
           strokeDashoffset: [circumference, targetOffset],
           duration: 2200,
           easing: "easeOutCubic",
@@ -775,10 +901,17 @@ function IntegrateVisual() {
 
     const animatePacket = (target: SVGCircleElement | null, startX: number, startY: number, delayVal: number) => {
       if (!target) return;
-      
-      animate(target, {
-        cx: [startX, 200],
-        cy: [startY, 200],
+
+      const animObj = {
+        cx: startX,
+        cy: startY,
+        r: 0,
+        opacity: 0
+      };
+
+      animate(animObj, {
+        cx: 200,
+        cy: 200,
         r: [0, 4, 4, 0],
         opacity: [0, 1, 1, 0],
         duration: 2500,
@@ -786,16 +919,34 @@ function IntegrateVisual() {
         loop: true,
         easing: "linear",
         onBegin: () => {
+          animObj.cx = startX;
+          animObj.cy = startY;
+          animObj.r = 0;
+          animObj.opacity = 0;
           target.setAttribute("cx", startX.toString());
           target.setAttribute("cy", startY.toString());
+          target.setAttribute("r", "0");
+          target.setAttribute("opacity", "0");
+        },
+        onUpdate: () => {
+          target.setAttribute("cx", animObj.cx.toString());
+          target.setAttribute("cy", animObj.cy.toString());
+          target.setAttribute("r", animObj.r.toString());
+          target.setAttribute("opacity", animObj.opacity.toString());
         },
         onLoop: () => {
-          if (centerPulseRef.current) {
-            animate(centerPulseRef.current, {
-              r: [45, 60],
-              opacity: [0.6, 0],
+          const centerPulseEl = centerPulseRef.current;
+          if (centerPulseEl) {
+            const pulseObj = { r: 45, opacity: 0.6 };
+            animate(pulseObj, {
+              r: 60,
+              opacity: 0,
               duration: 500,
-              easing: "easeOutQuad"
+              easing: "easeOutQuad",
+              onUpdate: () => {
+                centerPulseEl.setAttribute("r", pulseObj.r.toString());
+                centerPulseEl.setAttribute("opacity", pulseObj.opacity.toString());
+              }
             });
           }
         }
@@ -994,12 +1145,13 @@ function InteractiveTour() {
   }, [isPaused, shouldReduceMotion, isInView]);
 
   useEffect(() => {
-    if (shouldReduceMotion || !laserRef.current) return;
+    const laserEl = laserRef.current;
+    if (shouldReduceMotion || !laserEl) return;
 
-    laserRef.current.style.top = "0%";
-    laserRef.current.style.opacity = "0.9";
+    laserEl.style.top = "0%";
+    laserEl.style.opacity = "0.9";
 
-    animate(laserRef.current, {
+    animate(laserEl, {
       top: ["0%", "100%"],
       opacity: [0.9, 0.9, 0],
       duration: 1000,

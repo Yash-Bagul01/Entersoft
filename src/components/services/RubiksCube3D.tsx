@@ -24,7 +24,7 @@ export default function RubiksCube3D() {
       0.1,
       100
     );
-    camera.position.set(3.8, 3.8, 6.2);
+    camera.position.set(3.4, 3.4, 5.6); // Camera further back for a more refined scale
     camera.lookAt(0, 0, 0);
 
     // Renderer
@@ -38,26 +38,27 @@ export default function RubiksCube3D() {
     renderer.setSize(container.clientWidth, container.clientHeight);
 
     // --- Lights ---
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.55);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8); // Brighter ambient fill
     scene.add(ambientLight);
 
     // Main highlight light
-    const dirLight1 = new THREE.DirectionalLight(0xffffff, 1.6);
+    const dirLight1 = new THREE.DirectionalLight(0xffffff, 2.4); // Stronger highlights
     dirLight1.position.set(6, 12, 8);
     scene.add(dirLight1);
 
-    // Secondary accent blue light (Entersoft signature)
-    const dirLight2 = new THREE.DirectionalLight(0x00a3ff, 1.4);
+    // Secondary accent cool white light (Resend signature monochromatic look)
+    const dirLight2 = new THREE.DirectionalLight(0xffffff, 1.35); // Stronger backlights
     dirLight2.position.set(-6, -6, -6);
     scene.add(dirLight2);
 
     // Subtle front fill light
-    const pointLight = new THREE.PointLight(0xffffff, 0.6, 12);
+    const pointLight = new THREE.PointLight(0xffffff, 1.2, 12); // Stronger front fill to reveal textures
     pointLight.position.set(0, 0, 6);
     scene.add(pointLight);
 
     // --- Rubik's Cube Setup ---
     const mainGroup = new THREE.Group();
+    mainGroup.scale.set(0.96, 0.96, 0.96); // Reduced scale for a more compact and elegant profile
     scene.add(mainGroup);
 
     const cubes: THREE.Mesh[] = [];
@@ -69,35 +70,112 @@ export default function RubiksCube3D() {
     // Materials: We create dark-metallic finishes for the block bodies.
     // Order of materials in Three.js Box: Right (+X), Left (-X), Top (+Y), Bottom (-Y), Front (+Z), Back (-Z)
     
+    // Helper to create a procedural sandblasted texture
+    const createSandblastedTexture = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = 128;
+      canvas.height = 128;
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        ctx.fillStyle = "#959595"; // Slightly lighter base grey
+        ctx.fillRect(0, 0, 128, 128);
+        const imgData = ctx.getImageData(0, 0, 128, 128);
+        const data = imgData.data;
+        for (let i = 0; i < data.length; i += 4) {
+          const noise = (Math.random() - 0.5) * 75;
+          data[i] = Math.min(255, Math.max(0, data[i] + noise));
+          data[i + 1] = Math.min(255, Math.max(0, data[i + 1] + noise));
+          data[i + 2] = Math.min(255, Math.max(0, data[i + 2] + noise));
+        }
+        ctx.putImageData(imgData, 0, 0);
+      }
+      const texture = new THREE.CanvasTexture(canvas);
+      texture.wrapS = THREE.RepeatWrapping;
+      texture.wrapT = THREE.RepeatWrapping;
+      return texture;
+    };
+
+    // Helper to create a procedural carbon/grid texture
+    const createGridTexture = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = 64;
+      canvas.height = 64;
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        ctx.fillStyle = "#222222"; // Lighter base
+        ctx.fillRect(0, 0, 64, 64);
+        
+        ctx.strokeStyle = "#444444"; // More visible grid lines
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        for (let i = 0; i <= 64; i += 8) {
+          ctx.moveTo(i, 0);
+          ctx.lineTo(i, 64);
+          ctx.moveTo(0, i);
+          ctx.lineTo(64, i);
+        }
+        ctx.stroke();
+
+        ctx.fillStyle = "#363636"; // Brighter microtexture dots
+        for (let x = 4; x < 64; x += 8) {
+          for (let y = 4; y < 64; y += 8) {
+            ctx.fillRect(x - 1, y - 1, 2, 2);
+          }
+        }
+      }
+      const texture = new THREE.CanvasTexture(canvas);
+      texture.wrapS = THREE.RepeatWrapping;
+      texture.wrapT = THREE.RepeatWrapping;
+      texture.repeat.set(2, 2);
+      return texture;
+    };
+
     // Inner matte material for internal/hidden faces
     const innerMat = new THREE.MeshPhysicalMaterial({
-      color: 0x08080a,
-      roughness: 0.8,
+      color: 0x121215, // Slightly lighter inner blocks for visibility
+      roughness: 0.85,
       metalness: 0.1,
     });
 
-    // Premium outer face materials
+    const sandblastTex = createSandblastedTexture();
+    const gridTex = createGridTexture();
+
+    // Premium outer face materials (Monochromatic Resend Style - Brightened for contrast)
     const outerMats = {
-      right: new THREE.MeshPhysicalMaterial({ color: 0x1f3f6b, roughness: 0.2, metalness: 0.85, clearcoat: 1.0, clearcoatRoughness: 0.1 }), // Deep Indigo (Brighter)
-      left: new THREE.MeshPhysicalMaterial({ color: 0x0c4a45, roughness: 0.2, metalness: 0.85, clearcoat: 1.0, clearcoatRoughness: 0.1 }),  // Deep Teal (Brighter)
-      top: new THREE.MeshPhysicalMaterial({ color: 0x424249, roughness: 0.25, metalness: 0.8, clearcoat: 1.0, clearcoatRoughness: 0.15 }), // Charcoal Slate (Brighter)
-      bottom: new THREE.MeshPhysicalMaterial({ color: 0x52361d, roughness: 0.3, metalness: 0.75, clearcoat: 1.0, clearcoatRoughness: 0.15 }),// Dark Copper (Brighter)
-      front: new THREE.MeshPhysicalMaterial({ color: 0x00bfff, roughness: 0.1, metalness: 0.9, clearcoat: 1.0, clearcoatRoughness: 0.05 }), // Signature Entersoft Cyan (Glowing)
-      back: new THREE.MeshPhysicalMaterial({ color: 0x3a1b5c, roughness: 0.2, metalness: 0.85, clearcoat: 1.0, clearcoatRoughness: 0.15 }),  // Dark Amethyst (Brighter)
+      obsidian: new THREE.MeshPhysicalMaterial({
+        color: 0x1c1c1e, // Brighter glossy dark graphite (was 0x050505)
+        roughness: 0.1,
+        metalness: 0.95,
+        clearcoat: 1.0,
+        clearcoatRoughness: 0.05,
+      }),
+      sandblast: new THREE.MeshPhysicalMaterial({
+        color: 0x2e2e30, // Brighter sandblast grey (was 0x181818)
+        bumpMap: sandblastTex,
+        bumpScale: 0.035,
+        roughness: 0.7,
+        metalness: 0.65,
+      }),
+      grid: new THREE.MeshPhysicalMaterial({
+        color: 0x28282a, // Brighter carbon mesh base (was 0x121212)
+        map: gridTex,
+        roughness: 0.4,
+        metalness: 0.8,
+      }),
     };
 
     // Create 3x3x3 grid
     for (let x = -1; x <= 1; x++) {
       for (let y = -1; y <= 1; y++) {
         for (let z = -1; z <= 1; z++) {
-          // Construct material array for this specific block
+          // Construct material array for this specific block using a varied layout of obsidian, sandblast, and grid textures
           const mats = [
-            x === 1 ? outerMats.right : innerMat,   // Right
-            x === -1 ? outerMats.left : innerMat,   // Left
-            y === 1 ? outerMats.top : innerMat,     // Top
-            y === -1 ? outerMats.bottom : innerMat, // Bottom
-            z === 1 ? outerMats.front : innerMat,   // Front
-            z === -1 ? outerMats.back : innerMat,   // Back
+            x === 1 ? outerMats.obsidian : innerMat,   // Right (+X)
+            x === -1 ? outerMats.grid : innerMat,      // Left (-X)
+            y === 1 ? outerMats.sandblast : innerMat,  // Top (+Y)
+            y === -1 ? outerMats.obsidian : innerMat,  // Bottom (-Y)
+            z === 1 ? outerMats.grid : innerMat,       // Front (+Z)
+            z === -1 ? outerMats.sandblast : innerMat, // Back (-Z)
           ];
 
           const mesh = new THREE.Mesh(geometry, mats);
@@ -105,12 +183,12 @@ export default function RubiksCube3D() {
           mainGroup.add(mesh);
           cubes.push(mesh);
 
-          // Add a thin cyber-glow wire outline for each block
+          // Add a thin cyber-glow wire outline for each block (Resend clean white/light highlight style - more visible)
           const edges = new THREE.EdgesGeometry(geometry);
           const lineMat = new THREE.LineBasicMaterial({
-            color: 0x00bfff,
+            color: 0xffffff,
             transparent: true,
-            opacity: 0.38,
+            opacity: 0.48, // Increased opacity to make highlights stand out
           });
           const line = new THREE.LineSegments(edges, lineMat);
           mesh.add(line);
@@ -260,6 +338,8 @@ export default function RubiksCube3D() {
       geometry.dispose();
       innerMat.dispose();
       Object.values(outerMats).forEach((m) => m.dispose());
+      sandblastTex.dispose();
+      gridTex.dispose();
       renderer.dispose();
     };
   }, []);
@@ -272,7 +352,7 @@ export default function RubiksCube3D() {
       <div className="absolute w-[320px] h-[320px] rounded-full bg-[var(--accent)]/15 blur-[90px] pointer-events-none" />
       <canvas
         ref={canvasRef}
-        className="w-full h-full max-w-[550px] max-h-[550px] outline-none cursor-grab active:cursor-grabbing"
+        className="w-full h-full outline-none cursor-grab active:cursor-grabbing"
       />
     </div>
   );
