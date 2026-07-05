@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ChevronDown, Shield, Code, Cloud, CheckSquare, Server, Cpu, HelpCircle, Layers, FileText } from "lucide-react";
 import { Button } from "../ui/Button";
@@ -27,6 +28,9 @@ interface NavItem {
 }
 
 export default function Navbar() {
+  const pathname = usePathname();
+  const isAppSecPage = pathname === "/services/appsec";
+  
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeMega, setActiveMega] = useState<number | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -265,7 +269,7 @@ export default function Navbar() {
 
           {/* Right Button Action & Theme Toggle */}
           <div className="hidden lg:flex items-center gap-4">
-            <ThemeToggle />
+            {!isAppSecPage && <ThemeToggle />}
             <Button variant="primary" size="sm" asLink href="#contact">
               Request Briefing
             </Button>
@@ -273,7 +277,7 @@ export default function Navbar() {
 
           {/* Mobile Menu Icon & Theme Toggle */}
           <div className="lg:hidden z-50 flex items-center gap-4">
-            <ThemeToggle />
+            {!isAppSecPage && <ThemeToggle />}
             <button
               onClick={toggleMobileMenu}
               className="text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors focus:outline-none"

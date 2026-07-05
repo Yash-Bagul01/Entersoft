@@ -434,141 +434,59 @@ function FindVisual() {
 // SCENE 2: VALIDATE VISUAL
 // ==========================================
 function ValidateVisual() {
-  const shouldReduceMotion = useReducedMotion();
-  const [scaleVal, setScaleVal] = useState(0);
-  const [freqVal, setFreqVal] = useState(0.015);
-  const [isHovered, setIsHovered] = useState(false);
-  const [imgTransform, setImgTransform] = useState({ x: 0, y: 0, scale: 1.0 });
-  
-  const lastMousePos = useRef({ x: 0, y: 0 });
-  const speedRef = useRef(0);
-
-  // Track mouse moves inside container to compute speed/direction and apply floating inertia
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    
-    const dx = x - lastMousePos.current.x;
-    const dy = y - lastMousePos.current.y;
-    const speed = Math.sqrt(dx * dx + dy * dy);
-    
-    // Accumulate movement speed, capped for smooth aesthetic rendering
-    speedRef.current = Math.min(speedRef.current + speed * 0.45, 48);
-    lastMousePos.current = { x, y };
-
-    // Obys Agency subtle image floating offset relative to container center
-    if (!shouldReduceMotion) {
-      const moveX = (x - rect.width / 2) * 0.08;
-      const moveY = (y - rect.height / 2) * 0.08;
-      setImgTransform({
-        x: moveX,
-        y: moveY,
-        scale: 1.06
-      });
-    }
-  };
-
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-    // Initial organic entry splash trigger
-    speedRef.current = 35;
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-    setImgTransform({ x: 0, y: 0, scale: 1.0 });
-  };
-
-  // Organic physics decay loop for continuous interpolation
-  useEffect(() => {
-    if (shouldReduceMotion) return;
-    
-    let active = true;
-    const updateLoop = () => {
-      if (!active) return;
-      
-      setScaleVal((prev) => {
-        const target = speedRef.current * 1.6;
-        // Interpolate smoothly
-        const next = prev + (target - prev) * 0.09;
-        return Math.max(0, next < 0.15 ? 0 : next);
-      });
-
-      setFreqVal(() => {
-        const targetFreq = 0.015 + speedRef.current * 0.0008;
-        return targetFreq;
-      });
-      
-      // Decay speed exponentially to settle back to normal state
-      speedRef.current = speedRef.current * 0.88;
-      
-      requestAnimationFrame(updateLoop);
-    };
-    
-    requestAnimationFrame(updateLoop);
-    return () => {
-      active = false;
-    };
-  }, [shouldReduceMotion]);
-
   return (
     <div 
-      className="relative w-full aspect-[4/3] max-w-[540px] rounded-[4px] overflow-hidden border border-white/10 shadow-[0_24px_48px_rgba(0,0,0,0.85)] group cursor-pointer select-none"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onMouseMove={handleMouseMove}
+      className="relative w-full aspect-[4/3] max-w-[540px] flex items-center justify-center select-none pointer-events-none"
     >
-      {/* Sci-fi Corner Brackets */}
-      <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-[var(--accent)] rounded-tl-[2px] opacity-75 z-10 pointer-events-none" />
-      <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-[var(--accent)] rounded-tr-[2px] opacity-75 z-10 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-[var(--accent)] rounded-bl-[2px] opacity-75 z-10 pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-[var(--accent)] rounded-br-[2px] opacity-75 z-10 pointer-events-none" />
-
-      {/* Cyber overlay gradient */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#060606] via-transparent to-transparent opacity-50 z-10 pointer-events-none" />
-
-      {/* Embedded SVG filter definitions for Obys Agency speed splash effect */}
-      <svg className="absolute w-0 h-0" aria-hidden="true">
-        <defs>
-          <filter id="validate-liquid-distortion-filter">
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency={freqVal}
-              numOctaves="3"
-              result="noise"
-            />
-            <feDisplacementMap
-              in="SourceGraphic"
-              in2="noise"
-              scale={scaleVal}
-              xChannelSelector="R"
-              yChannelSelector="G"
-            />
-          </filter>
-        </defs>
-      </svg>
-
-      {/* Hover background splash reveal overlay */}
-      <div 
-        className="absolute inset-0 bg-sky-950/20 mix-blend-overlay z-10 pointer-events-none group-hover:bg-transparent transition-all duration-500" 
-      />
-
-      <img
-        src="/images/entersoft_validate_illustration.png"
-        alt="Cyber threat validation illustration"
-        className="w-full h-full object-cover select-none pointer-events-none"
-        style={{
-          filter: scaleVal > 0 ? "url(#validate-liquid-distortion-filter)" : "none",
-          transform: `translate3d(${imgTransform.x}px, ${imgTransform.y}px, 0) scale(${isHovered ? imgTransform.scale : 1.0})`,
-          transition: "transform 0.1s ease-out, filter 0.05s ease-out",
+      {/* Astronaut Character (Space Theme 3D element) */}
+      <motion.div 
+        className="absolute left-[5%] top-[5%] w-[48%]"
+        animate={{
+          y: [0, -12, 0],
+          rotate: [0, 1.5, 0]
         }}
-      />
+        transition={{
+          duration: 5.5,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      >
+        <video 
+          autoPlay 
+          loop 
+          muted 
+          playsInline 
+          className="w-full h-auto object-contain drop-shadow-[0_20px_40px_rgba(0,163,255,0.2)]"
+        >
+          <source src="https://d2pas86kykpvmq.cloudfront.net/img_spacers/videos/astro.webm" type="video/webm" />
+          <source src="https://d2pas86kykpvmq.cloudfront.net/img_spacers/videos/astro.mp4" type="video/mp4" />
+        </video>
+      </motion.div>
 
-      {/* Indicator tag */}
-      <div className="absolute bottom-3 left-3 z-10 font-mono text-[8.5px] text-zinc-400 bg-[#060606]/85 px-2.5 py-1 border border-white/5 uppercase tracking-widest rounded-[2px] pointer-events-none select-none opacity-85 group-hover:opacity-100 transition-opacity">
-        [ drag mouse to distort / audit ]
-      </div>
+      {/* Alien Character (Space Theme 3D element) */}
+      <motion.div 
+        className="absolute right-[5%] bottom-[5%] w-[48%]"
+        animate={{
+          y: [0, 12, 0],
+          rotate: [0, -1.5, 0]
+        }}
+        transition={{
+          duration: 7,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      >
+        <video 
+          autoPlay 
+          loop 
+          muted 
+          playsInline 
+          className="w-full h-auto object-contain drop-shadow-[0_20px_40px_rgba(16,185,129,0.15)]"
+        >
+          <source src="https://d2pas86kykpvmq.cloudfront.net/img_spacers/videos/alien.webm" type="video/webm" />
+          <source src="https://d2pas86kykpvmq.cloudfront.net/img_spacers/videos/alien.mp4" type="video/mp4" />
+        </video>
+      </motion.div>
     </div>
   );
 }
@@ -1095,184 +1013,284 @@ function ProveVisual() {
 // ==========================================
 function IntegrateVisual() {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: false, margin: "-100px" });
   const shouldReduceMotion = useReducedMotion();
 
-  const p1Ref = useRef<SVGCircleElement>(null);
-  const p2Ref = useRef<SVGCircleElement>(null);
-  const p3Ref = useRef<SVGCircleElement>(null);
-  const p4Ref = useRef<SVGCircleElement>(null);
-  const centerPulseRef = useRef<SVGCircleElement>(null);
+  const [hoveredSat, setHoveredSat] = useState<number | null>(null);
+  const [logs, setLogs] = useState<string[]>([
+    "// SYSTEM RUNTIME: OK",
+    "// INTEGRATION INTERFACES ARMED & READY."
+  ]);
 
   useEffect(() => {
     if (shouldReduceMotion || !isInView) return;
 
-    const animatePacket = (target: SVGCircleElement | null, startX: number, startY: number, delayVal: number) => {
-      if (!target) return;
+    const logPool = [
+      "✓ [Azure DevOps] Hook auth: commit c49f120 validated secure.",
+      "→ [GitHub Actions] Launching security regression suite #195...",
+      "✓ [GitHub Actions] Suite #195 passed. 0 security Relapses.",
+      "✦ [Jira] Synced vulnerability profile to Jira issue SEC-921.",
+      "✓ [Jira] Ticket SEC-921 status auto-updated to RESOLVED.",
+      "→ [ServiceNow] Offloading telemetry log sync to MID server...",
+      "✓ [ServiceNow] Configuration sync completed. Audit state: SECURE.",
+      "→ [Azure DevOps] Gate approved. Release pipeline unblocked."
+    ];
 
-      const animObj = {
-        cx: startX,
-        cy: startY,
-        r: 0,
-        opacity: 0
-      };
+    const interval = setInterval(() => {
+      const entry = logPool[Math.floor(Math.random() * logPool.length)];
+      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      setLogs((prev) => [...prev.slice(-2), `[${timeStr}] ${entry}`]);
+    }, 2800);
 
-      animate(animObj, {
-        cx: 200,
-        cy: 200,
-        r: [0, 4, 4, 0],
-        opacity: [0, 1, 1, 0],
-        duration: 2500,
-        delay: delayVal,
-        loop: true,
-        easing: "linear",
-        onBegin: () => {
-          animObj.cx = startX;
-          animObj.cy = startY;
-          animObj.r = 0;
-          animObj.opacity = 0;
-          target.setAttribute("cx", startX.toString());
-          target.setAttribute("cy", startY.toString());
-          target.setAttribute("r", "0");
-          target.setAttribute("opacity", "0");
-        },
-        onUpdate: () => {
-          target.setAttribute("cx", animObj.cx.toString());
-          target.setAttribute("cy", animObj.cy.toString());
-          target.setAttribute("r", animObj.r.toString());
-          target.setAttribute("opacity", animObj.opacity.toString());
-        },
-        onLoop: () => {
-          const centerPulseEl = centerPulseRef.current;
-          if (centerPulseEl) {
-            const pulseObj = { r: 45, opacity: 0.6 };
-            animate(pulseObj, {
-              r: 60,
-              opacity: 0,
-              duration: 500,
-              easing: "easeOutQuad",
-              onUpdate: () => {
-                centerPulseEl.setAttribute("r", pulseObj.r.toString());
-                centerPulseEl.setAttribute("opacity", pulseObj.opacity.toString());
-              }
-            });
-          }
-        }
-      });
-    };
-
-    animatePacket(p1Ref.current, 80, 100, 0);
-    animatePacket(p2Ref.current, 320, 100, 600);
-    animatePacket(p3Ref.current, 80, 300, 1200);
-    animatePacket(p4Ref.current, 320, 300, 1800);
-
+    return () => clearInterval(interval);
   }, [isInView, shouldReduceMotion]);
+
+  const satellites = [
+    { name: "Azure DevOps", x: 60, y: 70, color: "#0078d4", detail: "azure-pipelines-gate", status: "CONNECTED" },
+    { name: "GitHub Actions", x: 340, y: 70, color: "#a855f7", detail: "github-webhook-event", status: "ACTIVE" },
+    { name: "Jira Software", x: 60, y: 290, color: "#0052cc", detail: "jira-rest-sync", status: "ONLINE" },
+    { name: "ServiceNow", x: 340, y: 290, color: "#81b03f", detail: "servicenow-mid-link", status: "STABLE" }
+  ];
 
   return (
     <div 
       ref={ref} 
-      className="w-full h-full min-h-[350px] bg-[#0f0f0f]/40 border border-[var(--border-subtle)] rounded-[4px] p-6 md:p-8 flex flex-col justify-between relative overflow-hidden backdrop-blur-md"
+      className="w-full h-full min-h-[380px] bg-[#0c0c0f]/60 border border-[var(--border-subtle)] rounded-[4px] p-5 md:p-6 flex flex-col justify-between relative overflow-hidden backdrop-blur-xl font-mono text-[9px]"
     >
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes laserFlow {
+          0% { stroke-dashoffset: 240; }
+          100% { stroke-dashoffset: 0; }
+        }
+        .laser-line {
+          stroke-dasharray: 8, 32;
+          animation: laserFlow 3s linear infinite;
+        }
+        .laser-line-fast {
+          stroke-dasharray: 12, 24;
+          animation: laserFlow 1.8s linear infinite;
+        }
+      `}} />
+
       {/* Sci-fi Corner Brackets */}
       <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-[var(--accent)] rounded-tl-[2px] opacity-75 pointer-events-none" />
       <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-[var(--accent)] rounded-tr-[2px] opacity-75 pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-[var(--accent)] rounded-bl-[2px] opacity-75 pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-[var(--accent)] rounded-br-[2px] opacity-75 pointer-events-none" />
 
-      <div className="relative w-full max-w-[340px] aspect-square mx-auto my-auto">
-        <svg viewBox="0 0 400 400" className="w-full h-full">
-          {/* Connection lines */}
-          <path
-            d="M 80 100 L 200 200"
-            stroke="rgba(0, 163, 255, 0.25)"
-            strokeWidth="1.2"
-            strokeDasharray="4 4"
-            fill="none"
-          />
-          <path
-            d="M 320 100 L 200 200"
-            stroke="rgba(0, 163, 255, 0.25)"
-            strokeWidth="1.2"
-            strokeDasharray="4 4"
-            fill="none"
-          />
-          <path
-            d="M 80 300 L 200 200"
-            stroke="rgba(0, 163, 255, 0.25)"
-            strokeWidth="1.2"
-            strokeDasharray="4 4"
-            fill="none"
-          />
-          <path
-            d="M 320 300 L 200 200"
-            stroke="rgba(0, 163, 255, 0.25)"
-            strokeWidth="1.2"
-            strokeDasharray="4 4"
-            fill="none"
-          />
+      {/* Background Dot Grid */}
+      <svg className="absolute inset-0 w-full h-full opacity-40 pointer-events-none z-0">
+        <defs>
+          <pattern id="integrateGrid" width="16" height="16" patternUnits="userSpaceOnUse">
+            <circle cx="2" cy="2" r="0.75" fill="#555" />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#integrateGrid)" />
+      </svg>
 
-          {/* Central Pulse Ripple Ring */}
-          <circle
-            ref={centerPulseRef}
-            cx="200"
-            cy="200"
-            r="45"
-            fill="transparent"
-            stroke="var(--accent)"
-            strokeWidth="1.5"
-            opacity="0"
-          />
+      {/* Header bar */}
+      <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-2 text-[9px] text-zinc-400 select-none relative z-10">
+        <span>SECURITY WEBHOOKS // ORCHESTRATION</span>
+        <span className="text-[var(--accent)] text-[8.5px] font-bold tracking-widest uppercase">
+          INTEGRATE PHASE
+        </span>
+      </div>
 
-          {/* Data Packets */}
-          {!shouldReduceMotion && (
-            <>
-              <circle ref={p1Ref} cx="80" cy="100" r="0" fill="var(--accent)" opacity="0" />
-              <circle ref={p2Ref} cx="320" cy="100" r="0" fill="var(--accent)" opacity="0" />
-              <circle ref={p3Ref} cx="80" cy="300" r="0" fill="var(--accent)" opacity="0" />
-              <circle ref={p4Ref} cx="320" cy="300" r="0" fill="var(--accent)" opacity="0" />
-            </>
-          )}
+      {/* SVG Canvas Map */}
+      <div className="relative flex-1 w-full min-h-[220px] flex items-center justify-center z-10">
+        <svg viewBox="0 0 400 360" className="w-full h-full max-w-[340px]">
+          <defs>
+            {satellites.map((sat, i) => (
+              <linearGradient key={i} id={`grad-${i}`} x1={sat.x} y1={sat.y} x2="200" y2="180" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stopColor={sat.color} stopOpacity="1" />
+                <stop offset="100%" stopColor="var(--accent)" stopOpacity="0.4" />
+              </linearGradient>
+            ))}
+          </defs>
 
-          {/* Center: ENTERSOFT APPSEC */}
-          <g>
-            <circle cx="200" cy="200" r="45" className="fill-[#141414] stroke-[var(--accent)]" strokeWidth="2" />
-            <text cx="200" cy="200" textAnchor="middle" dominantBaseline="central" fill="#F6F5F0" className="font-mono text-[9px] font-bold uppercase tracking-widest select-none">
+          {/* Connection Lines (Base & Laser overlay) */}
+          {satellites.map((sat, i) => {
+            const isHovered = hoveredSat === i;
+            return (
+              <g key={i}>
+                {/* Base connection path */}
+                <line
+                  x1={sat.x}
+                  y1={sat.y}
+                  x2="200"
+                  y2="180"
+                  stroke={isHovered ? "rgba(255,255,255,0.25)" : "rgba(255,255,255,0.08)"}
+                  strokeWidth="1.5"
+                  strokeDasharray="4 4"
+                  className="transition-colors duration-300"
+                />
+
+                {/* Laser flow overlay */}
+                {!shouldReduceMotion && (
+                  <line
+                    x1={sat.x}
+                    y1={sat.y}
+                    x2="200"
+                    y2="180"
+                    stroke={`url(#grad-${i})`}
+                    strokeWidth={isHovered ? "2.5" : "1.6"}
+                    className={isHovered ? "laser-line-fast" : "laser-line"}
+                  />
+                )}
+              </g>
+            );
+          })}
+
+          {/* Central Radar Rings */}
+          <g className="select-none">
+            {/* Spinning Radar concentric dashes */}
+            <circle
+              cx="200"
+              cy="180"
+              r="58"
+              fill="transparent"
+              stroke="rgba(0,163,255,0.18)"
+              strokeWidth="1"
+              strokeDasharray="8 24"
+              className="animate-[spin_24s_linear_infinite]"
+            />
+            <circle
+              cx="200"
+              cy="180"
+              r="48"
+              fill="transparent"
+              stroke="rgba(0,163,255,0.35)"
+              strokeWidth="1"
+              strokeDasharray="4 8"
+              className="animate-[spin_12s_linear_infinite_reverse]"
+            />
+
+            {/* Central glowing hub */}
+            <circle
+              cx="200"
+              cy="180"
+              r="38"
+              fill="#09090b"
+              stroke="var(--accent)"
+              strokeWidth="2"
+              className="transition-all duration-300"
+              style={{ filter: "drop-shadow(0 0 8px rgba(0, 163, 255, 0.45))" }}
+            />
+            
+            {/* Hub inner pulse */}
+            <circle
+              cx="200"
+              cy="180"
+              r="34"
+              fill="transparent"
+              stroke="var(--accent)"
+              strokeWidth="1"
+              className="animate-ping"
+              style={{ animationDuration: "3s" }}
+            />
+
+            <text x="200" y="180" textAnchor="middle" dominantBaseline="central" fill="#F6F5F0" className="font-mono text-[8px] font-bold uppercase tracking-widest pointer-events-none">
               <tspan x="200" dy="-4">ENTERSOFT</tspan>
-              <tspan x="200" dy="11" fill="var(--accent)">APPSEC</tspan>
+              <tspan x="200" dy="10" fill="var(--accent)">COMMAND</tspan>
             </text>
           </g>
 
-          {/* Satellites */}
-          <g>
-            <circle cx="80" cy="100" r="5" className="fill-[#141414] stroke-white/25" strokeWidth="1" />
-            <text x="80" y="80" textAnchor="middle" fill="var(--text-secondary)" className="font-mono text-[9px] font-bold tracking-widest uppercase select-none">
-              AZURE DEVOPS
-            </text>
-          </g>
-          <g>
-            <circle cx="320" cy="100" r="5" className="fill-[#141414] stroke-white/25" strokeWidth="1" />
-            <text x="320" y="80" textAnchor="middle" fill="var(--text-secondary)" className="font-mono text-[9px] font-bold tracking-widest uppercase select-none">
-              GITHUB ACTIONS
-            </text>
-          </g>
-          <g>
-            <circle cx="80" cy="300" r="5" className="fill-[#141414] stroke-white/25" strokeWidth="1" />
-            <text x="80" y="325" textAnchor="middle" fill="var(--text-secondary)" className="font-mono text-[9px] font-bold tracking-widest uppercase select-none">
-              JIRA
-            </text>
-          </g>
-          <g>
-            <circle cx="320" cy="300" r="5" className="fill-[#141414] stroke-white/25" strokeWidth="1" />
-            <text x="320" y="325" textAnchor="middle" fill="var(--text-secondary)" className="font-mono text-[9px] font-bold tracking-widest uppercase select-none">
-              SERVICENOW
-            </text>
-          </g>
+          {/* Satellite Nodes */}
+          {satellites.map((sat, i) => {
+            const isHovered = hoveredSat === i;
+            return (
+              <g 
+                key={i} 
+                className="cursor-pointer"
+                onMouseEnter={() => setHoveredSat(i)}
+                onMouseLeave={() => setHoveredSat(null)}
+              >
+                {/* Node Glow Outer Halo */}
+                <circle
+                  cx={sat.x}
+                  cy={sat.y}
+                  r={isHovered ? "15" : "10"}
+                  fill="transparent"
+                  stroke={sat.color}
+                  strokeWidth="1.25"
+                  strokeOpacity={isHovered ? "0.6" : "0.15"}
+                  className="transition-all duration-300"
+                />
+
+                {/* Inner solid node point */}
+                <circle
+                  cx={sat.x}
+                  cy={sat.y}
+                  r="5"
+                  fill="#0c0c0f"
+                  stroke={isHovered ? "#fff" : sat.color}
+                  strokeWidth="2"
+                  className="transition-all duration-300"
+                />
+
+                {/* Satellite title labels (placed strategically around coordinates) */}
+                <text
+                  x={sat.x}
+                  y={sat.y + (sat.y < 180 ? -16 : 22)}
+                  textAnchor="middle"
+                  fill={isHovered ? "#fff" : "rgba(246,245,240,0.7)"}
+                  className="font-mono text-[7.5px] font-bold tracking-wider uppercase select-none transition-colors duration-300"
+                >
+                  {sat.name}
+                </text>
+              </g>
+            );
+          })}
         </svg>
       </div>
 
-      <div className="flex justify-between items-center w-full mt-4 border-t border-[var(--border-subtle)] pt-4 text-[9px] text-zinc-500 uppercase tracking-widest">
-        <span>CI/CD PIPELINE // </span>
-        <span className="text-[var(--accent)]">CONNECTIONS LOADED</span>
+      {/* Live Tooltip HUD / Logging Panel */}
+      <div className="flex flex-col gap-2 relative z-10 w-full">
+        {/* Tooltip detail block */}
+        <div className="h-[25px] overflow-hidden flex items-center select-none font-mono text-[7.5px]">
+          {hoveredSat !== null ? (
+            <div className="w-full flex items-center justify-between border-y border-[var(--border-subtle)] py-0.5 bg-[#09090b]/40 px-2 rounded-[2px]">
+              <span className="text-zinc-400">NODE: <span className="text-white font-bold">{satellites[hoveredSat].name}</span></span>
+              <span className="text-zinc-500">HOOK: <span className="text-[var(--accent)] font-semibold">{satellites[hoveredSat].detail}</span></span>
+              <span className={`font-bold ${satellites[hoveredSat].status === "STABLE" ? "text-emerald-400" : "text-cyan-400"}`}>
+                [✓ {satellites[hoveredSat].status}]
+              </span>
+            </div>
+          ) : (
+            <div className="w-full flex items-center justify-between text-zinc-500 px-2 select-none uppercase tracking-widest text-[7px]">
+              <span>[ HOVER SATELLITE FOR TELEMETRY ]</span>
+              <span>PROTOCOL: SECURE REST API</span>
+            </div>
+          )}
+        </div>
+
+        {/* Real-time Webhook Console Output */}
+        <div className="bg-black/70 border border-white/5 rounded p-3 font-mono text-[8px] leading-relaxed text-zinc-400 min-h-[75px] max-h-[75px] flex flex-col justify-end overflow-hidden select-none">
+          <div className="flex items-center gap-1.5 border-b border-white/5 pb-1 mb-1 text-zinc-500 select-none">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span>INTEGRATION GATEWAY ACTIVE // LOGSSTREAM</span>
+          </div>
+          <div className="flex-1 flex flex-col justify-end gap-0.5 overflow-hidden">
+            {logs.map((log, idx) => {
+              let colorClass = "text-zinc-400";
+              if (log.includes("[Azure DevOps]")) colorClass = "text-sky-300";
+              if (log.includes("[GitHub Actions]")) colorClass = "text-purple-300";
+              if (log.includes("[Jira]")) colorClass = "text-blue-300";
+              if (log.includes("[ServiceNow]")) colorClass = "text-emerald-300";
+              if (log.startsWith("//")) colorClass = "text-zinc-500 italic";
+              return (
+                <div key={idx} className={`truncate ${colorClass}`}>
+                  {log}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      <div className="flex justify-between items-center w-full mt-3 border-t border-[var(--border-subtle)] pt-3 text-[9px] text-zinc-500 uppercase tracking-widest select-none relative z-10">
+        <span>CI/CD CONNECTIVITY // </span>
+        <span className="text-[var(--accent)] font-semibold">ALL ENDPOINTS OPERATIONAL</span>
       </div>
     </div>
   );
@@ -1492,6 +1510,7 @@ export default function AppSecPlatformPage() {
   const [isMounted, setIsMounted] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const transitionRef = useRef<HTMLDivElement>(null);
+  const stickyRef = useRef<HTMLDivElement>(null);
   const wordsRef = useRef<HTMLDivElement>(null);
   const marqueeRef = useRef<HTMLDivElement>(null);
   const shouldReduceMotion = useReducedMotion();
@@ -1499,6 +1518,8 @@ export default function AppSecPlatformPage() {
 
   useEffect(() => {
     setIsMounted(true);
+    // Force dark theme on this page only
+    document.documentElement.setAttribute("data-theme", "dark");
   }, []);
 
   // GSAP pinned transition animation setup
@@ -1508,27 +1529,21 @@ export default function AppSecPlatformPage() {
     gsap.registerPlugin(ScrollTrigger);
 
     const transitionSec = transitionRef.current;
+    const stickyEl = stickyRef.current;
     const words = wordsRef.current;
     const marquee = marqueeRef.current;
 
-    if (!transitionSec || !words || !marquee) return;
+    if (!transitionSec || !stickyEl || !words || !marquee) return;
 
     const ctx = gsap.context(() => {
-      // 1. Pin the sticky content inside the 200vh section during scroll
-      ScrollTrigger.create({
-        trigger: transitionSec,
-        pin: ".transition-sticky",
-        start: "top top",
-        end: "bottom top",
-        pinType: "fixed",
-        scrub: true,
-      });
-
-      // 2. Animate word stack scaling, collapsing towards center and marquee sliding
       const wordElements = words.querySelectorAll(".transition-word");
+      const marqueeText = marquee.querySelector(".marquee-text");
+
+      // Combine pinning and animating into a single timeline with ScrollTrigger
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: transitionSec,
+          pin: stickyEl,
           start: "top top",
           end: "bottom top",
           scrub: true,
@@ -1539,21 +1554,46 @@ export default function AppSecPlatformPage() {
         scale: 0.6,
         opacity: 0.05,
         y: -40,
-        ease: "power1.inOut"
+        ease: "power1.inOut",
+        duration: 0.3
       }, 0)
-      .to(wordElements[0], { y: 60, ease: "none" }, 0)
-      .to(wordElements[1], { y: 20, ease: "none" }, 0)
-      .to(wordElements[2], { y: -20, ease: "none" }, 0)
-      .to(wordElements[3], { y: -60, ease: "none" }, 0)
+      .to(wordElements[0], { y: 60, ease: "none", duration: 0.3 }, 0)
+      .to(wordElements[1], { y: 20, ease: "none", duration: 0.3 }, 0)
+      .to(wordElements[2], { y: -20, ease: "none", duration: 0.3 }, 0)
+      .to(wordElements[3], { y: -60, ease: "none", duration: 0.3 }, 0)
+      
+      // Marquee fades in quickly
       .to(marquee, {
         opacity: 1,
         y: -30,
-        ease: "power1.inOut"
-      }, 0.25)
-      .to(".transition-sticky", {
+        ease: "power1.inOut",
+        duration: 0.1
+      }, 0.15)
+      
+      // Marquee translates from x: 0 to x: -480 ( Brandium scroll style )
+      .fromTo(marqueeText, 
+        { x: 0 },
+        { x: -480, ease: "none", duration: 0.4 },
+        0.1
+      )
+      
+      // Marquee fades out earlier and quickly (completed by progress 0.5)
+      .to(marquee, {
         opacity: 0,
-        ease: "none"
-      }, 0.85); // Cross-fade effect out at scroll boundary
+        y: -50,
+        ease: "power2.in",
+        duration: 0.1
+      }, 0.4)
+      
+      // The entire sticky container fades out to 0 and finishes by 0.55 (y=1367)
+      .to(stickyEl, {
+        opacity: 0,
+        ease: "power2.inOut",
+        duration: 0.1
+      }, 0.45)
+      
+      // Add trailing empty padding tween to align total duration to 1.0
+      .to({}, { duration: 0.45 }, 0.55);
 
       // Recalibrate trigger dimensions locally
       ScrollTrigger.refresh();
@@ -1563,6 +1603,43 @@ export default function AppSecPlatformPage() {
       ctx.revert();
     };
   }, [isMounted, shouldReduceMotion, lenis]);
+
+  // GSAP Validate section scroll reveal (Brandium style overlay slide-up & corner flattening)
+  useEffect(() => {
+    if (!isMounted || typeof window === "undefined" || shouldReduceMotion) return;
+
+    const validateSec = document.getElementById("appsec-validate");
+    if (!validateSec) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const ctx = gsap.context(() => {
+      // Transition from y: 180 & rounded-t-[120px] to y: 0 & rounded-none
+      gsap.fromTo(validateSec,
+        {
+          y: 180,
+          borderTopLeftRadius: "120px",
+          borderTopRightRadius: "120px",
+        },
+        {
+          y: 0,
+          borderTopLeftRadius: "0px",
+          borderTopRightRadius: "0px",
+          ease: "none",
+          scrollTrigger: {
+            trigger: validateSec,
+            start: "top bottom", // Starts when top of validate reaches bottom of screen
+            end: "top top",      // Ends when top of validate reaches top of screen
+            scrub: true,
+          }
+        }
+      );
+    });
+
+    return () => {
+      ctx.revert();
+    };
+  }, [isMounted, shouldReduceMotion]);
 
   const handleScrollToNext = () => {
     if (lenis) {
@@ -1735,7 +1812,7 @@ export default function AppSecPlatformPage() {
             </div>
           </div>
         ) : (
-          <div className="transition-sticky h-screen w-full flex flex-col justify-center items-center overflow-hidden">
+          <div ref={stickyRef} className="transition-sticky h-screen w-full flex flex-col justify-center items-center overflow-hidden">
             <div className="max-w-[1400px] w-full px-6 md:px-12 flex flex-col items-center justify-center h-full relative">
               <div ref={wordsRef} className="flex flex-col items-center justify-center font-display font-bold text-[clamp(2.5rem,7vw,7.5rem)] leading-[0.9] uppercase tracking-tighter text-[#F6F5F0] select-none">
                 <span className="transition-word block text-[var(--accent)] font-serif italic">Find</span>
@@ -1744,7 +1821,7 @@ export default function AppSecPlatformPage() {
                 <span className="transition-word block text-white/45">Prove</span>
               </div>
               <div ref={marqueeRef} className="absolute bottom-[20%] w-full overflow-hidden whitespace-nowrap opacity-0 py-4 border-y border-[var(--border-subtle)] bg-[#060606]/85 backdrop-blur-md">
-                <div className="inline-block animate-marquee uppercase font-mono text-[9px] md:text-[10px] font-bold tracking-[0.25em] text-[var(--accent)]">
+                <div className="marquee-text inline-block uppercase font-mono text-[9px] md:text-[10px] font-bold tracking-[0.25em] text-[var(--accent)]">
                   {Array(8).fill("EVERY FINDING. EVERY TIME. NO EXCEPTIONS. • ").join("")}
                 </div>
               </div>
@@ -1758,11 +1835,32 @@ export default function AppSecPlatformPage() {
           ========================================== */}
       <section 
         id="appsec-find"
-        className="relative w-full min-h-[90vh] flex items-center bg-[#060606] px-6 md:px-12 py-20 border-b border-[var(--border-subtle)] z-20"
+        className="relative w-full min-h-[90vh] flex items-center bg-[#060606] px-6 md:px-12 py-20 border-b border-[var(--border-subtle)] z-20 overflow-hidden"
       >
-        <div className="max-w-[1400px] w-full mx-auto grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-12 lg:gap-16 items-center">
+        {/* Ambient radial color mesh to submerge and combine text with the image shades */}
+        <div className="absolute left-[20%] top-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gradient-to-br from-emerald-500/10 via-teal-500/5 to-transparent blur-[130px] pointer-events-none z-0" />
+
+        {/* Absolute Background Image (right side bleed to edge) */}
+        <div className="absolute top-0 right-0 w-full lg:w-[48vw] h-full z-0 overflow-hidden">
+          <div className="relative w-full h-full group">
+            {/* Multi-directional gradient masks for borderless merge (Abnormal style) */}
+            {/* Left fade is very wide (75%) for smooth transition into black text column */}
+            <div className="absolute inset-y-0 left-0 w-[75%] bg-gradient-to-r from-[#060606] via-[#060606]/80 via-[#060606]/40 to-transparent z-10 pointer-events-none" />
+            <div className="absolute inset-x-0 bottom-0 h-[25%] bg-gradient-to-t from-[#060606] to-transparent z-10 pointer-events-none" />
+            <div className="absolute inset-x-0 top-0 h-[25%] bg-gradient-to-b from-[#060606] to-transparent z-10 pointer-events-none" />
+            <div className="absolute inset-0 bg-[#060606]/15 z-10 pointer-events-none mix-blend-multiply" />
+
+            <img
+              src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80"
+              alt="Cyber threat mapping server scan illustration"
+              className="w-full h-full object-cover opacity-35 lg:opacity-75 group-hover:opacity-90 transition-all duration-700 select-none pointer-events-none"
+            />
+          </div>
+        </div>
+
+        <div className="max-w-[1400px] w-full mx-auto grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-12 lg:gap-16 items-center relative z-10">
           {/* Left Column: Abnormal-style High-Contrast Large Typography */}
-          <div className="flex flex-col gap-4 max-w-[640px]">
+          <div className="flex flex-col gap-4 max-w-[640px] z-10">
             <span className="font-mono text-[10px] font-bold text-[var(--accent)] tracking-[0.25em] uppercase select-none">
               THE CAPABILITY // FIND
             </span>
@@ -1783,25 +1881,8 @@ export default function AppSecPlatformPage() {
             </div>
           </div>
 
-          {/* Right Column: Premium Relatable Technical Illustration */}
-          <div className="w-full flex justify-center lg:justify-end">
-            <div className="relative w-full aspect-[4/3] max-w-[540px] rounded-[4px] overflow-hidden border border-white/10 shadow-[0_24px_48px_rgba(0,0,0,0.85)] group">
-              {/* Sci-fi Corner Brackets */}
-              <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-[var(--accent)] rounded-tl-[2px] opacity-75 z-10 pointer-events-none" />
-              <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-[var(--accent)] rounded-tr-[2px] opacity-75 z-10 pointer-events-none" />
-              <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-[var(--accent)] rounded-bl-[2px] opacity-75 z-10 pointer-events-none" />
-              <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-[var(--accent)] rounded-br-[2px] opacity-75 z-10 pointer-events-none" />
-
-              {/* Cyber overlay gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#060606] via-transparent to-transparent opacity-50 z-10 pointer-events-none" />
-
-              <img
-                src="/images/entersoft_find_illustration.png"
-                alt="Cyber threat mapping server scan illustration"
-                className="w-full h-full object-cover opacity-85 group-hover:opacity-100 transition-all duration-700 select-none pointer-events-none"
-              />
-            </div>
-          </div>
+          {/* Right Column spacer */}
+          <div className="w-full h-[150px] lg:h-full pointer-events-none select-none z-0 lg:block hidden" />
         </div>
       </section>
 
@@ -1810,16 +1891,19 @@ export default function AppSecPlatformPage() {
           ========================================== */}
       <section 
         id="appsec-validate"
-        className="relative w-full min-h-[90vh] flex items-center bg-[#060606] px-6 md:px-12 py-20 border-b border-[var(--border-subtle)] z-20"
+        className="relative w-full min-h-[90vh] flex items-center bg-[#060606] px-6 md:px-12 py-20 border-b border-[var(--border-subtle)] z-20 overflow-hidden"
       >
-        <div className="max-w-[1400px] w-full mx-auto grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-12 lg:gap-16 items-center">
+        {/* Ambient radial color mesh to submerge and combine text with the image shades */}
+        <div className="absolute right-[20%] top-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gradient-to-br from-sky-500/10 via-indigo-500/5 to-transparent blur-[130px] pointer-events-none z-0" />
+
+        <div className="max-w-[1400px] w-full mx-auto grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-12 lg:gap-16 items-center relative z-10">
           {/* Left Column: Premium box-like illustration with liquid splash distortion reveal on hover */}
           <div className="w-full flex justify-start order-2 lg:order-1">
             <ValidateVisual />
           </div>
 
           {/* Right Column: Abnormal-style High-Contrast Large Typography */}
-          <div className="flex flex-col gap-4 max-w-[640px] order-1 lg:order-2">
+          <div className="flex flex-col gap-4 max-w-[640px] order-1 lg:order-2 z-10">
             <span className="font-mono text-[10px] font-bold text-[var(--accent)] tracking-[0.25em] uppercase select-none">
               THE CAPABILITY // VALIDATE
             </span>

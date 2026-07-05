@@ -77,12 +77,12 @@ export default function RubiksCube3D() {
       canvas.height = 128;
       const ctx = canvas.getContext("2d");
       if (ctx) {
-        ctx.fillStyle = "#959595"; // Slightly lighter base grey
+        ctx.fillStyle = "#333335"; // Darkened base grey
         ctx.fillRect(0, 0, 128, 128);
         const imgData = ctx.getImageData(0, 0, 128, 128);
         const data = imgData.data;
         for (let i = 0; i < data.length; i += 4) {
-          const noise = (Math.random() - 0.5) * 75;
+          const noise = (Math.random() - 0.5) * 45; // Reduced noise amplitude for smoother dark texture
           data[i] = Math.min(255, Math.max(0, data[i] + noise));
           data[i + 1] = Math.min(255, Math.max(0, data[i + 1] + noise));
           data[i + 2] = Math.min(255, Math.max(0, data[i + 2] + noise));
@@ -102,10 +102,10 @@ export default function RubiksCube3D() {
       canvas.height = 64;
       const ctx = canvas.getContext("2d");
       if (ctx) {
-        ctx.fillStyle = "#222222"; // Lighter base
+        ctx.fillStyle = "#0c0c0e"; // Darkened carbon base
         ctx.fillRect(0, 0, 64, 64);
         
-        ctx.strokeStyle = "#444444"; // More visible grid lines
+        ctx.strokeStyle = "#1b1b22"; // Subtle grid lines
         ctx.lineWidth = 1.5;
         ctx.beginPath();
         for (let i = 0; i <= 64; i += 8) {
@@ -116,7 +116,7 @@ export default function RubiksCube3D() {
         }
         ctx.stroke();
 
-        ctx.fillStyle = "#363636"; // Brighter microtexture dots
+        ctx.fillStyle = "#141418"; // Darker microtexture dots
         for (let x = 4; x < 64; x += 8) {
           for (let y = 4; y < 64; y += 8) {
             ctx.fillRect(x - 1, y - 1, 2, 2);
@@ -132,35 +132,35 @@ export default function RubiksCube3D() {
 
     // Inner matte material for internal/hidden faces
     const innerMat = new THREE.MeshPhysicalMaterial({
-      color: 0x121215, // Slightly lighter inner blocks for visibility
-      roughness: 0.85,
+      color: 0x0a0a0c, // Darkened inner blocks
+      roughness: 0.9,
       metalness: 0.1,
     });
 
     const sandblastTex = createSandblastedTexture();
     const gridTex = createGridTexture();
 
-    // Premium outer face materials (Monochromatic Resend Style - Brightened for contrast)
+    // Premium outer face materials (Darkened for high-contrast premium dark aesthetic)
     const outerMats = {
       obsidian: new THREE.MeshPhysicalMaterial({
-        color: 0x1c1c1e, // Brighter glossy dark graphite (was 0x050505)
-        roughness: 0.1,
-        metalness: 0.95,
+        color: 0x08080a, // Sleek, dark glassy obsidian
+        roughness: 0.05,
+        metalness: 0.98,
         clearcoat: 1.0,
-        clearcoatRoughness: 0.05,
+        clearcoatRoughness: 0.02,
       }),
       sandblast: new THREE.MeshPhysicalMaterial({
-        color: 0x2e2e30, // Brighter sandblast grey (was 0x181818)
+        color: 0x121215, // Dark slate sandblast
         bumpMap: sandblastTex,
-        bumpScale: 0.035,
-        roughness: 0.7,
-        metalness: 0.65,
+        bumpScale: 0.025,
+        roughness: 0.8,
+        metalness: 0.45,
       }),
       grid: new THREE.MeshPhysicalMaterial({
-        color: 0x28282a, // Brighter carbon mesh base (was 0x121212)
+        color: 0x0e0e11, // Dark carbon grid mesh
         map: gridTex,
-        roughness: 0.4,
-        metalness: 0.8,
+        roughness: 0.5,
+        metalness: 0.85,
       }),
     };
 
@@ -183,12 +183,12 @@ export default function RubiksCube3D() {
           mainGroup.add(mesh);
           cubes.push(mesh);
 
-          // Add a thin cyber-glow wire outline for each block (Resend clean white/light highlight style - more visible)
+          // Add a thin cyber-glow wire outline for each block (Cyan/blue glowing accent lines)
           const edges = new THREE.EdgesGeometry(geometry);
           const lineMat = new THREE.LineBasicMaterial({
-            color: 0xffffff,
+            color: 0x00a3ff, // High-contrast glowing cyan outline
             transparent: true,
-            opacity: 0.48, // Increased opacity to make highlights stand out
+            opacity: 0.4, // Balanced opacity for nice digital outline
           });
           const line = new THREE.LineSegments(edges, lineMat);
           mesh.add(line);
