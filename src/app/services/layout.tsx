@@ -6,6 +6,7 @@ import Link from "next/link";
 import { servicePagesData } from "@/data/services";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { getServiceKeyFromSlug, getServiceRoute } from "@/config/routes";
 
 export default function ServicesLayout({
   children,
@@ -14,10 +15,11 @@ export default function ServicesLayout({
 }) {
   const pathname = usePathname();
   const currentSlug = pathname.split("/").pop() || "";
+  const currentKey = getServiceKeyFromSlug(currentSlug);
 
   // Get the other six services
   const otherServices = Object.values(servicePagesData).filter(
-    (item) => item.slug !== currentSlug
+    (item) => getServiceKeyFromSlug(item.slug) !== currentKey
   );
 
   return (
@@ -40,7 +42,7 @@ export default function ServicesLayout({
               <React.Fragment key={service.slug}>
                 {index > 0 && <span className="text-[var(--border-subtle)] select-none">|</span>}
                 <Link
-                  href={`/services/${service.slug}`}
+                  href={getServiceRoute(service.slug)}
                   className="text-[var(--text-tertiary)] hover:text-[var(--accent)] transition-colors duration-300"
                 >
                   {service.name}

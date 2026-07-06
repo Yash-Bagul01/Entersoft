@@ -7,6 +7,7 @@ import { Menu, X, ChevronDown, Shield, Code, Cloud, CheckSquare, Server, Cpu, He
 import { Button } from "../ui/Button";
 import { cn } from "@/lib/utils";
 import ThemeToggle from "../ui/ThemeToggle";
+import { ROUTES } from "@/config/routes";
 
 interface MegaItem {
   name: string;
@@ -29,7 +30,7 @@ interface NavItem {
 
 export default function Navbar() {
   const pathname = usePathname();
-  const isAppSecPage = pathname === "/services/appsec";
+  const isAppSecPage = pathname === ROUTES.services.appsec;
   
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeMega, setActiveMega] = useState<number | null>(null);
@@ -57,18 +58,18 @@ export default function Navbar() {
           {
             title: "Audits & Testing",
             items: [
-              { name: "VAPT Services", href: "/services/vapt", desc: "Expert-validated penetration auditing.", icon: <Shield className="w-4 h-4" /> },
-              { name: "AppSec Integrations", href: "/services/appsec", desc: "CI/CD automated vulnerability tests.", icon: <Code className="w-4 h-4" /> },
-              { name: "Managed Cloud", href: "/services/managed-cloud-security", desc: "Continuous CSPM cloud posture checks.", icon: <Cloud className="w-4 h-4" /> },
-              { name: "Compliance Management", href: "/services/compliance-management", desc: "Gap analysis & ISO 27001 readiness.", icon: <CheckSquare className="w-4 h-4" /> }
+              { name: "VAPT Services", href: ROUTES.services.vapt, desc: "Expert-validated penetration auditing.", icon: <Shield className="w-4 h-4" /> },
+              { name: "AppSec Integrations", href: ROUTES.services.appsec, desc: "CI/CD automated vulnerability tests.", icon: <Code className="w-4 h-4" /> },
+              { name: "Managed Cloud", href: ROUTES.services.cloud, desc: "Continuous CSPM cloud posture checks.", icon: <Cloud className="w-4 h-4" /> },
+              { name: "Compliance Management", href: ROUTES.services.compliance, desc: "Gap analysis & ISO 27001 readiness.", icon: <CheckSquare className="w-4 h-4" /> }
             ]
           },
           {
             title: "Specialized Solutions",
             items: [
-              { name: "Smart Contracts", href: "/services/smart-contract-audits", desc: "Decentralized DeFi code stress-testing.", icon: <Cpu className="w-4 h-4" /> },
-              { name: "AI AST Security", href: "/services/ai-ast", desc: "LLM guardrails and prompt safety.", icon: <Layers className="w-4 h-4" /> },
-              { name: "Managed SIEM & Monitoring", href: "/services/siem", desc: "24/7 incident SOC telemetry.", icon: <Server className="w-4 h-4" /> }
+              { name: "Smart Contracts", href: ROUTES.services.smartContract, desc: "Decentralized DeFi code stress-testing.", icon: <Cpu className="w-4 h-4" /> },
+              { name: "AI AST Security", href: ROUTES.services.aiAst, desc: "LLM guardrails and prompt safety.", icon: <Layers className="w-4 h-4" /> },
+              { name: "Managed SIEM & Monitoring", href: ROUTES.services.siem, desc: "24/7 incident SOC telemetry.", icon: <Server className="w-4 h-4" /> }
             ]
           }
         ]

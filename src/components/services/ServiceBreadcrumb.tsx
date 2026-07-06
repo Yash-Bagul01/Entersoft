@@ -4,11 +4,13 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { servicePagesData } from "@/data/services";
+import { getServiceKeyFromSlug } from "@/config/routes";
 
 export default function ServiceBreadcrumb() {
   const pathname = usePathname();
   const slug = pathname.split("/").pop() || "";
-  const pageData = servicePagesData[slug];
+  const serviceKey = getServiceKeyFromSlug(slug);
+  const pageData = servicePagesData[serviceKey];
 
   return (
     <nav className="flex items-center gap-2 font-mono text-[10px] font-bold tracking-[0.2em] text-[var(--text-tertiary)] uppercase select-none mb-6">

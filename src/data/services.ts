@@ -117,9 +117,11 @@ export type ServicePageData = {
   col3Metadata?: string;
 };
 
+import { SERVICE_SLUGS } from "@/config/routes";
+
 export const servicePagesData: Record<string, ServicePageData> = {
   appsec: {
-    slug: "appsec",
+    slug: SERVICE_SLUGS.appsec,
     name: "Application Security (AppSec)",
     category: "APPLICATION SECURITY",
     tagline: "CI/CD-integrated scanning and manual vulnerability audits.",

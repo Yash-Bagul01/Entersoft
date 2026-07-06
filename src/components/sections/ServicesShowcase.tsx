@@ -7,18 +7,10 @@ import SectionLabel from "../ui/SectionLabel";
 import { gsap } from "gsap";
 import { ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { getServiceRoute } from "@/config/routes";
 
 const getServiceHref = (id: string) => {
-  switch (id) {
-    case "appsec": return "/services/appsec";
-    case "vapt": return "/services/vapt";
-    case "cloud": return "/services/managed-cloud-security";
-    case "compliance": return "/services/compliance-management";
-    case "siem": return "/services/siem";
-    case "smart-contract": return "/services/smart-contract-audits";
-    case "ai-ast": return "/services/ai-ast";
-    default: return `/services/${id}`;
-  }
+  return getServiceRoute(id);
 };
 
 // Unique premium neon colors for each cybersecurity service

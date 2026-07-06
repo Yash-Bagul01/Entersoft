@@ -1524,7 +1524,7 @@ export default function AppSecPlatformPage() {
 
   // GSAP pinned transition animation setup
   useEffect(() => {
-    if (!isMounted || typeof window === "undefined" || shouldReduceMotion) return;
+    if (!isMounted || typeof window === "undefined") return;
 
     gsap.registerPlugin(ScrollTrigger);
 
@@ -1602,44 +1602,69 @@ export default function AppSecPlatformPage() {
     return () => {
       ctx.revert();
     };
-  }, [isMounted, shouldReduceMotion, lenis]);
+  }, [isMounted, lenis]);
 
-  // GSAP Validate section scroll reveal (Brandium style overlay slide-up & corner flattening)
+  // GSAP Validate and Fix sections scroll reveal (Brandium style overlay slide-up & corner flattening)
   useEffect(() => {
-    if (!isMounted || typeof window === "undefined" || shouldReduceMotion) return;
+    if (!isMounted || typeof window === "undefined") return;
 
     const validateSec = document.getElementById("appsec-validate");
-    if (!validateSec) return;
+    const fixSec = document.getElementById("appsec-fix");
 
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      // Transition from y: 180 & rounded-t-[120px] to y: 0 & rounded-none
-      gsap.fromTo(validateSec,
-        {
-          y: 180,
-          borderTopLeftRadius: "120px",
-          borderTopRightRadius: "120px",
-        },
-        {
-          y: 0,
-          borderTopLeftRadius: "0px",
-          borderTopRightRadius: "0px",
-          ease: "none",
-          scrollTrigger: {
-            trigger: validateSec,
-            start: "top bottom", // Starts when top of validate reaches bottom of screen
-            end: "top top",      // Ends when top of validate reaches top of screen
-            scrub: true,
+      if (validateSec) {
+        // Transition from y: 180 & rounded-t-[120px] to y: 0 & rounded-none
+        gsap.fromTo(validateSec,
+          {
+            y: 180,
+            borderTopLeftRadius: "120px",
+            borderTopRightRadius: "120px",
+          },
+          {
+            y: 0,
+            borderTopLeftRadius: "0px",
+            borderTopRightRadius: "0px",
+            ease: "none",
+            scrollTrigger: {
+              trigger: validateSec,
+              start: "top bottom", // Starts when top of validate reaches bottom of screen
+              end: "top top",      // Ends when top of validate reaches top of screen
+              scrub: true,
+            }
           }
-        }
-      );
+        );
+      }
+
+      if (fixSec) {
+        // Transition from y: 180 & rounded-t-[120px] to y: 0 & rounded-none
+        gsap.fromTo(fixSec,
+          {
+            y: 180,
+            borderTopLeftRadius: "120px",
+            borderTopRightRadius: "120px",
+          },
+          {
+            y: 0,
+            borderTopLeftRadius: "0px",
+            borderTopRightRadius: "0px",
+            ease: "none",
+            scrollTrigger: {
+              trigger: fixSec,
+              start: "top bottom", // Starts when top of fix reaches bottom of screen
+              end: "top top",      // Ends when top of fix reaches top of screen
+              scrub: true,
+            }
+          }
+        );
+      }
     });
 
     return () => {
       ctx.revert();
     };
-  }, [isMounted, shouldReduceMotion]);
+  }, [isMounted]);
 
   const handleScrollToNext = () => {
     if (lenis) {
@@ -1704,7 +1729,7 @@ export default function AppSecPlatformPage() {
                     transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
                     className="block font-serif italic text-white"
                   >
-                    The System Behind
+                    Application Security
                   </motion.span>
                 </span>
                 <span className="block overflow-hidden pb-[0.05em] text-white/90">
@@ -1712,9 +1737,9 @@ export default function AppSecPlatformPage() {
                     initial={{ y: "100%" }}
                     animate={{ y: 0 }}
                     transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-                    className="block"
+                    className="block font-serif italic"
                   >
-                    Every Fix.
+                    Testing Services
                   </motion.span>
                 </span>
               </h1>
@@ -1745,7 +1770,7 @@ export default function AppSecPlatformPage() {
                   transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
                   className="text-[clamp(14px,1.5vw,16px)] font-sans text-[#F6F5F0] leading-relaxed max-w-[550px] text-left drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]"
                 >
-                  Continuous application audits that fit dev cycles. From first vulnerability discovery scan to ultimate remediation PR sign-off.
+                  Secure every release with continuous application security testing for web, API, and mobile applications - from vulnerability discovery to verified remediation.
                 </motion.p>
               </div>
             </div>
@@ -1756,7 +1781,7 @@ export default function AppSecPlatformPage() {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
-                className="w-full h-full flex items-center justify-center animate-pulse-subtle"
+                className="w-full h-full flex items-center justify-center animate-pulse-subtle relative -top-[28px]"
               >
                 <RubiksCube3D />
               </motion.div>
@@ -1801,33 +1826,21 @@ export default function AppSecPlatformPage() {
         id="appsec-transition"
         className="relative w-full h-[200vh] bg-[#060606] z-30"
       >
-        {shouldReduceMotion ? (
-          /* Static presentation for reduced-motion */
-          <div className="h-screen w-full flex flex-col justify-center items-center px-6">
-            <div className="flex flex-col items-center gap-2 font-display font-bold text-4xl uppercase tracking-tighter text-[#F6F5F0] select-none text-center">
-              <span className="text-[var(--accent)] font-serif italic">Find</span>
-              <span>Validate</span>
-              <span className="text-white/70">Fix</span>
-              <span className="text-white/40">Prove</span>
+        <div ref={stickyRef} className="transition-sticky h-screen w-full flex flex-col justify-center items-center overflow-hidden">
+          <div className="max-w-[1400px] w-full px-6 md:px-12 flex flex-col items-center justify-center h-full relative">
+            <div ref={wordsRef} className="flex flex-col items-center justify-center font-display font-bold text-[clamp(2.5rem,7vw,7.5rem)] leading-[0.9] uppercase tracking-tighter text-[#F6F5F0] select-none">
+              <span className="transition-word block text-[var(--accent)] font-serif italic">Find</span>
+              <span className="transition-word block">Validate</span>
+              <span className="transition-word block text-white/75">Fix</span>
+              <span className="transition-word block text-white/45">Prove</span>
             </div>
-          </div>
-        ) : (
-          <div ref={stickyRef} className="transition-sticky h-screen w-full flex flex-col justify-center items-center overflow-hidden">
-            <div className="max-w-[1400px] w-full px-6 md:px-12 flex flex-col items-center justify-center h-full relative">
-              <div ref={wordsRef} className="flex flex-col items-center justify-center font-display font-bold text-[clamp(2.5rem,7vw,7.5rem)] leading-[0.9] uppercase tracking-tighter text-[#F6F5F0] select-none">
-                <span className="transition-word block text-[var(--accent)] font-serif italic">Find</span>
-                <span className="transition-word block">Validate</span>
-                <span className="transition-word block text-white/75">Fix</span>
-                <span className="transition-word block text-white/45">Prove</span>
-              </div>
-              <div ref={marqueeRef} className="absolute bottom-[20%] w-full overflow-hidden whitespace-nowrap opacity-0 py-4 border-y border-[var(--border-subtle)] bg-[#060606]/85 backdrop-blur-md">
-                <div className="marquee-text inline-block uppercase font-mono text-[9px] md:text-[10px] font-bold tracking-[0.25em] text-[var(--accent)]">
-                  {Array(8).fill("EVERY FINDING. EVERY TIME. NO EXCEPTIONS. • ").join("")}
-                </div>
+            <div ref={marqueeRef} className="absolute bottom-[20%] w-full overflow-hidden whitespace-nowrap opacity-0 py-4 border-y border-[var(--border-subtle)] bg-[#060606]/85 backdrop-blur-md">
+              <div className="marquee-text inline-block uppercase font-mono text-[9px] md:text-[10px] font-bold tracking-[0.25em] text-[var(--accent)]">
+                {Array(8).fill("EVERY FINDING. EVERY TIME. NO EXCEPTIONS. • ").join("")}
               </div>
             </div>
           </div>
-        )}
+        </div>
       </section>
 
       {/* ==========================================
@@ -1865,7 +1878,7 @@ export default function AppSecPlatformPage() {
               THE CAPABILITY // FIND
             </span>
             <h2 className="text-[clamp(2.2rem,5vw,3.8rem)] font-sans font-bold text-[#F6F5F0] tracking-tight leading-[1.08] uppercase mt-2 select-none">
-              To stop modern threats you need <span className="text-[var(--accent)]">Continuous Finding.</span>
+              Continuous Application <span className="text-[var(--accent)]">Exposure Detection</span>
             </h2>
             
             <div className="mt-6 flex flex-col gap-4 select-none">
@@ -1908,7 +1921,7 @@ export default function AppSecPlatformPage() {
               THE CAPABILITY // VALIDATE
             </span>
             <h2 className="text-[clamp(2.2rem,5vw,3.8rem)] font-sans font-bold text-[#F6F5F0] tracking-tight leading-[1.08] uppercase mt-2 select-none">
-              To filter security noise you need <span className="text-[var(--accent)]">Expert Triage.</span>
+              Validate Exploitability with <span className="text-[var(--accent)]">Expert Triage</span>
             </h2>
             
             <div className="mt-6 flex flex-col gap-4 select-none">
@@ -1931,13 +1944,13 @@ export default function AppSecPlatformPage() {
           ========================================== */}
       <section 
         id="appsec-fix"
-        className="relative w-full min-h-[100vh] flex items-center bg-[#060606] px-6 md:px-12 py-20 border-b border-[var(--border-subtle)] z-20"
+        className="relative w-full min-h-[100vh] flex items-center bg-[#060606] px-6 md:px-12 py-20 border-b border-[var(--border-subtle)] z-20 overflow-hidden"
       >
         <div className="max-w-[1400px] w-full mx-auto grid grid-cols-1 lg:grid-cols-[1.1fr_1.9fr] gap-12 lg:gap-16 items-center">
           <div className="flex flex-col gap-4 max-w-[500px]">
             <SectionLabel color="secondary">03. CAPABILITY // FIX</SectionLabel>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-medium uppercase text-[#F6F5F0] tracking-tight leading-none">
-              Ready for a pull request, not a meeting.
+              Developer-Ready Security Remediation
             </h2>
             <p className="text-[12px] md:text-sm text-[var(--text-secondary)] font-sans leading-relaxed mt-2">
               We package every vulnerability report with clear, production-ready code diffs and patch steps. Developers merge the security updates directly inside standard workflows.
@@ -1962,7 +1975,7 @@ export default function AppSecPlatformPage() {
           <div className="flex flex-col gap-5 max-w-[500px]">
             <SectionLabel color="secondary">04. CAPABILITY // PROVE</SectionLabel>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-medium uppercase text-[#F6F5F0] tracking-tight leading-none">
-              Continuous validation, not a snapshot.
+              Continuous Validation & Proof of Remediation
             </h2>
             <p className="text-[11px] md:text-[12.5px] text-[var(--text-secondary)] font-sans leading-relaxed select-none">
               We execute automated attacks against staging and prod environments to verify patches and seal security compliance.
@@ -2036,7 +2049,7 @@ export default function AppSecPlatformPage() {
           <div className="flex flex-col gap-4 max-w-[500px]">
             <SectionLabel color="secondary">05. CAPABILITY // INTEGRATE</SectionLabel>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-medium uppercase text-[#F6F5F0] tracking-tight leading-none">
-              Fits the pipeline you already have.
+              Application Security Across Your CI/CD Pipeline
             </h2>
             <p className="text-[12px] md:text-sm text-[var(--text-secondary)] font-sans leading-relaxed mt-2">
               Sync audits automatically. Entersoft webhook configurations feed finding logs natively into Azure DevOps, GitHub Actions, Jira pipelines, and ServiceNow dashboards.
