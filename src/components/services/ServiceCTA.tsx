@@ -17,7 +17,7 @@ export default function ServiceCTA() {
         
         <div className="mt-2">
           <MagneticButton>
-            <Button variant="primary" size="lg" asLink href="#contact">
+            <Button variant="primary" size="lg" asLink href="/#contact">
               GET A FREE SCAN
             </Button>
           </MagneticButton>

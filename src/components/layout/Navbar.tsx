@@ -7,6 +7,8 @@ import { Menu, X, ChevronDown, Shield, Code, Cloud, CheckSquare, Server, Cpu, He
 import { Button } from "../ui/Button";
 import { cn } from "@/lib/utils";
 import ThemeToggle from "../ui/ThemeToggle";
+import Link from "next/link";
+import Image from "next/image";
 import { ROUTES } from "@/config/routes";
 
 interface MegaItem {
@@ -51,7 +53,7 @@ export default function Navbar() {
   const navItems: NavItem[] = [
     {
       label: "Services",
-      href: "#services",
+      href: "/#services",
       megaMenu: {
         blurb: "Technical threat assessments, automated pipeline configurations, and decentralized smart contract logic reviews.",
         sections: [
@@ -77,16 +79,16 @@ export default function Navbar() {
     },
     {
       label: "Industries",
-      href: "#case-studies",
+      href: "/#case-studies",
       megaMenu: {
         blurb: "Providing compliant, zero-noise cyber defenses built to meet highly specific industry compliance targets.",
         sections: [
           {
             title: "Focus Areas",
             items: [
-              { name: "Fintech & Banking", href: "#case-studies", desc: "API integrations & bank-ready audits.", icon: <CheckSquare className="w-4 h-4" /> },
-              { name: "NBFC compliance", href: "#case-studies", desc: "Adhering strictly to RBI cybersecurity rules.", icon: <Shield className="w-4 h-4" /> },
-              { name: "Logistics Enterprise", href: "#case-studies", desc: "Protecting global supply chain software.", icon: <Server className="w-4 h-4" /> }
+              { name: "Fintech & Banking", href: "/#case-studies", desc: "API integrations & bank-ready audits.", icon: <CheckSquare className="w-4 h-4" /> },
+              { name: "NBFC compliance", href: "/#case-studies", desc: "Adhering strictly to RBI cybersecurity rules.", icon: <Shield className="w-4 h-4" /> },
+              { name: "Logistics Enterprise", href: "/#case-studies", desc: "Protecting global supply chain software.", icon: <Server className="w-4 h-4" /> }
             ]
           }
         ]
@@ -94,16 +96,16 @@ export default function Navbar() {
     },
     {
       label: "Case Studies",
-      href: "#case-studies",
+      href: "/#case-studies",
       megaMenu: {
         blurb: "Read how global organizations mitigate threats and secure audit certifications.",
         sections: [
           {
             title: "Factual Results",
             items: [
-              { name: "Cision M&A Audit", href: "#case-studies", desc: "Due diligence software posture validation.", icon: <FileText className="w-4 h-4" /> },
-              { name: "Retirement NBFC RBI", href: "#case-studies", desc: "Rapid 100% compliance mapping case.", icon: <CheckSquare className="w-4 h-4" /> },
-              { name: "Logistics Pipeline Sec", href: "#case-studies", desc: "Optimizing code gate verification.", icon: <Code className="w-4 h-4" /> }
+              { name: "Cision M&A Audit", href: "/#case-studies", desc: "Due diligence software posture validation.", icon: <FileText className="w-4 h-4" /> },
+              { name: "Retirement NBFC RBI", href: "/#case-studies", desc: "Rapid 100% compliance mapping case.", icon: <CheckSquare className="w-4 h-4" /> },
+              { name: "Logistics Pipeline Sec", href: "/#case-studies", desc: "Optimizing code gate verification.", icon: <Code className="w-4 h-4" /> }
             ]
           }
         ]
@@ -111,16 +113,16 @@ export default function Navbar() {
     },
     {
       label: "Resources",
-      href: "#insights",
+      href: "/#insights",
       megaMenu: {
         blurb: "Technical research, vulnerability writeups, and industry responses from Entersoft threat analysts.",
         sections: [
           {
             title: "Documentation & Updates",
             items: [
-              { name: "VAPT Security Roundup", href: "#insights", desc: "Comparing manual and automated methods.", icon: <FileText className="w-4 h-4" /> },
-              { name: "CrowdStrike Resolution", href: "#insights", desc: "Best-practice workaround documentation.", icon: <HelpCircle className="w-4 h-4" /> },
-              { name: "Cyberattacks Retrospective", href: "#insights", desc: "Case reviews of critical web leaks.", icon: <Shield className="w-4 h-4" /> }
+              { name: "VAPT Security Roundup", href: "/#insights", desc: "Comparing manual and automated methods.", icon: <FileText className="w-4 h-4" /> },
+              { name: "CrowdStrike Resolution", href: "/#insights", desc: "Best-practice workaround documentation.", icon: <HelpCircle className="w-4 h-4" /> },
+              { name: "Cyberattacks Retrospective", href: "/#insights", desc: "Case reviews of critical web leaks.", icon: <Shield className="w-4 h-4" /> }
             ]
           }
         ]
@@ -128,15 +130,15 @@ export default function Navbar() {
     },
     {
       label: "Company",
-      href: "#contact",
+      href: "/#contact",
       megaMenu: {
         blurb: "13 years of uninterrupted cyber defense led by a stable, veteran engineering cohort.",
         sections: [
           {
             title: "About Us",
             items: [
-              { name: "Corporate Overview", href: "#contact", desc: "13 years breach-free engineering.", icon: <Layers className="w-4 h-4" /> },
-              { name: "Certifications Strip", href: "#certifications", desc: "Empanelled and audited credentials.", icon: <CheckSquare className="w-4 h-4" /> }
+              { name: "Corporate Overview", href: "/#contact", desc: "13 years breach-free engineering.", icon: <Layers className="w-4 h-4" /> },
+              { name: "Certifications Strip", href: "/#certifications", desc: "Empanelled and audited credentials.", icon: <CheckSquare className="w-4 h-4" /> }
             ]
           }
         ]
@@ -165,13 +167,16 @@ export default function Navbar() {
       >
         <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex items-center justify-between">
           {/* Logo */}
-          <a href="#" className="flex items-center z-50 text-text-primary" data-cursor="link">
-            <img
+          <Link href="/" className="flex items-center z-50 text-text-primary" data-cursor="link">
+            <Image
               src="https://d2ghx8biuioax8.cloudfront.net/main-website-images/entersoftLogo.svg"
-              alt="Entersoft"
+              alt="Entersoft Security Logo"
+              width={110}
+              height={22}
               className="h-5.5 w-auto object-contain"
+              priority
             />
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-8">
@@ -271,7 +276,7 @@ export default function Navbar() {
           {/* Right Button Action & Theme Toggle */}
           <div className="hidden lg:flex items-center gap-4">
             {!isAppSecPage && <ThemeToggle />}
-            <Button variant="primary" size="sm" asLink href="#contact">
+            <Button variant="primary" size="sm" asLink href="/#contact">
               Request Briefing
             </Button>
           </div>
@@ -358,7 +363,7 @@ export default function Navbar() {
                 size="md"
                 className="w-full"
                 asLink
-                href="#contact"
+                href="/#contact"
                 onClick={toggleMobileMenu}
               >
                 Request Briefing

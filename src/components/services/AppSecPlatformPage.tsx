@@ -8,11 +8,16 @@ import MagneticButton from "../ui/MagneticButton";
 import SectionLabel from "../ui/SectionLabel";
 import ServiceBreadcrumb from "./ServiceBreadcrumb";
 import ServiceCTA from "./ServiceCTA";
+import ServiceFAQ from "./ServiceFAQ";
+import Link from "next/link";
+import Image from "next/image";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useSmoothScroll } from "@/components/layout/SmoothScrollProvider";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import RubiksCube3D from "./RubiksCube3D";
+import dynamic from "next/dynamic";
+
+const RubiksCube3D = dynamic(() => import("./RubiksCube3D"), { ssr: false });
 import { animate, stagger } from "animejs";
 
 // ==========================================
@@ -1402,7 +1407,7 @@ function InteractiveTour() {
             How it works in practice
           </h2>
           <p className="text-[12px] md:text-sm text-[var(--text-secondary)] font-sans max-w-[600px] leading-relaxed">
-            Entersoft detects, validates, and helps remediate hundreds of software flaws. Click or hover on a vulnerability category below to audit our specific approaches.
+            Entersoft detects, validates, and helps remediate hundreds of software flaws. Click or hover on a vulnerability category below to audit our specific <Link href="/services/vapt" className="text-[var(--accent)] hover:underline">penetration testing</Link> and application security approaches.
           </p>
         </div>
 
@@ -1506,7 +1511,11 @@ function InteractiveTour() {
 // ==========================================
 // MAIN FLAGSHIP COMPONENT WRAPPER
 // ==========================================
-export default function AppSecPlatformPage() {
+interface AppSecPlatformPageProps {
+  faqs: { question: string; answer: string }[];
+}
+
+export default function AppSecPlatformPage({ faqs }: AppSecPlatformPageProps) {
   const [isMounted, setIsMounted] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const transitionRef = useRef<HTMLDivElement>(null);
@@ -1863,9 +1872,11 @@ export default function AppSecPlatformPage() {
             <div className="absolute inset-x-0 top-0 h-[25%] bg-gradient-to-b from-[#060606] to-transparent z-10 pointer-events-none" />
             <div className="absolute inset-0 bg-[#060606]/15 z-10 pointer-events-none mix-blend-multiply" />
 
-            <img
+            <Image
               src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80"
               alt="Cyber threat mapping server scan illustration"
+              fill
+              sizes="(max-w-lg) 100vw, 48vw"
               className="w-full h-full object-cover opacity-35 lg:opacity-75 group-hover:opacity-90 transition-all duration-700 select-none pointer-events-none"
             />
           </div>
@@ -1889,7 +1900,7 @@ export default function AppSecPlatformPage() {
                 </span>
               </p>
               <p className="text-[clamp(18px,2vw,22px)] font-sans font-semibold text-zinc-400 leading-snug">
-                Continuous discovery unlocks automated application defense.
+                Continuous discovery unlocks automated <Link href="/services/managed-cloud-security" className="text-[var(--accent)] hover:underline">managed cloud security</Link> and application defense.
               </p>
             </div>
           </div>
@@ -1926,7 +1937,7 @@ export default function AppSecPlatformPage() {
             
             <div className="mt-6 flex flex-col gap-4 select-none">
               <p className="text-[clamp(18px,2vw,22px)] font-sans font-semibold text-[#F6F5F0] leading-snug">
-                AI models find threat candidates.{" "}
+                Our <Link href="/services/ai-ast" className="text-[var(--accent)] hover:underline">AI-powered application security testing</Link> models find threat candidates.{" "}
                 <span className="underline decoration-2 decoration-[var(--accent)] underline-offset-8">
                   We audit them.
                 </span>
@@ -1978,7 +1989,7 @@ export default function AppSecPlatformPage() {
               Continuous Validation & Proof of Remediation
             </h2>
             <p className="text-[11px] md:text-[12.5px] text-[var(--text-secondary)] font-sans leading-relaxed select-none">
-              We execute automated attacks against staging and prod environments to verify patches and seal security compliance.
+              We execute automated attacks against staging and prod environments to verify patches and seal <Link href="/services/compliance-management" className="text-[var(--accent)] hover:underline">compliance management</Link> standards.
             </p>
 
             {/* Visual Step Cards */}
@@ -2052,7 +2063,7 @@ export default function AppSecPlatformPage() {
               Application Security Across Your CI/CD Pipeline
             </h2>
             <p className="text-[12px] md:text-sm text-[var(--text-secondary)] font-sans leading-relaxed mt-2">
-              Sync audits automatically. Entersoft webhook configurations feed finding logs natively into Azure DevOps, GitHub Actions, Jira pipelines, and ServiceNow dashboards.
+              Sync audits automatically. Entersoft webhook configurations feed finding logs natively into Azure DevOps, GitHub Actions, Jira pipelines, and <Link href="/services/siem" className="text-[var(--accent)] hover:underline">managed SIEM & monitoring</Link> dashboards.
             </p>
           </div>
           <div className="w-full flex justify-center lg:justify-end">
@@ -2067,6 +2078,11 @@ export default function AppSecPlatformPage() {
           INTERACTIVE TOUR SECTION (Torq-style)
           ========================================== */}
       <InteractiveTour />
+
+      {/* ==========================================
+          FAQ SECTION
+          ========================================== */}
+      <ServiceFAQ faqs={faqs} isAccordion={true} />
 
       {/* ==========================================
           CTA CLOSE SECTION

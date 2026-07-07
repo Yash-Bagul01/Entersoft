@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { Shield, ArrowUp, Zap, ZapOff } from "lucide-react";
 import { Button } from "../ui/Button";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function Footer() {
   const [motionActive, setMotionActive] = useState(true);
@@ -44,42 +46,42 @@ export default function Footer() {
     {
       title: "Services",
       links: [
-        { name: "VAPT Audit Services", href: "#services" },
-        { name: "CI/CD AppSec", href: "#services" },
-        { name: "Managed Cloud Security", href: "#services" },
-        { name: "Smart Contract Audits", href: "#services" },
-        { name: "Managed SIEM & Monitoring", href: "#services" },
-        { name: "AI AST Testing", href: "#services" }
+        { name: "VAPT Audit Services", href: "/#services" },
+        { name: "CI/CD AppSec", href: "/#services" },
+        { name: "Managed Cloud Security", href: "/#services" },
+        { name: "Smart Contract Audits", href: "/#services" },
+        { name: "Managed SIEM & Monitoring", href: "/#services" },
+        { name: "AI AST Testing", href: "/#services" }
       ]
     },
     {
       title: "Solutions",
       links: [
-        { name: "Fintech Compliance", href: "#case-studies" },
-        { name: "RBI Cybersecurity Audits", href: "#case-studies" },
-        { name: "M&A Security Due Diligence", href: "#case-studies" },
-        { name: "Supply Chain Code Protection", href: "#case-studies" },
-        { name: "DeFi Protocol Verification", href: "#services" }
+        { name: "Fintech Compliance", href: "/#case-studies" },
+        { name: "RBI Cybersecurity Audits", href: "/#case-studies" },
+        { name: "M&A Security Due Diligence", href: "/#case-studies" },
+        { name: "Supply Chain Code Protection", href: "/#case-studies" },
+        { name: "DeFi Protocol Verification", href: "/#services" }
       ]
     },
     {
       title: "Resources",
       links: [
-        { name: "Threat Briefings", href: "#insights" },
-        { name: "CrowdStrike Workarounds", href: "#insights" },
-        { name: "Vulnerability Toolkits", href: "#insights" },
-        { name: "Whitepapers", href: "#insights" },
-        { name: "Incident Documentation", href: "#insights" }
+        { name: "Threat Briefings", href: "/#insights" },
+        { name: "CrowdStrike Workarounds", href: "/#insights" },
+        { name: "Vulnerability Toolkits", href: "/#insights" },
+        { name: "Whitepapers", href: "/#insights" },
+        { name: "Incident Documentation", href: "/#insights" }
       ]
     },
     {
       title: "Company",
       links: [
-        { name: "About Entersoft", href: "#contact" },
-        { name: "Staff Cohort", href: "#contact" },
-        { name: "Certifications", href: "#certifications" },
-        { name: "Careers", href: "#contact" },
-        { name: "Contact Threat Desk", href: "#contact" }
+        { name: "About Entersoft", href: "/#contact" },
+        { name: "Staff Cohort", href: "/#contact" },
+        { name: "Certifications", href: "/#certifications" },
+        { name: "Careers", href: "/#contact" },
+        { name: "Contact Threat Desk", href: "/#contact" }
       ]
     }
   ];
@@ -92,9 +94,11 @@ export default function Footer() {
           {/* Brand Info Column */}
           <div className="col-span-2 flex flex-col justify-between gap-6 md:pr-12">
             <div className="flex flex-col gap-4">
-              <img
+              <Image
                 src="https://d2ghx8biuioax8.cloudfront.net/main-website-images/entersoftLogo.svg"
-                alt="Entersoft"
+                alt="Entersoft Security Logo"
+                width={120}
+                height={24}
                 className="h-6 w-auto object-contain self-start"
               />
               <p className="text-[12px] leading-relaxed max-w-[320px]">
@@ -157,9 +161,9 @@ export default function Footer() {
             <span className="text-[var(--text-tertiary)]">|</span>
             <span className="text-[var(--text-tertiary)]">EST. 2013</span>
             <span className="text-[var(--text-tertiary)]">|</span>
-            <a href="#privacy" className="hover:text-[#F6F5F0] transition-colors" data-cursor="link">Privacy Policy</a>
+            <Link href="/#privacy" className="hover:text-[#F6F5F0] transition-colors" data-cursor="link">Privacy Policy</Link>
             <span className="text-[var(--text-tertiary)]">|</span>
-            <a href="#terms" className="hover:text-[#F6F5F0] transition-colors" data-cursor="link">Terms of Service</a>
+            <Link href="/#terms" className="hover:text-[#F6F5F0] transition-colors" data-cursor="link">Terms of Service</Link>
           </div>
 
           <div className="flex items-center gap-4">
