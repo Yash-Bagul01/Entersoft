@@ -4,7 +4,12 @@ import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { animate } from "animejs";
 
-export default function RubiksCube3D() {
+export interface RubiksCube3DProps {
+  glowColor?: number;
+  radialBgClass?: string;
+}
+
+export default function RubiksCube3D({ glowColor = 0x00a3ff, radialBgClass = "bg-[var(--accent)]/15" }: RubiksCube3DProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -183,10 +188,10 @@ export default function RubiksCube3D() {
           mainGroup.add(mesh);
           cubes.push(mesh);
 
-          // Add a thin cyber-glow wire outline for each block (Cyan/blue glowing accent lines)
+          // Add a thin cyber-glow wire outline for each block (Dynamic glowing accent lines)
           const edges = new THREE.EdgesGeometry(geometry);
           const lineMat = new THREE.LineBasicMaterial({
-            color: 0x00a3ff, // High-contrast glowing cyan outline
+            color: glowColor,
             transparent: true,
             opacity: 0.4, // Balanced opacity for nice digital outline
           });
@@ -349,7 +354,7 @@ export default function RubiksCube3D() {
       ref={containerRef}
       className="w-full h-full min-h-[450px] md:min-h-[550px] lg:min-h-[600px] flex items-center justify-center relative select-none"
     >
-      <div className="absolute w-[320px] h-[320px] rounded-full bg-[var(--accent)]/15 blur-[90px] pointer-events-none" />
+      <div className={`absolute w-[320px] h-[320px] rounded-full blur-[90px] pointer-events-none ${radialBgClass}`} />
       <canvas
         ref={canvasRef}
         className="w-full h-full outline-none cursor-grab active:cursor-grabbing"

@@ -7,14 +7,16 @@ import SectionLabel from "../ui/SectionLabel";
 interface ServiceProcessProps {
   steps: ProcessStep[];
   layoutType?: "vertical" | "horizontal-timeline";
+  id?: string;
 }
 
 export default function ServiceProcess({
   steps,
   layoutType = "vertical",
+  id,
 }: ServiceProcessProps) {
   return (
-    <section className="relative w-full bg-[var(--bg-primary)] px-6 md:px-12 py-20 md:py-28 overflow-hidden border-b border-[var(--border-subtle)]">
+    <section id={id} className="relative w-full bg-[var(--bg-primary)] px-6 md:px-12 py-20 md:py-28 overflow-hidden border-b border-[var(--border-subtle)]">
       <div className="max-w-[1400px] w-full mx-auto flex flex-col gap-12 md:gap-16">
         <div>
           <SectionLabel color="secondary">ENGAGEMENT PROCESS</SectionLabel>

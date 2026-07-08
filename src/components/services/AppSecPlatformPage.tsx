@@ -441,7 +441,7 @@ function FindVisual() {
 function ValidateVisual() {
   return (
     <div 
-      className="relative w-full aspect-[4/3] max-w-[540px] flex items-center justify-center select-none pointer-events-none"
+      className="relative w-full aspect-[4/3] max-w-[320px] sm:max-w-[420px] lg:max-w-[540px] mx-auto flex items-center justify-center select-none pointer-events-none mt-12 sm:mt-16 lg:mt-0"
     >
       {/* Astronaut Character (Space Theme 3D element) */}
       <motion.div 
@@ -1782,6 +1782,20 @@ export default function AppSecPlatformPage({ faqs }: AppSecPlatformPageProps) {
                   Secure every release with continuous application security testing for web, API, and mobile applications - from vulnerability discovery to verified remediation.
                 </motion.p>
               </div>
+
+              {/* Mobile/Tablet CTA Button */}
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
+                className="mt-8 flex lg:hidden"
+              >
+                <MagneticButton>
+                  <Button variant="primary" size="lg" asLink href="/#contact" className="gap-2">
+                    Request Briefing <ArrowRight className="w-3.5 h-3.5" />
+                  </Button>
+                </MagneticButton>
+              </motion.div>
             </div>
 
             {/* Right Column: 3D Rubik's Cube */}
@@ -1922,12 +1936,12 @@ export default function AppSecPlatformPage({ faqs }: AppSecPlatformPageProps) {
 
         <div className="max-w-[1400px] w-full mx-auto grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-12 lg:gap-16 items-center relative z-10">
           {/* Left Column: Premium box-like illustration with liquid splash distortion reveal on hover */}
-          <div className="w-full flex justify-start order-2 lg:order-1">
+          <div className="w-full flex justify-center lg:justify-start order-2 lg:order-1">
             <ValidateVisual />
           </div>
 
           {/* Right Column: Abnormal-style High-Contrast Large Typography */}
-          <div className="flex flex-col gap-4 max-w-[640px] order-1 lg:order-2 z-10">
+          <div className="flex flex-col gap-4 max-w-[640px] order-1 lg:order-2 z-10 pb-6 lg:pb-0">
             <span className="font-mono text-[10px] font-bold text-[var(--accent)] tracking-[0.25em] uppercase select-none">
               THE CAPABILITY // VALIDATE
             </span>
