@@ -14,8 +14,11 @@ export default function ServicesLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const currentSlug = pathname.split("/").pop() || "";
+  const pathSegments = pathname.split("/").filter(Boolean);
+  const currentSlug = pathSegments[pathSegments.length - 1] || "";
   const currentKey = getServiceKeyFromSlug(currentSlug);
+
+  const noPadding = currentSlug === "vapt" || currentSlug === "appsec";
 
   // Get the other six services
   const otherServices = Object.values(servicePagesData).filter(
@@ -25,9 +28,9 @@ export default function ServicesLayout({
   return (
     <>
       <Navbar />
-      <div className="w-full bg-[var(--bg-primary)] min-h-[80vh] flex flex-col justify-between pt-16 md:pt-20">
+      <div className={`w-full bg-[var(--bg-primary)] min-h-[80vh] flex flex-col justify-between ${noPadding ? "" : "pt-16 md:pt-20"}`}>
         {/* Spacer to push content down under the fixed header */}
-        <div className="flex-1 flex flex-col pt-12">
+        <div className={`flex-1 flex flex-col ${noPadding ? "" : "pt-12"}`}>
           {children}
         </div>
 

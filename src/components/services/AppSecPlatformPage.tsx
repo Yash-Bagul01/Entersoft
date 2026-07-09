@@ -1701,10 +1701,8 @@ export default function AppSecPlatformPage({ faqs }: AppSecPlatformPageProps) {
         {/* Canvas particle stream */}
         {isMounted && <HeroCanvas />}
 
-        {/* Top bar with Breadcrumbs */}
-        <div className="w-full max-w-[1400px] mx-auto px-6 lg:px-12 pt-10 relative z-20">
-          <ServiceBreadcrumb />
-        </div>
+        {/* Top bar spacer */}
+        <div className="w-full max-w-[1400px] mx-auto px-6 lg:px-12 pt-10 relative z-20" />
 
         {/* Main headline text and Rubik's Cube */}
         <div className="w-full max-w-[1400px] mx-auto px-6 lg:px-12 flex items-center justify-between h-full relative z-20">

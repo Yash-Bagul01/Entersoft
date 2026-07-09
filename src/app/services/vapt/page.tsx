@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import * as THREE from "three";
 import VAPTHero from "@/components/services/VAPTHero";
-import VAPTVisual from "@/components/services/visuals/VAPTVisual";
 import ServiceCTA from "@/components/services/ServiceCTA";
 import SectionLabel from "@/components/ui/SectionLabel";
 import { servicePagesData } from "@/data/services";
@@ -35,42 +36,462 @@ function FAQAccordionItem({ question, answer, isOpen, onToggle }: { question: st
   );
 }
 
+interface ThreeCanvasProps {
+  color: number;
+  type: "globe" | "knot" | "shield";
+}
+
+function ThreeCanvas({ color, type }: ThreeCanvasProps) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    if (!canvasRef.current) return;
+
+    const canvas = canvasRef.current;
+    const rect = canvas.getBoundingClientRect();
+    const width = rect.width || 250;
+    const height = rect.height || 333;
+
+    // Create scene
+    const scene = new THREE.Scene();
+
+    // Centered Camera straight on Z-axis to prevent off-center visibility issues
+    const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 100);
+    camera.position.set(0, 0, 5.0);
+    camera.lookAt(0, 0, 0);
+
+    // Renderer
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      antialias: true,
+      alpha: true,
+      powerPreference: "high-performance",
+    });
+    renderer.setSize(width, height, false);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // --- High-Intensity Lighting Rig ---
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
+    scene.add(ambientLight);
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 2.5);
+    dirLight.position.set(0, 0, 4);
+    scene.add(dirLight);
+
+    // Core point light to illuminate custom mesh faces intensely
+    const pointLight = new THREE.PointLight(color, 4.0, 10);
+    pointLight.position.set(0, 0, 0.8);
+    scene.add(pointLight);
+
+    // Parent group
+    const mainGroup = new THREE.Group();
+    scene.add(mainGroup);
+
+    let updateAnimation: (time: number) => void = () => {};
+
+    if (type === "globe") {
+      // Phase 1: Interactive 3D Cyber DNA Double Helix (Organic Code Chain)
+      const helixGroup = new THREE.Group();
+      mainGroup.add(helixGroup);
+
+      const strandCount = 22;
+      const sphereGeo = new THREE.SphereGeometry(0.12, 16, 16);
+      const sphereMat1 = new THREE.MeshStandardMaterial({ color, roughness: 0.1, metalness: 0.9, emissive: color, emissiveIntensity: 0.8 });
+      const sphereMat2 = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.1, metalness: 0.9, emissive: color, emissiveIntensity: 0.4 });
+      
+      const lineMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.35 });
+
+      const strandAMeshes: THREE.Mesh[] = [];
+      const strandBMeshes: THREE.Mesh[] = [];
+      const connectorLines: THREE.Line[] = [];
+
+      for (let i = 0; i < strandCount; i++) {
+        const meshA = new THREE.Mesh(sphereGeo, sphereMat1);
+        const meshB = new THREE.Mesh(sphereGeo, sphereMat2);
+        helixGroup.add(meshA);
+        helixGroup.add(meshB);
+        strandAMeshes.push(meshA);
+        strandBMeshes.push(meshB);
+
+        // Connector line
+        const dummyGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3()]);
+        const line = new THREE.Line(dummyGeo, lineMat);
+        helixGroup.add(line);
+        connectorLines.push(line);
+      }
+
+      updateAnimation = (time) => {
+        helixGroup.rotation.y = time * 0.45;
+        helixGroup.rotation.x = Math.sin(time * 0.2) * 0.15;
+
+        for (let i = 0; i < strandCount; i++) {
+          const t = (i / strandCount) * Math.PI * 3.5 + time * 0.8;
+          const y = (i / strandCount) * 2.8 - 1.4;
+
+          const xA = Math.cos(t) * 0.8;
+          const zA = Math.sin(t) * 0.8;
+          strandAMeshes[i].position.set(xA, y, zA);
+
+          const xB = -Math.cos(t) * 0.8;
+          const zB = -Math.sin(t) * 0.8;
+          strandBMeshes[i].position.set(xB, y, zB);
+
+          // Update connector line vertices
+          const points = [strandAMeshes[i].position, strandBMeshes[i].position];
+          connectorLines[i].geometry.setFromPoints(points);
+        }
+      };
+    } else if (type === "knot") {
+      // Phase 2: 3D Undulating Wave Grid (Cyber Terrain Scanner)
+      const waveGroup = new THREE.Group();
+      mainGroup.add(waveGroup);
+
+      const cols = 14;
+      const rows = 14;
+      const spacing = 0.2;
+      const startX = -((cols - 1) * spacing) / 2;
+      const startY = -((rows - 1) * spacing) / 2;
+
+      const sphereGeo = new THREE.SphereGeometry(0.065, 12, 12);
+      const sphereMat = new THREE.MeshStandardMaterial({ 
+        color, 
+        roughness: 0.1, 
+        metalness: 0.9, 
+        emissive: color, 
+        emissiveIntensity: 0.9 
+      });
+
+      const gridPoints: THREE.Mesh[][] = [];
+
+      for (let c = 0; c < cols; c++) {
+        gridPoints[c] = [];
+        for (let r = 0; r < rows; r++) {
+          const mesh = new THREE.Mesh(sphereGeo, sphereMat);
+          const x = startX + c * spacing;
+          const y = startY + r * spacing;
+          mesh.position.set(x, y, 0);
+          waveGroup.add(mesh);
+          gridPoints[c][r] = mesh;
+        }
+      }
+
+      // Beautiful tilted orientation for depth
+      waveGroup.rotation.x = -Math.PI / 3.4;
+      waveGroup.rotation.y = Math.PI / 12;
+      waveGroup.rotation.z = Math.PI / 7;
+
+      updateAnimation = (time) => {
+        // Organic undulating terrain coordinates
+        for (let c = 0; c < cols; c++) {
+          for (let r = 0; r < rows; r++) {
+            const mesh = gridPoints[c][r];
+            if (mesh) {
+              const dx = c - cols / 2;
+              const dy = r - rows / 2;
+              const dist = Math.sqrt(dx * dx + dy * dy) * 0.35;
+              mesh.position.z = Math.sin(time * 1.5 + dist) * 0.45;
+            }
+          }
+        }
+        // slow rotation of the whole plane
+        waveGroup.rotation.z = Math.PI / 7 + Math.sin(time * 0.1) * 0.15;
+      };
+    } else {
+      // Phase 3: 3D Swarming Quantum Orb (Active Security Core)
+      const swarmGroup = new THREE.Group();
+      mainGroup.add(swarmGroup);
+
+      // Central physical locking nucleus
+      const coreGeo = new THREE.DodecahedronGeometry(0.55, 0);
+      const coreMat = new THREE.MeshPhysicalMaterial({
+        color: 0x0f172a,
+        metalness: 0.98,
+        roughness: 0.1,
+        clearcoat: 1.0,
+        emissive: color,
+        emissiveIntensity: 0.35
+      });
+      const core = new THREE.Mesh(coreGeo, coreMat);
+      swarmGroup.add(core);
+
+      const particleCount = 40;
+      const particleGeo = new THREE.SphereGeometry(0.08, 12, 12);
+      const particleMat = new THREE.MeshStandardMaterial({ 
+        color, 
+        roughness: 0.2, 
+        metalness: 0.85, 
+        emissive: color, 
+        emissiveIntensity: 0.9 
+      });
+
+      const particles: { mesh: THREE.Mesh; angle: number; radius: number; speed: number; yOffset: number }[] = [];
+
+      for (let i = 0; i < particleCount; i++) {
+        const mesh = new THREE.Mesh(particleGeo, particleMat);
+        const radius = 0.85 + Math.random() * 0.85;
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 0.008 + Math.random() * 0.012;
+        const yOffset = (Math.random() - 0.5) * 1.6;
+
+        mesh.position.set(Math.cos(angle) * radius, yOffset, Math.sin(angle) * radius);
+        swarmGroup.add(mesh);
+
+        particles.push({ mesh, angle, radius, speed, yOffset });
+      }
+
+      updateAnimation = (time) => {
+        core.rotation.y = time * 0.6;
+        core.rotation.x = time * 0.3;
+
+        // Pulse the core size
+        const coreScale = 0.95 + Math.sin(time * 2.5) * 0.1;
+        core.scale.set(coreScale, coreScale, coreScale);
+
+        // Orbit the satellite particles swarming around the core
+        particles.forEach((p) => {
+          p.angle += p.speed;
+          p.mesh.position.x = Math.cos(p.angle) * p.radius;
+          p.mesh.position.z = Math.sin(p.angle) * p.radius;
+          p.mesh.position.y = p.yOffset + Math.sin(p.angle * 2.5) * 0.15;
+        });
+
+        swarmGroup.rotation.y = time * 0.15;
+      };
+    }
+
+    // Animation Loop
+    let animationFrameId: number;
+    const animate = () => {
+      animationFrameId = requestAnimationFrame(animate);
+      const time = Date.now() * 0.0012;
+      updateAnimation(time);
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    // Resize Handler
+    const handleResize = () => {
+      const w = canvas.clientWidth || 250;
+      const h = canvas.clientHeight || 333;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h, false);
+    };
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener("resize", handleResize);
+      renderer.dispose();
+      
+      // Dispose geometries & materials
+      scene.traverse((object) => {
+        if (!(object instanceof THREE.Mesh)) return;
+        object.geometry.dispose();
+        if (Array.isArray(object.material)) {
+          object.material.forEach((mat) => mat.dispose());
+        } else {
+          object.material.dispose();
+        }
+      });
+    };
+  }, [color, type]);
+
+  return <canvas ref={canvasRef} className="w-full h-full block bg-transparent" />;
+}
+
+const pipelineSteps = [
+  {
+    key: 0,
+    step: "01",
+    titleLine1: "DISCOVERY & SURFACE",
+    titleLine2: "BOUNDARY DIAGNOSTIC",
+    descLines: [
+      "WE CATALOG AND ANALYZE EXPOSED BOUNDARIES",
+      "TO IDENTIFY GATEWAY THREAT SHADOWS.",
+      "EVERY ENTRY POINT IS ACTIVELY MAPPED",
+      "BEFORE DEEPER LOGIC EXPLOIT STAGES BEGIN."
+    ],
+    color: 0x06b6d4, // Cyan
+    type: "globe" as const,
+    colorClass: "text-cyan-400",
+    glowBorderColor: "rgba(6, 182, 212, 0.25)"
+  },
+  {
+    key: 1,
+    step: "02",
+    titleLine1: "CREDENTIALED LOGIC",
+    titleLine2: "PENETRATION & TESTING",
+    descLines: [
+      "WE SIMULATE AUTHENTICATED THREAT SCENARIOS.",
+      "TESTING API PRIVILEGES AND GATEWAY ACLS",
+      "TO UNCOVER CRITICAL DATA ACCESS VECTORS",
+      "THAT AUTOMATED SCANNING SYSTEMS MISS."
+    ],
+    color: 0xf59e0b, // Amber
+    type: "knot" as const,
+    colorClass: "text-amber-500",
+    glowBorderColor: "rgba(245, 158, 11, 0.25)"
+  },
+  {
+    key: 2,
+    step: "03",
+    titleLine1: "REMEDIATION SIGNATURE",
+    titleLine2: "& RETEST SIGN-OFF",
+    descLines: [
+      "WE DELIVER COMPLETE EXPLOIT PROOF SCRIPTS.",
+      "SUPPORTING REMEDIATION RE-AUDITS FOR 90 DAYS",
+      "TO CONFIRM FULL ARCHITECTURE STABILITY",
+      "AND PROVABLE THREAT MITIGATION SIGN-OFF."
+    ],
+    color: 0x10b981, // Emerald
+    type: "shield" as const,
+    colorClass: "text-emerald-500",
+    glowBorderColor: "rgba(16, 185, 129, 0.25)"
+  }
+];
+
+function ScrollRevealItem({ 
+  step, 
+  titleLine1, 
+  titleLine2, 
+  descLines, 
+  color, 
+  type,
+  colorClass, 
+  glowBorderColor,
+  idx
+}: { 
+  step: string; 
+  titleLine1: string; 
+  titleLine2: string; 
+  descLines: string[]; 
+  color: number;
+  type: "globe" | "knot" | "shield";
+  colorClass: string; 
+  glowBorderColor: string; 
+  idx: number;
+}) {
+  const itemRef = useRef<HTMLDivElement>(null);
+  
+  // Track scroll progress of this card relative to viewport
+  const { scrollYProgress } = useScroll({
+    target: itemRef,
+    offset: ["start end", "end start"]
+  });
+
+  // GSAP-grade scroll-linked scale-down and opacity fades for both entry and exit
+  const scale = useTransform(scrollYProgress, [0, 0.45, 0.55, 1], [0.95, 1, 1, 0.95]);
+  const opacity = useTransform(scrollYProgress, [0, 0.4, 0.6, 1], [0.7, 1, 1, 0.7]);
+  
+  // Title animations: slide-up on entry, fade-out on exit
+  const titleY = useTransform(scrollYProgress, [0, 0.45], [40, 0]);
+  const titleOpacity = useTransform(scrollYProgress, [0.15, 0.4, 0.6, 0.85], [0, 1, 1, 0]);
+
+  // Description animations: slide-up and fade
+  const descY = useTransform(scrollYProgress, [0.1, 0.48], [30, 0]);
+  const descOpacity = useTransform(scrollYProgress, [0.2, 0.48, 0.6, 0.85], [0, 1, 1, 0]);
+
+  // Image animations: inner-crop zoom and parallax position y-shift
+  const imageScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.15, 1.0, 1.15]);
+  const imageY = useTransform(scrollYProgress, [0, 1], [-20, 20]);
+
+  return (
+    <motion.div 
+      ref={itemRef} 
+      style={{ 
+        scale, 
+        opacity,
+        zIndex: 10 + idx,
+      }}
+      className="sticky top-0 w-full h-[100vh] h-[100dvh] flex flex-col items-center justify-center bg-[#030712] overflow-hidden select-none border-b border-zinc-950/60"
+    >
+      {/* Background tech grids */}
+      <div className="absolute inset-0 w-full h-full opacity-30 pointer-events-none z-0">
+        <div className="absolute inset-0 bg-radial-gradient bg-[radial-gradient(circle_at_center,rgba(6,182,212,0.015)_0%,transparent_80%)]" />
+        <div className="absolute inset-0 flex justify-between px-12">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="w-[1px] h-full bg-zinc-900/15" />
+          ))}
+        </div>
+      </div>
+
+      <div className="relative z-10 flex flex-col items-center justify-between h-[80%] max-h-[580px] w-full px-6 max-w-[1200px] mx-auto text-center">
+        
+        {/* Phase Label & Bold Condensed Title (detroit.paris style) */}
+        <motion.div 
+          style={{ y: titleY, opacity: titleOpacity }}
+          className="flex flex-col items-center"
+        >
+          <span className={`font-mono text-[9px] font-bold tracking-[0.25em] ${colorClass} mb-4`}>
+            PHASE {step} // PIPELINE
+          </span>
+          <h2 className="font-display uppercase text-center text-4xl sm:text-5xl md:text-[3.8rem] lg:text-[4.4rem] font-extrabold tracking-tighter leading-[0.85] text-white max-w-[850px] mx-auto">
+            {titleLine1}<br/>{titleLine2}
+          </h2>
+        </motion.div>
+
+        {/* Image: Centered, vertical aspect ratio (aspect-[3/4]) */}
+        <div 
+          className="w-[190px] sm:w-[220px] md:w-[250px] aspect-[3/4] rounded-lg overflow-hidden border bg-zinc-950/40 backdrop-blur-sm shadow-[0_20px_50px_rgba(0,0,0,0.9)] transition-colors duration-500 relative flex items-center justify-center p-2"
+          style={{ borderColor: glowBorderColor }}
+        >
+          <motion.div 
+            className="w-full h-full relative"
+            style={{ scale: imageScale, y: imageY }}
+          >
+            <ThreeCanvas color={color} type={type} />
+            <div className="absolute inset-0 bg-scanlines opacity-[0.02] pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
+          </motion.div>
+        </div>
+
+        {/* Description paragraph centered lines */}
+        <motion.div 
+          style={{ y: descY, opacity: descOpacity }}
+          className="flex flex-col items-center gap-2 md:gap-2.5 max-w-[780px] px-4"
+        >
+          {descLines.map((line, lIdx) => (
+            <p 
+              key={lIdx} 
+              className="font-mono text-[10.5px] sm:text-[12px] md:text-[13px] uppercase tracking-[0.18em] leading-normal text-zinc-300 font-medium"
+            >
+              {line}
+            </p>
+          ))}
+        </motion.div>
+
+      </div>
+
+      <style dangerouslySetInnerHTML={{__html: `
+        .bg-scanlines {
+          background: linear-gradient(
+            rgba(18, 16, 16, 0) 50%,
+            rgba(0, 0, 0, 0.25) 50%
+          ), linear-gradient(
+            90deg,
+            rgba(255, 0, 0, 0.06),
+            rgba(0, 255, 0, 0.02),
+            rgba(0, 0, 255, 0.06)
+          );
+          background-size: 100% 4px, 6px 100%;
+        }
+      `}} />
+    </motion.div>
+  );
+}
+
 export default function VAPTPage() {
   const data = servicePagesData.vapt;
   const canonicalUrl = getCanonicalUrl(ROUTES.services.vapt);
 
-  // Active step index driven by scroll intersection & hover
-  const [activeStep, setActiveStep] = useState(0);
-
   // FAQ accordion state
   const [openFaqIdx, setOpenFaqIdx] = useState<number | null>(0);
 
-  // IntersectionObserver to detect scroll intersections
   useEffect(() => {
-    const observerOptions = {
-      root: null,
-      rootMargin: "-30% 0px -30% 0px", // triggers when element reaches middle 40% of viewport
-      threshold: 0.15
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const idxAttr = entry.target.getAttribute("data-step-idx");
-          if (idxAttr !== null) {
-            setActiveStep(parseInt(idxAttr, 10));
-          }
-        }
-      });
-    }, observerOptions);
-
-    const stepElements = document.querySelectorAll(".vapt-step-item");
-    stepElements.forEach((el) => observer.observe(el));
-
-    return () => {
-      stepElements.forEach((el) => observer.unobserve(el));
-      observer.disconnect();
-    };
+    // Force dark theme on this page only
+    document.documentElement.setAttribute("data-theme", "dark");
   }, []);
 
   const jsonLd = {
@@ -208,142 +629,166 @@ export default function VAPTPage() {
                 num: "0%",
                 title: "FALSE POSITIVES",
                 desc: "Every logic vulnerability is manually validated by security leads, eliminating automated scanner noise.",
-                icon: <CheckCircle className="w-5 h-5 text-[#BD00FF]" />
+                accentColor: "cyan",
+                colorClass: "text-cyan-400",
+                glowColor: "#06b6d4",
+                borderGlow: "rgba(6, 182, 212, 0.25)",
+                borderTop: "border-t-cyan-500/70",
+                hoverBorder: "hover:border-cyan-500/40",
+                icon: <CheckCircle className="w-5 h-5 text-cyan-400" />,
+                hud: (
+                  <div className="relative w-full h-14 bg-black/40 rounded border border-white/5 overflow-hidden font-mono text-[9px] p-2 text-zinc-500 flex flex-col justify-between select-none">
+                    <div className="flex justify-between items-center text-cyan-400 font-bold">
+                      <span>[ NOISE FILTER: ACTIVE ]</span>
+                      <span className="animate-pulse">0% FALSE</span>
+                    </div>
+                    <div className="w-full h-1 bg-zinc-900 rounded-full overflow-hidden relative">
+                      <motion.div 
+                        className="absolute top-0 bottom-0 left-0 bg-cyan-500" 
+                        animate={{ width: ["0%", "100%", "100%", "0%"] }}
+                        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                      />
+                    </div>
+                    <div className="flex justify-between text-[8px] text-zinc-600">
+                      <span>SCAN NOISE: 0.00%</span>
+                      <span>VALIDATION: 100%</span>
+                    </div>
+                  </div>
+                )
               },
               {
                 num: "100%",
                 title: "EXPLOIT PROOFS",
                 desc: "We provide Proof of Concept videos and exploit scripts proving target vulnerability impact.",
-                icon: <ShieldAlert className="w-5 h-5 text-[#BD00FF]" />
+                accentColor: "amber",
+                colorClass: "text-amber-500",
+                glowColor: "#f59e0b",
+                borderGlow: "rgba(245, 158, 11, 0.25)",
+                borderTop: "border-t-amber-500/70",
+                hoverBorder: "hover:border-amber-500/40",
+                icon: <ShieldAlert className="w-5 h-5 text-amber-500" />,
+                hud: (
+                  <div className="relative w-full h-14 bg-black/40 rounded border border-white/5 overflow-hidden font-mono text-[9px] p-2 text-zinc-500 flex flex-col justify-between select-none">
+                    <div className="flex justify-between items-center text-amber-500 font-bold">
+                      <span>[ POC SHELL EXPLOIT ]</span>
+                      <span className="animate-pulse">SUCCESS</span>
+                    </div>
+                    <div className="text-[8px] text-amber-500/80 leading-none truncate">
+                      $ ./exploit_payload.sh --target internal_api
+                    </div>
+                    <div className="flex justify-between items-center text-[8px] text-zinc-600">
+                      <span>VULN: <span className="text-emerald-500 font-bold">[CONFIRMED]</span></span>
+                      <span>ACCURACY: 100%</span>
+                    </div>
+                  </div>
+                )
               },
               {
                 num: "90-DAY",
                 title: "RETEST PERIOD",
                 desc: "Get unlimited retesting of patch updates within 90 days to verify configuration stability.",
-                icon: <BadgeAlert className="w-5 h-5 text-[#BD00FF]" />
+                accentColor: "emerald",
+                colorClass: "text-emerald-500",
+                glowColor: "#10b981",
+                borderGlow: "rgba(16, 185, 129, 0.25)",
+                borderTop: "border-t-emerald-500/70",
+                hoverBorder: "hover:border-emerald-500/40",
+                icon: <BadgeAlert className="w-5 h-5 text-emerald-500" />,
+                hud: (
+                  <div className="relative w-full h-14 bg-black/40 rounded border border-white/5 overflow-hidden font-mono text-[9px] p-2 text-zinc-500 flex flex-col justify-between select-none">
+                    <div className="flex justify-between items-center text-emerald-500 font-bold">
+                      <span>[ RETEST WINDOW ]</span>
+                      <span className="animate-pulse">STANDBY</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[8px] text-zinc-500">COVERAGE</span>
+                      <div className="flex gap-0.5">
+                        {[...Array(12)].map((_, i) => (
+                          <motion.div 
+                            key={i} 
+                            className="w-1 h-1.5 bg-emerald-500" 
+                            animate={{ opacity: [0.3, 1, 0.3] }}
+                            transition={{ duration: 1.5, delay: i * 0.1, repeat: Infinity }}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                    <div className="flex justify-between text-[8px] text-zinc-600">
+                      <span>CYCLE: 90 DAYS</span>
+                      <span>RETESTS: UNLIMITED</span>
+                    </div>
+                  </div>
+                )
               }
             ].map((stat, idx) => (
-              <div 
+              <motion.div 
                 key={idx} 
-                className="group p-8 flex flex-col gap-6 text-left rounded-lg border border-zinc-800/80 bg-zinc-900/[0.15] backdrop-blur-md transition-all duration-300 hover:border-[#BD00FF]/40 border-t-2 hover:border-t-2 border-t-[#BD00FF]/60 hover:border-t-[#BD00FF]"
+                whileHover={{ y: -8, scale: 1.015 }}
+                transition={{ type: "spring", stiffness: 350, damping: 25 }}
+                className={`group p-6 md:p-8 flex flex-col justify-between text-left rounded-xl border border-zinc-800/80 bg-zinc-900/[0.12] backdrop-blur-md transition-all duration-300 ${stat.hoverBorder} border-t-2 ${stat.borderTop} relative overflow-hidden`}
+                style={{
+                  boxShadow: `0 15px 30px -15px rgba(0,0,0,0.8)`
+                }}
               >
-                <div className="flex justify-between items-center w-full">
-                  <span className="font-display text-4xl md:text-5xl font-bold text-white tracking-tight leading-none">
-                    {stat.num}
-                  </span>
-                  <div className="p-2 rounded-full bg-[#BD00FF]/5 border border-[#BD00FF]/20 text-[#BD00FF]">
-                    {stat.icon}
+                {/* Background ambient glow inside each card */}
+                <div 
+                  className="absolute w-[180px] h-[180px] rounded-full blur-[80px] -bottom-10 -right-10 opacity-0 group-hover:opacity-20 transition-opacity duration-500 pointer-events-none"
+                  style={{
+                    background: `radial-gradient(circle, ${stat.glowColor} 0%, transparent 70%)`
+                  }}
+                />
+
+                <div className="flex flex-col gap-6">
+                  <div className="flex justify-between items-center w-full relative z-10">
+                    <span className={`font-display text-4xl md:text-5xl font-extrabold tracking-tight leading-none text-white`}>
+                      {stat.num}
+                    </span>
+                    <div 
+                      className="p-2 rounded-xl border bg-black/60 transition-colors"
+                      style={{ borderColor: stat.borderGlow }}
+                    >
+                      {stat.icon}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-2 relative z-10">
+                    <h3 className="font-mono text-xs font-bold text-zinc-300 uppercase tracking-widest leading-none">
+                      {stat.title}
+                    </h3>
+                    <p className="font-sans text-xs text-zinc-400 leading-relaxed min-h-[54px]">
+                      {stat.desc}
+                    </p>
                   </div>
                 </div>
-                <div className="flex flex-col gap-2">
-                  <h3 className="font-mono text-xs font-bold text-zinc-300 uppercase tracking-widest leading-none">
-                    {stat.title}
-                  </h3>
-                  <p className="font-sans text-xs text-zinc-400 leading-relaxed">
-                    {stat.desc}
-                  </p>
+
+                {/* Cyber HUD Mini Graph Visual */}
+                <div className="w-full mt-6 relative z-10">
+                  {stat.hud}
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
 
         </div>
       </section>
 
-      {/* SECTION 2: Sui DeFi-Style Pipeline Flow (with dynamic stacking cards on the right) */}
-      <section id="vapt-pipeline" className="relative w-full bg-[#030712] px-6 md:px-12 py-24 md:py-32 border-b border-zinc-900 overflow-hidden">
-        <div className="absolute right-[5%] bottom-[5%] w-[500px] h-[500px] rounded-full bg-gradient-to-br from-[#BD00FF]/3 to-transparent blur-[120px] pointer-events-none z-0" />
-        
-        <div className="max-w-[1400px] w-full mx-auto grid grid-cols-1 lg:grid-cols-[1.25fr_0.75fr] gap-12 lg:gap-16 items-center relative z-10">
-          
-          {/* Left Column: Technical pipeline nodes connected by laser paths */}
-          <div className="flex flex-col gap-12 text-left">
-            <div className="flex flex-col gap-3">
-              <SectionLabel color="secondary">02 / PIPELINE FLOW</SectionLabel>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-medium uppercase text-white tracking-tight">
-                Project Process
-              </h2>
-            </div>
-
-            {/* Pipeline items */}
-            <div className="flex flex-col gap-8 relative pl-12">
-              {/* Vertical connector line */}
-              <div className="absolute top-0 bottom-0 left-[11px] w-[1px] bg-zinc-800" />
-              
-              {/* Laser track indicator inside the vertical path */}
-              <div className="absolute top-0 bottom-0 left-[11px] w-[2px] overflow-hidden pointer-events-none">
-                <div 
-                  className="absolute w-[2px] h-[120px] bg-gradient-to-b from-transparent via-[#BD00FF] to-transparent top-0 animate-laser-v" 
-                  style={{ 
-                    animationDuration: "4s",
-                    animationIterationCount: "infinite",
-                    animationTimingFunction: "linear"
-                  }} 
-                />
-              </div>
-
-              {[
-                {
-                  step: "01",
-                  title: "Scope & Surface Discovery",
-                  desc: "We catalog and analyze exposed boundaries, endpoints, firewalls, and direct public gateway endpoints."
-                },
-                {
-                  step: "02",
-                  title: "Credentialed Logic Penetration",
-                  desc: "We attempt privilege escalation, cross-tenant leaks, session hijacks, and code level vulnerabilities to prove impact."
-                },
-                {
-                  step: "03",
-                  title: "Signature & Retest Signoff",
-                  desc: "We deliver full Proof of Concept exploits, configure a detailed remediation roadmap, and retest patches."
-                }
-              ].map((item, idx) => {
-                const isActive = activeStep === idx;
-                
-                // Color accent styling mapping
-                let activeBubbleBorder = "border-zinc-800 text-zinc-500";
-                let activeTitleClass = "text-zinc-400 group-hover:text-zinc-200";
-                if (isActive) {
-                  if (idx === 0) {
-                    activeBubbleBorder = "border-cyan-500 text-cyan-400 shadow-[0_0_12px_rgba(6,182,212,0.2)]";
-                    activeTitleClass = "text-cyan-400";
-                  } else if (idx === 1) {
-                    activeBubbleBorder = "border-amber-500 text-amber-500 shadow-[0_0_12px_rgba(245,158,11,0.2)]";
-                    activeTitleClass = "text-amber-500";
-                  } else if (idx === 2) {
-                    activeBubbleBorder = "border-emerald-500 text-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.2)]";
-                    activeTitleClass = "text-emerald-500";
-                  }
-                }
-
-                return (
-                  <div 
-                    key={idx} 
-                    data-step-idx={idx}
-                    onMouseEnter={() => setActiveStep(idx)}
-                    className="vapt-step-item relative flex flex-col gap-2 group cursor-pointer py-1"
-                  >
-                    {/* Glowing bubble anchor along the line */}
-                    <div className={`absolute left-[-56px] top-1.5 w-6 h-6 rounded-full border bg-zinc-950 flex items-center justify-center font-mono text-[9px] font-bold transition-all duration-500 z-10 ${activeBubbleBorder}`}>
-                      {item.step}
-                    </div>
-                    <h3 className={`font-display text-lg font-medium transition-colors duration-300 ${activeTitleClass}`}>
-                      {item.title}
-                    </h3>
-                    <p className={`font-sans text-xs transition-colors duration-300 leading-relaxed max-w-[500px] ${isActive ? "text-zinc-300" : "text-zinc-500"}`}>
-                      {item.desc}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Right Column: VAPTVisual selector showing Scroll Stacking Card Deck */}
-          <div className="w-full flex justify-center lg:justify-end">
-            <VAPTVisual activeStep={activeStep} />
-          </div>
+      {/* SECTION 2: Pipeline Flow (Detroit.paris styled vertical stack reveal) */}
+      <section id="vapt-pipeline" className="relative w-full bg-[#030712] border-b border-zinc-900 overflow-visible z-30">
+        <div className="relative w-full flex flex-col">
+          {pipelineSteps.map((stepData, idx) => (
+            <ScrollRevealItem 
+              key={idx}
+              step={stepData.step}
+              titleLine1={stepData.titleLine1}
+              titleLine2={stepData.titleLine2}
+              descLines={stepData.descLines}
+              color={stepData.color}
+              type={stepData.type}
+              colorClass={stepData.colorClass}
+              glowBorderColor={stepData.glowBorderColor}
+              idx={idx}
+            />
+          ))}
         </div>
       </section>
 
@@ -388,6 +833,31 @@ export default function VAPTPage() {
 
       {/* CTA Footer */}
       <ServiceCTA />
+
+      {/* SECTION 4: Interactive Giant VAPT Footer (detroit.paris styled) */}
+      <footer className="relative w-full bg-[#030712] overflow-hidden select-none pb-0 border-t border-zinc-900/40">
+        <style dangerouslySetInnerHTML={{ __html: `
+          @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+        ` }} />
+        
+        <div className="max-w-[1400px] w-full mx-auto flex flex-col items-center justify-end relative h-[18vw] min-h-[120px] max-h-[260px] overflow-hidden">
+          {/* Giant VAPT text container */}
+          <div className="relative w-full flex justify-center overflow-visible top-[2vw]">
+            <motion.h1 
+              initial={{ y: "35%", color: "#27272a" }} // zinc-800
+              whileHover={{ y: "0%", color: "#ffffff" }} // white
+              transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+              className="font-display font-extrabold uppercase tracking-tighter cursor-pointer text-[22vw] leading-none select-none origin-bottom text-center"
+              style={{
+                fontFamily: "'Playfair Display', Georgia, serif",
+                lineHeight: "0.8"
+              }}
+            >
+              VAPT
+            </motion.h1>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }
