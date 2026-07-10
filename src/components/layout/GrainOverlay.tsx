@@ -3,7 +3,7 @@ import React from "react";
 export default function GrainOverlay() {
   return (
     <div
-      className="fixed inset-0 z-[9999] pointer-events-none opacity-[0.03] mix-blend-overlay"
+      className="grain-overlay fixed inset-0 z-[9999] pointer-events-none opacity-[0.03] mix-blend-overlay"
       aria-hidden="true"
     >
       <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">

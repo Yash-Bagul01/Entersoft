@@ -41,7 +41,7 @@ export default function CustomCursor() {
       />
       {/* Outer trailing ring - slower LERP speed + scale */}
       <div
-        className={`custom-cursor-ring custom-cursor-ring--${hoverType}`}
+        className={`custom-cursor custom-cursor-ring custom-cursor-ring--${hoverType}`}
         style={{
           transform: `translate3d(${coords.outerX}px, ${coords.outerY}px, 0) translate(-50%, -50%) scale(${coords.scale})`,
         }}

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&display=swap');
+
 @import "tailwindcss";
 @import "../styles/tokens.css";
 
@@ -16,6 +18,7 @@
   
   --font-sans: var(--font-body);
   --font-display: var(--font-heading);
+  --font-serif: var(--font-serif, Georgia, serif);
   --font-mono: var(--font-mono);
 
   --animate-cell-ripple: cell-ripple var(--duration, 200ms) ease-out none 1 var(--delay, 0ms);
@@ -421,4 +424,26 @@ body:has(.service-row:hover) .custom-cursor-ring {
   background-color: rgba(246, 245, 240, 0.75) !important; /* Soft, warm bone background tint */
   border-color: var(--text-primary) !important; /* Premium dark border highlight */
 }
+
+/* Managed Cloud Security V2 Specific Styles */
+[data-grain-heavy] .grain-overlay {
+  opacity: 0.055 !important;
+}
+
+[data-page='cloud-security'] {
+  --font-body: 'Schibsted Grotesk', sans-serif;
+  --font-heading: 'Fraunces', Georgia, serif;
+  --font-serif: 'Fraunces', Georgia, serif;
+}
+
+[data-page='cloud-security'] .custom-cursor-dot {
+  opacity: 0 !important;
+  display: none !important;
+}
+
+[data-page='cloud-security'] .custom-cursor-ring {
+  background: rgba(245, 245, 245, 0.25) !important;
+  border-color: #F5F5F5 !important;
+}
+
 

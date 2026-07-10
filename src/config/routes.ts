@@ -33,7 +33,7 @@ export function getServiceKeyFromSlug(slug: string): string {
     return "appsec";
   }
   if (slug === SERVICE_SLUGS.vapt || slug === "vapt") return "vapt";
-  if (slug === SERVICE_SLUGS.cloud || slug === "managed-cloud-security") return "managed-cloud-security";
+  if (slug === SERVICE_SLUGS.cloud || slug === "managed-cloud-security" || slug === "cloud") return "managed-cloud-security";
   if (slug === SERVICE_SLUGS.compliance || slug === "compliance-management") return "compliance-management";
   if (slug === SERVICE_SLUGS.siem || slug === "siem") return "siem";
   if (slug === SERVICE_SLUGS.smartContract || slug === "smart-contract-audits") return "smart-contract-audits";
