@@ -213,7 +213,7 @@ export default function ThreatWaveform() {
           isVisible = entry.isIntersecting;
           if (isVisible && !wasVisible) {
             // Restart loop
-            lastRenderTime = document.timeline ? document.timeline.currentTime as number : Date.now();
+            lastRenderTime = performance.now();
             animationFrameId = requestAnimationFrame(render);
           }
         });

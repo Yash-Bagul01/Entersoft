@@ -34,7 +34,7 @@ export default function S4_Waveform({ sectionRef, stickyRef }: SectionProps) {
           >
             &lt;15 min
           </span>
-          <span className="font-mono text-[9px] sm:text-xs tracking-[0.2em] text-[rgba(245,245,245,0.45)] uppercase mt-4 text-center">
+          <span className="font-mono text-[9px] sm:text-xs tracking-[0.2em] text-[rgba(245,245,245,0.45)] uppercase mt-4 text-center block max-w-full px-4 leading-loose">
             mean triage time · confirmed cloud threat · senior analyst reviewed
           </span>
         </div>

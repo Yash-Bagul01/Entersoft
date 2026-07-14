@@ -55,7 +55,7 @@ export default function S3_ForceGraph({ sectionRef, stickyRef }: SectionProps) {
           </span>
 
           <h2
-            className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold uppercase tracking-tight leading-tight"
+            className="font-serif text-2xl sm:text-4xl md:text-5xl font-bold uppercase tracking-tight leading-tight"
             style={{ letterSpacing: "-0.015em" }}
           >
             {data.statement}
@@ -68,7 +68,7 @@ export default function S3_ForceGraph({ sectionRef, stickyRef }: SectionProps) {
             </span>
           </div>
 
-          <p className="font-sans text-xs md:text-sm text-[rgba(245,245,245,0.5)] leading-relaxed max-w-[400px]">
+          <p className="font-sans text-[11px] sm:text-xs md:text-sm text-[rgba(245,245,245,0.5)] leading-relaxed max-w-[400px]">
             {data.detail}
           </p>
         </div>

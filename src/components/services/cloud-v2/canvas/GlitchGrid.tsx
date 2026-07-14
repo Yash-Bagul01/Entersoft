@@ -123,7 +123,7 @@ export default function GlitchGrid({ onTallyChange }: { onTallyChange?: (tally: 
     }
 
     let animationFrameId: number;
-    let startTime = document.timeline ? document.timeline.currentTime as number : Date.now();
+    let startTime = performance.now();
     let isVisible = true;
     let laserY = -50;
 
@@ -229,7 +229,7 @@ export default function GlitchGrid({ onTallyChange }: { onTallyChange?: (tally: 
           isVisible = entry.isIntersecting;
           if (isVisible && !wasVisible && isInView) {
             // Restart loop when returning to viewport
-            startTime = document.timeline ? document.timeline.currentTime as number : Date.now();
+            startTime = performance.now();
             animationFrameId = requestAnimationFrame(render);
           }
         });

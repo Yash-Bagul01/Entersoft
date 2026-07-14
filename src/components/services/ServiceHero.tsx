@@ -27,6 +27,19 @@ export default function ServiceHero({
   col2Description,
   col3Metadata,
 }: ServiceHeroProps) {
+  const [fwText, setFwText] = React.useState("ISO 27001");
+
+  React.useEffect(() => {
+    if (heroLayoutType !== "compliance") return;
+    const list = ["ISO 27001", "SOC 2 TYPE II", "GDPR CONTROLS", "PCI-DSS 4.0", "HIPAA RULES"];
+    let idx = 0;
+    const interval = setInterval(() => {
+      idx = (idx + 1) % list.length;
+      setFwText(list[idx]);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [heroLayoutType]);
+
   const textRevealVariants = {
     hidden: { y: "100%" },
     visible: { y: 0, transition: { duration: 1.1, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } },
@@ -48,10 +61,30 @@ export default function ServiceHero({
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,163,255,0.015)_0%,transparent_70%)] pointer-events-none animate-pulse duration-[8000ms]" />
       )}
 
-      {/* Compliance background typographic element */}
+      {/* Compliance background typographic element with floating drift and cross-fade */}
       {heroLayoutType === "compliance" && (
-        <div className="absolute inset-0 z-0 opacity-[0.03] select-none pointer-events-none font-mono text-[90px] md:text-[180px] font-bold flex justify-center items-center overflow-hidden text-[var(--text-primary)]">
-          ISO 27001
+        <div className="absolute inset-0 z-0 select-none pointer-events-none flex justify-center items-center overflow-hidden w-full h-full">
+          <motion.div
+            key={fwText}
+            initial={{ opacity: 0, scale: 0.96, rotate: -0.5 }}
+            animate={{ 
+              opacity: 0.1, 
+              scale: 1, 
+              rotate: 0,
+              y: [0, -12, 8, 0],
+              x: [0, 8, -8, 0],
+            }}
+            exit={{ opacity: 0, scale: 1.04, rotate: 0.5 }}
+            transition={{
+              opacity: { duration: 1.5, ease: "easeInOut" },
+              scale: { duration: 1.5, ease: "easeInOut" },
+              y: { duration: 24, repeat: Infinity, ease: "easeInOut" },
+              x: { duration: 20, repeat: Infinity, ease: "easeInOut" },
+            }}
+            className="font-mono text-[65px] sm:text-[90px] md:text-[180px] font-bold text-[var(--text-primary)] text-center leading-none"
+          >
+            {fwText}
+          </motion.div>
         </div>
       )}
 
@@ -125,13 +158,29 @@ contract DeFiBridge {
 
             {/* Display Headline */}
             <h1 className="text-[clamp(1.8rem,4vw,3.2rem)] font-display font-medium leading-[1.1] tracking-[-0.02em] text-[var(--text-primary)] uppercase text-left whitespace-pre-line">
-              {title.split("\n").map((line, idx) => (
-                <span key={idx} className="block overflow-hidden pb-[0.05em]">
-                  <motion.span variants={textRevealVariants} className="block">
-                    {line}
-                  </motion.span>
-                </span>
-              ))}
+              {heroLayoutType === "compliance" ? (
+                title.split("\n").map((line, idx) => (
+                  <span key={idx} className="block overflow-hidden pb-[0.05em]">
+                    <motion.span
+                      variants={{
+                        hidden: { opacity: 0, y: 15, scale: 1.02 },
+                        visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } }
+                      }}
+                      className="block"
+                    >
+                      {line}
+                    </motion.span>
+                  </span>
+                ))
+              ) : (
+                title.split("\n").map((line, idx) => (
+                  <span key={idx} className="block overflow-hidden pb-[0.05em]">
+                    <motion.span variants={textRevealVariants} className="block">
+                      {line}
+                    </motion.span>
+                  </span>
+                ))
+              )}
             </h1>
 
             {/* Col 3 Metadata Tags */}
@@ -198,6 +247,26 @@ contract DeFiBridge {
             )}
           </div>
         </div>
+        
+        {heroLayoutType === "compliance" && (
+          <div className="w-full border-t border-[var(--border-subtle)] mt-16 pt-8 flex flex-wrap justify-between items-center gap-x-8 gap-y-4 font-mono text-[9px] font-bold uppercase tracking-wider text-[var(--text-secondary)] select-none relative z-20">
+            <div className="flex items-center gap-2">
+              <span>600+ AUDITS COMPLETED</span>
+            </div>
+            <span className="hidden md:inline text-zinc-800">|</span>
+            <div className="flex items-center gap-2">
+              <span>13 YEARS SECURITY OPERATIONS</span>
+            </div>
+            <span className="hidden md:inline text-zinc-800">|</span>
+            <div className="flex items-center gap-2">
+              <span>0 BREACHES RECORDED</span>
+            </div>
+            <span className="hidden md:inline text-zinc-800">|</span>
+            <div className="flex items-center gap-2">
+              <span className="text-[var(--accent)]">100% REGISTRAR PASS RATE</span>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

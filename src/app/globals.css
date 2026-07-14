@@ -446,4 +446,28 @@ body:has(.service-row:hover) .custom-cursor-ring {
   border-color: #F5F5F5 !important;
 }
 
+/* Compliance Management Subpage Specific Styles */
+[data-page='compliance-security'] {
+  --bg-primary: #060606 !important;
+  --bg-elevated: #0f0f0f !important;
+  --border-subtle: rgba(255, 255, 255, 0.08) !important;
+  --text-primary: #f6f5f0 !important;
+  --text-secondary: #9c9c97 !important;
+  --text-tertiary: #5e5e5a !important;
+  --accent: #CCFF33 !important;
+  --accent-dim: rgba(204, 255, 51, 0.15) !important;
+  --accent-hover: #e6ff80 !important;
+}
+
+[data-page='compliance-security'] .custom-cursor-dot {
+  background: #CCFF33 !important;
+  width: 5px !important;
+  height: 5px !important;
+}
+
+[data-page='compliance-security'] .custom-cursor-ring {
+  border-color: #CCFF33 !important;
+}
+
+
 
