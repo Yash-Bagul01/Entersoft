@@ -39,16 +39,16 @@ export default function S3_ForceGraph({ sectionRef, stickyRef }: SectionProps) {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full h-screen h-[100dvh] bg-[#080808] text-[#F5F5F5] overflow-hidden select-none z-10"
+      className="relative w-full min-h-screen lg:h-screen lg:h-[100dvh] bg-[#080808] text-[#F5F5F5] overflow-hidden select-none z-10"
     >
       <div
         ref={stickyRef}
-        className="w-full h-full flex flex-col lg:flex-row items-center px-6 md:px-[8%] relative z-20"
+        className="w-full h-full flex flex-col lg:flex-row items-center px-6 md:px-[8%] py-20 lg:py-0 gap-8 lg:gap-0 relative z-20"
       >
         {/* Left statement column */}
         <div 
           ref={contentRef}
-          className="w-full lg:w-[40%] flex flex-col gap-6 text-left items-start z-30 pt-16 lg:pt-0"
+          className="w-full lg:w-[40%] flex flex-col gap-6 text-left items-start z-30 pt-4 lg:pt-0"
         >
           <span className="font-mono text-xs font-bold text-[rgba(245,245,245,0.4)] tracking-[0.2em]">
             {data.label}
@@ -74,7 +74,7 @@ export default function S3_ForceGraph({ sectionRef, stickyRef }: SectionProps) {
         </div>
 
         {/* Right visual column */}
-        <div className="w-full lg:w-[60%] h-[55%] lg:h-full flex flex-col items-center justify-center relative">
+        <div className="w-full lg:w-[60%] h-[360px] sm:h-[420px] lg:h-full flex flex-col items-center justify-center relative">
           <div className="w-full flex-1 max-h-[380px]">
             <ForceGraph />
           </div>

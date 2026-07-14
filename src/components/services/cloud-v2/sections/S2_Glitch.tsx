@@ -46,11 +46,11 @@ export default function S2_Glitch({ sectionRef, stickyRef }: SectionProps) {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full h-screen h-[100dvh] bg-[#080808] text-[#F5F5F5] overflow-hidden select-none z-10"
+      className="relative w-full min-h-screen lg:h-screen lg:h-[100dvh] bg-[#080808] text-[#F5F5F5] overflow-hidden select-none z-10"
     >
       <div
         ref={stickyRef}
-        className="w-full h-full flex flex-col justify-center items-center relative overflow-hidden"
+        className="w-full h-full flex flex-col justify-center items-center relative overflow-hidden py-20 lg:py-0"
       >
         {/* Full-bleed scanned grid background */}
         <div className="absolute inset-0 z-0 opacity-45 pointer-events-none">

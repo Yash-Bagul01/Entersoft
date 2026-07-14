@@ -55,7 +55,9 @@ export default function CloudPageRoot() {
 
     gsap.registerPlugin(ScrollTrigger);
 
-    const ctx = gsap.context(() => {
+    let mm = gsap.matchMedia();
+
+    mm.add("(min-width: 1024px)", () => {
       // S0 (Hero) -> S1 (Particle), scale: true
       if (s1Ref.current && s0Ref.current) {
         createStackTransition(s1Ref.current, s0Ref.current, { scale: true });
@@ -83,7 +85,7 @@ export default function CloudPageRoot() {
     });
 
     return () => {
-      ctx.revert();
+      mm.revert();
     };
   }, [isReduced]);
 

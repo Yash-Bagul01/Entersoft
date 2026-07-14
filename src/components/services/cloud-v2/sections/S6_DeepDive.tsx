@@ -94,7 +94,7 @@ export default function S6_DeepDive() {
           </div>
 
           {/* Typographic tabs */}
-          <div className="flex gap-8 relative items-center">
+          <div className="flex flex-wrap gap-4 sm:gap-8 relative items-center w-full md:w-auto">
             {tabs.map((tab) => {
               const isActive = activeTab === tab;
               return (

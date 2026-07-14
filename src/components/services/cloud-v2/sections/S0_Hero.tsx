@@ -63,17 +63,17 @@ export default function S0_Hero({ sectionRef, stickyRef }: SectionProps) {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full h-screen h-[100dvh] bg-[#080808] text-[#F5F5F5] overflow-hidden select-none z-10"
+      className="relative w-full min-h-screen lg:h-screen lg:h-[100dvh] bg-[#080808] text-[#F5F5F5] overflow-hidden select-none z-10"
     >
       <div
         ref={stickyRef}
-        className="w-full h-full flex flex-col justify-between items-center relative overflow-hidden"
+        className="w-full min-h-screen lg:h-full flex flex-col justify-between items-center relative overflow-hidden"
       >
         {/* Animated breathing static noise background */}
         <NoiseField />
 
         {/* Top spacer to keep content clear of the fixed global navbar */}
-        <div className="h-32 w-full z-20 shrink-0" />
+        <div className="h-24 md:h-32 w-full z-20 shrink-0" />
 
         {/* Hero Copy */}
         <div className="flex-1 flex flex-col justify-center items-center text-center px-6 z-20 relative gap-4">
@@ -113,7 +113,7 @@ export default function S0_Hero({ sectionRef, stickyRef }: SectionProps) {
         </div>
 
         {/* Empty bottom spacing to maintain clean symmetrical margins */}
-        <div className="h-20" />
+        <div className="h-10 md:h-20" />
       </div>
     </section>
   );

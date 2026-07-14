@@ -98,11 +98,11 @@ export default function S5_Typographic({ sectionRef, stickyRef }: SectionProps) 
   return (
     <section
       ref={sectionRef}
-      className="relative w-full h-screen h-[100dvh] bg-[#080808] text-[#F5F5F5] overflow-hidden select-none z-10"
+      className="relative w-full min-h-screen lg:h-screen lg:h-[100dvh] bg-[#080808] text-[#F5F5F5] overflow-hidden select-none z-10"
     >
       <div
         ref={stickyRef}
-        className="w-full h-full flex flex-col justify-center items-center relative overflow-hidden px-6"
+        className="w-full h-full flex flex-col justify-center items-center relative overflow-hidden px-6 py-20 lg:py-0"
       >
         {/* Above Stack Tagline */}
         <span className="font-mono text-[9px] sm:text-[10px] tracking-[0.2em] text-[rgba(245,245,245,0.4)] uppercase text-center mb-8 block max-w-full px-4 leading-loose">
@@ -114,7 +114,7 @@ export default function S5_Typographic({ sectionRef, stickyRef }: SectionProps) 
           {frameworks.map((fw, idx) => (
             <div
               key={fw.name}
-              className={`font-serif font-bold text-3xl sm:text-6xl md:text-[5.5rem] lg:text-[7.8rem] tracking-tighter ${fw.opacityClass} select-none relative`}
+              className={`font-serif font-bold text-3xl sm:text-6xl md:text-[5.5rem] lg:text-[7.8rem] tracking-tighter ${fw.opacityClass} select-none relative whitespace-nowrap`}
               style={{ 
                 letterSpacing: "-0.025em",
                 textShadow: fw.opacityClass === "text-[#F5F5F5]" ? "0 0 35px rgba(245,245,245,0.22)" : "none"
