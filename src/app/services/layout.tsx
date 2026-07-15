@@ -18,7 +18,7 @@ export default function ServicesLayout({
   const currentSlug = pathSegments[pathSegments.length - 1] || "";
   const currentKey = getServiceKeyFromSlug(currentSlug);
 
-  const noPadding = currentSlug === "vapt" || currentSlug === "appsec" || currentSlug === "managed-cloud-security" || currentSlug === "compliance-management";
+  const noPadding = currentSlug === "vapt" || currentSlug === "appsec" || currentSlug === "managed-cloud-security" || currentSlug === "compliance-management" || currentSlug === "smart-contract-audits";
 
   // Get the other six services
   const otherServices = Object.values(servicePagesData).filter(
