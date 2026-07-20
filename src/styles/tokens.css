@@ -12,6 +12,7 @@
   --text-tertiary: #9c9c97;
   
   --accent: #0077c8;
+  --accent-neon: var(--accent);
   --accent-dim: rgba(0, 119, 200, 0.12);
   --accent-hover: #005fa0;
   
@@ -38,6 +39,7 @@
   --text-tertiary: #5e5e5a;
   
   --accent: #00A3FF;
+  --accent-neon: var(--accent);
   --accent-dim: rgba(0, 163, 255, 0.4);
   --accent-hover: #33b5ff;
 }

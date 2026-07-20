@@ -6,7 +6,7 @@ import CompliancePageRoot from "@/components/services/compliance-v2/CompliancePa
 const canonicalUrl = getCanonicalUrl(ROUTES.services.compliance);
 
 export const metadata: Metadata = {
-  title: "Compliance Management | Entersoft Security",
+  title: "Digital Trust | Entersoft Security",
   description: "Achieve audit readiness for ISO 27001, GDPR, CERT-In, RBI guidelines, and SOC 2. We guide you through policy drafting, internal validation runs, and auditor liaison.",
   alternates: {
     canonical: canonicalUrl,
@@ -44,7 +44,7 @@ export default function CompliancePage() {
         "@type": "WebPage",
         "@id": `${canonicalUrl}/#webpage`,
         "url": canonicalUrl,
-        "name": "Compliance Management | Entersoft Security",
+        "name": "Digital Trust | Entersoft Security",
         "description": "Achieve audit readiness for ISO 27001, GDPR, CERT-In, RBI guidelines, and SOC 2. We guide you through policy drafting, internal validation runs, and auditor liaison.",
         "inLanguage": "en",
         "isPartOf": {
@@ -60,8 +60,8 @@ export default function CompliancePage() {
       {
         "@type": "Service",
         "@id": `${canonicalUrl}/#service`,
-        "name": "Compliance Management",
-        "serviceType": "Security Compliance Consulting & Audits",
+        "name": "Digital Trust",
+        "serviceType": "Digital Trust",
         "provider": {
           "@id": `${APP_URL}/#organization`
         },
@@ -85,7 +85,7 @@ export default function CompliancePage() {
           {
             "@type": "ListItem",
             "position": 2,
-            "name": "Compliance Management",
+            "name": "Digital Trust",
             "item": canonicalUrl
           }
         ]

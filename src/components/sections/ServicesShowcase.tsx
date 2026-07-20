@@ -1,408 +1,425 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { services, ServiceItem } from "@/data/services";
-import SectionLabel from "../ui/SectionLabel";
+import { services, Service } from "@/data/services";
 import { gsap } from "gsap";
-import { ArrowRight } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import { getServiceRoute } from "@/config/routes";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import ServiceHoverCard from "../ui/ServiceHoverCard";
 
-const getServiceHref = (id: string) => {
-  return getServiceRoute(id);
-};
+// useTextScramble character-scramble hook
+function useTextScramble(text: string, trigger: boolean) {
+  const [display, setDisplay] = useState(text);
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  
+  useEffect(() => {
+    const prefersReducedMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) {
+      setDisplay(text);
+      return;
+    }
+    if (!trigger) {
+      setDisplay(text);
+      return;
+    }
+    let iteration = 0;
+    const totalFrames = text.length * 2;
+    const interval = setInterval(() => {
+      setDisplay(
+        text.split("").map((char, i) => {
+          if (char === " ") return " ";
+          if (i < iteration / 2) return text[i];
+          return chars[Math.floor(Math.random() * chars.length)];
+        }).join("")
+      );
+      if (iteration >= totalFrames) {
+        clearInterval(interval);
+        setDisplay(text);
+      }
+      iteration++;
+    }, 18);
+    return () => clearInterval(interval);
+  }, [trigger, text]);
+  
+  return display;
+}
 
-// Unique premium neon colors for each cybersecurity service
-const getServiceColor = (id: string) => {
-  switch (id) {
-    case "appsec": return "#00A3FF"; // Neon Blue
-    case "vapt": return "#BD00FF"; // Neon Purple
-    case "cloud": return "#00FF85"; // Neon Emerald Green
-    case "compliance": return "#FFB800"; // Neon Gold
-    case "siem": return "#FF3E3E"; // Neon Red-Orange
-    case "smart-contract": return "#FF007A"; // Neon Pink
-    case "ai-ast": return "#00F0FF"; // Neon Ice Blue/Cyan
-    default: return "#00A3FF";
-  }
-};
+interface ServiceRowProps {
+  service: Service;
+  index: number;
+  isActive: boolean;
+  isFinePointer: boolean;
+  onHover: (service: Service | null) => void;
+}
 
-const getServiceImage = (id: string) => {
-  switch (id) {
-    case "appsec":
-      return "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?q=80&w=800&auto=format&fit=crop";
-    case "vapt":
-      return "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop";
-    case "cloud":
-      return "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop";
-    case "compliance":
-      return "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=800&auto=format&fit=crop";
-    case "siem":
-      return "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop";
-    case "smart-contract":
-      return "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=800&auto=format&fit=crop";
-    case "ai-ast":
-      return "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=800&auto=format&fit=crop";
-    default:
-      return "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?q=80&w=800&auto=format&fit=crop";
-  }
-};
+function ServiceRow({ service, index, isActive, isFinePointer, onHover }: ServiceRowProps) {
+  const router = useRouter();
+  const rowRef = useRef<HTMLDivElement>(null);
+  const scrambledName = useTextScramble(service.displayName, isActive);
+  
+  useEffect(() => {
+    const rowEl = rowRef.current;
+    if (!rowEl) return;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+    
+    const yTo = gsap.quickTo(rowEl, "y", { duration: 0.4, ease: "power3.out" });
+    
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = rowEl.getBoundingClientRect();
+      const relY = e.clientY - (rect.top + rect.height / 2);
+      yTo(relY * 0.06); // 6% of distance
+    };
+    
+    const handleMouseLeave = () => {
+      yTo(0);
+    };
+    
+    rowEl.addEventListener("mousemove", handleMouseMove);
+    rowEl.addEventListener("mouseleave", handleMouseLeave);
+    
+    return () => {
+      rowEl.removeEventListener("mousemove", handleMouseMove);
+      rowEl.removeEventListener("mouseleave", handleMouseLeave);
+    };
+  }, []);
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      if (!isActive) {
+        e.preventDefault();
+        onHover(service);
+      } else {
+        router.push(service.route);
+      }
+    } else if (e.key === "Escape") {
+      onHover(null);
+    }
+  };
+
+  const handleFocus = () => {
+    onHover(service);
+  };
+
+  const handleBlur = () => {
+    onHover(null);
+  };
+
+  const content = (
+    <div 
+      ref={rowRef}
+      role="listitem"
+      aria-label={`${service.displayName} — ${service.hoverCardHeading}`}
+      aria-expanded={isActive ? "true" : "false"}
+      tabIndex={0}
+      onMouseEnter={() => isFinePointer && onHover(service)}
+      onMouseLeave={() => isFinePointer && onHover(null)}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
+      onKeyDown={handleKeyDown}
+      onClick={() => {
+        router.push(service.route);
+      }}
+      className={`service-row group relative w-full flex flex-col sm:flex-row sm:items-center justify-between border-b border-[var(--border-subtle)] cursor-pointer select-none transition-all duration-200 ease-out py-5 sm:py-0 h-auto sm:h-[64px] lg:h-[80px] px-4 md:px-6 overflow-visible ${
+        isActive ? "bg-[rgba(0,163,255,0.04)]" : "bg-transparent"
+      }`}
+      data-cursor="card"
+    >
+      {/* Active neon left border indicator */}
+      <div 
+        className="absolute left-0 top-0 bottom-0 w-[2px] bg-[var(--accent)] transition-opacity duration-150" 
+        style={{ opacity: isActive ? 1 : 0 }} 
+      />
+
+      {/* Animating borders */}
+      {index === 0 && (
+        <div className="service-row-border absolute top-0 left-0 right-0 h-[1px] bg-[var(--border-subtle)]" />
+      )}
+      <div className="service-row-border absolute bottom-0 left-0 right-0 h-[1px] bg-[var(--border-subtle)]" />
+
+      <div className="flex items-center gap-6 md:gap-12 w-full sm:w-auto">
+        {/* Index number */}
+        <span className={`index-number font-mono text-[13px] w-[40px] transition-colors duration-200 shrink-0 ${
+          isActive ? "text-[var(--accent)]" : "text-[var(--text-tertiary)]"
+        }`}>
+          {service.index}
+        </span>
+        
+        <div className="flex flex-col lg:flex-row lg:items-center gap-1">
+          {/* Display name */}
+          <h3 className="display-name font-display font-medium text-[clamp(1.4rem,2.5vw,2.4rem)] tracking-tight text-[var(--text-primary)] leading-none uppercase transition-colors duration-200">
+            {scrambledName}
+          </h3>
+          
+          {/* Tablet Descriptor: shown below name on 640px - 1024px */}
+          <span className={`descriptor-tablet font-mono text-[10px] uppercase tracking-[0.1em] transition-colors duration-200 hidden sm:inline-block lg:hidden mt-1.5 ${
+            isActive ? "text-[var(--text-secondary)]" : "text-[var(--text-tertiary)]"
+          }`}>
+            {service.descriptor}
+          </span>
+        </div>
+      </div>
+
+      {/* Descriptor & Arrow for desktop */}
+      <div className="flex items-center gap-8 shrink-0 mt-3 sm:mt-0 justify-between sm:justify-end w-full sm:w-auto">
+        {/* Desktop Descriptor */}
+        <span className={`descriptor-desktop font-mono text-[11px] uppercase tracking-[0.1em] transition-colors duration-200 hidden lg:inline-block ${
+          isActive ? "text-[var(--text-secondary)]" : "text-[var(--text-tertiary)]"
+        }`}>
+          {service.descriptor}
+        </span>
+
+        {/* Arrow icon */}
+        <span className={`arrow font-mono text-[14px] transition-all duration-200 ${
+          isActive ? "text-[var(--accent)] translate-x-[6px] opacity-100" : "text-[var(--text-tertiary)] opacity-50"
+        }`}>
+          →
+        </span>
+      </div>
+
+      {/* Mobile-only Descriptor under display name */}
+      <div className={`w-full sm:hidden mt-2 font-mono text-[9px] uppercase tracking-wider ${
+        isActive ? "text-[var(--text-secondary)]" : "text-[var(--text-tertiary)]"
+      }`}>
+        {service.descriptor}
+      </div>
+    </div>
+  );
+
+  return isFinePointer ? content : <Link href={service.route} className="block decoration-none">{content}</Link>;
+}
 
 export default function ServicesShowcase() {
-  const [screenType, setScreenType] = useState<"desktop" | "tablet" | "mobile">("mobile");
-  const [activeService, setActiveService] = useState<ServiceItem | null>(null);
-  const [activeMobileId, setActiveMobileId] = useState<string | null>(null);
   const [isMounted, setIsMounted] = useState(false);
-
+  const [isFinePointer, setIsFinePointer] = useState(false);
+  const [activeService, setActiveService] = useState<Service | null>(null);
+  
+  const containerRef = useRef<HTMLDivElement>(null);
   const floatingCardRef = useRef<HTMLDivElement>(null);
   const xSetter = useRef<any>(null);
   const ySetter = useRef<any>(null);
-
+  
   useEffect(() => {
     setIsMounted(true);
-
-    const handleResize = () => {
-      const width = window.innerWidth;
-      if (width >= 1024) {
-        setScreenType("desktop");
-      } else if (width >= 768) {
-        setScreenType("tablet");
-      } else {
-        setScreenType("mobile");
-      }
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize, { passive: true });
-    return () => window.removeEventListener("resize", handleResize);
+    setIsFinePointer(window.matchMedia("(pointer: fine)").matches);
   }, []);
 
-  // Initialize GSAP quickTo setters for desktop float preview
   useEffect(() => {
-    if (screenType === "desktop" && floatingCardRef.current) {
-      xSetter.current = gsap.quickTo(floatingCardRef.current, "x", { duration: 0.3, ease: "power3.out" });
-      ySetter.current = gsap.quickTo(floatingCardRef.current, "y", { duration: 0.3, ease: "power3.out" });
-    }
-  }, [screenType, isMounted]);
+    if (!isMounted || !isFinePointer) return;
+    
+    const el = floatingCardRef.current;
+    if (!el) return;
+    
+    xSetter.current = gsap.quickTo(el, "x", { duration: 0.45, ease: "power2.out" });
+    ySetter.current = gsap.quickTo(el, "y", { duration: 0.45, ease: "power2.out" });
+    
+    const handleGlobalMouseMove = (e: MouseEvent) => {
+      if (xSetter.current && ySetter.current) {
+        const cardEl = el.querySelector(".service-hover-card") as HTMLElement;
+        const cardWidth = cardEl && cardEl.offsetWidth > 100 ? cardEl.offsetWidth : 360;
+        const cardHeight = cardEl && cardEl.offsetHeight > 100 ? cardEl.offsetHeight : 440;
+        const padding = 20;
+        
+        let x = e.clientX + 20;
+        let y = e.clientY + 20;
+        
+        if (x + cardWidth > window.innerWidth - padding) {
+          x = e.clientX - cardWidth - 20;
+        }
+        
+        if (y + cardHeight > window.innerHeight - padding) {
+          y = window.innerHeight - cardHeight - padding;
+        }
+        
+        if (x < padding) x = padding;
+        if (y < padding) y = padding;
+        
+        xSetter.current(x);
+        ySetter.current(y);
+      }
+    };
+    
+    window.addEventListener("mousemove", handleGlobalMouseMove, { passive: true });
+    
+    return () => {
+      window.removeEventListener("mousemove", handleGlobalMouseMove);
+    };
+  }, [isMounted, isFinePointer]);
 
-  // Set the first service active by default on tablet to avoid empty column
   useEffect(() => {
-    if (screenType === "tablet" && !activeService && services.length > 0) {
-      setActiveService(services[0]);
-    }
-  }, [screenType, activeService]);
-
-  const handleMouseEnter = (service: ServiceItem, e: React.MouseEvent) => {
-    setActiveService(service);
-    if (floatingCardRef.current) {
-      // Set initial position immediately to avoid jump
-      gsap.set(floatingCardRef.current, {
-        x: e.clientX,
-        y: e.clientY,
-      });
-      gsap.to(floatingCardRef.current, {
+    if (!isMounted) return;
+    
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) {
+      gsap.set([".header-block > *", ".word", ".service-row", ".service-row-border"], {
         opacity: 1,
-        scale: 1,
-        duration: 0.25,
-        ease: "power2.out",
+        y: 0,
+        scaleX: 1,
       });
+      return;
     }
-  };
+    
+    gsap.registerPlugin(ScrollTrigger);
+    
+    const ctx = gsap.context(() => {
+      // 1. Header reveal
+      gsap.fromTo(".header-block > *", 
+        { opacity: 0, y: 30 },
+        { 
+          opacity: 1, 
+          y: 0, 
+          duration: 0.8, 
+          ease: "power3.out", 
+          stagger: 0.1,
+          scrollTrigger: {
+            trigger: ".header-block",
+            start: "top 85%",
+          }
+        }
+      );
+      
+      // 2. Supporting statement word opacity reveal
+      gsap.fromTo(".word",
+        { opacity: 0 },
+        {
+          opacity: 1,
+          duration: 0.5,
+          ease: "power2.out",
+          stagger: 0.035,
+          delay: 0.4,
+          scrollTrigger: {
+            trigger: ".header-block",
+            start: "top 85%",
+          }
+        }
+      );
+      
+      // 3. Staggered row reveal
+      gsap.fromTo(".service-row",
+        { opacity: 0, y: 28 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          ease: "power3.out",
+          stagger: 0.08,
+          delay: 0.2,
+          scrollTrigger: {
+            trigger: ".service-list",
+            start: "top 85%",
+          }
+        }
+      );
 
-  const handleMouseLeave = () => {
-    if (floatingCardRef.current) {
-      gsap.to(floatingCardRef.current, {
-        opacity: 0,
-        scale: 0.93,
-        duration: 0.2,
-        ease: "power2.in",
-      });
-    }
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (xSetter.current && ySetter.current) {
-      xSetter.current(e.clientX);
-      ySetter.current(e.clientY);
-    }
-  };
+      // 4. Staggered border lines draw in
+      gsap.fromTo(".service-row-border",
+        { scaleX: 0 },
+        {
+          scaleX: 1,
+          duration: 0.7,
+          ease: "power3.out",
+          stagger: 0.08,
+          delay: 0.28,
+          scrollTrigger: {
+            trigger: ".service-list",
+            start: "top 85%",
+          }
+        }
+      );
+    }, containerRef);
+    
+    return () => ctx.revert();
+  }, [isMounted]);
 
   return (
-    <div id="services" className="relative bg-[#060606] w-full border-t border-[var(--border-subtle)]">
+    <div 
+      id="services" 
+      ref={containerRef} 
+      className="relative bg-[#060606] w-full border-t border-[var(--border-subtle)] pb-24"
+    >
+      <style dangerouslySetInnerHTML={{ __html: `
+        :root {
+          --accent-neon: #00A3FF;
+          --accent-neon-rgb: 0,163,255;
+        }
+        
+        .service-row-border {
+          transform-origin: left;
+        }
+        
+        .header-block:hover .right-instruction {
+          color: var(--text-secondary);
+        }
+        
+        .right-instruction:hover {
+          color: var(--text-secondary);
+        }
+      `}} />
+      
       {/* Header (Uniform for all viewports) */}
-      <div className="max-w-[1400px] w-full mx-auto px-6 lg:px-12 pt-24 pb-12 flex flex-col md:flex-row md:justify-between md:items-end gap-4">
-        <div>
-          <SectionLabel color="secondary">SECURITY CAPABILITIES</SectionLabel>
-          <h2 className="text-3xl lg:text-4xl font-display font-medium text-[#F6F5F0] uppercase tracking-tight mt-2">
-            OUR ASSURANCE SYSTEM
+      <div className="max-w-[1400px] w-full mx-auto px-6 lg:px-12 pt-24 pb-12">
+        <div className="header-block flex flex-col gap-4">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 w-full">
+            <span className="font-mono text-[12px] text-[var(--accent-neon)] uppercase tracking-[0.18em]">
+              // ENTERPRISE SERVICES & MANAGED SOLUTIONS
+            </span>
+            <span className="right-instruction font-mono text-[12px] text-[var(--text-tertiary)] uppercase tracking-[0.14em] transition-colors duration-200 shrink-0">
+              HOVER TO EXPLORE //
+            </span>
+          </div>
+          
+          <h2 className="text-display font-display font-medium text-[clamp(2.6rem,5vw,4.8rem)] text-[var(--text-primary)] uppercase tracking-tight leading-none">
+            OUR CYBER ASSURANCE SYSTEM
           </h2>
-        </div>
-        <div className="font-mono text-[10px] text-[var(--text-tertiary)] uppercase tracking-widest pb-1">
-          {screenType === "desktop" ? "HOVER TO VIEW PREVIEW //" : "SELECT COHORT TO AUDIT //"}
+          
+          <p className="supporting-statement font-sans text-[clamp(15px,1.8vw,18px)] text-[var(--text-secondary)] leading-[1.6] mt-[1.2rem] max-w-[600px]">
+            {"Seven integrated practices. One operating model to turn risk into validated decisions, remediation and continuous resilience."
+              .split(" ")
+              .map((word, i) => (
+                <span key={i} className="word inline-block mr-[0.25em] transition-opacity duration-500">
+                  {word}
+                </span>
+              ))}
+          </p>
         </div>
       </div>
 
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 pb-24">
-        {/* DESKTOP VIEW */}
-        {isMounted && screenType === "desktop" && (
-          <div className="relative">
-            <div className="flex flex-col border-t border-[var(--border-subtle)]">
-              {services.map((service) => (
-                <Link
-                  key={service.id}
-                  href={getServiceHref(service.id)}
-                  className="service-row group flex items-center justify-between py-10 border-b border-[var(--border-subtle)] relative cursor-none select-none px-4 decoration-none"
-                  style={{ "--service-color": getServiceColor(service.id) } as React.CSSProperties}
-                  onMouseEnter={(e) => handleMouseEnter(service, e)}
-                  onMouseLeave={handleMouseLeave}
-                  onMouseMove={handleMouseMove}
-                >
-                  <div className="flex items-center gap-12">
-                    <span className="font-mono text-sm font-bold text-[var(--text-tertiary)] opacity-40 group-hover:text-[var(--service-color)] group-hover:opacity-100 transition-all duration-300">
-                      {service.index}
-                    </span>
-                    <h3 className="text-3xl lg:text-4xl xl:text-5xl font-display font-medium text-[#F6F5F0] uppercase tracking-tight group-hover:translate-x-6 group-hover:text-white transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
-                      {service.title}
-                    </h3>
-                  </div>
-                  <span className="font-mono text-xs font-bold text-[var(--text-tertiary)] opacity-30 group-hover:text-[var(--service-color)] group-hover:opacity-100 transition-all duration-300">
-                    {service.tag}
-                  </span>
-                </Link>
-              ))}
-            </div>
-
-            {/* Floating Preview Panel with High-Resolution Image */}
-            <div
-              ref={floatingCardRef}
-              className="pointer-events-none fixed z-[99999] w-[300px] bg-[var(--bg-elevated)] backdrop-blur-md border rounded-[4px] overflow-hidden flex flex-col transition-[border-color] duration-300"
-              style={{
-                opacity: 0,
-                scale: 0.93,
-                transform: "translate(-50%, -50%)",
-                willChange: "transform, opacity, scale",
-                top: 0,
-                left: 0,
-                borderColor: "var(--text-primary)",
-              }}
-            >
-              {activeService && (
-                <div className="flex flex-col">
-                  {/* Image wrapper */}
-                  <div className="relative w-full h-[170px] overflow-hidden border-b border-[var(--text-primary)]">
-                    <img 
-                      src={getServiceImage(activeService.id)} 
-                      alt={activeService.title} 
-                      className="w-full h-full object-cover scale-105 transition-transform duration-500"
-                    />
-                  </div>
-                  
-                  {/* Meta Details */}
-                  <div className="p-4 flex flex-col gap-2 bg-[var(--bg-elevated)]">
-                    <div className="flex items-center justify-between">
-                      <span className="font-mono text-[9px] font-bold uppercase tracking-[0.15em] text-[var(--text-secondary)]">
-                        {activeService.tag}
-                      </span>
-                      <span className="font-mono text-xs font-bold text-[var(--text-tertiary)]">
-                        {activeService.index}
-                      </span>
-                    </div>
-                    <h4 className="text-sm font-display font-medium text-[var(--text-primary)] uppercase tracking-tight leading-tight">
-                      {activeService.title}
-                    </h4>
-                    {activeService.col2Description && (
-                      <div className="text-[11px] text-[#F6F5F0] font-sans leading-tight mt-1 font-semibold">
-                        {activeService.col2Description}
-                      </div>
-                    )}
-                    {activeService.col3Metadata && (
-                      <div className="text-[9px] font-mono text-[var(--accent)] mt-0.5 tracking-wider select-none">
-                        {activeService.col3Metadata}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+        <div className="w-full h-px bg-[var(--border-subtle)] my-16" />
+        
+        <div className="relative w-full">
+          {/* Main Editorial List */}
+          <div role="list" className="service-list flex flex-col relative w-full">
+            {services.map((service, index) => (
+              <ServiceRow
+                key={service.slug}
+                service={service}
+                index={index}
+                isActive={activeService?.slug === service.slug}
+                isFinePointer={isFinePointer}
+                onHover={setActiveService}
+              />
+            ))}
           </div>
-        )}
-
-        {/* TABLET VIEW */}
-        {isMounted && screenType === "tablet" && (
-          <div className="grid grid-cols-[1.2fr_1fr] gap-8">
-            <div className="flex flex-col border-t border-[var(--border-subtle)]">
-              {services.map((service) => (
-                <Link
-                  key={service.id}
-                  href={getServiceHref(service.id)}
-                  className={`flex flex-col gap-1 py-6 border-b text-left transition-colors duration-300 px-4 decoration-none ${
-                    activeService?.id === service.id ? "bg-white/[0.02]" : "hover:bg-white/[0.01]"
-                  }`}
-                  style={{
-                    borderBottomColor: activeService?.id === service.id ? "var(--text-primary)" : "var(--border-subtle)"
-                  }}
-                  onMouseEnter={() => setActiveService(service)}
-                >
-                  <div className="flex items-center gap-4">
-                    <span className="font-mono text-xs font-bold transition-colors duration-300"
-                      style={{
-                        color: activeService?.id === service.id ? getServiceColor(service.id) : "var(--text-tertiary)"
-                      }}
-                    >
-                      {service.index}
-                    </span>
-                    <h3 className="text-xl font-display font-medium uppercase transition-colors duration-300"
-                      style={{
-                        color: activeService?.id === service.id ? getServiceColor(service.id) : "#F6F5F0"
-                      }}
-                    >
-                      {service.title}
-                    </h3>
-                  </div>
-                  <span className="font-mono text-[10px] text-[var(--text-tertiary)] opacity-55 pl-8">
-                    {service.tag}
-                  </span>
-                </Link>
-              ))}
-            </div>
-
-            <div className="relative">
-              <div 
-                className="sticky top-28 border bg-[var(--bg-elevated)] border-[var(--text-primary)] rounded-[4px] overflow-hidden flex flex-col min-h-[300px] transition-all duration-300"
-              >
-                {activeService && (
-                  <motion.div
-                    key={activeService.id}
-                    initial={{ opacity: 0, scale: 0.97 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                    className="flex flex-col"
-                  >
-                    <div className="relative w-full h-[220px] overflow-hidden border-b border-[var(--text-primary)]">
-                      <img 
-                        src={getServiceImage(activeService.id)} 
-                        alt={activeService.title} 
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    
-                    <div className="p-6 flex flex-col gap-3 bg-[var(--bg-elevated)]">
-                      <div className="flex items-center justify-between">
-                        <span className="font-mono text-[9px] font-bold uppercase tracking-[0.15em] text-[var(--text-secondary)]">
-                          {activeService.tag}
-                        </span>
-                        <span className="font-mono text-2xl font-bold text-[var(--text-tertiary)]/40">
-                          {activeService.index}
-                        </span>
-                      </div>
-
-                      <div className="relative z-10 flex flex-col gap-1.5">
-                        <h3 className="text-xl font-display font-medium text-[var(--text-primary)] uppercase tracking-tight">
-                          {activeService.title}
-                        </h3>
-                        {activeService.col2Description && (
-                          <div className="text-[12.5px] text-[#F6F5F0] font-sans leading-tight mt-1 font-semibold">
-                            {activeService.col2Description}
-                          </div>
-                        )}
-                        {activeService.col3Metadata && (
-                          <div className="text-[10px] font-mono text-[var(--accent)] mt-0.5 tracking-wider select-none">
-                            {activeService.col3Metadata}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* MOBILE VIEW & HYDRATION SEO FALLBACK */}
-        {(!isMounted || screenType === "mobile") && (
-          <div className="flex flex-col border-t border-[var(--border-subtle)]">
-            {services.map((service) => {
-              const isOpen = activeMobileId === service.id;
-              return (
-                <div 
-                  key={service.id} 
-                  className="border-b transition-colors duration-300"
-                  style={{
-                    borderBottomColor: isOpen ? "var(--text-primary)" : "var(--border-subtle)"
-                  }}
-                >
-                  <button
-                    onClick={() => setActiveMobileId(isOpen ? null : service.id)}
-                    className="w-full py-6 flex items-center justify-between text-left px-2"
-                  >
-                    <div className="flex items-center gap-4">
-                      <span className="font-mono text-xs font-bold transition-colors duration-300"
-                        style={{ color: isOpen ? getServiceColor(service.id) : "var(--text-tertiary)" }}
-                      >
-                        {service.index}
-                      </span>
-                      <h3 className="text-lg font-display font-medium uppercase transition-colors duration-300"
-                        style={{ color: isOpen ? getServiceColor(service.id) : "#F6F5F0" }}
-                      >
-                        {service.title}
-                      </h3>
-                    </div>
-                    <span className="text-xl font-mono transition-transform duration-300"
-                      style={{ color: isOpen ? getServiceColor(service.id) : "var(--text-tertiary)" }}
-                    >
-                      +
-                    </span>
-                  </button>
-
-                  <motion.div
-                    initial={false}
-                    animate={{ height: isOpen ? "auto" : 0 }}
-                    className="overflow-hidden"
-                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                  >
-                    <div className="pb-6 pt-2 flex flex-col gap-4 pl-8 pr-2">
-                      <div className="font-mono text-[9px] font-bold uppercase tracking-wider"
-                        style={{ color: getServiceColor(service.id) }}
-                      >
-                        {service.tag}
-                      </div>
-
-                      <div className="relative w-full h-[180px] rounded-[4px] overflow-hidden border border-[var(--text-primary)]">
-                        <img 
-                          src={getServiceImage(service.id)} 
-                          alt={service.title} 
-                          className="absolute inset-0 w-full h-full object-cover"
-                        />
-                      </div>
-
-                      {service.col2Description && (
-                        <div className="text-[12.5px] text-[#F6F5F0] font-sans leading-tight font-semibold mt-1">
-                          {service.col2Description}
-                        </div>
-                      )}
-                      {service.col3Metadata && (
-                        <div className="text-[10px] font-mono text-[var(--accent)] tracking-wider">
-                          {service.col3Metadata}
-                        </div>
-                      )}
-                      
-                      <div className="flex justify-start pt-2">
-                        <Link
-                          href={getServiceHref(service.id)}
-                          className="inline-flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-wider text-[var(--text-primary)] hover:text-[var(--accent)] underline transition-colors"
-                        >
-                          Explore Service <ArrowRight className="w-3 h-3" />
-                        </Link>
-                      </div>
-                    </div>
-                  </motion.div>
-                </div>
-              );
-            })}
-          </div>
-        )}
+        </div>
       </div>
+
+      {/* Floating Hover Card */}
+      {isMounted && isFinePointer && (
+        <div
+          ref={floatingCardRef}
+          className="pointer-events-none fixed z-[99999] top-0 left-0"
+          style={{
+            opacity: activeService ? 1 : 0,
+            pointerEvents: "none",
+            willChange: "transform, opacity",
+            transition: "opacity 0.2s ease",
+          }}
+        >
+          <ServiceHoverCard service={activeService} isVisible={activeService !== null} />
+        </div>
+      )}
     </div>
   );
 }

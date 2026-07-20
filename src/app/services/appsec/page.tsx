@@ -4,8 +4,8 @@ import AppSecPlatformPage from "@/components/services/AppSecPlatformPage";
 import { APP_URL, getCanonicalUrl, ROUTES } from "@/config/routes";
 
 export const metadata: Metadata = {
-  title: "Application Security Testing Services | Web, API & Mobile AppSec | Entersoft",
-  description: "Protect your business with comprehensive Application Security Testing services for web, API, mobile, and cloud applications. Identify vulnerabilities early with expert AppSec assessments from Entersoft.",
+  title: "Application Assurance | Web, API & Mobile AppSec | Entersoft",
+  description: "Protect your business with comprehensive Application Assurance services for web, API, mobile, and cloud applications. Identify vulnerabilities early with expert AppSec assessments from Entersoft.",
   alternates: {
     canonical: getCanonicalUrl(ROUTES.services.appsec),
   },
@@ -82,8 +82,8 @@ export default function AppSecPage() {
         "@type": "WebPage",
         "@id": `${canonicalUrl}/#webpage`,
         "url": canonicalUrl,
-        "name": "Application Security Testing Services | Web, API & Mobile AppSec | Entersoft",
-        "description": "Protect your business with comprehensive Application Security Testing services for web, API, mobile, and cloud applications. Identify vulnerabilities early with expert AppSec assessments from Entersoft.",
+        "name": "Application Assurance | Web, API & Mobile AppSec | Entersoft",
+        "description": "Protect your business with comprehensive Application Assurance services for web, API, mobile, and cloud applications. Identify vulnerabilities early with expert AppSec assessments from Entersoft.",
         "inLanguage": "en",
         "isPartOf": {
           "@id": `${APP_URL}/#website`
@@ -98,8 +98,8 @@ export default function AppSecPage() {
       {
         "@type": "Service",
         "@id": `${canonicalUrl}/#service`,
-        "name": "Application Security Testing Services",
-        "serviceType": "Application Security Testing",
+        "name": "Application Assurance",
+        "serviceType": "Application Assurance",
         "provider": {
           "@id": `${APP_URL}/#organization`
         },
@@ -123,7 +123,7 @@ export default function AppSecPage() {
           {
             "@type": "ListItem",
             "position": 2,
-            "name": "Application Security",
+            "name": "Application Assurance",
             "item": canonicalUrl
           }
         ]

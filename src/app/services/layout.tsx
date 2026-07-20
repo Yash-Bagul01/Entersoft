@@ -3,10 +3,19 @@
 import React from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { servicePagesData } from "@/data/services";
+import { services } from "@/data/services";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { getServiceKeyFromSlug, getServiceRoute } from "@/config/routes";
+
+const formatNavLabel = (name: string) => {
+  const title = name
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+  return title.replace(/\bAi\b/g, "AI");
+};
 
 export default function ServicesLayout({
   children,
@@ -21,8 +30,8 @@ export default function ServicesLayout({
   const noPadding = currentSlug === "vapt" || currentSlug === "appsec" || currentSlug === "managed-cloud-security" || currentSlug === "compliance-management" || currentSlug === "smart-contract-audits";
 
   // Get the other six services
-  const otherServices = Object.values(servicePagesData).filter(
-    (item) => getServiceKeyFromSlug(item.slug) !== currentKey
+  const otherServices = services.filter(
+    (item) => item.slug !== currentKey
   );
 
   return (
@@ -43,12 +52,12 @@ export default function ServicesLayout({
           <div className="flex flex-wrap items-center gap-x-4 md:gap-x-6 gap-y-3 font-mono text-[10px] font-bold uppercase tracking-wider">
             {otherServices.map((service, index) => (
               <React.Fragment key={service.slug}>
-                {index > 0 && <span className="hidden md:inline text-[var(--border-subtle)] select-none">|</span>}
+                {index > 0 && <span className="hidden md:inline text-[var(--border-subtle)] select-none">·</span>}
                 <Link
                   href={getServiceRoute(service.slug)}
                   className="text-[var(--text-tertiary)] hover:text-[var(--accent)] transition-colors duration-300"
                 >
-                  {service.name}
+                  {formatNavLabel(service.displayName)}
                 </Link>
               </React.Fragment>
             ))}

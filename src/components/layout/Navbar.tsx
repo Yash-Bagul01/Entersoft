@@ -57,23 +57,23 @@ export default function Navbar() {
       label: "Services",
       href: "/#services",
       megaMenu: {
-        blurb: "Technical threat assessments, automated pipeline configurations, and decentralized smart contract logic reviews.",
+        blurb: "EnProbe — the technology and operating layer powering our 7 expert practices and capabilities to deliver packaged customer outcomes.",
         sections: [
           {
-            title: "Audits & Testing",
+            title: "Expert Practices",
             items: [
-              { name: "VAPT Services", href: ROUTES.services.vapt, desc: "Expert-validated penetration auditing.", icon: <Shield className="w-4 h-4" /> },
-              { name: "AppSec Integrations", href: ROUTES.services.appsec, desc: "CI/CD automated vulnerability tests.", icon: <Code className="w-4 h-4" /> },
-              { name: "Managed Cloud", href: ROUTES.services.cloud, desc: "Continuous CSPM cloud posture checks.", icon: <Cloud className="w-4 h-4" /> },
-              { name: "Compliance Management", href: ROUTES.services.compliance, desc: "Gap analysis & ISO 27001 readiness.", icon: <CheckSquare className="w-4 h-4" /> }
+              { name: "Application Assurance", href: ROUTES.services.appsec, desc: "CI/CD automated vulnerability tests.", icon: <Code className="w-4 h-4" /> },
+              { name: "Adversarial Validation", href: ROUTES.services.vapt, desc: "Expert-validated penetration auditing.", icon: <Shield className="w-4 h-4" /> },
+              { name: "Cloud Resilience", href: ROUTES.services.cloud, desc: "Continuous CSPM cloud posture checks.", icon: <Cloud className="w-4 h-4" /> },
+              { name: "Digital Trust", href: ROUTES.services.compliance, desc: "Gap analysis & ISO 27001 readiness.", icon: <CheckSquare className="w-4 h-4" /> }
             ]
           },
           {
             title: "Specialized Solutions",
             items: [
-              { name: "Smart Contracts", href: ROUTES.services.smartContract, desc: "Decentralized DeFi code stress-testing.", icon: <Cpu className="w-4 h-4" /> },
-              { name: "AI AST Security", href: ROUTES.services.aiAst, desc: "LLM guardrails and prompt safety.", icon: <Layers className="w-4 h-4" /> },
-              { name: "Managed SIEM & Monitoring", href: ROUTES.services.siem, desc: "24/7 incident SOC telemetry.", icon: <Server className="w-4 h-4" /> }
+              { name: "Protocol Assurance", href: ROUTES.services.smartContract, desc: "Decentralized DeFi code stress-testing.", icon: <Cpu className="w-4 h-4" /> },
+              { name: "AI Systems Assurance", href: ROUTES.services.aiAst, desc: "LLM guardrails and prompt safety.", icon: <Layers className="w-4 h-4" /> },
+              { name: "Cyber Defense Operations", href: ROUTES.services.siem, desc: "Incident SOC telemetry and response.", icon: <Server className="w-4 h-4" /> }
             ]
           }
         ]
@@ -83,7 +83,7 @@ export default function Navbar() {
       label: "Industries",
       href: "/#case-studies",
       megaMenu: {
-        blurb: "Providing compliant, zero-noise cyber defenses built to meet highly specific industry compliance targets.",
+        blurb: "Sector-specific deployment: custom-tailored security postures engineered for financial services, fintech, healthcare, SaaS, government, critical infrastructure, and digital assets.",
         sections: [
           {
             title: "Focus Areas",
@@ -100,7 +100,7 @@ export default function Navbar() {
       label: "Case Studies",
       href: "/#case-studies",
       megaMenu: {
-        blurb: "Read how global organizations mitigate threats and secure audit certifications.",
+        blurb: "Proof: validated outcomes, metrics, client problems, and evidence demonstrating our 14 years of human security judgment.",
         sections: [
           {
             title: "Factual Results",

@@ -26,13 +26,28 @@ export default function FinalCTA() {
   };
 
   return (
-    <section id="contact" className="relative w-full bg-bg-primary overflow-hidden">
+    <section id="contact" className="relative w-full bg-[var(--bg-primary)] overflow-hidden">
+      {/* Dark Futuristic Cyber Ambient Background Image (Codex.io style) */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <img
+          src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2064&auto=format&fit=crop"
+          alt="Cyber background"
+          className="w-full h-full object-cover opacity-25 dark:opacity-35 mix-blend-luminosity scale-105 transform transition-transform duration-1000"
+        />
+        {/* Multi-directional gradient masks for seamless blending into site edges */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[var(--bg-primary)] via-transparent to-[var(--bg-primary)] opacity-95" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[var(--bg-primary)] via-transparent to-[var(--bg-primary)] opacity-85" />
+        
+        {/* Soft center ambient glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-[var(--accent-dim)] rounded-full blur-[120px] pointer-events-none opacity-40" />
+      </div>
+
       {/* Background Ripple Effect Grid */}
       <div 
-        className="absolute inset-0 h-full w-full overflow-hidden opacity-30 dark:opacity-20 z-0 pointer-events-auto"
+        className="absolute inset-0 h-full w-full overflow-hidden opacity-20 dark:opacity-15 z-[1] pointer-events-auto"
         style={{
-          maskImage: "radial-gradient(circle at center, black 40%, transparent 90%)",
-          WebkitMaskImage: "radial-gradient(circle at center, black 40%, transparent 90%)",
+          maskImage: "radial-gradient(circle at center, black 30%, transparent 85%)",
+          WebkitMaskImage: "radial-gradient(circle at center, black 30%, transparent 85%)",
         }}
       >
         <BackgroundRippleEffect rows={12} cols={32} cellSize={64} />
@@ -77,7 +92,7 @@ export default function FinalCTA() {
                 hidden: { y: "100%" },
                 visible: { y: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } }
               }}
-              className="text-[clamp(2rem,5vw,4.5rem)] font-display font-medium text-[#F6F5F0] uppercase tracking-tight leading-none"
+              className="text-[clamp(2rem,5vw,4.5rem)] font-display font-medium text-[var(--text-primary)] uppercase tracking-tight leading-none"
             >
               Get a Free Consultation
             </motion.h2>
@@ -88,11 +103,11 @@ export default function FinalCTA() {
         </motion.div>
 
         {/* Callback submission widget */}
-        <div className="w-full max-w-[480px] border border-[var(--border-subtle)] bg-[#0F0F0F] rounded-[4px] p-8 md:p-10 flex flex-col items-stretch text-left shadow-2xl relative">
+        <div className="w-full max-w-[480px] border border-[var(--border-subtle)] bg-[var(--bg-elevated)]/90 backdrop-blur-md rounded-[4px] p-8 md:p-10 flex flex-col items-stretch text-left shadow-2xl relative">
           
           <div className="flex items-center gap-3 border-b border-[var(--border-subtle)] pb-4 mb-6">
             <Mail className="w-4 h-4 text-[var(--accent)]" />
-            <span className="font-mono text-[10px] font-bold text-[#F6F5F0] uppercase tracking-widest">
+            <span className="font-mono text-[10px] font-bold text-[var(--text-primary)] uppercase tracking-widest">
               ENCRYPTED SECURE RESPONSE DESK
             </span>
           </div>
@@ -118,7 +133,7 @@ export default function FinalCTA() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="name@company.com"
-                    className="w-full h-11 bg-black border border-[var(--border-subtle)] focus:border-[var(--accent)] text-[#F6F5F0] px-4 rounded-[3px] text-xs font-sans placeholder-white/20 outline-none transition-colors"
+                    className="w-full h-11 bg-[var(--bg-primary)] border border-[var(--border-subtle)] focus:border-[var(--accent)] text-[var(--text-primary)] px-4 rounded-[3px] text-xs font-sans placeholder-white/20 outline-none transition-colors"
                   />
                 </div>
 
@@ -130,7 +145,7 @@ export default function FinalCTA() {
                     id="message"
                     rows={3}
                     placeholder="Describe systems to scan (e.g. CI/CD API gates, Cloud Infrastructure, Solidity Contracts)"
-                    className="w-full bg-black border border-[var(--border-subtle)] focus:border-[var(--accent)] text-[#F6F5F0] p-4 rounded-[3px] text-xs font-sans placeholder-white/20 outline-none resize-none transition-colors"
+                    className="w-full bg-[var(--bg-primary)] border border-[var(--border-subtle)] focus:border-[var(--accent)] text-[var(--text-primary)] p-4 rounded-[3px] text-xs font-sans placeholder-white/20 outline-none resize-none transition-colors"
                   />
                 </div>
 
@@ -163,7 +178,7 @@ export default function FinalCTA() {
                   <Check className="w-6 h-6 text-[var(--accent)] animate-pulse" />
                 </div>
                 <div className="flex flex-col gap-1">
-                  <span className="font-mono text-[11px] font-bold text-[#F6F5F0] uppercase tracking-wider">
+                  <span className="font-mono text-[11px] font-bold text-[var(--text-primary)] uppercase tracking-wider">
                     Transmission Complete
                   </span>
                   <span className="text-[11px] text-[var(--text-secondary)] font-sans">

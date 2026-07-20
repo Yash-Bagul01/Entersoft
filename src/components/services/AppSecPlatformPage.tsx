@@ -1715,7 +1715,7 @@ export default function AppSecPlatformPage({ faqs }: AppSecPlatformPageProps) {
                   animate={{ y: 0 }}
                   transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  <SectionLabel color="accent">APPLICATION SECURITY</SectionLabel>
+                  <SectionLabel color="accent">APPLICATION ASSURANCE</SectionLabel>
                 </motion.div>
                 <span className="text-zinc-700 text-[10px] font-mono font-bold">//</span>
                 <motion.span

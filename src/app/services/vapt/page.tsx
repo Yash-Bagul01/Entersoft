@@ -523,7 +523,7 @@ export default function VAPTPage() {
         "@type": "WebPage",
         "@id": `${canonicalUrl}/#webpage`,
         "url": canonicalUrl,
-        "name": "VAPT Audit Services | Vulnerability Assessment & Pen Testing | Entersoft",
+        "name": "Adversarial Validation | Vulnerability Assessment & Pen Testing | Entersoft",
         "description": "Expert-driven vulnerability assessment and penetration testing (VAPT) providing real exploit proofs. CERT-In certified audit compliance with zero false-positive reports.",
         "inLanguage": "en",
         "isPartOf": {
@@ -539,8 +539,8 @@ export default function VAPTPage() {
       {
         "@type": "Service",
         "@id": `${canonicalUrl}/#service`,
-        "name": "Vulnerability Assessment & Pen Testing (VAPT)",
-        "serviceType": "Vulnerability Assessment and Penetration Testing",
+        "name": "Adversarial Validation",
+        "serviceType": "Adversarial Validation",
         "provider": {
           "@id": `${APP_URL}/#organization`
         },
@@ -564,7 +564,7 @@ export default function VAPTPage() {
           {
             "@type": "ListItem",
             "position": 2,
-            "name": "VAPT Audit Services",
+            "name": "Adversarial Validation",
             "item": canonicalUrl
           }
         ]

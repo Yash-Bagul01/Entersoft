@@ -273,14 +273,6 @@ html.lenis, html.lenis body {
   border-color: var(--text-primary);
 }
 
-/* Hide custom cursor when hovering over service rows in desktop mode */
-body:has(.service-row:hover) .custom-cursor-dot,
-body:has(.service-row:hover) .custom-cursor-ring {
-  opacity: 0 !important;
-  transform: scale(0) !important;
-  transition: opacity 0.25s ease, transform 0.25s ease !important;
-}
-
 /* Custom marquee mask classes for CertificationsMarquee */
 .marquee-mask-left {
   background: linear-gradient(to right, var(--bg-primary), transparent);

@@ -10,7 +10,7 @@ import ServiceDeliverables from "@/components/services/ServiceDeliverables";
 import SectionLabel from "@/components/ui/SectionLabel";
 
 export const metadata: Metadata = {
-  title: "AI-Powered AST | Entersoft Security",
+  title: "AI Systems Assurance | Entersoft Security",
   description: "Advanced application security testing tailored specifically for AI integrations, protecting LLM prompts and securing RAG architectures.",
 };
 

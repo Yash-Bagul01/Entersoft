@@ -6,7 +6,7 @@ import SmartContractPageRoot from "@/components/services/smart-contract-v2/Smart
 const canonicalUrl = getCanonicalUrl(ROUTES.services.smartContract);
 
 export const metadata: Metadata = {
-  title: "Smart Contract Audits & DeFi Web3 Security | Entersoft Security",
+  title: "Protocol Assurance | Entersoft Security",
   description: "Secure your DeFi protocols, token contracts, and blockchain integrations. We provide rigorous smart contract audits with static analysis, symbolic fuzzing, and manual code reviews to prevent exploits.",
   alternates: {
     canonical: canonicalUrl,
@@ -44,7 +44,7 @@ export default function SmartContractAuditsPage() {
         "@type": "WebPage",
         "@id": `${canonicalUrl}/#webpage`,
         "url": canonicalUrl,
-        "name": "Smart Contract Audits & DeFi Web3 Security | Entersoft Security",
+        "name": "Protocol Assurance | Entersoft Security",
         "description": "Secure your DeFi protocols, token contracts, and blockchain integrations. We provide rigorous smart contract audits with static analysis, symbolic fuzzing, and manual code reviews to prevent exploits.",
         "inLanguage": "en",
         "isPartOf": {
@@ -60,8 +60,8 @@ export default function SmartContractAuditsPage() {
       {
         "@type": "Service",
         "@id": `${canonicalUrl}/#service`,
-        "name": "Smart Contract Audits",
-        "serviceType": "Smart Contract Audits & Blockchain Security Consulting",
+        "name": "Protocol Assurance",
+        "serviceType": "Protocol Assurance",
         "provider": {
           "@id": `${APP_URL}/#organization`
         },
@@ -85,7 +85,7 @@ export default function SmartContractAuditsPage() {
           {
             "@type": "ListItem",
             "position": 2,
-            "name": "Smart Contract Audits",
+            "name": "Protocol Assurance",
             "item": canonicalUrl
           }
         ]

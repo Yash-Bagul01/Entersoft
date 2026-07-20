@@ -4,7 +4,7 @@ import { APP_URL, getCanonicalUrl, ROUTES } from "@/config/routes";
 import CloudPageRoot from "@/components/services/cloud-v2/CloudPageRoot";
 
 export const metadata: Metadata = {
-  title: "Managed Cloud Security | Entersoft Security",
+  title: "Cloud Resilience | Entersoft Security",
   description: "Continuous configuration audits, posture management (CSPM), and real-time threat response for AWS, Azure, GCP.",
   alternates: {
     canonical: getCanonicalUrl(ROUTES.services.cloud),
@@ -44,7 +44,7 @@ export default function CloudSecurityPage() {
         "@type": "WebPage",
         "@id": `${canonicalUrl}/#webpage`,
         "url": canonicalUrl,
-        "name": "Managed Cloud Security | Entersoft Security",
+        "name": "Cloud Resilience | Entersoft Security",
         "description": "Continuous configuration audits, posture management (CSPM), and real-time threat response for AWS, Azure, GCP.",
         "inLanguage": "en",
         "isPartOf": {
@@ -60,8 +60,8 @@ export default function CloudSecurityPage() {
       {
         "@type": "Service",
         "@id": `${canonicalUrl}/#service`,
-        "name": "Managed Cloud Security",
-        "serviceType": "Cloud Security Posture Management",
+        "name": "Cloud Resilience",
+        "serviceType": "Cloud Resilience",
         "provider": {
           "@id": `${APP_URL}/#organization`
         },
@@ -85,7 +85,7 @@ export default function CloudSecurityPage() {
           {
             "@type": "ListItem",
             "position": 2,
-            "name": "Managed Cloud Security",
+            "name": "Cloud Resilience",
             "item": canonicalUrl
           }
         ]

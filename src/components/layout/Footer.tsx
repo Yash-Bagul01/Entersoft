@@ -5,6 +5,7 @@ import { Shield, ArrowUp, Zap, ZapOff } from "lucide-react";
 import { Button } from "../ui/Button";
 import Link from "next/link";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 export default function Footer() {
   const [motionActive, setMotionActive] = useState(true);
@@ -46,22 +47,25 @@ export default function Footer() {
     {
       title: "Services",
       links: [
-        { name: "VAPT Audit Services", href: "/#services" },
-        { name: "CI/CD AppSec", href: "/#services" },
-        { name: "Managed Cloud Security", href: "/#services" },
-        { name: "Smart Contract Audits", href: "/#services" },
-        { name: "Managed SIEM & Monitoring", href: "/#services" },
-        { name: "AI AST Testing", href: "/#services" }
+        { name: "Application Assurance", href: "/services/appsec" },
+        { name: "Adversarial Validation", href: "/services/vapt" },
+        { name: "Cloud Resilience", href: "/services/managed-cloud-security" },
+        { name: "Digital Trust", href: "/services/compliance-management" },
+        { name: "Cyber Defense Operations", href: "/services/siem" },
+        { name: "Protocol Assurance", href: "/services/smart-contract-audits" },
+        { name: "AI Systems Assurance", href: "/services/ai-ast" }
       ]
     },
     {
       title: "Solutions",
       links: [
-        { name: "Fintech Compliance", href: "/#case-studies" },
-        { name: "RBI Cybersecurity Audits", href: "/#case-studies" },
-        { name: "M&A Security Due Diligence", href: "/#case-studies" },
-        { name: "Supply Chain Code Protection", href: "/#case-studies" },
-        { name: "DeFi Protocol Verification", href: "/#services" }
+        { name: "Application Security Transformation Program", href: "/services/appsec" },
+        { name: "Continuous Exposure Validation", href: "/services/vapt" },
+        { name: "Cloud Security Transformation", href: "/services/managed-cloud-security" },
+        { name: "Regulatory Readiness & Evidence Program", href: "/services/compliance-management" },
+        { name: "Managed Cyber Defense", href: "/services/siem" },
+        { name: "Digital Asset Launch Assurance", href: "/services/smart-contract-audits" },
+        { name: "AI System Readiness & Red Teaming", href: "/services/ai-ast" }
       ]
     },
     {
@@ -87,10 +91,14 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="w-full bg-[#060606] border-t border-[var(--border-subtle)] text-[var(--text-secondary)]">
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12 py-16 md:py-24">
+    <footer className="w-full bg-[#060606] border-t border-[var(--border-subtle)] text-[var(--text-secondary)] select-none relative overflow-hidden">
+      <style dangerouslySetInnerHTML={{ __html: `
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+      ` }} />
+
+      <div className="max-w-[1400px] mx-auto px-6 md:px-12 pt-16 md:pt-24 pb-0 relative">
         {/* Main Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 md:gap-12 mb-16 md:mb-24">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 md:gap-12 mb-12 md:mb-16">
           {/* Brand Info Column */}
           <div className="col-span-2 flex flex-col justify-between gap-6 md:pr-12">
             <div className="flex flex-col gap-4">
@@ -102,7 +110,7 @@ export default function Footer() {
                 className="h-6 w-auto object-contain self-start"
               />
               <p className="text-[12px] leading-relaxed max-w-[320px]">
-                Providing expert-led, proof-backed vulnerability research and application security audits. Safeguarding assets globally since 2013.
+                EnProbe — the technology platform. Expert Practices — 14 years of human security judgment. Enterprise Solutions — packaged outcomes for specific customer problems.
               </p>
             </div>
             {/* Social Grid */}
@@ -155,7 +163,7 @@ export default function Footer() {
         <div className="section-divider mb-8" />
 
         {/* Footer Sub-bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-6 relative z-10 mb-4">
           <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-[10px] font-mono tracking-widest uppercase">
             <span>© ENTERSOFT SECURITY</span>
             <span className="text-[var(--text-tertiary)]">|</span>
@@ -196,6 +204,24 @@ export default function Footer() {
             >
               <ArrowUp className="w-3.5 h-3.5" />
             </button>
+          </div>
+        </div>
+
+        {/* Giant ENTERSOFT Interactive Pop-up directly integrated into the footer */}
+        <div className="relative w-full flex justify-center overflow-hidden h-[12vw] min-h-[90px] max-h-[180px] pointer-events-auto">
+          <div className="relative w-full flex justify-center overflow-visible top-[2vw]">
+            <motion.h1 
+              initial={{ y: "45%", color: "rgba(156, 156, 151, 0.35)" }}
+              whileHover={{ y: "0%", color: "var(--text-primary, #ffffff)" }}
+              transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+              className="font-display font-extrabold uppercase tracking-tighter cursor-pointer text-[14.2vw] leading-none select-none origin-bottom text-center"
+              style={{
+                fontFamily: "'Playfair Display', Georgia, serif",
+                lineHeight: "0.8"
+              }}
+            >
+              ENTERSOFT
+            </motion.h1>
           </div>
         </div>
       </div>

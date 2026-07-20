@@ -10,7 +10,7 @@ import SIEMVisual from "@/components/services/visuals/SIEMVisual";
 import SIEMProofBand from "@/components/services/SIEMProofBand";
 
 export const metadata: Metadata = {
-  title: "Managed SIEM & Monitoring | Entersoft Security",
+  title: "Cyber Defense Operations | Entersoft Security",
   description: "24/7 security operations center (SOC) monitoring. Real-time log correlation, threat hunting, and automated incident response.",
 };
 

@@ -1,93 +1,96 @@
-export interface ServiceItem {
-  id: string;
-  index: string;
-  title: string;
-  description: string;
-  link: string;
-  tag: string;
-  abstractType: "network" | "terminal" | "shield" | "compliance" | "binary" | "database" | "ai";
-  col2Description?: string;
-  col3Metadata?: string;
+export type Service = {
+  index: string
+  displayName: string
+  descriptor: string
+  hoverCardHeading: string
+  hoverCardBody: string
+  route: string
+  // Keep any existing fields (slug, legacy name) to avoid breaking sub-page imports
+  slug: string
+  legacyName: string
+  image: string
 }
 
-export const services: ServiceItem[] = [
+export type ServiceItem = Service;
+
+export const services: Service[] = [
   {
-    id: "appsec",
-    index: "01",
-    title: "AppSec Integration",
-    description: "Continuous application security testing embedded directly into your CI/CD pipelines. Identify vulnerabilities at the commit level before they ever hit production.",
-    link: "#contact",
-    tag: "DEVSECOPPS PIPELINES",
-    abstractType: "terminal",
-    col2Description: "Application Assurance Command",
-    col3Metadata: "Web • Mobile • API • Release Security"
+    index: '01',
+    displayName: 'APPLICATION ASSURANCE',
+    descriptor: 'APPSEC • DEVSECOPS • SECURE SDLC',
+    hoverCardHeading: 'Application Security Transformation',
+    hoverCardBody: 'Embed expert-led testing, secure engineering and continuous assurance across applications, APIs, code and release workflows.',
+    route: '/services/appsec',
+    slug: 'appsec',
+    legacyName: 'APPSEC INTEGRATION',
+    image: 'https://images.unsplash.com/photo-1585123607190-72ec2979a269?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   },
   {
-    id: "vapt",
-    index: "02",
-    title: "VAPT Audit Services",
-    description: "Expert-driven vulnerability assessment and penetration testing providing real exploit proofs. CERT-In certified audit compliance with zero false-positive reports.",
-    link: "#contact",
-    tag: "HYBRID PEN-TESTING",
-    abstractType: "shield",
-    col2Description: "Exposure Validation Grid",
-    col3Metadata: "VAPT • Attack Surface • Retesting"
+    index: '02',
+    displayName: 'ADVERSARIAL VALIDATION',
+    descriptor: 'PEN TESTING • RED TEAMING • ATTACK PATHS',
+    hoverCardHeading: 'Adversarial Security Validation',
+    hoverCardBody: 'Recreate real attacker behavior to expose attack paths, validate exploitability and prioritize what must be fixed.',
+    route: '/services/vapt',
+    slug: 'vapt',
+    legacyName: 'VAPT AUDIT SERVICES',
+    image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop',
   },
   {
-    id: "cloud",
-    index: "03",
-    title: "Managed Cloud Security",
-    description: "Continuous configuration audits, posture management (CSPM), and real-time threat response for complex multi-cloud deployments (AWS, Azure, GCP).",
-    link: "#contact",
-    tag: "CLOUD INFRASTRUCTURE",
-    abstractType: "network",
-    col2Description: "Code-to-Cloud Control",
-    col3Metadata: "DevSecOps • Cloud • Identity"
+    index: '03',
+    displayName: 'CLOUD RESILIENCE',
+    descriptor: 'CLOUD • CONTAINERS • IDENTITY',
+    hoverCardHeading: 'Cloud Security Transformation',
+    hoverCardBody: 'Secure cloud architecture, workloads, containers, identities and configurations from design through operation.',
+    route: '/services/managed-cloud-security',
+    slug: 'managed-cloud-security',
+    legacyName: 'MANAGED CLOUD SECURITY',
+    image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop',
   },
   {
-    id: "compliance",
-    index: "04",
-    title: "Compliance Management",
-    description: "Navigate global security frameworks with ease. Complete gap analysis and certification support for ISO 27001, GDPR, CERT-In, and RBI guidelines.",
-    link: "#contact",
-    tag: "GOVERNANCE & AUDIT",
-    abstractType: "compliance",
-    col2Description: "Trust & Evidence Grid",
-    col3Metadata: "Governance • Audit • Compliance"
+    index: '04',
+    displayName: 'DIGITAL TRUST',
+    descriptor: 'GRC • PRIVACY • AUDIT READINESS',
+    hoverCardHeading: 'Cyber Risk & Regulatory Assurance',
+    hoverCardBody: 'Translate controls into board-ready risk decisions, audit-ready evidence and sustained compliance.',
+    route: '/services/compliance-management',
+    slug: 'compliance-management',
+    legacyName: 'COMPLIANCE MANAGEMENT',
+    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=800&auto=format&fit=crop',
   },
   {
-    id: "siem",
-    index: "05",
-    title: "Managed SIEM & Monitoring",
-    description: "24/7 security operations center (SOC) monitoring. Real-time log correlation, anomaly threat hunting, and automated incident response orchestration.",
-    link: "#contact",
-    tag: "SECURITY MONITORING",
-    abstractType: "database",
-    col2Description: "Signal-to-Risk Operations",
-    col3Metadata: "SOC • SIEM • Threat Monitoring"
+    index: '05',
+    displayName: 'CYBER DEFENSE OPERATIONS',
+    descriptor: 'MDR • SIEM • DETECTION ENGINEERING',
+    hoverCardHeading: 'Managed Cyber Defense',
+    hoverCardBody: 'Unify security monitoring, detection engineering, threat hunting, investigation and response into one continuous operating model.',
+    route: '/services/siem',
+    slug: 'siem',
+    legacyName: 'MANAGED SIEM & MONITORING',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop',
   },
   {
-    id: "smart-contract",
-    index: "06",
-    title: "Smart Contract Audits",
-    description: "Deep mathematical and logic audits for Solidity, Rust, and Vyper smart contracts. Protect Web3 protocols against logic flaws, front-running, and flash loan attacks.",
-    link: "#contact",
-    tag: "DEFI & BLOCKCHAIN",
-    abstractType: "binary",
-    col2Description: "Chain Assurance",
-    col3Metadata: "Blockchain • DeFi • Smart Contracts"
+    index: '06',
+    displayName: 'PROTOCOL ASSURANCE',
+    descriptor: 'SMART CONTRACTS • DEFI • BLOCKCHAIN',
+    hoverCardHeading: 'Digital Asset & Protocol Security',
+    hoverCardBody: 'Secure smart contracts, wallets, bridges and protocols before code moves value.',
+    route: '/services/smart-contract-audits',
+    slug: 'smart-contract-audits',
+    legacyName: 'SMART CONTRACT AUDITS',
+    image: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=800&auto=format&fit=crop',
   },
   {
-    id: "ai-ast",
-    index: "07",
-    title: "AI AST Security",
-    description: "Advanced application security testing tailored specifically for AI integrations, protecting LLM prompts against injection attacks and securing RAG architectures.",
-    link: "#contact",
-    tag: "AI SAFETY FRAMEWORK",
-    abstractType: "ai",
-    col2Description: "Agentic Application Shield",
-    col3Metadata: "LLM • RAG • Agents • Model Workflows"
-  }
+    index: '07',
+    displayName: 'AI SYSTEMS ASSURANCE',
+    descriptor: 'LLM • RAG • AGENTS • MODEL APIS',
+    hoverCardHeading: 'AI Security & Model Assurance',
+    hoverCardBody: 'Assess AI applications, models, agents, data flows and autonomous actions before production.',
+    route: '/services/ai-ast',
+    slug: 'ai-ast',
+    legacyName: 'AI AST SECURITY',
+    image: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=800&auto=format&fit=crop',
+  },
 ];
 
 export type ProcessStep = {
@@ -122,8 +125,8 @@ import { SERVICE_SLUGS } from "@/config/routes";
 export const servicePagesData: Record<string, ServicePageData> = {
   appsec: {
     slug: SERVICE_SLUGS.appsec,
-    name: "Application Security (AppSec)",
-    category: "APPLICATION SECURITY",
+    name: "Application Assurance",
+    category: "APPLICATION ASSURANCE",
     tagline: "CI/CD-integrated scanning and manual vulnerability audits.",
     heroStatement: "Automated Pipeline Audits.\nHuman-Validated Findings.",
     overview: "Embed continuous application security testing directly into your developer workflows. Every automated finding is verified by a senior analyst before alert delivery to eliminate noise.",
@@ -157,8 +160,8 @@ export const servicePagesData: Record<string, ServicePageData> = {
   },
   vapt: {
     slug: "vapt",
-    name: "Vulnerability Assessment & Pen Testing",
-    category: "VAPT SERVICES",
+    name: "Adversarial Validation",
+    category: "ADVERSARIAL VALIDATION",
     tagline: "Expert penetration testing with active exploitation proof.",
     heroStatement: "Targeted Vulnerability Analysis.\nProven Business Impact.",
     overview: "Move beyond standard automated scanning. Our expert auditors conduct thorough vulnerability assessments and active penetration testing to expose real-world business risks with zero noise.",
@@ -192,8 +195,8 @@ export const servicePagesData: Record<string, ServicePageData> = {
   },
   "managed-cloud-security": {
     slug: "managed-cloud-security",
-    name: "Managed Cloud Security",
-    category: "CLOUD INFRASTRUCTURE",
+    name: "Cloud Resilience",
+    category: "CLOUD RESILIENCE",
     tagline: "Continuous cloud posture auditing and threat detection.",
     heroStatement: "Continuous Posture Monitoring.\nRuntime Threat Defense.",
     overview: "Secure your multi-cloud infrastructure (AWS, Azure, GCP) continuously. We monitor configurations, analyze access paths, detect leaked secrets, and provide automated remediation.",
@@ -226,8 +229,8 @@ export const servicePagesData: Record<string, ServicePageData> = {
   },
   "compliance-management": {
     slug: "compliance-management",
-    name: "Compliance Management",
-    category: "GOVERNANCE & AUDIT",
+    name: "Digital Trust",
+    category: "DIGITAL TRUST",
     tagline: "Framework readiness, gap analysis, and certification support.",
     heroStatement: "Rigorous Auditing Readiness.\nFramework Certification Support.",
     overview: "Achieve audit readiness for ISO 27001, GDPR, CERT-In, RBI guidelines, and SOC 2. We guide you through gap analyses, policy drafting, training, and liaison with auditors.",
@@ -263,8 +266,8 @@ export const servicePagesData: Record<string, ServicePageData> = {
   },
   siem: {
     slug: "siem",
-    name: "Managed SIEM & Monitoring",
-    category: "SECURITY MONITORING",
+    name: "Cyber Defense Operations",
+    category: "CYBER DEFENSE OPERATIONS",
     tagline: "Managed SIEM and 24/7 Security Operations Center monitoring.",
     heroStatement: "24/7 SOC Event Monitoring.\nManaged Threat Hunting.",
     overview: "Leverage our 24/7 Managed SIEM and SOC. We aggregate logs across endpoints, networks, databases, and clouds to run correlation rules and stop threats instantly.",
@@ -297,8 +300,8 @@ export const servicePagesData: Record<string, ServicePageData> = {
   },
   "smart-contract-audits": {
     slug: "smart-contract-audits",
-    name: "Smart Contract Audits",
-    category: "DEFI & BLOCKCHAIN",
+    name: "Protocol Assurance",
+    category: "PROTOCOL ASSURANCE",
     tagline: "Solidity and Rust audits covering Web3 security vectors.",
     heroStatement: "Mathematical Code Verification.\nDeFi Protocol Auditing.",
     overview: "Ensure the integrity of your Web3 protocols. We perform rigorous manual and automated audits of smart contracts written in Solidity, Rust, and Vyper to prevent exploits and front-running.",
@@ -332,8 +335,8 @@ export const servicePagesData: Record<string, ServicePageData> = {
   },
   "ai-ast": {
     slug: "ai-ast",
-    name: "AI AST Security",
-    category: "AI SAFETY FRAMEWORK",
+    name: "AI Systems Assurance",
+    category: "AI SYSTEMS ASSURANCE",
     tagline: "ML-augmented security testing for modern web architectures.",
     heroStatement: "ML-Powered Security Scans.\nExpert Validation Safeguards.",
     overview: "Accelerate your AppSec cycle using machine learning. We deploy AI-powered application security testing to detect complex vulnerability patterns, backed by expert validation to ensure zero false-positives.",

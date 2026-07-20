@@ -71,7 +71,7 @@ export default function SmartContractHero() {
       <div className="max-w-[850px] w-full mx-auto flex flex-col items-center justify-center text-center z-10 py-12 relative">
         <div className="w-full h-40 pointer-events-none mb-6 relative" />
         
-        <SectionLabel color="secondary">DEFI & BLOCKCHAIN AUDITS</SectionLabel>
+        <SectionLabel color="secondary">PROTOCOL ASSURANCE</SectionLabel>
 
         {/* Humanist display headline */}
         <h1 className="font-display font-medium text-4xl sm:text-5xl md:text-6xl lg:text-[4.6rem] uppercase tracking-tight leading-[0.95] text-[#f9f9f9] mt-6 max-w-[800px] select-text">

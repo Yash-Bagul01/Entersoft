@@ -1,5 +1,5 @@
 export const cloudHero = {
-  eyebrow: 'MANAGED CLOUD SECURITY',
+  eyebrow: 'CLOUD RESILIENCE',
   headline: ['Continuous Visibility.', 'Zero Blind Spots.'],
   subline: 'AWS, Azure, and GCP. Every resource, every configuration, every permission — monitored continuously by the same senior analysts for 13 years.',
 };

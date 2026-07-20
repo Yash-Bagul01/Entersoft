@@ -1,5 +1,5 @@
 export const hero = {
-  eyebrow: 'MANAGED CLOUD SECURITY',
+  eyebrow: 'CLOUD RESILIENCE',
   line1: 'Every corner of your cloud.',
   line2: 'Nothing hidden.',
   sub: 'Continuous. Multi-cloud. Human-validated. 13 years without a breach on our watch.',
