@@ -277,14 +277,14 @@ export default function Hero() {
               hidden: { y: 20, opacity: 0 },
               visible: { y: 0, opacity: 1, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } },
             }}
-            className="flex flex-wrap items-center gap-4 mt-4 md:mt-6"
+            className="flex flex-wrap items-center gap-3 md:gap-4 mt-4 md:mt-6 w-full sm:w-auto"
           >
             <MagneticButton>
-              <Button variant="primary" size="lg" asLink href="#contact" className="gap-2">
+              <Button variant="primary" size="lg" asLink href="#contact" className="gap-2 w-full sm:w-auto text-center justify-center">
                 REQUEST BRIEFING <ArrowRight className="w-3.5 h-3.5" />
               </Button>
             </MagneticButton>
-            <Button variant="secondary" size="lg" asLink href="#contact">
+            <Button variant="secondary" size="lg" asLink href="#contact" className="w-full sm:w-auto text-center justify-center">
               SEE ENPROBE
             </Button>
           </motion.div>
@@ -303,7 +303,7 @@ export default function Hero() {
           y: { delay: 1.2, duration: 0.6 },
           scale: { duration: 0.2 },
         }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-1.5 cursor-pointer bg-transparent border-none outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-lg px-4 py-2 select-none"
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 hidden min-[600px]:flex flex-col items-center gap-1.5 cursor-pointer bg-transparent border-none outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-lg px-4 py-2 select-none max-h-[600px]:hidden"
         aria-label="Scroll to next section"
       >
         <span className="font-mono text-[9px] font-bold tracking-[0.2em] text-[var(--text-secondary)] uppercase">

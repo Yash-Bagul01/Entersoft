@@ -11,6 +11,8 @@ export function useMagnetic(strength = 0.35, radius = 80) {
   useEffect(() => {
     // Disable magnetic effects for reduced-motion settings or touch interfaces
     if (shouldReduceMotion || typeof window === "undefined") return;
+    const isTouch = window.matchMedia("(pointer: coarse)").matches;
+    if (isTouch) return;
 
     const element = elementRef.current;
     if (!element) return;

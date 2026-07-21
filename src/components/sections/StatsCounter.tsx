@@ -15,6 +15,7 @@ function StatCard({ stat, idx, getIcon }: { stat: any; idx: number; getIcon: (id
   const glareRef = useRef<HTMLDivElement>(null);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) return;
     const card = cardRef.current;
     if (!card) return;
     const rect = card.getBoundingClientRect();

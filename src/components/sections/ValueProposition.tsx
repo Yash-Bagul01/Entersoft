@@ -81,23 +81,26 @@ export default function ValueProposition() {
             className="text-[clamp(1.5rem,3.4vw,2.8rem)] font-display font-medium leading-[1.2] tracking-[-0.02em] uppercase text-center flex flex-wrap justify-center gap-x-[0.25em] gap-y-[0.15em]"
           >
             {tokens.map((token, index) => (
-              <motion.span
-                key={index}
-                variants={itemVariants}
-                whileHover={token.highlight ? { 
-                  scale: 1.05, 
-                  textShadow: "0 0 12px rgba(0,163,255,0.25)",
-                  transition: { duration: 0.2, ease: "easeOut" }
-                } : { 
-                  y: -2,
-                  transition: { duration: 0.2, ease: "easeOut" }
-                }}
-                className={`inline-block transition-all duration-300 cursor-default hover:text-accent ${
-                  token.highlight ? "text-text-secondary font-semibold" : "text-text-primary"
-                }`}
-              >
-                {token.text}
-              </motion.span>
+              <React.Fragment key={index}>
+                <motion.span
+                  variants={itemVariants}
+                  whileHover={token.highlight ? { 
+                    scale: 1.05, 
+                    textShadow: "0 0 12px rgba(0,163,255,0.25)",
+                    transition: { duration: 0.2, ease: "easeOut" }
+                  } : { 
+                    y: -2,
+                    transition: { duration: 0.2, ease: "easeOut" }
+                  }}
+                  className={`inline-block transition-all duration-300 cursor-default hover:text-accent ${
+                    token.highlight ? "text-text-secondary font-semibold" : "text-text-primary"
+                  }`}
+                  style={{ display: 'inline-block', whiteSpace: 'pre' }}
+                >
+                  {token.text}
+                </motion.span>
+                {index < tokens.length - 1 ? ' ' : ''}
+              </React.Fragment>
             ))}
           </motion.h2>
         </div>

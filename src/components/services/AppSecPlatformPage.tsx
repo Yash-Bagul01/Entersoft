@@ -733,7 +733,7 @@ function ProveVisual() {
   const [score, setScore] = useState(0);
   const [checks, setChecks] = useState(0);
   const [vulns, setVulns] = useState(0);
-  const [recurrence, setRecurrence] = useState(100);
+  const [recurrence, setRecurrence] = useState(0.01);
 
   const testSuites = [
     { id: 1, name: "SQL Injection Sanitization", desc: "Checks database input parametrization" },
@@ -996,10 +996,10 @@ function ProveVisual() {
         <div className="bg-[#121212]/40 border border-white/5 p-2 rounded-[2px] flex flex-col justify-between">
           <span className="text-[7px] text-zinc-500 uppercase tracking-widest block select-none">Recurrence</span>
           <span className={`text-sm font-bold mt-1 transition-colors duration-300 ${recurrence <= 1 ? "text-emerald-400" : "text-[#F6F5F0]"}`}>
-            {recurrence}%
+            {typeof recurrence === 'number' ? recurrence.toFixed(2) : recurrence}%
           </span>
           <div className="w-full h-[2px] bg-white/5 rounded-full mt-2 overflow-hidden">
-            <div className="h-full bg-[#ff5555] transition-all duration-300" style={{ width: `${recurrence}%` }} />
+            <div className="h-full bg-emerald-400 transition-all duration-300" style={{ width: `${Math.max(1, Math.min(100, recurrence))}%` }} />
           </div>
         </div>
       </div>
@@ -1411,8 +1411,26 @@ function InteractiveTour() {
           </p>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="flex flex-wrap border-b border-[var(--border-subtle)] pb-2 gap-2">
+        {/* Mobile Select Dropdown (<375px) */}
+        <div className="block min-[375px]:hidden w-full mb-2">
+          <select
+            value={activeTab}
+            onChange={(e) => {
+              setActiveTab(Number(e.target.value));
+              setIsPaused(true);
+            }}
+            className="w-full bg-[var(--bg-elevated)] text-[var(--text-primary)] border border-[var(--border-subtle)] p-3 text-sm rounded-[2px] font-mono outline-none"
+          >
+            {tabData.map((tab, i) => (
+              <option key={tab.id} value={i}>
+                {tab.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Tab Navigation (Horizontal Scrollable on mobile >=375px) */}
+        <div className="hidden min-[375px]:flex overflow-x-auto border-b border-[var(--border-subtle)] pb-2 gap-2 whitespace-nowrap no-scrollbar" style={{ WebkitOverflowScrolling: "touch" }}>
           {tabData.map((tab, i) => (
             <button
               key={tab.id}
@@ -1420,7 +1438,7 @@ function InteractiveTour() {
                 setActiveTab(i);
                 setIsPaused(true);
               }}
-              className={`font-mono text-[10px] md:text-[11px] font-bold uppercase tracking-wider px-4 py-2 border-b-2 transition-all duration-300 ${
+              className={`shrink-0 font-mono text-[10px] md:text-[11px] font-bold uppercase tracking-wider px-4 py-2 border-b-2 transition-all duration-300 ${
                 activeTab === i 
                   ? "border-[var(--accent)] text-[var(--text-primary)]" 
                   : "border-transparent text-[var(--text-tertiary)] hover:text-[var(--text-primary)]"
@@ -1967,7 +1985,7 @@ export default function AppSecPlatformPage({ faqs }: AppSecPlatformPageProps) {
           ========================================== */}
       <section 
         id="appsec-fix"
-        className="relative w-full min-h-[100vh] flex items-center bg-[#060606] px-6 md:px-12 py-20 border-b border-[var(--border-subtle)] z-20 overflow-hidden"
+        className="relative w-full min-h-[100vh] min-h-[100dvh] flex items-center bg-[#060606] px-6 md:px-12 py-20 border-b border-[var(--border-subtle)] z-20 overflow-hidden"
       >
         <div className="max-w-[1400px] w-full mx-auto grid grid-cols-1 lg:grid-cols-[1.1fr_1.9fr] gap-12 lg:gap-16 items-center">
           <div className="flex flex-col gap-4 max-w-[500px]">
@@ -1992,7 +2010,7 @@ export default function AppSecPlatformPage({ faqs }: AppSecPlatformPageProps) {
           ========================================== */}
       <section 
         id="appsec-prove"
-        className="relative w-full min-h-[100vh] flex items-center bg-[#060606] px-6 md:px-12 py-20 border-b border-[var(--border-subtle)] z-20"
+        className="relative w-full min-h-[100vh] min-h-[100dvh] flex items-center bg-[#060606] px-6 md:px-12 py-20 border-b border-[var(--border-subtle)] z-20"
       >
         <div className="max-w-[1400px] w-full mx-auto grid grid-cols-1 lg:grid-cols-[1.1fr_1.9fr] gap-12 lg:gap-16 items-center">
           <div className="flex flex-col gap-5 max-w-[500px]">
@@ -2066,7 +2084,7 @@ export default function AppSecPlatformPage({ faqs }: AppSecPlatformPageProps) {
           ========================================== */}
       <section 
         id="appsec-integrate"
-        className="relative w-full min-h-[100vh] flex items-center bg-[#060606] px-6 md:px-12 py-20 border-b border-[var(--border-subtle)] z-20"
+        className="relative w-full min-h-[100vh] min-h-[100dvh] flex items-center bg-[#060606] px-6 md:px-12 py-20 border-b border-[var(--border-subtle)] z-20"
       >
         <div className="max-w-[1400px] w-full mx-auto grid grid-cols-1 lg:grid-cols-[1.1fr_1.9fr] gap-12 lg:gap-16 items-center">
           <div className="flex flex-col gap-4 max-w-[500px]">

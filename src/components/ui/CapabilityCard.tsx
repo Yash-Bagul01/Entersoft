@@ -55,12 +55,18 @@ export default function CapabilityCard({ card, isWide = false, className = '' }:
     }
   }, [isReducedMotion])
 
+  const [isFinePointer, setIsFinePointer] = useState(false)
+
+  useEffect(() => {
+    setIsFinePointer(window.matchMedia('(pointer: fine) and (hover: hover)').matches)
+  }, [])
+
   return (
     <div
       ref={cardRef}
       onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={() => isFinePointer && setIsHovered(true)}
+      onMouseLeave={() => isFinePointer && setIsHovered(false)}
       data-card-id={card.id}
       className={`capability-card ${isWide ? 'card-wide' : 'card-narrow'} ${className}`}
       style={{
@@ -76,8 +82,8 @@ export default function CapabilityCard({ card, isWide = false, className = '' }:
         willChange: 'transform',
       }}
     >
-      {/* Spotlight overlay — follows cursor */}
-      {!isReducedMotion && (
+      {/* Spotlight overlay — follows cursor on desktop fine pointer */}
+      {!isReducedMotion && isFinePointer && (
         <div
           className="card-spotlight"
           style={{
@@ -104,17 +110,10 @@ export default function CapabilityCard({ card, isWide = false, className = '' }:
         }}
       >
         <div
-          className="card-top-row"
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'flex-start',
-            gap: '12px',
-            marginBottom: '14px',
-          }}
+          className="card-top-row flex flex-col sm:flex-row justify-between items-start gap-2.5 sm:gap-3 mb-3.5"
         >
           <span
-            className="card-title font-display"
+            className="card-title font-display flex-1"
             style={{
               fontFamily: 'var(--font-heading)',
               fontSize: isWide ? 'clamp(1.05rem, 1.4vw, 1.3rem)' : 'clamp(0.95rem, 1.2vw, 1.15rem)',
@@ -122,23 +121,16 @@ export default function CapabilityCard({ card, isWide = false, className = '' }:
               color: 'var(--text-primary)',
               letterSpacing: '-0.01em',
               lineHeight: 1.25,
-              flex: 1,
             }}
           >
             {card.title}
           </span>
           <span
-            className="card-descriptor font-mono"
+            className="card-descriptor font-mono shrink-0 text-left sm:text-right uppercase tracking-[0.1em] pt-0.5"
             style={{
               fontFamily: 'var(--font-mono)',
               fontSize: '9.5px',
               color: isHovered ? 'var(--accent)' : 'var(--text-tertiary)',
-              letterSpacing: '0.1em',
-              textTransform: 'uppercase',
-              textAlign: 'right',
-              whiteSpace: 'nowrap',
-              paddingTop: '2px',
-              flexShrink: 0,
               transition: 'color 200ms ease',
             }}
           >

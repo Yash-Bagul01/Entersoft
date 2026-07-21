@@ -21,7 +21,15 @@ export default function AnimatedCounter({
   const [displayValue, setDisplayValue] = useState("0");
   const shouldReduceMotion = useReducedMotion();
 
+  const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+
     if (shouldReduceMotion) {
       setDisplayValue(formatNumber(value, decimals));
       return;
@@ -34,29 +42,37 @@ export default function AnimatedCounter({
 
     const target = { val: 0 };
 
+    const animateCounter = () => {
+      gsap.to(target, {
+        val: value,
+        duration: duration,
+        ease: "power3.out",
+        onUpdate: () => {
+          setDisplayValue(formatNumber(target.val, decimals));
+        },
+        onComplete: () => {
+          setDisplayValue(formatNumber(value, decimals));
+        }
+      });
+    };
+
     const trigger = ScrollTrigger.create({
       trigger: el,
-      start: "top 60%", // 60% viewport entry
+      start: "top 85%", // 85% viewport entry
       once: true,
-      onEnter: () => {
-        gsap.to(target, {
-          val: value,
-          duration: duration,
-          ease: "power3.out",
-          onUpdate: () => {
-            setDisplayValue(formatNumber(target.val, decimals));
-          },
-          onComplete: () => {
-            setDisplayValue(formatNumber(value, decimals));
-          }
-        });
-      }
+      onEnter: animateCounter
     });
+
+    // Check if element is already in viewport on mount
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      animateCounter();
+    }
 
     return () => {
       trigger.kill();
     };
-  }, [value, decimals, duration, shouldReduceMotion]);
+  }, [mounted, value, decimals, duration, shouldReduceMotion]);
 
   return <span ref={ref} className="tabular-nums">{displayValue}</span>;
 }

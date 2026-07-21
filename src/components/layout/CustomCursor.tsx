@@ -9,12 +9,19 @@ export default function CustomCursor() {
   const { coords, hoverType, hasMouse } = useCursor();
   const shouldReduceMotion = useReducedMotion();
 
+  const [isFinePointer, setIsFinePointer] = useState(false);
+
   useEffect(() => {
     setMounted(true);
+    const mq = window.matchMedia("(pointer: fine) and (hover: hover)");
+    setIsFinePointer(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsFinePointer(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
   }, []);
 
   useEffect(() => {
-    if (!mounted || shouldReduceMotion) return;
+    if (!mounted || !isFinePointer || shouldReduceMotion) return;
 
     if (hasMouse) {
       document.body.classList.add("custom-cursor-active");
@@ -25,10 +32,10 @@ export default function CustomCursor() {
     return () => {
       document.body.classList.remove("custom-cursor-active");
     };
-  }, [mounted, hasMouse, shouldReduceMotion]);
+  }, [mounted, hasMouse, isFinePointer, shouldReduceMotion]);
 
   // Hydration, mouse detection, and accessibility checks
-  if (!mounted || !hasMouse || shouldReduceMotion) return null;
+  if (!mounted || !hasMouse || !isFinePointer || shouldReduceMotion) return null;
 
   return (
     <>

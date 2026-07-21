@@ -39,7 +39,8 @@ export default function ComplianceBackgroundCanvas() {
       alpha: true,
       powerPreference: "high-performance",
     });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    const isTouch = window.matchMedia("(pointer: coarse)").matches;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isTouch ? 1 : 2));
     renderer.setSize(window.innerWidth, window.innerHeight);
 
     // --- Lighting ---

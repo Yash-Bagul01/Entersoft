@@ -405,7 +405,7 @@ function ScrollRevealItem({
         opacity,
         zIndex: 10 + idx,
       }}
-      className="sticky top-0 w-full h-[100vh] h-[100dvh] flex flex-col items-center justify-center bg-[#030712] overflow-hidden select-none border-b border-zinc-950/60"
+      className="relative lg:sticky lg:top-0 w-full min-h-[100vh] min-h-[100dvh] flex flex-col items-center justify-center bg-[#030712] overflow-hidden select-none border-b border-zinc-950/60 py-12 lg:py-0"
     >
       {/* Background tech grids */}
       <div className="absolute inset-0 w-full h-full opacity-30 pointer-events-none z-0">
@@ -797,7 +797,7 @@ export default function VAPTPage() {
         <div className="max-w-[1400px] w-full mx-auto grid grid-cols-1 lg:grid-cols-[1.1fr_1.9fr] gap-12 lg:gap-20 items-start">
           
           {/* Left Column: Accordion sidebar */}
-          <div className="flex flex-col gap-6 max-w-[380px] text-left sticky top-24">
+          <div className="flex flex-col gap-6 max-w-[380px] text-left lg:sticky lg:top-24 relative">
             <div className="flex flex-col gap-3">
               <SectionLabel color="secondary">03 / FAQS</SectionLabel>
               <h2 className="text-3xl md:text-4xl font-display font-medium uppercase text-white leading-tight">
@@ -809,7 +809,7 @@ export default function VAPTPage() {
             </p>
             <div className="mt-4">
               <MagneticButton>
-                <Button variant="primary" size="lg" asLink href="/#contact" className="gap-2">
+                <Button variant="primary" size="lg" asLink href="/#contact" className="gap-2 w-full sm:w-auto text-center justify-center">
                   Book a Briefing <ChevronRight className="w-4 h-4" />
                 </Button>
               </MagneticButton>

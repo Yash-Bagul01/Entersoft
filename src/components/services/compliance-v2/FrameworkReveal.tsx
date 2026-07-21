@@ -70,7 +70,8 @@ export default function FrameworkReveal() {
 
     gsap.registerPlugin(ScrollTrigger);
 
-    if (isReduced) {
+    const isTouch = window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 1024;
+    if (isReduced || isTouch) {
       return;
     }
 
@@ -102,11 +103,11 @@ export default function FrameworkReveal() {
   return (
     <section 
       ref={pinRef} 
-      className="relative w-full h-screen h-[100dvh] bg-transparent text-[#F5F5F5] select-none z-10 border-b border-[var(--border-subtle)] overflow-hidden framework-reveal-section"
+      className="relative w-full lg:h-screen lg:h-[100dvh] min-h-auto bg-transparent text-[#F5F5F5] select-none z-10 border-b border-[var(--border-subtle)] overflow-hidden framework-reveal-section py-12 lg:py-0"
     >
       <div 
         ref={containerRef}
-        className="w-full h-full flex flex-col md:flex-row items-center justify-between px-6 md:px-16 lg:px-24 py-20 relative z-20"
+        className="w-full h-full flex flex-col lg:flex-row items-center justify-between px-6 md:px-16 lg:px-24 py-12 lg:py-20 relative z-20 gap-8 lg:gap-0"
       >
         {/* Left Column: Typographic scale of framework titles */}
         <div className="w-full md:w-[45%] flex flex-col justify-center items-start text-left gap-10">

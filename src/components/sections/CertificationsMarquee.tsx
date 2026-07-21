@@ -149,6 +149,7 @@ function CertificationCard({ cert, index, hoveredId, setHoveredId }: Certificati
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) return;
     const card = cardRef.current;
     const icon = iconRef.current;
     if (!card) return;

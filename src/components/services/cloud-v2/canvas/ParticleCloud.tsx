@@ -75,7 +75,7 @@ export default function ParticleCloud() {
     };
 
     const handleResize = () => {
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      dpr = Math.min(window.devicePixelRatio || 1, window.matchMedia("(pointer: coarse)").matches ? 1 : 2);
       width = container.clientWidth;
       height = container.clientHeight;
       canvas.width = width * dpr;

@@ -29,8 +29,8 @@ export default function SmoothScrollProvider({
       orientation: "vertical",
       smoothWheel: true,
       wheelMultiplier: shouldReduceMotion ? 1.0 : 0.9,           // slightly damped, not 1:1 with the wheel
-      touchMultiplier: 1.6,           // touch needs more responsiveness than wheel
-      syncTouch: false,               // keep native feel on mobile, don't over-engineer touch
+      touchMultiplier: 2.0,           // increase for more responsive touch
+      syncTouch: false,               // CRITICAL: false = native touch scroll on mobile
       infinite: false,
     });
 
@@ -43,6 +43,9 @@ export default function SmoothScrollProvider({
         progressBarRef.current.style.transform = `scaleX(${e.progress ?? 0})`;
       }
     });
+
+    const refreshHandler = () => lenis.resize();
+    ScrollTrigger.addEventListener("refresh", refreshHandler);
 
 
 

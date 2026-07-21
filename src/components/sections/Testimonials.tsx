@@ -69,12 +69,30 @@ export default function Testimonials() {
   };
 
   const active = testimonials[activeIndex];
+  const touchStartX = useRef<number | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = touchStartX.current - touchEndX;
+    if (Math.abs(diff) > 40) {
+      if (diff > 0) handleNext();
+      else handlePrev();
+    }
+    touchStartX.current = null;
+  };
 
   return (
     <section
       className="relative w-full bg-[#060606] overflow-hidden"
       onMouseEnter={stopAutoplay}
       onMouseLeave={startAutoplay}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
       <div className="max-w-[1400px] mx-auto px-6 md:px-12 py-24 md:py-36 flex flex-col gap-12 md:gap-16">
         

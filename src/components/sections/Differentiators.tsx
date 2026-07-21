@@ -10,23 +10,28 @@ import CapabilityCard from '@/components/ui/CapabilityCard'
 import { useSmoothScroll } from '@/components/layout/SmoothScrollProvider'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 
-const wordReveal = (text: string, isReducedMotion: boolean) =>
-  text.split(' ').map((word, i) => (
-    <motion.span
-      key={i}
-      className="inline"
-      initial={{ opacity: isReducedMotion ? 1 : 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true }}
-      transition={{
-        delay: isReducedMotion ? 0 : 0.3 + i * 0.03,
-        duration: isReducedMotion ? 0 : 0.5,
-        ease: 'easeOut',
-      }}
-    >
-      {word}{' '}
-    </motion.span>
+const wordReveal = (text: string, isReducedMotion: boolean) => {
+  const words = text.split(' ')
+  return words.map((word, i) => (
+    <React.Fragment key={i}>
+      <motion.span
+        className="inline-block"
+        style={{ display: 'inline-block' }}
+        initial={{ opacity: isReducedMotion ? 1 : 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{
+          delay: isReducedMotion ? 0 : 0.3 + i * 0.03,
+          duration: isReducedMotion ? 0 : 0.5,
+          ease: 'easeOut',
+        }}
+      >
+        {word}
+      </motion.span>
+      {i < words.length - 1 ? ' ' : ''}
+    </React.Fragment>
   ))
+}
 
 export default function Differentiators() {
   const sectionRef = useRef<HTMLElement>(null)

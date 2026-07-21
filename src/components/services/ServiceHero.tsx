@@ -55,7 +55,7 @@ export default function ServiceHero({
   };
 
   return (
-    <section className="relative w-full min-h-[70vh] md:min-h-[80vh] flex flex-col justify-center items-center px-6 md:px-12 bg-[var(--bg-primary)] overflow-hidden border-b border-[var(--border-subtle)] py-16 md:py-24">
+    <section className="relative w-full min-h-[70vh] min-h-[70dvh] md:min-h-[80vh] md:min-h-[80dvh] flex flex-col justify-center items-center px-6 md:px-12 bg-[var(--bg-primary)] overflow-hidden border-b border-[var(--border-subtle)] py-16 md:py-24">
       {/* Background drifting element for Cloud */}
       {heroLayoutType === "cloud" && (
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,163,255,0.015)_0%,transparent_70%)] pointer-events-none animate-pulse duration-[8000ms]" />

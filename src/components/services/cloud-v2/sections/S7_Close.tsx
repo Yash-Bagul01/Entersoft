@@ -7,7 +7,7 @@ import ServiceCTA from "../../ServiceCTA";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 function ScrambleStat({ value, delay = 0, enabled = true }: { value: string; delay?: number; enabled?: boolean }) {
-  const [resolved, setResolved] = useState("");
+  const [resolved, setResolved] = useState(value);
   const containerRef = useRef<HTMLSpanElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: "-50px" });
 

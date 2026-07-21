@@ -21,6 +21,15 @@
   --font-body: var(--font-inter), sans-serif;
   --font-mono: var(--font-jetbrains-mono), monospace;
   
+  /* Breakpoint Tokens */
+  --screen-xs: 320px;
+  --screen-sm: 375px;
+  --screen-md: 768px;
+  --screen-lg: 1024px;
+  --screen-xl: 1280px;
+  --screen-2xl: 1440px;
+  --screen-3xl: 1920px;
+
   /* Layout */
   --max-width: 1400px;
   --section-padding: clamp(80px, 10vw, 160px);

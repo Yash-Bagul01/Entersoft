@@ -148,13 +148,22 @@ export default function Navbar() {
     }
   ];
 
+  const [mobileActiveMega, setMobileActiveMega] = useState<number | null>(null);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false);
+    setMobileActiveMega(null);
+    document.body.style.overflow = "auto";
+  }, [pathname]);
+
   const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-    if (!mobileMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
+    const nextState = !mobileMenuOpen;
+    setMobileMenuOpen(nextState);
+    if (!nextState) {
+      setMobileActiveMega(null);
     }
+    document.body.style.overflow = nextState ? "hidden" : "auto";
   };
 
   return (
@@ -175,7 +184,7 @@ export default function Navbar() {
               alt="Entersoft Security Logo"
               width={110}
               height={22}
-              className="h-5.5 w-auto object-contain"
+              className="h-5.5 w-auto object-contain logo-img"
               priority
             />
           </Link>
@@ -288,7 +297,7 @@ export default function Navbar() {
             {!isAppSecPage && !isVaptPage && !isCompliancePage && <ThemeToggle />}
             <button
               onClick={toggleMobileMenu}
-              className="text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors focus:outline-none"
+              className="text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors focus:outline-none p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -301,11 +310,11 @@ export default function Navbar() {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="fixed inset-0 bg-[#060606] z-40 lg:hidden flex flex-col justify-between px-6 pt-28 pb-10"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 bg-[#060606] z-40 lg:hidden flex flex-col justify-between px-6 pt-28 pb-10 overflow-y-auto"
           >
             {/* Navigation Link Stack */}
             <motion.nav
@@ -314,56 +323,82 @@ export default function Navbar() {
               variants={{
                 visible: {
                   transition: {
-                    staggerChildren: 0.08,
+                    staggerChildren: 0.06,
                   },
                 },
               }}
-              className="flex flex-col space-y-6"
+              className="flex flex-col space-y-4"
             >
-              {navItems.map((item) => (
-                <motion.div
-                  key={item.label}
-                  variants={{
-                    hidden: { opacity: 0, y: 15 },
-                    visible: { opacity: 1, y: 0, transition: { ease: [0.22, 1, 0.36, 1] } },
-                  }}
-                >
-                  <a
-                    href={item.href}
-                    onClick={toggleMobileMenu}
-                    className="font-display font-bold text-3xl uppercase tracking-wider text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors"
+              {navItems.map((item, idx) => {
+                const isOpen = mobileActiveMega === idx;
+                const subItems = item.megaMenu ? item.megaMenu.sections.flatMap(s => s.items) : [];
+                return (
+                  <motion.div
+                    key={item.label}
+                    variants={{
+                      hidden: { opacity: 0, x: -15 },
+                      visible: { opacity: 1, x: 0, transition: { ease: [0.22, 1, 0.36, 1] } },
+                    }}
+                    className="border-b border-[var(--border-subtle)] pb-4"
                   >
-                    {item.label}
-                  </a>
-                  {item.megaMenu && (
-                    <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2 pl-1">
-                      {item.megaMenu.sections.flatMap(s => s.items).slice(0, 3).map(sub => (
-                        <a
-                          key={sub.name}
-                          href={sub.href}
-                          onClick={toggleMobileMenu}
-                          className="font-mono text-[10px] text-[var(--text-secondary)] uppercase tracking-wider hover:text-[#F6F5F0]"
+                    <div className="flex items-center justify-between">
+                      <a
+                        href={item.href}
+                        onClick={toggleMobileMenu}
+                        className="font-display font-bold text-2xl uppercase tracking-wider text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors"
+                      >
+                        {item.label}
+                      </a>
+                      {subItems.length > 0 && (
+                        <button
+                          onClick={() => setMobileActiveMega(isOpen ? null : idx)}
+                          className="p-2 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors"
+                          aria-label={`Toggle ${item.label} sub-menu`}
                         >
-                          {sub.name}
-                        </a>
-                      ))}
+                          <ChevronDown className={cn("w-5 h-5 transition-transform duration-300", isOpen && "transform rotate-180")} />
+                        </button>
+                      )}
                     </div>
-                  )}
-                </motion.div>
-              ))}
+
+                    <AnimatePresence>
+                      {isOpen && subItems.length > 0 && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.25 }}
+                          className="flex flex-col gap-2 mt-3 pl-2 overflow-hidden"
+                        >
+                          {subItems.map((sub) => (
+                            <Link
+                              key={sub.name}
+                              href={sub.href}
+                              onClick={toggleMobileMenu}
+                              className="font-mono text-[12px] text-[var(--text-secondary)] uppercase tracking-wider hover:text-[var(--text-primary)] py-1.5 flex items-center gap-2"
+                            >
+                              <span className="text-[var(--accent)] text-[10px]">→</span>
+                              <span>{sub.name}</span>
+                            </Link>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+                );
+              })}
             </motion.nav>
 
             {/* Bottom Actions */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="flex flex-col gap-4 border-t border-[var(--border-subtle)] pt-6"
+              transition={{ delay: 0.2 }}
+              className="flex flex-col gap-4 border-t border-[var(--border-subtle)] pt-6 mt-6"
             >
               <Button
                 variant="primary"
                 size="md"
-                className="w-full"
+                className="w-full text-center"
                 asLink
                 href="/#contact"
                 onClick={toggleMobileMenu}

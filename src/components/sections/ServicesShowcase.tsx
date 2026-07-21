@@ -365,7 +365,7 @@ export default function ServicesShowcase() {
               // ENTERPRISE SERVICES & MANAGED SOLUTIONS
             </span>
             <span className="right-instruction font-mono text-[12px] text-[var(--text-tertiary)] uppercase tracking-[0.14em] transition-colors duration-200 shrink-0">
-              HOVER TO EXPLORE //
+              {isFinePointer ? "HOVER TO EXPLORE //" : "TAP TO EXPLORE //"}
             </span>
           </div>
           
@@ -376,10 +376,13 @@ export default function ServicesShowcase() {
           <p className="supporting-statement font-sans text-[clamp(15px,1.8vw,18px)] text-[var(--text-secondary)] leading-[1.6] mt-[1.2rem] max-w-[600px]">
             {"Seven integrated practices. One operating model to turn risk into validated decisions, remediation and continuous resilience."
               .split(" ")
-              .map((word, i) => (
-                <span key={i} className="word inline-block mr-[0.25em] transition-opacity duration-500">
-                  {word}
-                </span>
+              .map((word, i, arr) => (
+                <React.Fragment key={i}>
+                  <span className="word inline-block transition-opacity duration-500" style={{ display: 'inline-block', whiteSpace: 'pre' }}>
+                    {word}
+                  </span>
+                  {i < arr.length - 1 ? ' ' : ''}
+                </React.Fragment>
               ))}
           </p>
         </div>

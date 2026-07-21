@@ -1,11 +1,18 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { isTouchDevice } from "./scrollTriggerHelpers";
 
 export function createStackTransition(
   incomingSection: Element,
   triggerContainer: Element,
   options?: { scrub?: number; scale?: boolean }
 ) {
+  if (isTouchDevice()) {
+    // Reset any clip-path on touch so content flows vertically normally
+    gsap.set(incomingSection, { clipPath: "none" });
+    return;
+  }
+
   const scrub = options?.scrub ?? 1.4;
 
   // The incoming section starts clipped from the bottom

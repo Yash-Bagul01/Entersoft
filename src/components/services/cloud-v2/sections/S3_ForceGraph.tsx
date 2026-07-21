@@ -80,20 +80,20 @@ export default function S3_ForceGraph({ sectionRef, stickyRef }: SectionProps) {
           </div>
 
           {/* Settling counters below canvas */}
-          <div className="h-10 mt-2 flex justify-center items-center">
-            <div className="flex gap-12 font-mono text-xs text-[rgba(245,245,245,0.45)] select-none">
-              <div>
+          <div className="h-10 mt-2 flex justify-center items-center w-full">
+            <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 font-mono text-xs text-[rgba(245,245,245,0.45)] select-none">
+              <div className="flex items-center gap-1.5">
                 <span className="text-[#F5F5F5] font-bold transition-all duration-300">
                   {pruned ? "42 → 24" : "42"}
                 </span>
-                <span className="ml-2 uppercase tracking-[0.16em] text-[9px]">roles</span>
+                <span className="uppercase tracking-[0.16em] text-[9px]">roles</span>
               </div>
-              <div className="w-[1px] h-3 bg-zinc-800 self-center" />
-              <div>
+              <div className="w-[1px] h-3 bg-zinc-800 self-center hidden min-[360px]:block" />
+              <div className="flex items-center gap-1.5">
                 <span className="text-[#F5F5F5] font-bold transition-all duration-300">
                   {pruned ? "78 → 43" : "78"}
                 </span>
-                <span className="ml-2 uppercase tracking-[0.16em] text-[9px]">permissions</span>
+                <span className="uppercase tracking-[0.16em] text-[9px]">permissions</span>
               </div>
             </div>
           </div>

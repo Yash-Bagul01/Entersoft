@@ -114,7 +114,7 @@ export default function S5_Typographic({ sectionRef, stickyRef }: SectionProps) 
           {frameworks.map((fw, idx) => (
             <div
               key={fw.name}
-              className={`font-serif font-bold text-3xl sm:text-6xl md:text-[5.5rem] lg:text-[7.8rem] tracking-tighter ${fw.opacityClass} select-none relative whitespace-nowrap`}
+              className={`font-serif font-bold text-[clamp(1.8rem,7vw,7rem)] tracking-tighter ${fw.opacityClass} select-none relative whitespace-nowrap`}
               style={{ 
                 letterSpacing: "-0.025em",
                 textShadow: fw.opacityClass === "text-[#F5F5F5]" ? "0 0 35px rgba(245,245,245,0.22)" : "none"
