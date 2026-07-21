@@ -359,10 +359,19 @@ html.lenis, html.lenis body {
 [data-theme="light"] .text-\[\#F6F5F0\] {
   color: var(--text-primary) !important;
 }
+[data-theme="light"] .text-\[var\(--text-primary\)\] {
+  color: var(--text-primary) !important;
+}
 [data-theme="light"] .text-\[var\(--text-secondary\)\] {
   color: var(--text-secondary) !important;
 }
 [data-theme="light"] .text-white {
+  color: var(--text-primary) !important;
+}
+[data-theme="light"] #services,
+[data-theme="light"] #services .display-name,
+[data-theme="light"] #services h2,
+[data-theme="light"] #services h3 {
   color: var(--text-primary) !important;
 }
 
