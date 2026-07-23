@@ -520,5 +520,73 @@ html.lenis, html.lenis body {
   border-color: #CCFF33 !important;
 }
 
+/* AI Systems Assurance Subpage Specific Styles */
+[data-page='ai-ast'] {
+  --bg-primary: #060606 !important;
+  --bg-elevated: #0f0f0f !important;
+  --border-subtle: rgba(255, 255, 255, 0.08) !important;
+  --text-primary: #f6f5f0 !important;
+  --text-secondary: #9c9c97 !important;
+  --text-tertiary: #5e5e5a !important;
+  --accent: #00A3FF !important;
+  --accent-neon: #00A3FF !important;
+  --accent-dim: rgba(0, 163, 255, 0.15) !important;
+  --accent-hover: #33b5ff !important;
+  --font-body: 'Schibsted Grotesk', sans-serif;
+  --font-heading: 'Fraunces', Georgia, serif;
+  --font-serif: 'Fraunces', Georgia, serif;
+}
+
+[data-page='ai-ast'] .custom-cursor-dot {
+  background: #00A3FF !important;
+  width: 5px !important;
+  height: 5px !important;
+}
+
+[data-page='ai-ast'] .custom-cursor-ring {
+  border-color: #00A3FF !important;
+}
+
+
+@keyframes ticker-scroll-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes ticker-scroll-right {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.animate-marquee-left {
+  animation: ticker-scroll-left 20s linear infinite;
+}
+
+.animate-marquee-right {
+  animation: ticker-scroll-right 24s linear infinite;
+}
+
+.animate-ticker {
+  animation: ticker-scroll-left 25s linear infinite;
+}
+
+@media (pointer: fine) {
+  .hover\:pause-marquee:hover {
+    animation-play-state: paused;
+  }
+}
+
+.mask-fade-edges {
+  mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+}
+
+.fixed-width-index {
+  min-width: 40px;
+  display: inline-block;
+}
+
+
+
 
 

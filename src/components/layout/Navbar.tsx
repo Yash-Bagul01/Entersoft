@@ -35,6 +35,7 @@ export default function Navbar() {
   const isAppSecPage = pathname === ROUTES.services.appsec;
   const isVaptPage = pathname === ROUTES.services.vapt;
   const isCompliancePage = pathname === ROUTES.services.compliance;
+  const isAiAstPage = pathname === ROUTES.services.aiAst;
   
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeMega, setActiveMega] = useState<number | null>(null);
@@ -286,7 +287,7 @@ export default function Navbar() {
 
           {/* Right Button Action & Theme Toggle */}
           <div className="hidden lg:flex items-center gap-4">
-            {!isAppSecPage && !isVaptPage && !isCompliancePage && <ThemeToggle />}
+            {!isAppSecPage && !isVaptPage && !isCompliancePage && !isAiAstPage && <ThemeToggle />}
             <Button variant="primary" size="sm" asLink href="/#contact">
               Request Briefing
             </Button>
@@ -294,7 +295,7 @@ export default function Navbar() {
 
           {/* Mobile Menu Icon & Theme Toggle */}
           <div className="lg:hidden z-50 flex items-center gap-4">
-            {!isAppSecPage && !isVaptPage && !isCompliancePage && <ThemeToggle />}
+            {!isAppSecPage && !isVaptPage && !isCompliancePage && !isAiAstPage && <ThemeToggle />}
             <button
               onClick={toggleMobileMenu}
               className="text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors focus:outline-none p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
