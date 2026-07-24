@@ -570,6 +570,59 @@ html.lenis, html.lenis body {
   border-color: #00A3FF !important;
 }
 
+/* Cyber Defense Operations Subpage Specific Styles */
+[data-page="cyber-defense"] {
+  --cd-bg: #080C14;
+  --cd-surface: #0F172A;
+  --cd-surface-2: #1E293B;
+  --cd-surface-3: #334155;
+
+  --cd-text: #FFFFFF;
+  --cd-text-dim: #94A3B8;
+  --cd-text-dimmer: #64748B;
+
+  --cd-neon: #3B82F6;
+  --cd-blue: #60A5FA;
+  --cd-cyan: #93C5FD;
+
+  --cd-neon-glow: rgba(59, 130, 246, 0.20);
+  --cd-blue-glow: rgba(96, 165, 250, 0.18);
+  --cd-blue-glow-dim: rgba(255, 255, 255, 0.05);
+
+  --cd-border: rgba(255, 255, 255, 0.10);
+  --cd-border-glow: rgba(59, 130, 246, 0.35);
+
+  --cd-gradient: linear-gradient(135deg, #FFFFFF 0%, #60A5FA 55%, #3B82F6 100%);
+
+  --bg-primary: #080C14 !important;
+  --bg-elevated: #0F172A !important;
+  --border-subtle: rgba(255, 255, 255, 0.10) !important;
+  --text-primary: #FFFFFF !important;
+  --text-secondary: #94A3B8 !important;
+  --text-tertiary: #64748B !important;
+  --accent: #3B82F6 !important;
+  --accent-dim: rgba(59, 130, 246, 0.15) !important;
+  --accent-hover: #60A5FA !important;
+
+  background: var(--cd-bg) !important;
+  color: var(--cd-text) !important;
+}
+
+[data-page="cyber-defense"] .custom-cursor-dot {
+  background: #3B82F6 !important;
+  width: 5px !important;
+  height: 5px !important;
+}
+
+[data-page="cyber-defense"] .custom-cursor-ring {
+  background: rgba(59, 130, 246, 0.12) !important;
+  border-color: #3B82F6 !important;
+}
+
+[data-page="cyber-defense"][data-grain-heavy] .grain-overlay {
+  opacity: 0.035 !important;
+}
+
 
 @keyframes ticker-scroll-left {
   0% { transform: translateX(0); }
