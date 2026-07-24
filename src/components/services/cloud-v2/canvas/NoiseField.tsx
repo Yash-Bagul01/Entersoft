@@ -16,7 +16,7 @@ export default function NoiseField() {
     const container = containerRef.current;
     if (!canvas || !container) return;
 
-    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    const ctx = canvas.getContext("2d", { alpha: false });
     if (!ctx) return;
 
     let width = 0;
@@ -50,7 +50,7 @@ export default function NoiseField() {
     const patterns = noiseCanvases.map((nCanvas) => ctx.createPattern(nCanvas, "repeat"));
 
     const handleResize = () => {
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       width = container.clientWidth;
       height = container.clientHeight;
       canvas.width = width * dpr;
@@ -68,22 +68,8 @@ export default function NoiseField() {
     const fpsInterval = 1000 / 24; // Locked at 24fps
     let isVisible = true;
 
-    // IntersectionObserver to pause when offscreen
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          isVisible = entry.isIntersecting;
-        });
-      },
-      { threshold: 0.01 }
-    );
-    observer.observe(container);
-
     const render = (time: number) => {
-      if (!isVisible) {
-        animationFrameId = requestAnimationFrame(render);
-        return;
-      }
+      if (!isVisible) return;
 
       const elapsed = time - lastTime;
 
@@ -119,7 +105,25 @@ export default function NoiseField() {
       animationFrameId = requestAnimationFrame(render);
     };
 
-    animationFrameId = requestAnimationFrame(render);
+    // IntersectionObserver to pause when offscreen
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const wasVisible = isVisible;
+          isVisible = entry.isIntersecting;
+          if (isVisible && !wasVisible) {
+            lastTime = performance.now();
+            animationFrameId = requestAnimationFrame(render);
+          }
+        });
+      },
+      { threshold: 0.01 }
+    );
+    observer.observe(container);
+
+    if (isVisible) {
+      animationFrameId = requestAnimationFrame(render);
+    }
 
     return () => {
       cancelAnimationFrame(animationFrameId);

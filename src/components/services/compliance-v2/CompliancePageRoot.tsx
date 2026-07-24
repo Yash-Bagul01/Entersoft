@@ -21,11 +21,18 @@ export default function CompliancePageRoot() {
   const data = servicePagesData["compliance-management"];
 
   useEffect(() => {
-    // Set global data-page and heavy grain properties for theme overrides
+    // Set global data-page, dark theme, and heavy grain properties for theme overrides
+    const prevTheme = document.documentElement.getAttribute("data-theme");
+    document.documentElement.setAttribute("data-theme", "dark");
     document.documentElement.setAttribute("data-page", "compliance-security");
     document.documentElement.setAttribute("data-grain-heavy", "true");
 
     return () => {
+      if (prevTheme) {
+        document.documentElement.setAttribute("data-theme", prevTheme);
+      } else {
+        document.documentElement.removeAttribute("data-theme");
+      }
       document.documentElement.removeAttribute("data-page");
       document.documentElement.removeAttribute("data-grain-heavy");
     };

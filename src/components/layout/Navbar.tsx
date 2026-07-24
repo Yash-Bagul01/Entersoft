@@ -32,6 +32,7 @@ interface NavItem {
 
 export default function Navbar() {
   const pathname = usePathname();
+  const isServicePage = pathname?.startsWith("/services");
   const isAppSecPage = pathname === ROUTES.services.appsec;
   const isVaptPage = pathname === ROUTES.services.vapt;
   const isCompliancePage = pathname === ROUTES.services.compliance;
@@ -172,7 +173,7 @@ export default function Navbar() {
       <header
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-300 w-full",
-          (isScrolled || isVaptPage)
+          (isScrolled || isServicePage)
             ? "bg-[#060606]/85 hover:bg-[#060606]/98 backdrop-blur-md hover:backdrop-blur-xl border-b border-[var(--border-subtle)] py-4"
             : "bg-transparent border-b border-transparent py-6"
         )}
@@ -287,7 +288,7 @@ export default function Navbar() {
 
           {/* Right Button Action & Theme Toggle */}
           <div className="hidden lg:flex items-center gap-4">
-            {!isAppSecPage && !isVaptPage && !isCompliancePage && !isAiAstPage && <ThemeToggle />}
+            {!isServicePage && <ThemeToggle />}
             <Button variant="primary" size="sm" asLink href="/#contact">
               Request Briefing
             </Button>
@@ -295,7 +296,7 @@ export default function Navbar() {
 
           {/* Mobile Menu Icon & Theme Toggle */}
           <div className="lg:hidden z-50 flex items-center gap-4">
-            {!isAppSecPage && !isVaptPage && !isCompliancePage && !isAiAstPage && <ThemeToggle />}
+            {!isServicePage && <ThemeToggle />}
             <button
               onClick={toggleMobileMenu}
               className="text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors focus:outline-none p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"

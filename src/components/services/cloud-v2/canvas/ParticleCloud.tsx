@@ -27,7 +27,7 @@ export default function ParticleCloud() {
     const container = containerRef.current;
     if (!canvas || !container) return;
 
-    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     let width = 0;
@@ -75,7 +75,7 @@ export default function ParticleCloud() {
     };
 
     const handleResize = () => {
-      dpr = Math.min(window.devicePixelRatio || 1, window.matchMedia("(pointer: coarse)").matches ? 1 : 2);
+      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       width = container.clientWidth;
       height = container.clientHeight;
       canvas.width = width * dpr;

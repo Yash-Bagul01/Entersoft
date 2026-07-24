@@ -247,7 +247,14 @@ html.lenis, html.lenis body {
 /* Custom cursor styles (desktop pointer devices only, active state) */
 @media (pointer: fine) {
   body.custom-cursor-active,
-  body.custom-cursor-active * {
+  body.custom-cursor-active *,
+  body.custom-cursor-active a,
+  body.custom-cursor-active button,
+  body.custom-cursor-active input,
+  body.custom-cursor-active select,
+  body.custom-cursor-active textarea,
+  body.custom-cursor-active canvas,
+  body.custom-cursor-active svg {
     cursor: none !important;
   }
 }
@@ -262,8 +269,8 @@ html.lenis, html.lenis body {
   background-color: #ffffff;
   pointer-events: none;
   z-index: 99999;
-  will-change: transform;
-  transition: background-color 0.25s ease, width 0.25s ease, height 0.25s ease;
+  will-change: transform, opacity;
+  transition: background-color 0.2s ease, width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
 }
 
 .custom-cursor-ring {
@@ -277,10 +284,11 @@ html.lenis, html.lenis body {
   background-color: transparent;
   pointer-events: none;
   z-index: 99998;
-  will-change: transform;
-  transition: background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+  transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.2s ease;
 }
 
 /* Service row base transitions */
@@ -294,31 +302,31 @@ html.lenis, html.lenis body {
 
 /* Hover interactive custom states */
 .custom-cursor-ring--button {
-  background-color: color-mix(in srgb, var(--accent) 15%, transparent);
-  border-color: var(--accent);
-  box-shadow: 0 0 15px rgba(0, 163, 255, 0.45);
+  background-color: color-mix(in srgb, var(--accent, #00A3FF) 15%, transparent);
+  border-color: var(--accent, #00A3FF);
+  box-shadow: 0 0 15px color-mix(in srgb, var(--accent, #00A3FF) 45%, transparent);
 }
 
 .custom-cursor-ring--link {
-  background-color: color-mix(in srgb, var(--accent) 10%, transparent);
-  border-color: var(--accent);
-  box-shadow: 0 0 8px rgba(0, 163, 255, 0.25);
+  background-color: color-mix(in srgb, var(--accent, #00A3FF) 10%, transparent);
+  border-color: var(--accent, #00A3FF);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--accent, #00A3FF) 25%, transparent);
 }
 
 .custom-cursor-ring--card {
-  background-color: color-mix(in srgb, var(--accent) 12%, transparent);
-  border-color: rgba(255, 255, 255, 0.75);
-  box-shadow: 0 0 18px rgba(255, 255, 255, 0.15);
+  background-color: color-mix(in srgb, var(--accent, #ffffff) 12%, transparent);
+  border-color: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 18px rgba(255, 255, 255, 0.2);
 }
 
 .custom-cursor-ring--section {
-  background-color: color-mix(in srgb, var(--accent) 4%, transparent);
-  border-color: color-mix(in srgb, var(--accent) 60%, transparent);
+  background-color: transparent;
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 .custom-cursor-ring--text {
   background-color: transparent;
-  border-color: var(--text-primary);
+  border-color: rgba(255, 255, 255, 0.6);
 }
 
 /* Custom marquee mask classes for CertificationsMarquee */
@@ -440,22 +448,47 @@ html.lenis, html.lenis body {
   background-color: var(--border-subtle) !important;
 }
 
-/* Scrolled Navbar background in light mode */
-[data-theme="light"] header.bg-\[\#060606\]\/85 {
+/* Scrolled Navbar background in light mode (only on non-service pages) */
+:root[data-theme="light"]:not([data-page]) header.bg-\[\#060606\]\/85 {
   background-color: rgba(246, 245, 240, 0.85) !important;
   border-bottom-color: var(--border-subtle) !important;
 }
-[data-theme="light"] header.bg-\[\#060606\]\/85:hover {
+:root[data-theme="light"]:not([data-page]) header.bg-\[\#060606\]\/85:hover {
   background-color: rgba(246, 245, 240, 0.98) !important;
 }
-[data-theme="light"] .nav-dropdown-box {
+:root[data-theme="light"]:not([data-page]) .nav-dropdown-box {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(246, 245, 240, 0.98) 100%) !important;
 }
 
+/* Subpage Navbar and Mega Menu Dropdown Box Enforcement (always dark on service pages) */
+[data-page] header,
+[data-page] header.bg-\[\#060606\]\/85 {
+  background-color: rgba(6, 6, 6, 0.85) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-page] .nav-dropdown-box {
+  background: linear-gradient(180deg, rgba(6, 6, 6, 0.98) 0%, rgba(15, 15, 15, 0.98) 100%) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8) !important;
+}
+
+[data-page] .nav-dropdown-box p {
+  color: #9c9c97 !important;
+}
+
+[data-page] .nav-dropdown-box span {
+  color: #f6f5f0 !important;
+}
+
+[data-page] .nav-dropdown-box a {
+  color: #f6f5f0 !important;
+}
+
 /* Logo SVG visibility in light mode */
-[data-theme="light"] img[alt*="Entersoft"],
-[data-theme="light"] .logo-img,
-:root[data-theme="light"] header img {
+:root[data-theme="light"]:not([data-page]) img[alt*="Entersoft"],
+:root[data-theme="light"]:not([data-page]) .logo-img,
+:root[data-theme="light"]:not([data-page]) header img {
   filter: brightness(0) !important;
   opacity: 0.95 !important;
 }
@@ -485,16 +518,6 @@ html.lenis, html.lenis body {
   --font-body: 'Schibsted Grotesk', sans-serif;
   --font-heading: 'Fraunces', Georgia, serif;
   --font-serif: 'Fraunces', Georgia, serif;
-}
-
-[data-page='cloud-security'] .custom-cursor-dot {
-  opacity: 0 !important;
-  display: none !important;
-}
-
-[data-page='cloud-security'] .custom-cursor-ring {
-  background: rgba(245, 245, 245, 0.25) !important;
-  border-color: #F5F5F5 !important;
 }
 
 /* Compliance Management Subpage Specific Styles */

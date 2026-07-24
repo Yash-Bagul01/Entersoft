@@ -26,7 +26,7 @@ export default function GlitchGrid({ onTallyChange }: { onTallyChange?: (tally: 
     const container = containerRef.current;
     if (!canvas || !container) return;
 
-    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     let width = 0;
@@ -202,20 +202,21 @@ export default function GlitchGrid({ onTallyChange }: { onTallyChange?: (tally: 
 
       // Draw horizontal laser scan sweep line
       if (laserY > 0 && laserY < height) {
-        // Outer glow
-        ctx.shadowColor = "rgba(245, 245, 245, 0.8)";
-        ctx.shadowBlur = 8;
-        ctx.strokeStyle = "rgba(245, 245, 245, 0.95)";
-        ctx.lineWidth = 2.5;
-
+        // Outer glow stroke layer
+        ctx.strokeStyle = "rgba(245, 245, 245, 0.25)";
+        ctx.lineWidth = 6;
         ctx.beginPath();
         ctx.moveTo(0, laserY);
         ctx.lineTo(width, laserY);
         ctx.stroke();
 
-        // Reset shadow
-        ctx.shadowColor = "transparent";
-        ctx.shadowBlur = 0;
+        // Core bright line layer
+        ctx.strokeStyle = "rgba(245, 245, 245, 0.95)";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(0, laserY);
+        ctx.lineTo(width, laserY);
+        ctx.stroke();
       }
 
       animationFrameId = requestAnimationFrame(render);

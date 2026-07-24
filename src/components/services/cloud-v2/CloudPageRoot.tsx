@@ -40,10 +40,17 @@ export default function CloudPageRoot() {
 
   // Set global theme overrides on mount and clean up on unmount
   useEffect(() => {
+    const prevTheme = document.documentElement.getAttribute("data-theme");
+    document.documentElement.setAttribute("data-theme", "dark");
     document.documentElement.setAttribute("data-page", "cloud-security");
     document.documentElement.setAttribute("data-grain-heavy", "true");
 
     return () => {
+      if (prevTheme) {
+        document.documentElement.setAttribute("data-theme", prevTheme);
+      } else {
+        document.documentElement.removeAttribute("data-theme");
+      }
       document.documentElement.removeAttribute("data-page");
       document.documentElement.removeAttribute("data-grain-heavy");
     };

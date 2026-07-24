@@ -20,7 +20,7 @@ export default function ThreatWaveform() {
     const container = containerRef.current;
     if (!canvas || !container) return;
 
-    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     let width = container.clientWidth;

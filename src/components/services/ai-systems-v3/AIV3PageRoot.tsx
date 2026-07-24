@@ -13,9 +13,16 @@ import AIV3_Close from "./sections/AIV3_Close";
 
 export default function AIV3PageRoot() {
   useEffect(() => {
+    const prevTheme = document.documentElement.getAttribute("data-theme");
+    document.documentElement.setAttribute("data-theme", "dark");
     document.documentElement.setAttribute("data-page", "ai-ast");
 
     return () => {
+      if (prevTheme) {
+        document.documentElement.setAttribute("data-theme", prevTheme);
+      } else {
+        document.documentElement.removeAttribute("data-theme");
+      }
       document.documentElement.removeAttribute("data-page");
     };
   }, []);
