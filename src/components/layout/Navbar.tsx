@@ -173,9 +173,11 @@ export default function Navbar() {
       <header
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-300 w-full",
-          (isScrolled || isServicePage)
-            ? "bg-[#060606]/85 hover:bg-[#060606]/98 backdrop-blur-md hover:backdrop-blur-xl border-b border-[var(--border-subtle)] py-4"
-            : "bg-transparent border-b border-transparent py-6"
+          isServicePage
+            ? "bg-[#060606]/92 backdrop-blur-md border-b border-white/10 py-4 service-nav-header"
+            : isScrolled
+              ? "bg-[#060606]/85 hover:bg-[#060606]/98 backdrop-blur-md hover:backdrop-blur-xl border-b border-[var(--border-subtle)] py-4"
+              : "bg-transparent border-b border-transparent py-6"
         )}
       >
         <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex items-center justify-between">
@@ -186,7 +188,10 @@ export default function Navbar() {
               alt="Entersoft Security Logo"
               width={110}
               height={22}
-              className="h-5.5 w-auto object-contain logo-img"
+              className={cn(
+                "h-5.5 w-auto object-contain logo-img",
+                isServicePage && "!brightness-100 !filter-none !opacity-100"
+              )}
               priority
             />
           </Link>
@@ -202,7 +207,11 @@ export default function Navbar() {
               >
                 <a
                   href={item.href}
-                  className="flex items-center gap-1 font-mono text-[11px] font-bold uppercase tracking-wider text-text-primary hover:text-accent py-2 transition-colors relative"
+                  className={cn(
+                    "flex items-center gap-1 font-mono text-[11px] font-bold uppercase tracking-wider py-2 transition-colors relative",
+                    isServicePage ? "!text-[#F6F5F0] hover:!text-[var(--accent)]" : "text-text-primary hover:text-accent"
+                  )}
+                  style={isServicePage ? { color: "#F6F5F0" } : undefined}
                   data-cursor="link"
                 >
                   {item.label}

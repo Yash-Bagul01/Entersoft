@@ -88,49 +88,73 @@ export default function Testimonials() {
 
   return (
     <section
-      className="relative w-full bg-[#060606] overflow-hidden"
+      id="operational-validation"
+      className="relative w-full bg-[var(--bg-primary)] transition-colors duration-500 overflow-hidden"
       onMouseEnter={stopAutoplay}
       onMouseLeave={startAutoplay}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12 py-24 md:py-36 flex flex-col gap-12 md:gap-16">
+      {/* Background Mesh Backdrop */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,var(--accent-glow,rgba(0,163,255,0.06)),transparent_70%)] pointer-events-none" />
+
+      <div className="max-w-[1400px] mx-auto px-6 md:px-12 py-24 md:py-36 flex flex-col gap-12 md:gap-16 relative z-10">
         
         {/* Header Block */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-10%" }}
-          variants={{
-            hidden: {},
-            visible: { transition: { staggerChildren: 0.08 } }
-          }}
-          className="flex flex-col items-start"
-        >
-          <div className="overflow-hidden">
-            <motion.div
-              variants={{
-                hidden: { y: "100%" },
-                visible: { y: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } }
-              }}
-            >
-              <SectionLabel color="secondary">OPERATIONAL VALIDATION</SectionLabel>
-            </motion.div>
-          </div>
-          <div className="overflow-hidden">
-            <motion.h2
-              variants={{
-                hidden: { y: "100%" },
-                visible: { y: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } }
-              }}
-              className="text-3xl font-display font-medium text-[#F6F5F0] uppercase tracking-tight"
-            >
-              Trusted by Enterprises
-            </motion.h2>
-          </div>
-        </motion.div>
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-10%" }}
+            variants={{
+              hidden: {},
+              visible: { transition: { staggerChildren: 0.08 } }
+            }}
+            className="flex flex-col items-start"
+          >
+            <div className="overflow-hidden">
+              <motion.div
+                variants={{
+                  hidden: { y: "100%" },
+                  visible: { y: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } }
+                }}
+              >
+                <SectionLabel color="secondary">OPERATIONAL VALIDATION</SectionLabel>
+              </motion.div>
+            </div>
+            <div className="overflow-hidden">
+              <motion.h2
+                variants={{
+                  hidden: { y: "100%" },
+                  visible: { y: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } }
+                }}
+                className="text-3xl font-display font-medium text-[var(--text-primary)] uppercase tracking-tight"
+              >
+                Trusted by Enterprises
+              </motion.h2>
+            </div>
+          </motion.div>
 
-        {/* Carousel Content */}
+          {/* Navigation Buttons */}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handlePrev}
+              className="w-12 h-12 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-elevated)] flex items-center justify-center text-[var(--text-primary)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors cursor-pointer"
+              aria-label="Previous testimonial"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+            <button
+              onClick={handleNext}
+              className="w-12 h-12 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-elevated)] flex items-center justify-center text-[var(--text-primary)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors cursor-pointer"
+              aria-label="Next testimonial"
+            >
+              <ArrowRight className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+
+        {/* Carousel Slide Area */}
         <div className="relative min-h-[380px] sm:min-h-[320px] md:min-h-[280px] w-full flex items-center">
           <AnimatePresence initial={false} custom={direction} mode="wait">
             <motion.div
@@ -143,13 +167,13 @@ export default function Testimonials() {
               className="w-full flex flex-col gap-8 md:gap-10"
             >
               {/* Giant Quote Block */}
-              <blockquote className="text-[clamp(1.5rem,3.2vw,2.5rem)] font-display font-light leading-snug text-[#F6F5F0] tracking-tight uppercase max-w-[1100px] text-left">
+              <blockquote className="text-[clamp(1.4rem,3vw,2.4rem)] font-display font-light leading-snug text-[var(--text-primary)] tracking-tight uppercase max-w-[1100px] text-left">
                 “{active.quote}”
               </blockquote>
 
-              {/* Attribution */}
+              {/* Attribution Details */}
               <div className="flex flex-col items-start gap-1">
-                <span className="font-mono text-xs font-bold text-[#F6F5F0] tracking-wider">
+                <span className="font-mono text-xs font-bold text-[var(--text-primary)] tracking-wider">
                   {active.author}
                 </span>
                 <span className="font-mono text-[10px] text-[var(--accent)] tracking-widest uppercase">
@@ -160,49 +184,25 @@ export default function Testimonials() {
           </AnimatePresence>
         </div>
 
-        {/* Navigation Indicator & Arrows */}
-        <div className="flex items-center justify-between border-t border-[var(--border-subtle)] pt-8">
-          {/* Index Dots */}
-          <div className="flex items-center gap-2">
-            {testimonials.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => {
-                  stopAutoplay();
-                  setDirection(idx > activeIndex ? 1 : -1);
-                  setActiveIndex(idx);
-                  startAutoplay();
-                }}
-                className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-                  idx === activeIndex
-                    ? "bg-[var(--accent)] w-6"
-                    : "bg-white/20 hover:bg-white/45"
-                }`}
-                aria-label={`Go to slide ${idx + 1}`}
-                data-cursor="link"
-              />
-            ))}
-          </div>
-
-          {/* Navigation Arrows */}
-          <div className="flex items-center gap-3">
+        {/* Progress Indicators */}
+        <div className="flex items-center gap-2">
+          {testimonials.map((_, idx) => (
             <button
-              onClick={handlePrev}
-              className="p-3 border border-[var(--border-subtle)] rounded-[2px] hover:border-[#F6F5F0] text-[#F6F5F0] transition-colors bg-white/[0.01]"
-              aria-label="Previous quote"
-              data-cursor="link"
-            >
-              <ArrowLeft className="w-4 h-4" />
-            </button>
-            <button
-              onClick={handleNext}
-              className="p-3 border border-[var(--border-subtle)] rounded-[2px] hover:border-[#F6F5F0] text-[#F6F5F0] transition-colors bg-white/[0.01]"
-              aria-label="Next quote"
-              data-cursor="link"
-            >
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
+              key={idx}
+              onClick={() => {
+                stopAutoplay();
+                setDirection(idx > activeIndex ? 1 : -1);
+                setActiveIndex(idx);
+                startAutoplay();
+              }}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                idx === activeIndex
+                  ? "w-8 bg-[var(--accent)]"
+                  : "w-2 bg-[var(--border-subtle)] hover:bg-[var(--text-tertiary)]"
+              }`}
+              aria-label={`Go to slide ${idx + 1}`}
+            />
+          ))}
         </div>
 
       </div>
