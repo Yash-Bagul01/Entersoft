@@ -18,9 +18,9 @@ export default function InterServiceNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="w-full bg-[#060606] border-b border-[var(--border-subtle)] py-12 px-6 md:px-12 select-none">
+    <nav className="w-full inter-service-nav bg-[#05070F] border-b border-[rgba(255,255,255,0.1)] py-12 px-6 md:px-12 select-none relative z-10 text-[#F0F4FF]">
       <div className="max-w-[1280px] mx-auto flex flex-col gap-6">
-        <div className="font-mono text-[10px] text-[var(--text-tertiary)] uppercase tracking-[0.2em]">
+        <div className="font-mono text-[10px] text-[#9c9c97] uppercase tracking-[0.2em]">
           EXPLORE ENTERSOFT SERVICES
         </div>
 
@@ -34,8 +34,8 @@ export default function InterServiceNav() {
                 data-cursor="link"
                 className={`font-mono text-xs md:text-sm font-semibold tracking-wider transition-colors duration-200 ${
                   isActive
-                    ? "text-[#00A3FF] border-b border-[#00A3FF] pb-1"
-                    : "text-[var(--text-secondary)] hover:text-[#F6F5F0]"
+                    ? "text-[#CCFF33] border-b border-[#CCFF33] pb-1"
+                    : "text-[#9c9c97] hover:text-[#F0F4FF]"
                 }`}
               >
                 {s.name}

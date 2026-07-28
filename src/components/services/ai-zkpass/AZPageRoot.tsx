@@ -14,7 +14,7 @@ import InterServiceNav from "@/components/services/ai-systems/InterServiceNav";
 
 export default function AZPageRoot() {
   useEffect(() => {
-    document.documentElement.setAttribute("data-page", "ai-zkpass");
+    document.documentElement.setAttribute("data-page", "ai-ast");
 
     return () => {
       document.documentElement.removeAttribute("data-page");
@@ -23,8 +23,8 @@ export default function AZPageRoot() {
 
   return (
     <div
-      data-page="ai-zkpass"
-      id="ai-zkpass-root"
+      data-page="ai-ast"
+      id="ai-ast-root"
       className="w-full relative text-[#F0F4FF] overflow-x-hidden select-none bg-[#05070F]"
       style={{
         // CSS variables extracted directly from zkpass.org design system

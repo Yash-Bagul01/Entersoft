@@ -590,23 +590,33 @@ header.service-nav-header .nav-dropdown-box a {
   color: #F6F5F0 !important;
 }
 
-/* AI AST Service Page Full Dark Theme Enforcement (Whole page including Navbar, CTA & Footer) */
+/* AI AST Service Page Full Dark Theme Enforcement (Whole page including Navbar, CTA, InterServiceNav & Footer) */
 [data-page="ai-zkpass"],
+[data-page="ai-ast"],
+[data-page="ai-systems"],
 html:has([data-page="ai-zkpass"]),
-:root[data-theme="light"]:has([data-page="ai-zkpass"]) {
+html:has([data-page="ai-ast"]),
+html:has([data-page="ai-systems"]),
+:root[data-theme="light"]:has([data-page="ai-zkpass"]),
+:root[data-theme="light"]:has([data-page="ai-ast"]),
+:root[data-theme="light"]:has([data-page="ai-systems"]) {
   background-color: #05070F !important;
   color: #F0F4FF !important;
 }
 
 html:has([data-page="ai-zkpass"]) header,
+html:has([data-page="ai-ast"]) header,
 html:has([data-page="ai-zkpass"]) header.bg-\[\#060606\]\/85,
+html:has([data-page="ai-ast"]) header.bg-\[\#060606\]\/85,
 header.service-nav-header {
   background-color: rgba(5, 7, 15, 0.95) !important;
   border-bottom-color: rgba(204, 255, 51, 0.15) !important;
 }
 
 html:has([data-page="ai-zkpass"]) header img,
+html:has([data-page="ai-ast"]) header img,
 html:has([data-page="ai-zkpass"]) header .logo-img,
+html:has([data-page="ai-ast"]) header .logo-img,
 header.service-nav-header .logo-img {
   filter: none !important;
   -webkit-filter: none !important;
@@ -615,27 +625,48 @@ header.service-nav-header .logo-img {
 }
 
 html:has([data-page="ai-zkpass"]) header nav a,
+html:has([data-page="ai-ast"]) header nav a,
 html:has([data-page="ai-zkpass"]) header nav span,
+html:has([data-page="ai-ast"]) header nav span,
 html:has([data-page="ai-zkpass"]) header a,
+html:has([data-page="ai-ast"]) header a,
 header.service-nav-header nav a {
   color: #F0F4FF !important;
 }
 
 html:has([data-page="ai-zkpass"]) header nav a:hover,
+html:has([data-page="ai-ast"]) header nav a:hover,
 header.service-nav-header nav a:hover {
   color: #CCFF33 !important;
 }
 
 html:has([data-page="ai-zkpass"]) body,
+html:has([data-page="ai-ast"]) body,
 html:has([data-page="ai-zkpass"]) main,
+html:has([data-page="ai-ast"]) main,
 html:has([data-page="ai-zkpass"]) nav,
+html:has([data-page="ai-ast"]) nav,
 html:has([data-page="ai-zkpass"]) footer,
-html:has([data-page="ai-zkpass"]) .service-page-container {
+html:has([data-page="ai-ast"]) footer,
+html:has([data-page="ai-zkpass"]) .service-page-container,
+html:has([data-page="ai-ast"]) .service-page-container,
+:root[data-theme="light"]:has([data-page="ai-zkpass"]) nav.inter-service-nav,
+:root[data-theme="light"]:has([data-page="ai-ast"]) nav.inter-service-nav,
+:root[data-theme="light"]:has([data-page="ai-zkpass"]) footer,
+:root[data-theme="light"]:has([data-page="ai-ast"]) footer,
+:root[data-theme="light"]:has([data-page="ai-zkpass"]) .bg-\[\#060606\],
+:root[data-theme="light"]:has([data-page="ai-ast"]) .bg-\[\#060606\],
+:root[data-theme="light"]:has([data-page="ai-zkpass"]) .bg-\[\#0B0E1A\],
+:root[data-theme="light"]:has([data-page="ai-ast"]) .bg-\[\#0B0E1A\] {
   background-color: #05070F !important;
   border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #F0F4FF !important;
 }
 
-html:has([data-page="ai-zkpass"]) footer {
+html:has([data-page="ai-zkpass"]) footer,
+html:has([data-page="ai-ast"]) footer,
+:root[data-theme="light"]:has([data-page="ai-zkpass"]) footer,
+:root[data-theme="light"]:has([data-page="ai-ast"]) footer {
   background-color: #05070F !important;
   border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
