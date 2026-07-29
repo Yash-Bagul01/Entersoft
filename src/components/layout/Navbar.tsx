@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown, Shield, Code, Cloud, CheckSquare, Server, Cpu, HelpCircle, Layers, FileText } from "lucide-react";
+import { Menu, X, ChevronDown, Shield, Code, Cloud, CheckSquare, Server, Cpu, HelpCircle, Layers, FileText, Database, Target, Zap, Activity, Eye, Compass, Workflow } from "lucide-react";
 import { Button } from "../ui/Button";
 import { cn } from "@/lib/utils";
 import ThemeToggle from "../ui/ThemeToggle";
@@ -23,6 +23,7 @@ interface NavItem {
   href: string;
   megaMenu?: {
     blurb: string;
+    ctaText?: string;
     sections: {
       title: string;
       items: MegaItem[];
@@ -32,7 +33,7 @@ interface NavItem {
 
 export default function Navbar() {
   const pathname = usePathname();
-  const isServicePage = pathname?.startsWith("/services");
+  const isServicePage = pathname?.startsWith("/services") || pathname?.startsWith("/platform");
   const isAppSecPage = pathname === ROUTES.services.appsec;
   const isVaptPage = pathname === ROUTES.services.vapt;
   const isCompliancePage = pathname === ROUTES.services.compliance;
@@ -56,26 +57,60 @@ export default function Navbar() {
 
   const navItems: NavItem[] = [
     {
-      label: "Services",
-      href: "/#services",
+      label: "Platform",
+      href: "/platform/cyber-ontology",
       megaMenu: {
-        blurb: "EnProbe — the technology and operating layer powering our 7 expert practices and capabilities to deliver packaged customer outcomes.",
+        blurb: "EnProbe — AI-native security platform backed by 14 years of expert human security judgment, turning fragmented security signals into governed action.",
+        ctaText: "Explore EnProbe Platform →",
         sections: [
           {
-            title: "Expert Practices",
+            title: "Discover & Model",
             items: [
-              { name: "Application Assurance", href: ROUTES.services.appsec, desc: "CI/CD automated vulnerability tests.", icon: <Code className="w-4 h-4" /> },
-              { name: "Adversarial Validation", href: ROUTES.services.vapt, desc: "Expert-validated penetration auditing.", icon: <Shield className="w-4 h-4" /> },
-              { name: "Cloud Resilience", href: ROUTES.services.cloud, desc: "Continuous CSPM cloud posture checks.", icon: <Cloud className="w-4 h-4" /> },
-              { name: "Digital Trust", href: ROUTES.services.compliance, desc: "Gap analysis & ISO 27001 readiness.", icon: <CheckSquare className="w-4 h-4" /> }
+              { name: "Cyber Ontology", href: ROUTES.platform.cyberOntology, desc: "UNIFIED SECURITY CONTEXT", icon: <Compass className="w-4 h-4" /> },
+              { name: "Security Data Fusion", href: ROUTES.platform.dataFusion, desc: "CONNECT THE STACK", icon: <Database className="w-4 h-4" /> }
             ]
           },
           {
-            title: "Specialized Solutions",
+            title: "Prioritize & Respond",
             items: [
-              { name: "Protocol Assurance", href: ROUTES.services.smartContract, desc: "Decentralized DeFi code stress-testing.", icon: <Cpu className="w-4 h-4" /> },
-              { name: "AI Systems Assurance", href: ROUTES.services.aiAst, desc: "LLM guardrails and prompt safety.", icon: <Layers className="w-4 h-4" /> },
-              { name: "Cyber Defense Operations", href: ROUTES.services.siem, desc: "Incident SOC telemetry and response.", icon: <Server className="w-4 h-4" /> }
+              { name: "Exposure Decisioning", href: ROUTES.platform.exposureDecisioning, desc: "PRIORITIZE WHAT MATTERS", icon: <Target className="w-4 h-4" /> },
+              { name: "Threat Operations", href: ROUTES.platform.threatOperations, desc: "DETECT TO RESPOND", icon: <Activity className="w-4 h-4" /> }
+            ]
+          },
+          {
+            title: "Govern & Assure",
+            items: [
+              { name: "Expert-Governed AI", href: ROUTES.platform.expertGovernedAi, desc: "14 YEARS OF JUDGMENT", icon: <Zap className="w-4 h-4" /> },
+              { name: "Closed-Loop Remediation", href: ROUTES.platform.closedLoopRemediation, desc: "DECISION TO ACTION", icon: <Workflow className="w-4 h-4" /> },
+              { name: "Continuous Assurance", href: ROUTES.platform.continuousAssurance, desc: "TRUST & EVIDENCE", icon: <Shield className="w-4 h-4" /> },
+              { name: "Unified Command View", href: ROUTES.platform.commandView, desc: "ONE OPERATING PICTURE", icon: <Eye className="w-4 h-4" /> }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      label: "Services",
+      href: "/#services",
+      megaMenu: {
+        blurb: "7 specialized practice areas delivering continuous security, penetration testing, compliance readiness, and AI system defense.",
+        ctaText: "View All Practices →",
+        sections: [
+          {
+            title: "Core Practices",
+            items: [
+              { name: "Application Assurance", href: ROUTES.services.appsec, desc: "APPSEC • DEVSECOPS • SECURE SDLC", icon: <Code className="w-4 h-4" /> },
+              { name: "Adversarial Validation", href: ROUTES.services.vapt, desc: "PENETRATION TESTING • RED TEAMING", icon: <Shield className="w-4 h-4" /> },
+              { name: "Cloud Resilience", href: ROUTES.services.cloud, desc: "CSPM • CWPP • CLOUD POSTURE", icon: <Cloud className="w-4 h-4" /> },
+              { name: "Digital Trust", href: ROUTES.services.compliance, desc: "ISO 27001 • SOC 2 • CERT-IN", icon: <CheckSquare className="w-4 h-4" /> }
+            ]
+          },
+          {
+            title: "Specialized Security",
+            items: [
+              { name: "Cyber Defense Operations", href: ROUTES.services.siem, desc: "MDR • SOC • THREAT MONITORING", icon: <Server className="w-4 h-4" /> },
+              { name: "Protocol Assurance", href: ROUTES.services.smartContract, desc: "WEB3 • SMART CONTRACT AUDITS", icon: <Cpu className="w-4 h-4" /> },
+              { name: "AI Systems Assurance", href: ROUTES.services.aiAst, desc: "AI AST • LLM SECURITY • PROMPT GUARD", icon: <Layers className="w-4 h-4" /> }
             ]
           }
         ]
@@ -86,6 +121,7 @@ export default function Navbar() {
       href: "/#case-studies",
       megaMenu: {
         blurb: "Sector-specific deployment: custom-tailored security postures engineered for financial services, fintech, healthcare, SaaS, government, critical infrastructure, and digital assets.",
+        ctaText: "View Sector Solutions →",
         sections: [
           {
             title: "Focus Areas",
@@ -99,27 +135,11 @@ export default function Navbar() {
       }
     },
     {
-      label: "Case Studies",
-      href: "/#case-studies",
-      megaMenu: {
-        blurb: "Proof: validated outcomes, metrics, client problems, and evidence demonstrating our 14 years of human security judgment.",
-        sections: [
-          {
-            title: "Factual Results",
-            items: [
-              { name: "Cision M&A Audit", href: "/#case-studies", desc: "Due diligence software posture validation.", icon: <FileText className="w-4 h-4" /> },
-              { name: "Retirement NBFC RBI", href: "/#case-studies", desc: "Rapid 100% compliance mapping case.", icon: <CheckSquare className="w-4 h-4" /> },
-              { name: "Logistics Pipeline Sec", href: "/#case-studies", desc: "Optimizing code gate verification.", icon: <Code className="w-4 h-4" /> }
-            ]
-          }
-        ]
-      }
-    },
-    {
       label: "Resources",
       href: "/#insights",
       megaMenu: {
         blurb: "Technical research, vulnerability writeups, and industry responses from Entersoft threat analysts.",
+        ctaText: "Read Research & Insights →",
         sections: [
           {
             title: "Documentation & Updates",
@@ -136,12 +156,13 @@ export default function Navbar() {
       label: "Company",
       href: "/#contact",
       megaMenu: {
-        blurb: "13 years of uninterrupted cyber defense led by a stable, veteran engineering cohort.",
+        blurb: "14 years of uninterrupted cyber defense led by a stable, veteran engineering cohort.",
+        ctaText: "About Entersoft →",
         sections: [
           {
             title: "About Us",
             items: [
-              { name: "Corporate Overview", href: "/#contact", desc: "13 years breach-free engineering.", icon: <Layers className="w-4 h-4" /> },
+              { name: "Corporate Overview", href: "/#contact", desc: "14 years breach-free engineering.", icon: <Layers className="w-4 h-4" /> },
               { name: "Certifications Strip", href: "/#certifications", desc: "Empanelled and audited credentials.", icon: <CheckSquare className="w-4 h-4" /> }
             ]
           }
@@ -168,151 +189,182 @@ export default function Navbar() {
     document.body.style.overflow = nextState ? "hidden" : "auto";
   };
 
+  const getDropdownStyle = (label: string) => {
+    switch (label) {
+      case "Platform":
+        return "-left-28 w-[980px]";
+      case "Services":
+        return "-left-36 w-[860px]";
+      case "Industries":
+        return "-left-44 w-[640px]";
+      case "Resources":
+        return "right-0 left-auto w-[600px]";
+      case "Company":
+        return "right-0 left-auto w-[560px]";
+      default:
+        return "-left-28 w-[800px]";
+    }
+  };
+
   return (
     <>
-      <header
-        className={cn(
-          "fixed top-0 left-0 right-0 z-50 transition-all duration-300 w-full",
-          isServicePage
-            ? "bg-[#060606]/92 backdrop-blur-md border-b border-white/10 py-4 service-nav-header"
-            : isScrolled
-              ? "bg-[#060606]/85 hover:bg-[#060606]/98 backdrop-blur-md hover:backdrop-blur-xl border-b border-[var(--border-subtle)] py-4"
-              : "bg-transparent border-b border-transparent py-6"
-        )}
-      >
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="flex items-center z-50 text-text-primary" data-cursor="link">
-            <Image
-              src="https://d2ghx8biuioax8.cloudfront.net/main-website-images/entersoftLogo.svg"
-              alt="Entersoft Security Logo"
-              width={110}
-              height={22}
-              className={cn(
-                "h-5.5 w-auto object-contain logo-img",
-                isServicePage && "!brightness-100 !filter-none !opacity-100"
-              )}
-              priority
-            />
-          </Link>
+      <header className="fixed top-0 left-0 right-0 z-50 w-full pointer-events-none">
+        <div className={cn(
+          "w-full transition-all duration-500 ease-in-out pointer-events-auto",
+          isScrolled ? "pt-4 px-4 md:px-8" : "pt-0 px-0"
+        )}>
+          <div
+            className={cn(
+              "w-full transition-all duration-500 ease-in-out flex items-center justify-between mx-auto",
+              isScrolled
+                ? "max-w-[1320px] px-6 py-3 rounded-full border backdrop-blur-xl shadow-2xl nav-floating-pill " +
+                  (isServicePage
+                    ? "bg-[#060606]/90 border-white/12 text-white service-nav-header shadow-[0_16px_40px_rgba(0,0,0,0.6)]"
+                    : "bg-[var(--bg-elevated)]/95 border-[var(--border-glass)] text-[var(--text-primary)] shadow-[0_12px_36px_rgba(0,0,0,0.12)]")
+                : "max-w-full px-6 md:px-12 py-5 rounded-none border-b border-white/10 backdrop-blur-md bg-black/35 text-white nav-rectangle-header"
+            )}
+          >
+            {/* Logo */}
+            <Link href="/" className="flex items-center z-50 text-text-primary shrink-0" data-cursor="link">
+              <Image
+                src="https://d2ghx8biuioax8.cloudfront.net/main-website-images/entersoftLogo.svg"
+                alt="Entersoft Security Logo"
+                width={110}
+                height={22}
+                className={cn(
+                  "h-5.5 w-auto object-contain logo-img transition-all duration-500",
+                  (isServicePage || (!isScrolled && !pathname?.startsWith("/platform"))) && "!brightness-100 !filter-none !opacity-100"
+                )}
+                priority
+              />
+            </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-8">
-            {navItems.map((item, idx) => (
-              <div
-                key={item.label}
-                className="relative"
-                onMouseEnter={() => setActiveMega(idx)}
-                onMouseLeave={() => setActiveMega(null)}
-              >
-                <a
-                  href={item.href}
-                  className={cn(
-                    "flex items-center gap-1 font-mono text-[11px] font-bold uppercase tracking-wider py-2 transition-colors relative",
-                    isServicePage ? "!text-[#F6F5F0] hover:!text-[var(--accent)]" : "text-text-primary hover:text-accent"
-                  )}
-                  style={isServicePage ? { color: "#F6F5F0" } : undefined}
-                  data-cursor="link"
+            {/* Desktop Navigation */}
+            <nav className="hidden lg:flex items-center space-x-1">
+              {navItems.map((item, idx) => (
+                <div
+                  key={item.label}
+                  className="relative"
+                  onMouseEnter={() => setActiveMega(idx)}
+                  onMouseLeave={() => setActiveMega(null)}
                 >
-                  {item.label}
-                  <ChevronDown
+                  <Link
+                    href={item.href}
                     className={cn(
-                      "w-3.5 h-3.5 transition-transform duration-300 opacity-60",
-                      activeMega === idx && "transform rotate-180 opacity-100"
+                      "flex items-center gap-1.5 font-mono text-[11px] font-bold uppercase tracking-wider px-4 py-2 transition-all relative group cursor-pointer",
+                      isScrolled ? "rounded-full" : "rounded-md",
+                      activeMega === idx
+                        ? "bg-[#08428C]/15 text-[var(--text-primary)] font-extrabold"
+                        : isScrolled
+                          ? "text-[var(--text-primary)] hover:bg-[var(--text-primary)]/[0.06]"
+                          : "text-white/90 hover:bg-white/10"
                     )}
-                  />
-                  {/* Animated underline */}
-                  <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[var(--accent)] origin-right scale-x-0 transition-transform duration-300 hover:origin-left hover:scale-x-100" />
-                </a>
+                    data-cursor="link"
+                  >
+                    <span>{item.label}</span>
+                    <ChevronDown
+                      className={cn(
+                        "w-3.5 h-3.5 transition-transform duration-300 opacity-60 group-hover:opacity-100",
+                        activeMega === idx && "transform rotate-180 opacity-100"
+                      )}
+                    />
+                  </Link>
 
-                {/* Mega Dropdown */}
-                <AnimatePresence>
-                  {activeMega === idx && item.megaMenu && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 15 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                      className="absolute top-full -left-36 w-[780px] bg-gradient-to-b from-[#060606]/98 to-[#0f0f0f]/98 border border-[var(--border-glass)] backdrop-blur-2xl p-8 mt-2 rounded-[8px] shadow-2xl flex gap-8 nav-dropdown-box"
-                    >
-                      {/* Left Info Blurb */}
-                      <div className="w-1/3 flex flex-col justify-between border-r border-[var(--border-subtle)] pr-6">
-                        <div>
-                          <span className="font-mono text-[11.5px] font-bold text-[var(--accent)] uppercase tracking-widest block mb-2.5">
-                            Overview
-                          </span>
-                          <p className="text-[13.5px] text-[var(--text-secondary)] leading-relaxed font-sans">
-                            {item.megaMenu.blurb}
-                          </p>
-                        </div>
-                        <div className="pt-4">
-                          <a
-                            href={item.href}
-                            className="text-[12.5px] font-mono text-[var(--text-primary)] hover:text-[var(--accent)] underline transition-colors"
-                            data-cursor="link"
-                          >
-                            Explore Platform →
-                          </a>
-                        </div>
-                      </div>
-
-                      {/* Right Links Directory */}
-                      <div className="w-2/3 grid grid-cols-2 gap-6">
-                        {item.megaMenu.sections.map((section) => (
-                          <div key={section.title} className="flex flex-col gap-3.5">
-                            <span className="font-mono text-[11.5px] font-bold text-[var(--text-tertiary)] uppercase tracking-wider">
-                              {section.title}
+                  {/* Mega Dropdown */}
+                  <AnimatePresence>
+                    {activeMega === idx && item.megaMenu && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 12, scale: 0.98 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 8, scale: 0.98 }}
+                        transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                        className={cn(
+                          "absolute top-full border border-[var(--border-glass)] backdrop-blur-2xl p-8 mt-3 rounded-[20px] shadow-2xl flex gap-7 nav-dropdown-box z-50 transition-colors duration-300 max-w-[calc(100vw-3rem)]",
+                          getDropdownStyle(item.label)
+                        )}
+                      >
+                        {/* Left Info Blurb */}
+                        <div className="w-[230px] shrink-0 flex flex-col justify-between border-r border-[var(--border-subtle)] pr-6">
+                          <div>
+                            <span className="font-mono text-[11.5px] font-bold text-[var(--accent)] uppercase tracking-widest block mb-2.5">
+                              Overview
                             </span>
-                            <div className="flex flex-col gap-2">
-                              {section.items.map((subItem) => (
-                                <a
-                                  key={subItem.name}
-                                  href={subItem.href}
-                                  className="flex items-start gap-2.5 group p-2 hover:bg-[var(--text-primary)]/[0.03] rounded transition-all"
-                                  data-cursor="link"
-                                >
-                                  <div className="text-[var(--text-secondary)] group-hover:text-[var(--accent)] mt-0.5 transition-colors">
-                                    {subItem.icon}
-                                  </div>
-                                  <div className="flex flex-col">
-                                    <span className="text-[12.5px] font-bold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors">
-                                      {subItem.name}
-                                    </span>
-                                    <span className="text-[11.5px] text-[var(--text-secondary)] leading-normal mt-0.5">
-                                      {subItem.desc}
-                                    </span>
-                                  </div>
-                                </a>
-                              ))}
-                            </div>
+                            <p className="text-[13px] text-[var(--text-secondary)] leading-relaxed font-sans">
+                              {item.megaMenu.blurb}
+                            </p>
                           </div>
-                        ))}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ))}
-          </nav>
+                          <div className="pt-4">
+                            <Link
+                              href={item.href}
+                              className="text-[12px] font-mono text-[var(--text-primary)] hover:text-[var(--accent)] underline transition-colors"
+                              data-cursor="link"
+                            >
+                              {item.megaMenu.ctaText || "Explore →"}
+                            </Link>
+                          </div>
+                        </div>
 
-          {/* Right Button Action & Theme Toggle */}
-          <div className="hidden lg:flex items-center gap-4">
-            {!isServicePage && <ThemeToggle />}
-            <Button variant="primary" size="sm" asLink href="/#contact">
-              Request Briefing
-            </Button>
-          </div>
+                        {/* Right Links Directory */}
+                        <div className={cn(
+                          "flex-1 grid gap-6",
+                          item.megaMenu.sections.length === 3 ? "grid-cols-3" : item.megaMenu.sections.length === 2 ? "grid-cols-2" : "grid-cols-1"
+                        )}>
+                          {item.megaMenu.sections.map((section) => (
+                            <div key={section.title} className="flex flex-col gap-3.5">
+                              <span className="font-mono text-[11px] font-bold text-[var(--text-tertiary)] uppercase tracking-wider">
+                                {section.title}
+                              </span>
+                              <div className="flex flex-col gap-2">
+                                {section.items.map((subItem) => (
+                                  <Link
+                                    key={subItem.name}
+                                    href={subItem.href}
+                                    className="flex items-start gap-3 group p-2.5 hover:bg-[var(--text-primary)]/[0.06] rounded-[8px] transition-all"
+                                    data-cursor="link"
+                                  >
+                                    <div className="text-[var(--accent)] mt-0.5 transition-colors shrink-0">
+                                      {subItem.icon}
+                                    </div>
+                                    <div className="flex flex-col gap-0.5">
+                                      <span className="text-[12.5px] font-bold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors leading-tight">
+                                        {subItem.name}
+                                      </span>
+                                      <span className="text-[10.5px] font-sans text-[var(--text-secondary)] leading-snug group-hover:text-[var(--text-primary)] transition-colors">
+                                        {subItem.desc}
+                                      </span>
+                                    </div>
+                                  </Link>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ))}
+            </nav>
 
-          {/* Mobile Menu Icon & Theme Toggle */}
-          <div className="lg:hidden z-50 flex items-center gap-4">
-            {!isServicePage && <ThemeToggle />}
-            <button
-              onClick={toggleMobileMenu}
-              className="text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors focus:outline-none p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
-              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-            >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
+            {/* Right Button Action & Theme Toggle */}
+            <div className="hidden lg:flex items-center gap-4">
+              {!isServicePage && <ThemeToggle />}
+              <Button variant="primary" size="sm" asLink href="/#contact">
+                Request Briefing
+              </Button>
+            </div>
+
+            {/* Mobile Menu Icon & Theme Toggle */}
+            <div className="lg:hidden z-50 flex items-center gap-4">
+              {!isServicePage && <ThemeToggle />}
+              <button
+                onClick={toggleMobileMenu}
+                className="text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors focus:outline-none p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
+                aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              >
+                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
+            </div>
           </div>
         </div>
       </header>

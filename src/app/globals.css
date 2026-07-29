@@ -409,12 +409,27 @@ html.lenis, html.lenis body {
   border-color: var(--text-primary) !important;
 }
 
-/* Custom cursors */
+/* Custom cursors in Light Theme */
 [data-theme="light"] .custom-cursor-ring {
   border-color: rgba(6, 6, 6, 0.65) !important;
 }
 [data-theme="light"] .custom-cursor-dot {
   background-color: #060606 !important;
+}
+
+/* Light Theme White Cursor Override strictly when inside/hovering over Hero Section, Header Navbar, or Mega Menu Dropdown */
+[data-theme="light"] body[data-in-dark-header="true"] .custom-cursor-ring,
+[data-theme="light"] :has(header:hover) .custom-cursor-ring,
+[data-theme="light"] :has(#hero:hover) .custom-cursor-ring,
+[data-theme="light"] :has(.nav-dropdown-box:hover) .custom-cursor-ring {
+  border-color: rgba(255, 255, 255, 0.85) !important;
+}
+
+[data-theme="light"] body[data-in-dark-header="true"] .custom-cursor-dot,
+[data-theme="light"] :has(header:hover) .custom-cursor-dot,
+[data-theme="light"] :has(#hero:hover) .custom-cursor-dot,
+[data-theme="light"] :has(.nav-dropdown-box:hover) .custom-cursor-dot {
+  background-color: #ffffff !important;
 }
 
 /* Main page Hero section visibility preservation in Light Mode */
@@ -517,19 +532,123 @@ html.lenis, html.lenis body {
   background-color: var(--border-subtle) !important;
 }
 
-/* Scrolled Navbar background in light mode (only on non-service main pages) */
-:root[data-theme="light"]:not([data-page]):not(:has(.service-nav-header)) header.bg-\[\#060606\]\/85 {
-  background-color: rgba(246, 245, 240, 0.85) !important;
-  border-bottom-color: var(--border-subtle) !important;
-}
-:root[data-theme="light"]:not([data-page]):not(:has(.service-nav-header)) header.bg-\[\#060606\]\/85:hover {
-  background-color: rgba(246, 245, 240, 0.98) !important;
-}
-:root[data-theme="light"]:not([data-page]):not(:has(.service-nav-header)) .nav-dropdown-box {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(246, 245, 240, 0.98) 100%) !important;
+/* Un-scrolled Rectangle Glassmorphism Navbar over Hero Video */
+.nav-rectangle-header {
+  background-color: rgba(6, 6, 6, 0.35) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.12) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
 }
 
-/* Service Pages Navbar & Mega Menu Enforcement (always dark header on service pages) */
+:root[data-theme="light"] .nav-rectangle-header .logo-img {
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+:root[data-theme="light"] .nav-rectangle-header nav a,
+:root[data-theme="light"] .nav-rectangle-header nav span {
+  color: #f6f5f0 !important;
+}
+
+:root[data-theme="light"] .nav-rectangle-header nav a:hover span {
+  color: #f6f5f0 !important;
+}
+
+/* Scrolled Floating Pill Navbar */
+.nav-floating-pill {
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+}
+
+:root[data-theme="light"]:not([data-page]) .nav-floating-pill {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-color: rgba(6, 6, 6, 0.12) !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1) !important;
+  color: #060606 !important;
+}
+
+:root[data-theme="light"]:not([data-page]) .nav-floating-pill .logo-img {
+  filter: brightness(0) !important;
+  opacity: 0.95 !important;
+}
+
+:root[data-theme="light"]:not([data-page]) .nav-floating-pill nav a,
+:root[data-theme="light"]:not([data-page]) .nav-floating-pill nav span,
+:root[data-theme="light"]:not([data-page]) .nav-floating-pill nav a:hover span {
+  color: #060606 !important;
+}
+
+:root[data-theme="dark"] .nav-floating-pill,
+[data-page] .nav-floating-pill {
+  background-color: rgba(6, 6, 6, 0.90) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05) inset !important;
+}
+
+/* Glassmorphism Mega Menu Dropdown Styling per theme */
+.nav-dropdown-box {
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+}
+
+/* Light Theme Glassmorphism Dropdown */
+:root[data-theme="light"] .nav-dropdown-box {
+  background: rgba(255, 255, 255, 0.98) !important;
+  border-color: rgba(6, 6, 6, 0.14) !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(255, 255, 255, 0.8) inset !important;
+  color: #060606 !important;
+}
+
+:root[data-theme="light"] .nav-dropdown-box p {
+  color: #3f3f46 !important;
+}
+
+:root[data-theme="light"] .nav-dropdown-box span,
+:root[data-theme="light"] .nav-dropdown-box a,
+:root[data-theme="light"] .nav-dropdown-box a span,
+:root[data-theme="light"] .nav-dropdown-box a:hover span,
+:root[data-theme="light"] .nav-dropdown-box .group:hover span {
+  color: #060606 !important;
+}
+
+:root[data-theme="light"] .nav-dropdown-box span[class*="text-[11"],
+:root[data-theme="light"] .nav-dropdown-box span[class*="text-[10"] {
+  color: #52525b !important;
+}
+
+:root[data-theme="light"] .nav-dropdown-box a:hover {
+  background-color: rgba(6, 6, 6, 0.05) !important;
+}
+
+/* Dark Theme Glassmorphism Dropdown */
+:root[data-theme="dark"] .nav-dropdown-box {
+  background: linear-gradient(180deg, rgba(6, 6, 6, 0.96) 0%, rgba(15, 15, 15, 0.96) 100%) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05) inset !important;
+  color: #f6f5f0 !important;
+}
+
+:root[data-theme="dark"] .nav-dropdown-box p {
+  color: #9c9c97 !important;
+}
+
+:root[data-theme="dark"] .nav-dropdown-box span:not([class*="text-[var(--accent)]"]) {
+  color: #f6f5f0 !important;
+}
+
+:root[data-theme="dark"] .nav-dropdown-box a {
+  color: #f6f5f0 !important;
+}
+
+:root[data-theme="dark"] .nav-dropdown-box a:hover {
+  background-color: rgba(255, 255, 255, 0.04) !important;
+}
+
+:root[data-theme="dark"] .nav-dropdown-box a:hover span {
+  color: var(--accent) !important;
+}
+
+/* Service Pages Navbar Styling */
 header.service-nav-header,
 [data-page] header,
 [data-page] header.bg-\[\#060606\]\/85 {
@@ -544,50 +663,21 @@ header.service-nav-header img[alt*="Entersoft"] {
   opacity: 1 !important;
 }
 
-header.service-nav-header nav a,
-header.service-nav-header nav span,
-header.service-nav-header a {
-  color: #F6F5F0 !important;
-}
-
-header.service-nav-header nav a:hover {
-  color: var(--accent) !important;
-}
-
-[data-page] .nav-dropdown-box,
-header.service-nav-header .nav-dropdown-box {
-  background: linear-gradient(180deg, rgba(6, 6, 6, 0.98) 0%, rgba(15, 15, 15, 0.98) 100%) !important;
-  border-color: rgba(255, 255, 255, 0.12) !important;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8) !important;
-}
-
-[data-page] .nav-dropdown-box p,
-header.service-nav-header .nav-dropdown-box p {
-  color: #9c9c97 !important;
-}
-
-[data-page] .nav-dropdown-box span,
-[data-page] .nav-dropdown-box a,
-header.service-nav-header .nav-dropdown-box span,
-header.service-nav-header .nav-dropdown-box a {
-  color: #f6f5f0 !important;
-}
-
-/* Logo SVG and Nav links visibility in light mode for home page */
-:root[data-theme="light"]:not([data-page]):not(:has(.service-nav-header)) header.bg-\[\#060606\]\/85 img[alt*="Entersoft"],
-:root[data-theme="light"]:not([data-page]):not(:has(.service-nav-header)) header.bg-\[\#060606\]\/85 .logo-img {
+/* Logo SVG and Nav links visibility in light mode for floating pill header */
+:root[data-theme="light"]:not([data-page]) .nav-floating-pill .logo-img,
+:root[data-theme="light"]:not([data-page]) .nav-floating-pill img[alt*="Entersoft"] {
   filter: brightness(0) !important;
   opacity: 0.95 !important;
 }
 
-:root[data-theme="light"]:not([data-page]):not(:has(.service-nav-header)) header:not(.bg-\[\#060606\]\/85) img[alt*="Entersoft"],
-:root[data-theme="light"]:not([data-page]):not(:has(.service-nav-header)) header:not(.bg-\[\#060606\]\/85) .logo-img {
-  filter: none !important;
-  opacity: 1 !important;
+:root[data-theme="light"]:not([data-page]) .nav-floating-pill nav a,
+:root[data-theme="light"]:not([data-page]) .nav-floating-pill nav span {
+  color: #060606 !important;
 }
 
-:root[data-theme="light"]:not([data-page]):not(:has(.service-nav-header)) header:not(.bg-\[\#060606\]\/85) nav a {
-  color: #F6F5F0 !important;
+:root[data-theme="light"]:not([data-page]) .nav-floating-pill nav a:hover span,
+:root[data-theme="light"]:not([data-page]) .nav-floating-pill nav a[class*="bg-"] span {
+  color: #060606 !important;
 }
 
 /* AI AST Service Page Full Dark Theme Enforcement (Whole page including Navbar, CTA, InterServiceNav & Footer) */

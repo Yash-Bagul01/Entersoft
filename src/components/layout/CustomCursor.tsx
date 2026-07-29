@@ -71,6 +71,13 @@ export default function CustomCursor() {
       const target = e.target as HTMLElement;
       if (!target) return;
 
+      const isDarkRegion = Boolean(target.closest("#hero, header, .nav-dropdown-box"));
+      if (isDarkRegion) {
+        document.body.setAttribute("data-in-dark-header", "true");
+      } else {
+        document.body.removeAttribute("data-in-dark-header");
+      }
+
       const textInput = target.closest("input, textarea, select, [contenteditable='true']");
       const interactive = target.closest("a, button, [data-cursor], [role='button'], .btn, .service-card, summary");
       const section = target.closest("section, footer, header, main, nav");
@@ -167,6 +174,7 @@ export default function CustomCursor() {
 
     return () => {
       document.body.classList.remove("custom-cursor-active");
+      document.body.removeAttribute("data-in-dark-header");
       window.removeEventListener("mousemove", handleMove);
       window.removeEventListener("mouseover", handleOver);
       window.removeEventListener("mousedown", handleMouseDown);

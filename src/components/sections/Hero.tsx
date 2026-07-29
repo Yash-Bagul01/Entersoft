@@ -58,7 +58,6 @@ export default function Hero() {
         pin: videoContainer,
         start: "top top",
         end: "bottom top",
-        pinType: "fixed",
         scrub: true,
       });
 
@@ -86,45 +85,48 @@ export default function Hero() {
     };
   }, [shouldReduceMotion]);
 
-  // Video viewport lifecycle controller (IntersectionObserver)
+  // Video viewport lifecycle controller
   useEffect(() => {
     const video = videoRef.current;
     if (!video || shouldReduceMotion) return;
 
-    // Explicitly enforce muted, loop and playsInline to override browser blockages
     video.muted = true;
     video.playsInline = true;
     video.loop = true;
 
     const playVideo = () => {
-      video.play().catch((err) => {
-        console.warn("Autoplay was blocked or video loading failed, adding trigger...", err);
-      });
+      if (video.paused) {
+        const promise = video.play();
+        if (promise !== undefined) {
+          promise.catch((err) => {
+            console.warn("Autoplay fallback trigger required:", err);
+          });
+        }
+      }
     };
 
-    video.addEventListener("canplay", playVideo);
+    video.addEventListener("canplaythrough", playVideo);
+    video.addEventListener("loadeddata", playVideo);
     
-    // Play immediately if readyState permits
-    if (video.readyState >= 3) {
-      playVideo();
-    }
+    playVideo();
 
-    // Interaction fallback triggers
     const handleTrigger = () => {
-      if (video.paused) {
-        playVideo();
-      }
+      playVideo();
       window.removeEventListener("scroll", handleTrigger);
       window.removeEventListener("click", handleTrigger);
+      window.removeEventListener("touchstart", handleTrigger);
     };
 
     window.addEventListener("scroll", handleTrigger, { passive: true });
     window.addEventListener("click", handleTrigger, { passive: true });
+    window.addEventListener("touchstart", handleTrigger, { passive: true });
 
     return () => {
-      video.removeEventListener("canplay", playVideo);
+      video.removeEventListener("canplaythrough", playVideo);
+      video.removeEventListener("loadeddata", playVideo);
       window.removeEventListener("scroll", handleTrigger);
       window.removeEventListener("click", handleTrigger);
+      window.removeEventListener("touchstart", handleTrigger);
     };
   }, [shouldReduceMotion]);
 
@@ -134,7 +136,7 @@ export default function Hero() {
       ref={containerRef}
       className="relative w-full h-[100vh] h-[100dvh] overflow-hidden flex flex-col justify-center items-center px-6 md:px-12 bg-[#060606] select-none"
     >
-      {/* Background Layer Container (Always rendered and pinned, supports fallback image/poster) */}
+      {/* Background Layer Container */}
       <div
         ref={videoContainerRef}
         className="absolute inset-0 w-full h-full bg-[#060606] z-0 overflow-hidden pointer-events-none"

@@ -21,6 +21,16 @@ export const ROUTES = {
     smartContract: `/services/${SERVICE_SLUGS.smartContract}`,
     aiAst: `/services/${SERVICE_SLUGS.aiAst}`,
   },
+  platform: {
+    cyberOntology: "/platform/cyber-ontology",
+    dataFusion: "/platform/data-fusion",
+    exposureDecisioning: "/platform/exposure-decisioning",
+    threatOperations: "/platform/threat-operations",
+    expertGovernedAi: "/platform/expert-governed-ai",
+    closedLoopRemediation: "/platform/closed-loop-remediation",
+    continuousAssurance: "/platform/continuous-assurance",
+    commandView: "/platform/command-view",
+  },
 } as const;
 
 /**
