@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown, Shield, Code, Cloud, CheckSquare, Server, Cpu, HelpCircle, Layers, FileText, Database, Target, Zap, Activity, Eye, Compass, Workflow } from "lucide-react";
+import { Menu, X, ChevronDown, Shield, Code, Cloud, CheckSquare, Server, Cpu, HelpCircle, Layers, FileText, Database, Target, Zap, Activity, Eye, Compass, Workflow, Key, Terminal, Box } from "lucide-react";
 import { Button } from "../ui/Button";
 import { cn } from "@/lib/utils";
 import ThemeToggle from "../ui/ThemeToggle";
@@ -33,7 +33,11 @@ interface NavItem {
 
 export default function Navbar() {
   const pathname = usePathname();
-  const isServicePage = pathname?.startsWith("/services") || pathname?.startsWith("/platform");
+  const isCyberOntologyPage = pathname?.startsWith("/platform/cyber-ontology");
+  const isSastPage = pathname?.startsWith("/platform/sast");
+  const isScaPage = pathname?.startsWith("/platform/sca");
+  const isLightPage = isCyberOntologyPage || isSastPage || isScaPage;
+  const isServicePage = (pathname?.startsWith("/services") || pathname?.startsWith("/platform")) && !isLightPage;
   const isAppSecPage = pathname === ROUTES.services.appsec;
   const isVaptPage = pathname === ROUTES.services.vapt;
   const isCompliancePage = pathname === ROUTES.services.compliance;
@@ -58,32 +62,39 @@ export default function Navbar() {
   const navItems: NavItem[] = [
     {
       label: "Platform",
-      href: "/platform/cyber-ontology",
+      href: ROUTES.platform.sast,
       megaMenu: {
-        blurb: "EnProbe — AI-native security platform backed by 14 years of expert human security judgment, turning fragmented security signals into governed action.",
+        blurb: "EnProbe — Zero-noise AppSec platform unifying SAST, DAST, SCA, API Security, ASPM, and Threat Intelligence.",
         ctaText: "Explore EnProbe Platform →",
         sections: [
           {
-            title: "Discover & Model",
+            title: "Scan Code",
             items: [
-              { name: "Cyber Ontology", href: ROUTES.platform.cyberOntology, desc: "UNIFIED SECURITY CONTEXT", icon: <Compass className="w-4 h-4" /> },
-              { name: "Security Data Fusion", href: ROUTES.platform.dataFusion, desc: "CONNECT THE STACK", icon: <Database className="w-4 h-4" /> }
+              { name: "SAST", href: ROUTES.platform.sast, desc: "Early static security analysis", icon: <Code className="w-4 h-4" /> },
+              { name: "Open Source (SCA)", href: ROUTES.platform.sca, desc: "Find vulnerable dependencies", icon: <Database className="w-4 h-4" /> },
+              { name: "SBOM & License Risk", href: ROUTES.platform.sbomLicenseRisk, desc: "Generate SBOMs and track licenses", icon: <CheckSquare className="w-4 h-4" /> },
+              { name: "Secrets", href: ROUTES.platform.secrets, desc: "Detect exposed secrets in applications", icon: <Key className="w-4 h-4" /> },
+              { name: "Infrastructure as Code", href: ROUTES.platform.iac, desc: "Ingest IaC security findings", icon: <Terminal className="w-4 h-4" /> },
+              { name: "Container", href: ROUTES.platform.container, desc: "Track container image vulnerabilities", icon: <Box className="w-4 h-4" /> }
             ]
           },
           {
-            title: "Prioritize & Respond",
+            title: "Test Runtime",
             items: [
-              { name: "Exposure Decisioning", href: ROUTES.platform.exposureDecisioning, desc: "PRIORITIZE WHAT MATTERS", icon: <Target className="w-4 h-4" /> },
-              { name: "Threat Operations", href: ROUTES.platform.threatOperations, desc: "DETECT TO RESPOND", icon: <Activity className="w-4 h-4" /> }
+              { name: "DAST & AI DAST", href: ROUTES.platform.dast, desc: "Test runtime, prove exploitability", icon: <Activity className="w-4 h-4" /> },
+              { name: "Agentic Pentesting", href: ROUTES.platform.agenticPentesting, desc: "Automate real-world attack techniques", icon: <Zap className="w-4 h-4" /> },
+              { name: "API Security Testing", href: ROUTES.platform.apiSecurity, desc: "Discover and test APIs", icon: <Compass className="w-4 h-4" /> },
+              { name: "Attack Surface Management", href: ROUTES.platform.attackSurfaceManagement, desc: "Identify exposed apps and endpoints", icon: <Target className="w-4 h-4" /> },
+              { name: "Cloud AppSec", href: ROUTES.platform.cloudAppsec, desc: "Get a single-pane view of cloud app risk", icon: <Cloud className="w-4 h-4" /> },
+              { name: "AI AppSec", href: ROUTES.platform.aiAppsec, desc: "Scan smarter, accelerate remediation", icon: <Cpu className="w-4 h-4" /> }
             ]
           },
           {
-            title: "Govern & Assure",
+            title: "Manage Vulnerabilities",
             items: [
-              { name: "Expert-Governed AI", href: ROUTES.platform.expertGovernedAi, desc: "14 YEARS OF JUDGMENT", icon: <Zap className="w-4 h-4" /> },
-              { name: "Closed-Loop Remediation", href: ROUTES.platform.closedLoopRemediation, desc: "DECISION TO ACTION", icon: <Workflow className="w-4 h-4" /> },
-              { name: "Continuous Assurance", href: ROUTES.platform.continuousAssurance, desc: "TRUST & EVIDENCE", icon: <Shield className="w-4 h-4" /> },
-              { name: "Unified Command View", href: ROUTES.platform.commandView, desc: "ONE OPERATING PICTURE", icon: <Eye className="w-4 h-4" /> }
+              { name: "Vulnerability Management (ASPM)", href: ROUTES.platform.aspm, desc: "Centralize and correlate AppSec findings", icon: <Workflow className="w-4 h-4" /> },
+              { name: "Compliance & Executive Reporting", href: ROUTES.platform.complianceReporting, desc: "Measure risk and impact", icon: <Shield className="w-4 h-4" /> },
+              { name: "Threat Intelligence", href: ROUTES.platform.threatIntelligence, desc: "Reachability, exploitability, and business logic", icon: <Eye className="w-4 h-4" /> }
             ]
           }
         ]
@@ -216,24 +227,28 @@ export default function Navbar() {
           <div
             className={cn(
               "w-full transition-all duration-500 ease-in-out flex items-center justify-between mx-auto",
-              isScrolled
-                ? "max-w-[1320px] px-6 py-3 rounded-full border backdrop-blur-xl shadow-2xl nav-floating-pill " +
-                  (isServicePage
-                    ? "bg-[#060606]/90 border-white/12 text-white service-nav-header shadow-[0_16px_40px_rgba(0,0,0,0.6)]"
-                    : "bg-[var(--bg-elevated)]/95 border-[var(--border-glass)] text-[var(--text-primary)] shadow-[0_12px_36px_rgba(0,0,0,0.12)]")
-                : "max-w-full px-6 md:px-12 py-5 rounded-none border-b border-white/10 backdrop-blur-md bg-black/35 text-white nav-rectangle-header"
+              isLightPage
+                ? (isScrolled
+                    ? "max-w-[1320px] px-6 py-3 rounded-full border border-slate-200/90 backdrop-blur-xl bg-white/95 text-slate-900 shadow-xl nav-floating-pill"
+                    : "max-w-full px-6 md:px-12 py-5 rounded-none border-none bg-transparent text-slate-900 nav-hero-light-header")
+                : (isScrolled
+                    ? "max-w-[1320px] px-6 py-3 rounded-full border backdrop-blur-xl shadow-2xl nav-floating-pill " +
+                      (isServicePage
+                        ? "bg-[#060606]/90 border-white/12 text-white service-nav-header shadow-[0_16px_40px_rgba(0,0,0,0.6)]"
+                        : "bg-[var(--bg-elevated)]/95 border-[var(--border-glass)] text-[var(--text-primary)] shadow-[0_12px_36px_rgba(0,0,0,0.12)]")
+                    : "max-w-full px-6 md:px-12 py-5 rounded-none border-b border-white/10 backdrop-blur-md bg-black/35 text-white nav-rectangle-header")
             )}
           >
             {/* Logo */}
-            <Link href="/" className="flex items-center z-50 text-text-primary shrink-0" data-cursor="link">
+            <Link href="/" className="flex items-center z-50 shrink-0 cursor-pointer" data-cursor="link">
               <Image
                 src="https://d2ghx8biuioax8.cloudfront.net/main-website-images/entersoftLogo.svg"
                 alt="Entersoft Security Logo"
-                width={110}
-                height={22}
+                width={135}
+                height={27}
                 className={cn(
-                  "h-5.5 w-auto object-contain logo-img transition-all duration-500",
-                  (isServicePage || (!isScrolled && !pathname?.startsWith("/platform"))) && "!brightness-100 !filter-none !opacity-100"
+                  "h-6 w-auto object-contain transition-all duration-300 logo-img",
+                  isLightPage && "[filter:brightness(0)] opacity-100"
                 )}
                 priority
               />
@@ -254,10 +269,14 @@ export default function Navbar() {
                       "flex items-center gap-1.5 font-mono text-[11px] font-bold uppercase tracking-wider px-4 py-2 transition-all relative group cursor-pointer",
                       isScrolled ? "rounded-full" : "rounded-md",
                       activeMega === idx
-                        ? "bg-[#08428C]/15 text-[var(--text-primary)] font-extrabold"
-                        : isScrolled
-                          ? "text-[var(--text-primary)] hover:bg-[var(--text-primary)]/[0.06]"
-                          : "text-white/90 hover:bg-white/10"
+                        ? (isLightPage 
+                            ? "bg-slate-100/90 text-[#08428C] font-extrabold" 
+                            : "bg-[#08428C]/15 text-[var(--text-primary)] font-extrabold")
+                        : isLightPage
+                          ? "text-slate-800 hover:text-[#08428C] hover:bg-slate-100/80"
+                          : isScrolled
+                            ? "text-[var(--text-primary)] hover:bg-[var(--text-primary)]/[0.06]"
+                            : "text-white/90 hover:bg-white/10"
                     )}
                     data-cursor="link"
                   >
@@ -348,15 +367,21 @@ export default function Navbar() {
 
             {/* Right Button Action & Theme Toggle */}
             <div className="hidden lg:flex items-center gap-4">
-              {!isServicePage && <ThemeToggle />}
-              <Button variant="primary" size="sm" asLink href="/#contact">
+              {!isServicePage && !isLightPage && <ThemeToggle />}
+              <Button
+                variant="primary"
+                size="sm"
+                asLink
+                href="/#contact"
+                className={cn(isLightPage && "!border !border-slate-900 hover:!border-black font-semibold shadow-xs")}
+              >
                 Request Briefing
               </Button>
             </div>
 
             {/* Mobile Menu Icon & Theme Toggle */}
             <div className="lg:hidden z-50 flex items-center gap-4">
-              {!isServicePage && <ThemeToggle />}
+              {!isServicePage && !isLightPage && <ThemeToggle />}
               <button
                 onClick={toggleMobileMenu}
                 className="text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors focus:outline-none p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"

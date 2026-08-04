@@ -8,10 +8,16 @@ import { ShieldCheck, Mail, Send, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BackgroundRippleEffect } from "../ui/BackgroundRippleEffect";
 
-export default function FinalCTA() {
+interface FinalCTAProps {
+  theme?: "light" | "dark";
+}
+
+export default function FinalCTA({ theme = "dark" }: FinalCTAProps) {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const isLight = theme === "light";
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,43 +32,36 @@ export default function FinalCTA() {
   };
 
   return (
-    <section id="contact" className="relative w-full bg-[var(--bg-primary)] overflow-hidden">
-      {/* Dark Futuristic Cyber Ambient Background Image (Codex.io style) */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        <img
-          src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2064&auto=format&fit=crop"
-          alt="Cyber background"
-          className="w-full h-full object-cover opacity-25 dark:opacity-35 mix-blend-luminosity scale-105 transform transition-transform duration-1000"
-        />
-        {/* Multi-directional gradient masks for seamless blending into site edges */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[var(--bg-primary)] via-transparent to-[var(--bg-primary)] opacity-95" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[var(--bg-primary)] via-transparent to-[var(--bg-primary)] opacity-85" />
-        
-        {/* Soft center ambient glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-[var(--accent-dim)] rounded-full blur-[120px] pointer-events-none opacity-40" />
-      </div>
+    <section id="contact" className={`relative w-full overflow-hidden ${isLight ? "bg-[#FAFCFF] border-t border-slate-200/80" : "bg-[var(--bg-primary)]"}`}>
+      {/* Background Ambience */}
+      {!isLight && (
+        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+          <img
+            src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2064&auto=format&fit=crop"
+            alt="Cyber background"
+            className="w-full h-full object-cover opacity-25 dark:opacity-35 mix-blend-luminosity scale-105 transform transition-transform duration-1000"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[var(--bg-primary)] via-transparent to-[var(--bg-primary)] opacity-95" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[var(--bg-primary)] via-transparent to-[var(--bg-primary)] opacity-85" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-[var(--accent-dim)] rounded-full blur-[120px] pointer-events-none opacity-40" />
+        </div>
+      )}
+
+      {isLight && (
+        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none" />
+        </div>
+      )}
 
       {/* Background Ripple Effect Grid */}
       <div 
-        className="absolute inset-0 h-full w-full overflow-hidden opacity-20 dark:opacity-15 z-[1] pointer-events-auto"
+        className={`absolute inset-0 h-full w-full overflow-hidden z-[1] pointer-events-auto ${isLight ? "opacity-10" : "opacity-20 dark:opacity-15"}`}
         style={{
           maskImage: "radial-gradient(circle at center, black 30%, transparent 85%)",
           WebkitMaskImage: "radial-gradient(circle at center, black 30%, transparent 85%)",
         }}
       >
         <BackgroundRippleEffect rows={12} cols={32} cellSize={64} />
-      </div>
-
-      {/* Muted Abstract Matrix Graphic Background */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-5">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,163,255,0.05)_0%,transparent_70%)]" />
-        <svg className="w-full h-full text-[var(--accent)]" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="0.25">
-          <circle cx="50" cy="50" r="45" strokeDasharray="2 4" />
-          <circle cx="50" cy="50" r="30" />
-          <circle cx="50" cy="50" r="15" strokeDasharray="5 5" />
-          <line x1="50" y1="5" x2="50" y2="95" />
-          <line x1="5" y1="50" x2="95" y2="50" />
-        </svg>
       </div>
 
       <div className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-12 py-28 md:py-40 flex flex-col items-center text-center gap-12">
@@ -83,7 +82,7 @@ export default function FinalCTA() {
                 visible: { y: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } }
               }}
             >
-              <SectionLabel color="accent" className="mb-2">SECURE ENGAGEMENT GATE</SectionLabel>
+              <SectionLabel color="accent" className={`mb-2 ${isLight ? "text-[#0B4FD2]" : ""}`}>SECURE ENGAGEMENT GATE</SectionLabel>
             </motion.div>
           </div>
           <div className="overflow-hidden">
@@ -92,22 +91,24 @@ export default function FinalCTA() {
                 hidden: { y: "100%" },
                 visible: { y: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } }
               }}
-              className="text-[clamp(2rem,5vw,4.5rem)] font-display font-medium text-[var(--text-primary)] uppercase tracking-tight leading-none"
+              className={`text-[clamp(2rem,5vw,4.5rem)] font-display font-medium uppercase tracking-tight leading-none ${isLight ? "text-slate-900" : "text-[var(--text-primary)]"}`}
             >
               Get a Free Consultation
             </motion.h2>
           </div>
-          <p className="text-[13px] text-[var(--text-secondary)] leading-relaxed max-w-[480px] font-sans mt-2">
+          <p className={`text-[14px] leading-relaxed max-w-[480px] font-sans mt-2 ${isLight ? "text-slate-600" : "text-[var(--text-secondary)]"}`}>
             Establish a baseline. Enter your corporate credentials below. An Entersoft threat coordinator will respond within 2 hours.
           </p>
         </motion.div>
 
         {/* Callback submission widget */}
-        <div className="w-full max-w-[480px] border border-[var(--border-subtle)] bg-[var(--bg-elevated)]/90 backdrop-blur-md rounded-[4px] p-8 md:p-10 flex flex-col items-stretch text-left shadow-2xl relative">
+        <div className={`w-full max-w-[480px] border-2 backdrop-blur-md rounded-2xl p-8 md:p-10 flex flex-col items-stretch text-left shadow-xl relative ${
+          isLight ? "!bg-white !border-slate-300/90 shadow-slate-900/5" : "border-[var(--border-subtle)] bg-[var(--bg-elevated)]/90"
+        }`}>
           
-          <div className="flex items-center gap-3 border-b border-[var(--border-subtle)] pb-4 mb-6">
-            <Mail className="w-4 h-4 text-[var(--accent)]" />
-            <span className="font-mono text-[10px] font-bold text-[var(--text-primary)] uppercase tracking-widest">
+          <div className={`flex items-center gap-3 border-b pb-4 mb-6 ${isLight ? "border-slate-200" : "border-[var(--border-subtle)]"}`}>
+            <Mail className={`w-4 h-4 ${isLight ? "text-[#0B4FD2]" : "text-[var(--accent)]"}`} />
+            <span className={`font-mono text-[10px] font-bold uppercase tracking-widest ${isLight ? "!text-slate-900" : "text-[var(--text-primary)]"}`}>
               ENCRYPTED SECURE RESPONSE DESK
             </span>
           </div>
@@ -123,7 +124,7 @@ export default function FinalCTA() {
                 className="flex flex-col gap-4"
               >
                 <div className="flex flex-col gap-1.5">
-                  <label htmlFor="email" className="font-mono text-[9px] font-bold text-[var(--text-secondary)] uppercase tracking-wider">
+                  <label htmlFor="email" className={`font-mono text-[10px] font-bold uppercase tracking-wider ${isLight ? "!text-slate-700" : "text-[var(--text-secondary)]"}`}>
                     Corporate Email Address
                   </label>
                   <input
@@ -133,36 +134,48 @@ export default function FinalCTA() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="name@company.com"
-                    className="w-full h-11 bg-[var(--bg-primary)] border border-[var(--border-subtle)] focus:border-[var(--accent)] text-[var(--text-primary)] px-4 rounded-[3px] text-xs font-sans placeholder-white/20 outline-none transition-colors"
+                    className={`w-full h-11 border-2 px-4 rounded-xl text-xs font-sans outline-none transition-colors ${
+                      isLight 
+                        ? "!bg-white !border-slate-300 focus:!border-[#0B4FD2] !text-slate-900 font-medium placeholder:!text-slate-400" 
+                        : "bg-[var(--bg-primary)] border-[var(--border-subtle)] focus:border-[var(--accent)] text-[var(--text-primary)] placeholder-white/20"
+                    }`}
                   />
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label htmlFor="message" className="font-mono text-[9px] font-bold text-[var(--text-secondary)] uppercase tracking-wider">
+                  <label htmlFor="message" className={`font-mono text-[10px] font-bold uppercase tracking-wider ${isLight ? "!text-slate-700" : "text-[var(--text-secondary)]"}`}>
                     Perceived Perimeter Exposures (Optional)
                   </label>
                   <textarea
                     id="message"
                     rows={3}
                     placeholder="Describe systems to scan (e.g. CI/CD API gates, Cloud Infrastructure, Solidity Contracts)"
-                    className="w-full bg-[var(--bg-primary)] border border-[var(--border-subtle)] focus:border-[var(--accent)] text-[var(--text-primary)] p-4 rounded-[3px] text-xs font-sans placeholder-white/20 outline-none resize-none transition-colors"
+                    className={`w-full border-2 p-4 rounded-xl text-xs font-sans outline-none resize-none transition-colors ${
+                      isLight 
+                        ? "!bg-white !border-slate-300 focus:!border-[#0B4FD2] !text-slate-900 font-medium placeholder:!text-slate-400" 
+                        : "bg-[var(--bg-primary)] border-[var(--border-subtle)] focus:border-[var(--accent)] text-[var(--text-primary)] placeholder-white/20"
+                    }`}
                   />
                 </div>
 
                 <div className="mt-4">
                   <MagneticButton>
-                    <Button
-                      variant="primary"
+                    <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full gap-2 h-12"
+                      className={`w-full gap-2 h-12 rounded-xl font-semibold flex items-center justify-center transition-all duration-200 cursor-pointer shadow-md ${
+                        isLight 
+                          ? "!bg-[#111827] hover:!bg-black !text-white" 
+                          : "bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-black"
+                      }`}
                     >
                       {isSubmitting ? "TRANSMITTING..." : (
                         <>
-                          CONTACT US <Send className="w-3.5 h-3.5" />
+                          <span>CONTACT US</span>
+                          <Send className="w-3.5 h-3.5 text-white" />
                         </>
                       )}
-                    </Button>
+                    </button>
                   </MagneticButton>
                 </div>
               </motion.form>
@@ -174,14 +187,14 @@ export default function FinalCTA() {
                 exit={{ opacity: 0 }}
                 className="flex flex-col items-center justify-center py-6 text-center gap-4"
               >
-                <div className="w-12 h-12 rounded-full border border-[var(--accent)] flex items-center justify-center bg-white/[0.01]">
-                  <Check className="w-6 h-6 text-[var(--accent)] animate-pulse" />
+                <div className={`w-12 h-12 rounded-full border flex items-center justify-center ${isLight ? "border-[#0B4FD2] bg-blue-50" : "border-[var(--accent)] bg-white/[0.01]"}`}>
+                  <Check className={`w-6 h-6 animate-pulse ${isLight ? "text-[#0B4FD2]" : "text-[var(--accent)]"}`} />
                 </div>
                 <div className="flex flex-col gap-1">
-                  <span className="font-mono text-[11px] font-bold text-[var(--text-primary)] uppercase tracking-wider">
+                  <span className={`font-mono text-[11px] font-bold uppercase tracking-wider ${isLight ? "text-slate-900" : "text-[var(--text-primary)]"}`}>
                     Transmission Complete
                   </span>
-                  <span className="text-[11px] text-[var(--text-secondary)] font-sans">
+                  <span className={`text-[11px] font-sans ${isLight ? "text-slate-600" : "text-[var(--text-secondary)]"}`}>
                     Secure channel established. A security coordinator will contact you at <strong>{email}</strong>.
                   </span>
                 </div>
@@ -190,8 +203,10 @@ export default function FinalCTA() {
           </AnimatePresence>
 
           {/* Secure disclaimer label */}
-          <div className="mt-6 pt-4 border-t border-[var(--border-subtle)] flex items-center gap-2 text-[9px] font-mono text-[var(--text-tertiary)] uppercase tracking-wider">
-            <ShieldCheck className="w-4.5 h-4.5 text-[var(--text-tertiary)]" />
+          <div className={`mt-6 pt-4 border-t flex items-center gap-2 text-[9px] font-mono uppercase tracking-wider ${
+            isLight ? "border-slate-100 text-slate-400" : "border-[var(--border-subtle)] text-[var(--text-tertiary)]"
+          }`}>
+            <ShieldCheck className="w-4.5 h-4.5" />
             <span>Encrypted transmission // SOC 2 Compliant</span>
           </div>
 

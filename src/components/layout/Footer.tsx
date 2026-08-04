@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { Shield, ArrowUp, Zap, ZapOff } from "lucide-react";
 import { Button } from "../ui/Button";
 import Link from "next/link";
@@ -8,6 +9,8 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 
 export default function Footer() {
+  const pathname = usePathname();
+  const isLight = pathname === "/platform/cyber-ontology";
   const [motionActive, setMotionActive] = useState(true);
 
   useEffect(() => {
@@ -91,7 +94,11 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="w-full bg-[#060606] border-t border-[var(--border-subtle)] text-[var(--text-secondary)] select-none relative overflow-hidden">
+    <footer className={`w-full border-t select-none relative overflow-hidden ${
+      isLight 
+        ? "bg-[#FAFCFF] border-slate-200 text-slate-600" 
+        : "bg-[#060606] border-[var(--border-subtle)] text-[var(--text-secondary)]"
+    }`}>
       <style dangerouslySetInnerHTML={{ __html: `
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
       ` }} />

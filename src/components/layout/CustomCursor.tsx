@@ -71,7 +71,8 @@ export default function CustomCursor() {
       const target = e.target as HTMLElement;
       if (!target) return;
 
-      const isDarkRegion = Boolean(target.closest("#hero, header, .nav-dropdown-box"));
+      const isLightMode = document.documentElement.getAttribute("data-theme") === "light";
+      const isDarkRegion = !isLightMode && Boolean(target.closest("#hero, header, .nav-dropdown-box"));
       if (isDarkRegion) {
         document.body.setAttribute("data-in-dark-header", "true");
       } else {

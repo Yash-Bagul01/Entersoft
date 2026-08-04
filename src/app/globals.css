@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=IBM+Plex+Mono:wght@300;400;500;600&family=Instrument+Serif:ital,wght@0,400;1,400&display=swap');
 
 @import "tailwindcss";
 @import "../styles/tokens.css";
@@ -540,18 +541,28 @@ html.lenis, html.lenis body {
   -webkit-backdrop-filter: blur(12px) !important;
 }
 
-:root[data-theme="light"] .nav-rectangle-header .logo-img {
-  filter: none !important;
+.nav-hero-light-header {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.nav-hero-light-header .logo-img {
+  filter: brightness(0) !important;
   opacity: 1 !important;
 }
 
-:root[data-theme="light"] .nav-rectangle-header nav a,
-:root[data-theme="light"] .nav-rectangle-header nav span {
-  color: #f6f5f0 !important;
+.nav-hero-light-header nav a,
+.nav-hero-light-header nav span {
+  color: #0f172a !important;
 }
 
-:root[data-theme="light"] .nav-rectangle-header nav a:hover span {
-  color: #f6f5f0 !important;
+.nav-hero-light-header nav a:hover span {
+  color: #2563eb !important;
 }
 
 /* Scrolled Floating Pill Navbar */
@@ -560,26 +571,28 @@ html.lenis, html.lenis body {
   -webkit-backdrop-filter: blur(20px) !important;
 }
 
-:root[data-theme="light"]:not([data-page]) .nav-floating-pill {
+:root[data-theme="light"] .nav-floating-pill {
   background-color: rgba(255, 255, 255, 0.95) !important;
-  border-color: rgba(6, 6, 6, 0.12) !important;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1) !important;
-  color: #060606 !important;
+  border-color: rgba(226, 232, 240, 0.9) !important;
+  box-shadow: 0 12px 36px rgba(15, 23, 42, 0.1) !important;
+  color: #0f172a !important;
 }
 
-:root[data-theme="light"]:not([data-page]) .nav-floating-pill .logo-img {
+:root[data-theme="light"] .nav-floating-pill .logo-img {
   filter: brightness(0) !important;
   opacity: 0.95 !important;
 }
 
-:root[data-theme="light"]:not([data-page]) .nav-floating-pill nav a,
-:root[data-theme="light"]:not([data-page]) .nav-floating-pill nav span,
-:root[data-theme="light"]:not([data-page]) .nav-floating-pill nav a:hover span {
-  color: #060606 !important;
+:root[data-theme="light"] .nav-floating-pill nav a,
+:root[data-theme="light"] .nav-floating-pill nav span {
+  color: #0f172a !important;
 }
 
-:root[data-theme="dark"] .nav-floating-pill,
-[data-page] .nav-floating-pill {
+:root[data-theme="light"] .nav-floating-pill nav a:hover span {
+  color: #2563eb !important;
+}
+
+:root[data-theme="dark"]:not([data-theme="light"]) .nav-floating-pill {
   background-color: rgba(6, 6, 6, 0.90) !important;
   border-color: rgba(255, 255, 255, 0.12) !important;
   box-shadow: 0 16px 45px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05) inset !important;
@@ -648,26 +661,19 @@ html.lenis, html.lenis body {
   color: var(--accent) !important;
 }
 
-/* Service Pages Navbar Styling */
-header.service-nav-header,
-[data-page] header,
-[data-page] header.bg-\[\#060606\]\/85 {
+/* Service Pages Navbar Styling (Dark Only) */
+:root[data-theme="dark"] header.service-nav-header {
   background-color: rgba(6, 6, 6, 0.92) !important;
   border-bottom-color: rgba(255, 255, 255, 0.1) !important;
 }
 
-header.service-nav-header .logo-img,
-header.service-nav-header img[alt*="Entersoft"] {
-  filter: none !important;
-  brightness: 1 !important;
-  opacity: 1 !important;
-}
-
-/* Logo SVG and Nav links visibility in light mode for floating pill header */
-:root[data-theme="light"]:not([data-page]) .nav-floating-pill .logo-img,
-:root[data-theme="light"]:not([data-page]) .nav-floating-pill img[alt*="Entersoft"] {
+:root[data-theme="light"] .logo-img,
+[data-theme="light"] .logo-img,
+.nav-hero-light-header .logo-img,
+:root[data-theme="light"] .nav-floating-pill .logo-img {
   filter: brightness(0) !important;
-  opacity: 0.95 !important;
+  -webkit-filter: brightness(0) !important;
+  opacity: 1 !important;
 }
 
 :root[data-theme="light"]:not([data-page]) .nav-floating-pill nav a,
@@ -971,6 +977,303 @@ html:has([data-page="ai-ast"]) footer,
   min-width: 40px;
   display: inline-block;
 }
+
+/* ── SAST SUBPAGE SPECIFIC STYLES (NEXUS INTELLIGENT DISCOVERY THEME) ─────────────────── */
+[data-page="sast"] {
+  --bg-primary: #F7F1E7 !important;
+  --bg-elevated: #F4EAD9 !important;
+  --border-subtle: rgba(17, 24, 39, 0.08) !important;
+  --text-primary: #111827 !important;
+  --text-secondary: #374151 !important;
+  --text-tertiary: #4B5563 !important;
+  --accent: #5F8CFF !important;
+  --accent-neon: #5F8CFF !important;
+  --accent-dim: rgba(95, 140, 255, 0.12) !important;
+  --accent-hover: #4b7ae6 !important;
+
+  /* Theme variables used in sast components */
+  --lt-white: #F7F1E7;
+  --lt-gray: #F4EAD9;
+  --lt-gray-mid: #EADEC9;
+  --lt-border: rgba(17, 24, 39, 0.08);
+  --lt-text: #111827;
+  --lt-text-body: #374151;
+  --lt-text-hint: #4B5563;
+  --lt-pill-bg: rgba(95, 140, 255, 0.08);
+  --lt-neon-accent: #D8A85F; /* Golden yellow / mustard badge */
+  
+  --lt-warm: #EADEC9;
+  --lt-critical: #EF4444;
+  --lt-high: #F97316;
+  --lt-medium: #F59E0B;
+  --lt-low: #10B981;
+
+  /* Typography variables */
+  --font-heading: 'Bricolage Grotesque', sans-serif;
+  --font-body: 'Instrument Serif', serif;
+  --font-sans: 'Inter', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  font-family: var(--font-sans);
+  background-color: var(--lt-white) !important;
+  color: var(--lt-text) !important;
+}
+
+[data-page="sast"] .custom-cursor-dot {
+  background-color: #111827 !important;
+}
+
+[data-page="sast"] .custom-cursor-ring {
+  border-color: rgba(17, 24, 39, 0.6) !important;
+}
+
+/* Custom styled badge pill */
+[data-page="sast"] .lt-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--lt-neon-accent) !important;
+  background-color: rgba(216, 168, 95, 0.08);
+  border: 1px solid rgba(216, 168, 95, 0.2);
+  padding: 6px 14px;
+  border-radius: 9999px;
+  display: inline-block;
+}
+
+/* Typography styles matching Nexus */
+[data-page="sast"] .lt-hero-h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(2.4rem, 5vw, 4.4rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  color: var(--lt-text);
+}
+
+[data-page="sast"] .lt-section-h2 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 3.8vw, 2.8rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  color: var(--lt-text);
+}
+
+[data-page="sast"] .lt-body {
+  font-family: var(--font-body);
+  font-size: clamp(18px, 1.8vw, 22px);
+  font-style: italic;
+  color: var(--lt-text-body);
+  line-height: 1.5;
+}
+
+/* Nexus primary button style */
+[data-page="sast"] .lt-btn-primary {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  background-color: var(--accent);
+  color: #FFFFFF !important;
+  padding: 12px 26px;
+  border-radius: 8px;
+  border: 1px solid var(--accent);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+[data-page="sast"] .lt-btn-primary:hover {
+  background-color: var(--accent-hover);
+  border-color: var(--accent-hover);
+  box-shadow: 0 6px 20px rgba(95, 140, 255, 0.35);
+  transform: translateY(-1px);
+}
+
+/* Nexus secondary button style */
+[data-page="sast"] .lt-btn-secondary {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  background-color: transparent;
+  color: var(--lt-text) !important;
+  padding: 12px 26px;
+  border-radius: 8px;
+  border: 1px solid var(--lt-border);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+[data-page="sast"] .lt-btn-secondary:hover {
+  background-color: rgba(17, 24, 39, 0.04);
+  border-color: var(--lt-text-hint);
+  transform: translateY(-1px);
+}
+
+/* ── SCA SUBPAGE SPECIFIC STYLES (AURALIS NEURAL AUDIO THEME) ─────────────────── */
+[data-page="sca"] {
+  --bg-primary: #FFFFFF !important;
+  --bg-elevated: #1C1C1E !important; /* Off-black surface card */
+  --border-subtle: #E5E7EB !important; /* Light-mode border */
+  --text-primary: #111827 !important;
+  --text-secondary: #4B5563 !important;
+  --text-tertiary: #9CA3AF !important;
+  
+  --accent: #4F46E5 !important;      /* Auralis Primary Indigo */
+  --accent-neon: #06B6D4 !important; /* Auralis Accent Cyan */
+  --accent-dim: rgba(79, 70, 229, 0.15) !important;
+  --accent-hover: #4338CA !important;
+
+  /* Custom theme fonts */
+  --font-heading: var(--font-geist-sans), sans-serif;
+  --font-body: var(--font-geist-sans), sans-serif;
+  --font-mono: var(--font-jetbrains-mono), monospace;
+
+  font-family: var(--font-body);
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-page="sca"] .custom-cursor-dot {
+  background-color: #111827 !important;
+}
+
+[data-page="sca"] .custom-cursor-ring {
+  border-color: rgba(17, 24, 39, 0.6) !important;
+}
+
+/* Typography styles matching Auralis */
+[data-page="sca"] .auralis-display-lg {
+  font-family: var(--font-heading);
+  font-size: clamp(2.2rem, 5.5vw, 4rem);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+}
+
+[data-page="sca"] .auralis-body-md {
+  font-family: var(--font-body);
+  font-size: clamp(14px, 1.6vw, 16px);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+[data-page="sca"] .auralis-label-md {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+}
+
+/* Dark surface card element (pasted surface token) */
+[data-page="sca"] .auralis-card-dark {
+  background-color: #1C1C1E;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 24px;
+  color: #FFFFFF;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25), 0 1px 3px rgba(255, 255, 255, 0.03) inset;
+}
+
+/* Light surface card element */
+[data-page="sca"] .auralis-card-light {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 24px;
+  color: var(--text-primary);
+  box-shadow: 0 4px 12px rgba(17, 24, 39, 0.03);
+  transition: all 0.2s ease;
+}
+
+[data-page="sca"] .auralis-card-light:hover {
+  border-color: rgba(79, 70, 229, 0.35);
+  box-shadow: 0 10px 24px rgba(79, 70, 229, 0.06);
+  transform: translateY(-2px);
+}
+
+/* Primary indigo button */
+[data-page="sca"] .auralis-btn-primary {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  background-color: var(--accent);
+  color: #FFFFFF !important;
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: 1px solid var(--accent);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+[data-page="sca"] .auralis-btn-primary:hover {
+  background-color: var(--accent-hover);
+  border-color: var(--accent-hover);
+  box-shadow: 0 6px 18px rgba(79, 70, 229, 0.35);
+  transform: translateY(-1px);
+}
+
+/* Secondary white/bordered button */
+[data-page="sca"] .auralis-btn-secondary {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  background-color: transparent;
+  color: var(--text-primary) !important;
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: 1px solid var(--border-subtle);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+[data-page="sca"] .auralis-btn-secondary:hover {
+  background-color: rgba(17, 24, 39, 0.03);
+  border-color: var(--text-secondary);
+  transform: translateY(-1px);
+}
+
+/* Monospace stats list indicators */
+[data-page="sca"] .auralis-badge-cyan {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent-neon);
+  background-color: rgba(6, 182, 212, 0.1);
+  border: 1px solid rgba(6, 182, 212, 0.2);
+  padding: 4px 10px;
+  border-radius: 9999px;
+  display: inline-block;
+}
+
+[data-page="sca"] .auralis-badge-indigo {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  background-color: rgba(79, 70, 229, 0.1);
+  border: 1px solid rgba(79, 70, 229, 0.2);
+  padding: 4px 10px;
+  border-radius: 9999px;
+  display: inline-block;
+}
+
+
 
 
 
