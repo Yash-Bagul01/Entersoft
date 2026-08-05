@@ -1,6 +1,5 @@
 import React from "react";
-import PlatformSubpageTemplate from "@/components/platform/PlatformSubpageTemplate";
-import { platformPillars } from "@/data/platform";
+import SbomLicenseRiskPageRoot from "@/components/platform/roots/SbomLicenseRiskPageRoot";
 
 export const metadata = {
   title: "SBOM & License Risk — EnProbe Platform | Entersoft Security",
@@ -8,6 +7,5 @@ export const metadata = {
 };
 
 export default function SbomLicenseRiskPage() {
-  const pillar = platformPillars["sbom-license-risk"];
-  return <PlatformSubpageTemplate pillar={pillar} />;
+  return <SbomLicenseRiskPageRoot />;
 }

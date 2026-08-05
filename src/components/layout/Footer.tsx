@@ -97,7 +97,7 @@ export default function Footer() {
     <footer className={`w-full border-t select-none relative overflow-hidden ${
       isLight 
         ? "bg-[#FAFCFF] border-slate-200 text-slate-600" 
-        : "bg-[#060606] border-[var(--border-subtle)] text-[var(--text-secondary)]"
+        : "bg-[#030712] border-white/10 text-slate-300"
     }`}>
       <style dangerouslySetInnerHTML={{ __html: `
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
@@ -116,26 +116,26 @@ export default function Footer() {
                 height={24}
                 className="h-6 w-auto object-contain self-start"
               />
-              <p className="text-[12px] leading-relaxed max-w-[320px]">
+              <p className={`text-[12px] leading-relaxed max-w-[320px] ${isLight ? "text-slate-600" : "text-slate-300"}`}>
                 EnProbe — the technology platform. Expert Practices — 14 years of human security judgment. Enterprise Solutions — packaged outcomes for specific customer problems.
               </p>
             </div>
             {/* Social Grid */}
-            <div className="flex items-center gap-4 text-[#F6F5F0]">
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--accent)] transition-colors p-2.5 min-h-[44px] min-w-[44px] bg-white/[0.02] border border-[var(--border-subtle)] rounded-[2px] inline-flex items-center justify-center" aria-label="GitHub" data-cursor="link">
+            <div className="flex items-center gap-4 text-white">
+              <a href="https://github.com" target="_blank" rel="noopener noreferrer" className={`transition-colors p-2.5 min-h-[44px] min-w-[44px] rounded-[2px] inline-flex items-center justify-center ${isLight ? "bg-slate-100 border border-slate-200 hover:text-blue-600" : "bg-slate-900 border border-slate-800 hover:text-cyan-400 text-slate-300"}`} aria-label="GitHub" data-cursor="link">
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
                   <path d="M9 18c-4.51 2-5-2-7-2" />
                 </svg>
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--accent)] transition-colors p-2.5 min-h-[44px] min-w-[44px] bg-white/[0.02] border border-[var(--border-subtle)] rounded-[2px] inline-flex items-center justify-center" aria-label="LinkedIn" data-cursor="link">
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className={`transition-colors p-2.5 min-h-[44px] min-w-[44px] rounded-[2px] inline-flex items-center justify-center ${isLight ? "bg-slate-100 border border-slate-200 hover:text-blue-600" : "bg-slate-900 border border-slate-800 hover:text-cyan-400 text-slate-300"}`} aria-label="LinkedIn" data-cursor="link">
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
                   <rect x="2" y="9" width="4" height="12" />
                   <circle cx="4" cy="4" r="2" />
                 </svg>
               </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--accent)] transition-colors p-2.5 min-h-[44px] min-w-[44px] bg-white/[0.02] border border-[var(--border-subtle)] rounded-[2px] inline-flex items-center justify-center" aria-label="Twitter" data-cursor="link">
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className={`transition-colors p-2.5 min-h-[44px] min-w-[44px] rounded-[2px] inline-flex items-center justify-center ${isLight ? "bg-slate-100 border border-slate-200 hover:text-blue-600" : "bg-slate-900 border border-slate-800 hover:text-cyan-400 text-slate-300"}`} aria-label="Twitter" data-cursor="link">
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
                 </svg>
@@ -146,7 +146,9 @@ export default function Footer() {
           {/* Links Directory Columns */}
           {footerLinks.map((column) => (
             <div key={column.title} className="flex flex-col gap-4">
-              <span className="font-mono text-[11px] font-bold text-[var(--text-primary)] uppercase tracking-wider">
+              <span className={`font-mono text-[11px] font-bold uppercase tracking-wider ${
+                isLight ? "text-slate-900" : "text-cyan-400"
+              }`}>
                 // {column.title}
               </span>
               <ul className="flex flex-col gap-1.5">
@@ -154,7 +156,9 @@ export default function Footer() {
                   <li key={link.name}>
                     <a
                       href={link.href}
-                      className="text-[11px] hover:text-[#F6F5F0] transition-colors leading-normal py-1 min-h-[36px] flex items-center"
+                      className={`text-[11px] transition-colors leading-normal py-1 min-h-[36px] flex items-center ${
+                        isLight ? "text-slate-600 hover:text-blue-600" : "text-slate-300 hover:text-cyan-300 font-normal"
+                      }`}
                       data-cursor="link"
                     >
                       {link.name}
@@ -167,31 +171,37 @@ export default function Footer() {
         </div>
 
         {/* Hairline Border Divider */}
-        <div className="section-divider mb-8" />
+        <div className={`w-full h-px mb-8 ${isLight ? "bg-slate-200" : "bg-slate-800"}`} />
 
         {/* Footer Sub-bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6 relative z-10 mb-4">
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-[10px] font-mono tracking-widest uppercase">
+          <div className={`flex flex-wrap items-center gap-x-6 gap-y-2 text-[10px] font-mono tracking-widest uppercase ${
+            isLight ? "text-slate-600" : "text-slate-400"
+          }`}>
             <span>© ENTERSOFT SECURITY</span>
-            <span className="text-[var(--text-tertiary)]">|</span>
-            <span className="text-[var(--text-tertiary)]">EST. 2013</span>
-            <span className="text-[var(--text-tertiary)]">|</span>
-            <Link href="/#privacy" className="hover:text-[#F6F5F0] transition-colors" data-cursor="link">Privacy Policy</Link>
-            <span className="text-[var(--text-tertiary)]">|</span>
-            <Link href="/#terms" className="hover:text-[#F6F5F0] transition-colors" data-cursor="link">Terms of Service</Link>
+            <span className="opacity-40">|</span>
+            <span className="opacity-40">EST. 2013</span>
+            <span className="opacity-40">|</span>
+            <Link href="/#privacy" className="hover:text-cyan-300 transition-colors" data-cursor="link">Privacy Policy</Link>
+            <span className="opacity-40">|</span>
+            <Link href="/#terms" className="hover:text-cyan-300 transition-colors" data-cursor="link">Terms of Service</Link>
           </div>
 
           <div className="flex items-center gap-4">
             {/* Motion Settings Toggle */}
             <button
               onClick={handleToggleMotion}
-              className="flex items-center gap-2 font-mono text-[10px] tracking-wider uppercase text-[var(--text-tertiary)] hover:text-[#F6F5F0] transition-colors border border-[var(--border-subtle)] px-3 py-1.5 rounded-[2px] bg-white/[0.01]"
+              className={`flex items-center gap-2 font-mono text-[10px] tracking-wider uppercase transition-colors border px-3 py-1.5 rounded-[2px] ${
+                isLight 
+                  ? "border-slate-200 text-slate-600 hover:text-slate-900 bg-slate-50" 
+                  : "border-slate-800 text-slate-300 hover:text-white bg-slate-900/60"
+              }`}
               title={motionActive ? "Disable scroll smooth & parallax animations" : "Enable scroll smooth & parallax animations"}
               data-cursor="link"
             >
               {motionActive ? (
                 <>
-                  <Zap className="w-3.5 h-3.5 text-[var(--accent)]" />
+                  <Zap className={`w-3.5 h-3.5 ${isLight ? "text-blue-600" : "text-cyan-400"}`} />
                   <span>Cinematic Motion Active</span>
                 </>
               ) : (
@@ -205,7 +215,9 @@ export default function Footer() {
             {/* Scroll Top Button */}
             <button
               onClick={handleScrollTop}
-              className="p-2 border border-[var(--border-subtle)] rounded-[2px] hover:border-[#F6F5F0] text-[#F6F5F0] transition-all bg-white/[0.01]"
+              className={`p-2 border rounded-[2px] transition-all ${
+                isLight ? "border-slate-200 text-slate-700 hover:border-slate-900" : "border-slate-800 text-slate-200 hover:border-white hover:text-white"
+              }`}
               aria-label="Scroll to top"
               data-cursor="link"
             >
@@ -218,8 +230,8 @@ export default function Footer() {
         <div className="relative w-full flex justify-center overflow-hidden h-[12vw] min-h-[90px] max-h-[180px] pointer-events-auto">
           <div className="relative w-full flex justify-center overflow-visible top-[2vw]">
             <motion.h1 
-              initial={{ y: "45%", color: "rgba(156, 156, 151, 0.35)" }}
-              whileHover={{ y: "0%", color: "var(--text-primary, #ffffff)" }}
+              initial={{ y: "45%", color: isLight ? "rgba(30, 41, 59, 0.2)" : "rgba(255, 255, 255, 0.25)" }}
+              whileHover={{ y: "0%", color: isLight ? "#0f172a" : "#ffffff" }}
               transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
               className="font-display font-extrabold uppercase tracking-tighter cursor-pointer text-[14.2vw] leading-none select-none origin-bottom text-center"
               style={{

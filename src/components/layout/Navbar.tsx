@@ -36,7 +36,7 @@ export default function Navbar() {
   const isCyberOntologyPage = pathname?.startsWith("/platform/cyber-ontology");
   const isSastPage = pathname?.startsWith("/platform/sast");
   const isScaPage = pathname?.startsWith("/platform/sca");
-  const isLightPage = isCyberOntologyPage || isSastPage || isScaPage;
+  const isLightPage = isCyberOntologyPage || isScaPage;
   const isServicePage = (pathname?.startsWith("/services") || pathname?.startsWith("/platform")) && !isLightPage;
   const isAppSecPage = pathname === ROUTES.services.appsec;
   const isVaptPage = pathname === ROUTES.services.vapt;
@@ -236,7 +236,7 @@ export default function Navbar() {
                       (isServicePage
                         ? "bg-[#060606]/90 border-white/12 text-white service-nav-header shadow-[0_16px_40px_rgba(0,0,0,0.6)]"
                         : "bg-[var(--bg-elevated)]/95 border-[var(--border-glass)] text-[var(--text-primary)] shadow-[0_12px_36px_rgba(0,0,0,0.12)]")
-                    : "max-w-full px-6 md:px-12 py-5 rounded-none border-b border-white/10 backdrop-blur-md bg-black/35 text-white nav-rectangle-header")
+                    : "max-w-full px-6 md:px-12 py-5 rounded-none text-white nav-transparent-header")
             )}
           >
             {/* Logo */}
@@ -271,20 +271,18 @@ export default function Navbar() {
                       activeMega === idx
                         ? (isLightPage 
                             ? "bg-slate-100/90 text-[#08428C] font-extrabold" 
-                            : "bg-[#08428C]/15 text-[var(--text-primary)] font-extrabold")
-                        : isLightPage
-                          ? "text-slate-800 hover:text-[#08428C] hover:bg-slate-100/80"
-                          : isScrolled
-                            ? "text-[var(--text-primary)] hover:bg-[var(--text-primary)]/[0.06]"
-                            : "text-white/90 hover:bg-white/10"
+                            : "bg-cyan-500/20 text-cyan-400 font-extrabold")
+                        : (isLightPage
+                            ? "text-slate-800 hover:text-[#08428C] hover:bg-slate-100/80"
+                            : "text-slate-100 hover:text-cyan-400 hover:bg-white/10")
                     )}
                     data-cursor="link"
                   >
                     <span>{item.label}</span>
                     <ChevronDown
                       className={cn(
-                        "w-3.5 h-3.5 transition-transform duration-300 opacity-60 group-hover:opacity-100",
-                        activeMega === idx && "transform rotate-180 opacity-100"
+                        "w-3.5 h-3.5 transition-transform duration-300 opacity-70 group-hover:opacity-100",
+                        activeMega === idx && "transform rotate-180 opacity-100 text-cyan-400"
                       )}
                     />
                   </Link>
@@ -298,24 +296,39 @@ export default function Navbar() {
                         exit={{ opacity: 0, y: 8, scale: 0.98 }}
                         transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
                         className={cn(
-                          "absolute top-full border border-[var(--border-glass)] backdrop-blur-2xl p-8 mt-3 rounded-[20px] shadow-2xl flex gap-7 nav-dropdown-box z-50 transition-colors duration-300 max-w-[calc(100vw-3rem)]",
+                          "absolute top-full border p-8 mt-3 rounded-[20px] shadow-2xl flex gap-7 nav-dropdown-box z-50 transition-colors duration-300 max-w-[calc(100vw-3rem)]",
+                          isLightPage
+                            ? "bg-white/98 border-slate-200 text-slate-900 shadow-xl"
+                            : "bg-[#090F1E]/95 border-white/20 text-white shadow-2xl shadow-cyan-950/80 backdrop-blur-2xl",
                           getDropdownStyle(item.label)
                         )}
                       >
                         {/* Left Info Blurb */}
-                        <div className="w-[230px] shrink-0 flex flex-col justify-between border-r border-[var(--border-subtle)] pr-6">
+                        <div className={cn(
+                          "w-[230px] shrink-0 flex flex-col justify-between border-r pr-6",
+                          isLightPage ? "border-slate-200" : "border-white/10"
+                        )}>
                           <div>
-                            <span className="font-mono text-[11.5px] font-bold text-[var(--accent)] uppercase tracking-widest block mb-2.5">
+                            <span className={cn(
+                              "font-mono text-[11.5px] font-bold uppercase tracking-widest block mb-2.5",
+                              isLightPage ? "text-[#08428C]" : "text-cyan-400"
+                            )}>
                               Overview
                             </span>
-                            <p className="text-[13px] text-[var(--text-secondary)] leading-relaxed font-sans">
+                            <p className={cn(
+                              "text-[13px] leading-relaxed font-sans",
+                              isLightPage ? "text-slate-600" : "text-slate-200"
+                            )}>
                               {item.megaMenu.blurb}
                             </p>
                           </div>
                           <div className="pt-4">
                             <Link
                               href={item.href}
-                              className="text-[12px] font-mono text-[var(--text-primary)] hover:text-[var(--accent)] underline transition-colors"
+                              className={cn(
+                                "text-[12px] font-mono underline transition-colors",
+                                isLightPage ? "text-slate-900 hover:text-[#08428C]" : "text-white hover:text-cyan-400"
+                              )}
                               data-cursor="link"
                             >
                               {item.megaMenu.ctaText || "Explore →"}
@@ -330,7 +343,10 @@ export default function Navbar() {
                         )}>
                           {item.megaMenu.sections.map((section) => (
                             <div key={section.title} className="flex flex-col gap-3.5">
-                              <span className="font-mono text-[11px] font-bold text-[var(--text-tertiary)] uppercase tracking-wider">
+                              <span className={cn(
+                                "font-mono text-[11px] font-bold uppercase tracking-wider",
+                                isLightPage ? "text-slate-500" : "text-cyan-400"
+                              )}>
                                 {section.title}
                               </span>
                               <div className="flex flex-col gap-2">
@@ -338,17 +354,29 @@ export default function Navbar() {
                                   <Link
                                     key={subItem.name}
                                     href={subItem.href}
-                                    className="flex items-start gap-3 group p-2.5 hover:bg-[var(--text-primary)]/[0.06] rounded-[8px] transition-all"
+                                    className={cn(
+                                      "flex items-start gap-3 group p-2.5 rounded-[8px] transition-all",
+                                      isLightPage ? "hover:bg-slate-100" : "hover:bg-white/10"
+                                    )}
                                     data-cursor="link"
                                   >
-                                    <div className="text-[var(--accent)] mt-0.5 transition-colors shrink-0">
+                                    <div className={cn(
+                                      "mt-0.5 transition-colors shrink-0",
+                                      isLightPage ? "text-[#08428C]" : "text-cyan-400"
+                                    )}>
                                       {subItem.icon}
                                     </div>
                                     <div className="flex flex-col gap-0.5">
-                                      <span className="text-[12.5px] font-bold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors leading-tight">
+                                      <span className={cn(
+                                        "text-[12.5px] font-bold transition-colors leading-tight",
+                                        isLightPage ? "text-slate-900 group-hover:text-[#08428C]" : "text-white group-hover:text-cyan-300 font-bold"
+                                      )}>
                                         {subItem.name}
                                       </span>
-                                      <span className="text-[10.5px] font-sans text-[var(--text-secondary)] leading-snug group-hover:text-[var(--text-primary)] transition-colors">
+                                      <span className={cn(
+                                        "text-[10.5px] font-sans leading-snug transition-colors",
+                                        isLightPage ? "text-slate-500 group-hover:text-slate-800" : "text-slate-300 group-hover:text-white"
+                                      )}>
                                         {subItem.desc}
                                       </span>
                                     </div>

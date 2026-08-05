@@ -32,18 +32,11 @@ export default function FinalCTA({ theme = "dark" }: FinalCTAProps) {
   };
 
   return (
-    <section id="contact" className={`relative w-full overflow-hidden ${isLight ? "bg-[#FAFCFF] border-t border-slate-200/80" : "bg-[var(--bg-primary)]"}`}>
+    <section id="contact" className={`relative w-full overflow-hidden ${isLight ? "bg-[#FAFCFF] border-t border-slate-200/80" : "bg-[#030712] text-white border-t border-white/10"}`}>
       {/* Background Ambience */}
       {!isLight && (
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-          <img
-            src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2064&auto=format&fit=crop"
-            alt="Cyber background"
-            className="w-full h-full object-cover opacity-25 dark:opacity-35 mix-blend-luminosity scale-105 transform transition-transform duration-1000"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-[var(--bg-primary)] via-transparent to-[var(--bg-primary)] opacity-95" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[var(--bg-primary)] via-transparent to-[var(--bg-primary)] opacity-85" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-[var(--accent-dim)] rounded-full blur-[120px] pointer-events-none opacity-40" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none opacity-50" />
         </div>
       )}
 
@@ -91,24 +84,24 @@ export default function FinalCTA({ theme = "dark" }: FinalCTAProps) {
                 hidden: { y: "100%" },
                 visible: { y: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } }
               }}
-              className={`text-[clamp(2rem,5vw,4.5rem)] font-display font-medium uppercase tracking-tight leading-none ${isLight ? "text-slate-900" : "text-[var(--text-primary)]"}`}
+              className={`text-[clamp(2rem,5vw,4.5rem)] font-display font-bold uppercase tracking-tight leading-none ${isLight ? "text-slate-900" : "!text-white drop-shadow-md"}`}
             >
               Get a Free Consultation
             </motion.h2>
           </div>
-          <p className={`text-[14px] leading-relaxed max-w-[480px] font-sans mt-2 ${isLight ? "text-slate-600" : "text-[var(--text-secondary)]"}`}>
+          <p className={`text-[14px] leading-relaxed max-w-[480px] font-sans mt-2 ${isLight ? "text-slate-600" : "!text-slate-200 font-normal"}`}>
             Establish a baseline. Enter your corporate credentials below. An Entersoft threat coordinator will respond within 2 hours.
           </p>
         </motion.div>
 
         {/* Callback submission widget */}
         <div className={`w-full max-w-[480px] border-2 backdrop-blur-md rounded-2xl p-8 md:p-10 flex flex-col items-stretch text-left shadow-xl relative ${
-          isLight ? "!bg-white !border-slate-300/90 shadow-slate-900/5" : "border-[var(--border-subtle)] bg-[var(--bg-elevated)]/90"
+          isLight ? "!bg-white !border-slate-300/90 shadow-slate-900/5" : "border-white/15 bg-[#0B132B]/80 text-white shadow-2xl shadow-cyan-950/40"
         }`}>
           
-          <div className={`flex items-center gap-3 border-b pb-4 mb-6 ${isLight ? "border-slate-200" : "border-[var(--border-subtle)]"}`}>
-            <Mail className={`w-4 h-4 ${isLight ? "text-[#0B4FD2]" : "text-[var(--accent)]"}`} />
-            <span className={`font-mono text-[10px] font-bold uppercase tracking-widest ${isLight ? "!text-slate-900" : "text-[var(--text-primary)]"}`}>
+          <div className={`flex items-center gap-3 border-b pb-4 mb-6 ${isLight ? "border-slate-200" : "border-white/10"}`}>
+            <Mail className={`w-4 h-4 ${isLight ? "text-[#0B4FD2]" : "text-cyan-400"}`} />
+            <span className={`font-mono text-[10px] font-bold uppercase tracking-widest ${isLight ? "!text-slate-900" : "text-cyan-400"}`}>
               ENCRYPTED SECURE RESPONSE DESK
             </span>
           </div>
@@ -124,7 +117,7 @@ export default function FinalCTA({ theme = "dark" }: FinalCTAProps) {
                 className="flex flex-col gap-4"
               >
                 <div className="flex flex-col gap-1.5">
-                  <label htmlFor="email" className={`font-mono text-[10px] font-bold uppercase tracking-wider ${isLight ? "!text-slate-700" : "text-[var(--text-secondary)]"}`}>
+                  <label htmlFor="email" className={`font-mono text-[10px] font-bold uppercase tracking-wider ${isLight ? "!text-slate-700" : "text-slate-300"}`}>
                     Corporate Email Address
                   </label>
                   <input
@@ -137,13 +130,13 @@ export default function FinalCTA({ theme = "dark" }: FinalCTAProps) {
                     className={`w-full h-11 border-2 px-4 rounded-xl text-xs font-sans outline-none transition-colors ${
                       isLight 
                         ? "!bg-white !border-slate-300 focus:!border-[#0B4FD2] !text-slate-900 font-medium placeholder:!text-slate-400" 
-                        : "bg-[var(--bg-primary)] border-[var(--border-subtle)] focus:border-[var(--accent)] text-[var(--text-primary)] placeholder-white/20"
+                        : "bg-slate-900/90 border-slate-700 focus:border-cyan-400 text-white placeholder-slate-500"
                     }`}
                   />
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label htmlFor="message" className={`font-mono text-[10px] font-bold uppercase tracking-wider ${isLight ? "!text-slate-700" : "text-[var(--text-secondary)]"}`}>
+                  <label htmlFor="message" className={`font-mono text-[10px] font-bold uppercase tracking-wider ${isLight ? "!text-slate-700" : "text-slate-300"}`}>
                     Perceived Perimeter Exposures (Optional)
                   </label>
                   <textarea
@@ -153,7 +146,7 @@ export default function FinalCTA({ theme = "dark" }: FinalCTAProps) {
                     className={`w-full border-2 p-4 rounded-xl text-xs font-sans outline-none resize-none transition-colors ${
                       isLight 
                         ? "!bg-white !border-slate-300 focus:!border-[#0B4FD2] !text-slate-900 font-medium placeholder:!text-slate-400" 
-                        : "bg-[var(--bg-primary)] border-[var(--border-subtle)] focus:border-[var(--accent)] text-[var(--text-primary)] placeholder-white/20"
+                        : "bg-slate-900/90 border-slate-700 focus:border-cyan-400 text-white placeholder-slate-500"
                     }`}
                   />
                 </div>

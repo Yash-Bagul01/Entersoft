@@ -541,6 +541,16 @@ html.lenis, html.lenis body {
   -webkit-backdrop-filter: blur(12px) !important;
 }
 
+.nav-transparent-header {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
 .nav-hero-light-header {
   background: transparent !important;
   background-color: transparent !important;
