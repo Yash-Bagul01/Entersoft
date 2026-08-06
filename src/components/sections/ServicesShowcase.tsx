@@ -358,8 +358,8 @@ export default function ServicesShowcase() {
       `}} />
       
       {/* Header (Uniform for all viewports) */}
-      <div className="max-w-[1400px] w-full mx-auto px-6 lg:px-12 pt-24 pb-12">
-        <div className="header-block flex flex-col gap-4">
+      <div className="max-w-[1400px] w-full mx-auto px-6 lg:px-12 pt-14 pb-3">
+        <div className="header-block flex flex-col gap-3">
           <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 w-full">
             <span className="font-mono text-[12px] text-[var(--accent-neon)] uppercase tracking-[0.18em]">
               // ENTERPRISE SERVICES & MANAGED SOLUTIONS
@@ -369,11 +369,11 @@ export default function ServicesShowcase() {
             </span>
           </div>
           
-          <h2 className="text-display font-display font-medium text-[clamp(2.6rem,5vw,4.8rem)] text-[var(--text-primary)] uppercase tracking-tight leading-none">
+          <h2 className="text-display font-display font-medium text-[clamp(2.4rem,4.5vw,4.2rem)] text-[var(--text-primary)] uppercase tracking-tight leading-none">
             OUR CYBER ASSURANCE SYSTEM
           </h2>
           
-          <p className="supporting-statement font-sans text-[clamp(15px,1.8vw,18px)] text-[var(--text-secondary)] leading-[1.6] mt-[1.2rem] max-w-[600px]">
+          <p className="supporting-statement font-sans text-[clamp(14px,1.6vw,17px)] text-[var(--text-secondary)] leading-[1.5] mt-2.5 max-w-[600px]">
             {"Seven integrated practices. One operating model to turn risk into validated decisions, remediation and continuous resilience."
               .split(" ")
               .map((word, i, arr) => (
@@ -389,7 +389,7 @@ export default function ServicesShowcase() {
       </div>
 
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-        <div className="w-full h-px bg-[var(--border-subtle)] my-16" />
+        <div className="w-full h-px bg-[var(--border-subtle)] mt-3 mb-6" />
         
         <div className="relative w-full">
           {/* Main Editorial List */}

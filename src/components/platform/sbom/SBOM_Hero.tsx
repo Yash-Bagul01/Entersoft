@@ -44,9 +44,9 @@ export default function SBOM_Hero() {
       { r: 255, g: 255, b: 255 }, // Pure White (#FFFFFF)
     ];
 
-    // High volume of tracks with UNIFORM EQUAL thin line width
+    // High volume of tracks with uniform line width
     const numTracks = 95;
-    const uniformLineWidth = 1.35; // Equal width for all lines for sleek uniform look
+    const uniformLineWidth = 2.1; // Made slightly larger for better presence without being overwhelming
 
     const tracks: {
       xNorm: number;
@@ -62,7 +62,7 @@ export default function SBOM_Hero() {
       tracks.push({
         xNorm: shapedNorm,
         color: palette[Math.floor(Math.random() * palette.length)],
-        alpha: 0.35 + Math.random() * 0.4,
+        alpha: 0.5 + Math.random() * 0.45,
       });
     }
 
@@ -86,26 +86,27 @@ export default function SBOM_Hero() {
       });
     }
 
-    // Fast 3D path coordinate calculation with LOWER POV perspective bend
+    // 3D path coordinate calculation using full section proportion down to bottom corners
     const getPathPoint = (xNorm: number, t: number, w: number, h: number) => {
       const centerX = w * 0.5;
-      const bendY = h * 0.72; // Lower POV perspective bend height (Dramatically lower camera angle looking up)
+      const bendY = h * 0.65;
+      const startY = h * 1.02; // Full bottom height to fill empty bottom space completely
 
       if (t <= 0.38) {
         const p = t / 0.38;
-        const y = h - p * (h - bendY);
-        const spread = (1 - p * 0.75) * (w * 0.75);
+        const y = startY - p * (startY - bendY);
+        const spread = (1 - p * 0.75) * (w * 0.82);
         return { x: centerX + xNorm * spread, y };
       } else if (t <= 0.48) {
         const p = (t - 0.38) / 0.10;
         const y = bendY - p * 30;
-        const spread = (1 - 0.75) * (w * 0.75);
+        const spread = (1 - 0.75) * (w * 0.82);
         return { x: centerX + xNorm * spread, y };
       } else {
         const p = (t - 0.48) / 0.52;
-        const startY = bendY - 30;
-        const y = startY - p * (startY + 75); // Shoots straight up past top behind navbar
-        const spread = (1 - 0.75) * (w * 0.75);
+        const topStartY = bendY - 30;
+        const y = topStartY - p * (topStartY + 75); // Shoots straight up past top behind navbar
+        const spread = (1 - 0.75) * (w * 0.82);
         return { x: centerX + xNorm * spread, y };
       }
     };
@@ -118,7 +119,7 @@ export default function SBOM_Hero() {
       ctx.fillStyle = "#07080A";
       ctx.fillRect(0, 0, width, height);
 
-      // 1. Draw static guide track lines (Equal uniform line width)
+      // 1. Draw static guide track lines (Clearer & thicker)
       ctx.globalCompositeOperation = "source-over";
       tracks.forEach((tr) => {
         ctx.beginPath();
@@ -130,16 +131,17 @@ export default function SBOM_Hero() {
           else ctx.lineTo(pt.x, pt.y);
         }
         const { r, g, b } = tr.color;
-        ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${tr.alpha * 0.16})`;
-        ctx.lineWidth = uniformLineWidth * 0.75;
+        ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${tr.alpha * 0.32})`;
+        ctx.lineWidth = uniformLineWidth * 0.65;
         ctx.stroke();
       });
 
-      // 2. Draw 3D floor perspective grid lines (Lower POV)
-      const bendY = height * 0.72;
-      for (let j = 0; j <= 10; j++) {
-        const p = Math.pow(j / 10, 1.8);
-        const y = height - p * (height - bendY);
+      // 2. Draw 3D floor perspective grid lines (Spanning full bottom proportion)
+      const bendY = height * 0.65;
+      const startY = height * 1.02;
+      for (let j = 0; j <= 12; j++) {
+        const p = Math.pow(j / 12, 1.7);
+        const y = startY - p * (startY - bendY);
         const t = (1 - p) * 0.38;
         
         const ptLeft = getPathPoint(-0.96, t, width, height);
@@ -148,8 +150,8 @@ export default function SBOM_Hero() {
         ctx.beginPath();
         ctx.moveTo(ptLeft.x, y);
         ctx.lineTo(ptRight.x, y);
-        ctx.strokeStyle = `rgba(129, 140, 248, ${0.05 + p * 0.14})`;
-        ctx.lineWidth = 0.7;
+        ctx.strokeStyle = `rgba(129, 140, 248, ${0.08 + p * 0.22})`;
+        ctx.lineWidth = 1.1;
         ctx.stroke();
       }
 
@@ -172,7 +174,7 @@ export default function SBOM_Hero() {
         const { r, g, b } = tr.color;
 
         // Pass A: Outer Glowing Color Aura Line
-        ctx.lineWidth = uniformLineWidth * 2.5;
+        ctx.lineWidth = uniformLineWidth * 2.4;
         for (let i = 0; i < segmentSteps; i++) {
           const stepT1 = tailT + (i / segmentSteps) * (headT - tailT);
           const stepT2 = tailT + ((i + 1) / segmentSteps) * (headT - tailT);
@@ -181,7 +183,7 @@ export default function SBOM_Hero() {
           const pt2 = getPathPoint(tr.xNorm, stepT2, width, height);
 
           const progress = i / segmentSteps;
-          const currentAlpha = Math.sin(progress * Math.PI) * tr.alpha * p.brightness * 0.7;
+          const currentAlpha = Math.sin(progress * Math.PI) * tr.alpha * p.brightness * 0.85;
 
           ctx.beginPath();
           ctx.moveTo(pt1.x, pt1.y);
@@ -191,7 +193,7 @@ export default function SBOM_Hero() {
         }
 
         // Pass B: Shiny Pure White Core Highlight Line (Glossy Shine)
-        ctx.lineWidth = uniformLineWidth * 0.9;
+        ctx.lineWidth = uniformLineWidth * 1.0;
         for (let i = 0; i < segmentSteps; i++) {
           const stepT1 = tailT + (i / segmentSteps) * (headT - tailT);
           const stepT2 = tailT + ((i + 1) / segmentSteps) * (headT - tailT);
@@ -200,7 +202,7 @@ export default function SBOM_Hero() {
           const pt2 = getPathPoint(tr.xNorm, stepT2, width, height);
 
           const progress = i / segmentSteps;
-          const currentAlpha = Math.sin(progress * Math.PI) * p.brightness * 0.95;
+          const currentAlpha = Math.sin(progress * Math.PI) * p.brightness * 0.98;
 
           ctx.beginPath();
           ctx.moveTo(pt1.x, pt1.y);
@@ -210,23 +212,23 @@ export default function SBOM_Hero() {
         }
       });
 
-      // 4. Central Ambient Luminous Glow (Lower POV position)
+      // 4. Central Ambient Luminous Glow
       ctx.globalCompositeOperation = "source-over";
       const glowX = width * 0.5;
-      const glowY = height * 0.68;
+      const glowY = height * 0.65;
       const glowGrad = ctx.createRadialGradient(glowX, glowY, 20, glowX, glowY, width * 0.52);
-      glowGrad.addColorStop(0, "rgba(129, 140, 248, 0.24)");
-      glowGrad.addColorStop(0.5, "rgba(56, 189, 248, 0.12)");
+      glowGrad.addColorStop(0, "rgba(129, 140, 248, 0.28)");
+      glowGrad.addColorStop(0.5, "rgba(56, 189, 248, 0.15)");
       glowGrad.addColorStop(1, "rgba(7, 8, 10, 0)");
       ctx.fillStyle = glowGrad;
       ctx.fillRect(0, 0, width, height);
 
-      // 5. Bottom Vignette
-      const bottomGrad = ctx.createLinearGradient(0, height - 120, 0, height);
+      // 5. Subtle Bottom Vignette
+      const bottomGrad = ctx.createLinearGradient(0, height - 60, 0, height);
       bottomGrad.addColorStop(0, "rgba(7, 8, 10, 0)");
-      bottomGrad.addColorStop(1, "#07080A");
+      bottomGrad.addColorStop(1, "rgba(7, 8, 10, 0.5)");
       ctx.fillStyle = bottomGrad;
-      ctx.fillRect(0, height - 120, width, 120);
+      ctx.fillRect(0, height - 60, width, 60);
 
       ctx.restore();
       animationFrameId = requestAnimationFrame(render);

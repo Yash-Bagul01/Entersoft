@@ -10,18 +10,34 @@ export default function SCA_Hero() {
     <section className="relative w-full pt-28 pb-12 md:pt-32 md:pb-16 lg:pt-36 lg:pb-20 overflow-hidden bg-white text-slate-900 border-b border-slate-100 font-sans">
       
       {/* ─────────────────────────────────────────────────────────────
-          RIGHT SIDE: ANIMATED AURORA GRADIENT + 4 GLASS PRISM COLUMNS
+          RIGHT SIDE: ANIMATED AURORA GRADIENT + 5 GLASS PRISM COLUMNS
           Spans from top: 0px (behind navbar) down to bottom of section
           ───────────────────────────────────────────────────────────── */}
-      <div className="absolute top-0 right-0 w-full lg:w-[48%] h-full pointer-events-none overflow-hidden z-0">
+      <div className="absolute top-0 right-0 w-full lg:w-[58%] h-full pointer-events-none overflow-hidden z-0">
         
         {/* Soft Left Fade Blend (Blends white left side into right color section) */}
-        <div className="absolute inset-y-0 left-0 w-24 md:w-36 lg:w-44 bg-gradient-to-r from-white via-white/85 to-transparent z-20 pointer-events-none" />
+        <div className="absolute inset-y-0 left-0 w-28 md:w-40 lg:w-48 bg-gradient-to-r from-white via-white/85 to-transparent z-20 pointer-events-none" />
 
-        {/* Floating Animated Aurora Gradient Blobs (Faster, dynamic flow) */}
+        {/* Floating Animated Aurora Gradient Blobs (Left to Right Shade Flow) */}
         <div className="absolute inset-0 z-0 opacity-95">
           
-          {/* Blob 1: Soft Ice Cyan & Sky Blue (Top Left of Color Section) */}
+          {/* Blob 1: Soft Ice Cyan & Sky Blue (Far Left of Color Section) */}
+          <motion.div
+            animate={{
+              x: [-30, 30, -20],
+              y: [-15, 25, -20],
+              scale: [1, 1.15, 0.95],
+            }}
+            transition={{
+              duration: 6.5,
+              repeat: Infinity,
+              repeatType: "mirror",
+              ease: "easeInOut",
+            }}
+            className="absolute -top-12 -left-16 w-[460px] h-[460px] rounded-full bg-gradient-to-tr from-[#E0F2FE] via-[#BAE6FD] to-[#7DD3FC] blur-[55px] opacity-90"
+          />
+
+          {/* Blob 2: Sky Blue & Light Indigo */}
           <motion.div
             animate={{
               x: [-25, 35, -15],
@@ -34,10 +50,10 @@ export default function SCA_Hero() {
               repeatType: "mirror",
               ease: "easeInOut",
             }}
-            className="absolute -top-16 left-0 w-[440px] h-[440px] rounded-full bg-gradient-to-tr from-[#E0F2FE] via-[#BAE6FD] to-[#7DD3FC] blur-[50px] opacity-95"
+            className="absolute -top-16 left-[20%] w-[440px] h-[440px] rounded-full bg-gradient-to-tr from-[#BAE6FD] via-[#93C5FD] to-[#60A5FA] blur-[50px] opacity-95"
           />
 
-          {/* Blob 2: Electric Sky Blue & Light Indigo (Top Right of Color Section) */}
+          {/* Blob 3: Electric Sky Blue & Light Indigo (Top Right) */}
           <motion.div
             animate={{
               x: [25, -35, 20],
@@ -53,7 +69,7 @@ export default function SCA_Hero() {
             className="absolute -top-20 right-0 w-[480px] h-[480px] rounded-full bg-gradient-to-bl from-[#93C5FD] via-[#60A5FA] to-[#818CF8] blur-[60px] opacity-90"
           />
 
-          {/* Blob 3: Rich Royal Blue & Indigo (Center Right) */}
+          {/* Blob 4: Rich Royal Blue & Indigo (Center Right) */}
           <motion.div
             animate={{
               x: [35, -30, 25],
@@ -66,10 +82,10 @@ export default function SCA_Hero() {
               repeatType: "mirror",
               ease: "easeInOut",
             }}
-            className="absolute top-1/3 left-1/4 w-[420px] h-[420px] rounded-full bg-gradient-to-br from-[#3B82F6] via-[#4F46E5] to-[#6366F1] blur-[70px] opacity-85"
+            className="absolute top-1/3 left-1/3 w-[420px] h-[420px] rounded-full bg-gradient-to-br from-[#3B82F6] via-[#4F46E5] to-[#6366F1] blur-[70px] opacity-85"
           />
 
-          {/* Blob 4: Deep Violet & Purple (Bottom Right) */}
+          {/* Blob 5: Deep Violet & Purple (Bottom Right) */}
           <motion.div
             animate={{
               x: [-35, 25, -25],
@@ -86,10 +102,20 @@ export default function SCA_Hero() {
           />
         </div>
 
-        {/* 4 Vertical Translucent Glass Prism Columns (Faster dynamic light beam animation) */}
-        <div className="absolute inset-0 z-10 grid grid-cols-4 w-full h-full">
+        {/* 5 Vertical Translucent Glass Prism Columns (Added 1 Column to the Left) */}
+        <div className="absolute inset-0 z-10 grid grid-cols-5 w-full h-full">
           
-          {/* Column 1 */}
+          {/* Column 1 (NEW: Added to Left, continuing left-to-right shade flow) */}
+          <div className="relative h-full border-l border-white/35 backdrop-blur-[4px] bg-gradient-to-b from-white/15 via-white/5 to-transparent overflow-hidden">
+            <div className="absolute top-0 inset-x-0 h-36 bg-gradient-to-b from-white/30 to-transparent pointer-events-none" />
+            <motion.div
+              animate={{ y: ["-100%", "250%"] }}
+              transition={{ duration: 3.8, repeat: Infinity, ease: "linear", delay: 1.8 }}
+              className="absolute inset-x-0 h-44 bg-gradient-to-b from-transparent via-white/55 to-transparent opacity-75 pointer-events-none"
+            />
+          </div>
+
+          {/* Column 2 */}
           <div className="relative h-full border-l border-white/40 backdrop-blur-[6px] bg-gradient-to-b from-white/20 via-white/5 to-transparent overflow-hidden">
             <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-white/35 to-transparent pointer-events-none" />
             <motion.div
@@ -99,8 +125,8 @@ export default function SCA_Hero() {
             />
           </div>
 
-          {/* Column 2 */}
-          <div className="relative h-full border-l border-white/45 backdrop-blur-[8px] bg-gradient-to-b from-white/25 via-white/10 to-transparent overflow-hidden">
+          {/* Column 3 */}
+          <div className="relative h-full border-l border-white/45 backdrop-blur-[8px] bg-gradient-to-b from-white/10 via-white/10 to-transparent overflow-hidden">
             <div className="absolute top-0 inset-x-0 h-48 bg-gradient-to-b from-white/40 to-transparent pointer-events-none" />
             <motion.div
               animate={{ y: ["-100%", "250%"] }}
@@ -109,7 +135,7 @@ export default function SCA_Hero() {
             />
           </div>
 
-          {/* Column 3 */}
+          {/* Column 4 */}
           <div className="relative h-full border-l border-white/40 backdrop-blur-[10px] bg-gradient-to-b from-white/20 via-white/5 to-transparent overflow-hidden">
             <div className="absolute top-0 inset-x-0 h-44 bg-gradient-to-b from-white/35 to-transparent pointer-events-none" />
             <motion.div
@@ -119,7 +145,7 @@ export default function SCA_Hero() {
             />
           </div>
 
-          {/* Column 4 */}
+          {/* Column 5 */}
           <div className="relative h-full border-l border-white/45 backdrop-blur-[12px] bg-gradient-to-b from-white/30 via-white/10 to-transparent overflow-hidden">
             <div className="absolute top-0 inset-x-0 h-52 bg-gradient-to-b from-white/45 to-transparent pointer-events-none" />
             <motion.div

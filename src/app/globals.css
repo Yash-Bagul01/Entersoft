@@ -677,12 +677,17 @@ html.lenis, html.lenis body {
   border-bottom-color: rgba(255, 255, 255, 0.1) !important;
 }
 
-:root[data-theme="light"] .logo-img,
-[data-theme="light"] .logo-img,
 .nav-hero-light-header .logo-img,
+:root[data-theme="light"] .nav-hero-light-header .logo-img,
 :root[data-theme="light"] .nav-floating-pill .logo-img {
   filter: brightness(0) !important;
   -webkit-filter: brightness(0) !important;
+  opacity: 1 !important;
+}
+
+:root[data-theme="light"] .nav-transparent-header .logo-img {
+  filter: none !important;
+  -webkit-filter: none !important;
   opacity: 1 !important;
 }
 
@@ -780,7 +785,16 @@ html:has([data-page="ai-ast"]) footer,
 /* Track Record section light theme overrides */
 [data-theme="light"] #track-record {
   background-color: var(--bg-primary) !important;
-  --accent-dim: rgba(235, 220, 195, 0.45) !important; /* Premium warm champagne-gold spotlight glow */
+  border-top-color: var(--border-subtle) !important;
+  --accent-dim: rgba(235, 220, 195, 0.45) !important;
+}
+
+[data-theme="light"] #track-record h2 {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="light"] #track-record p {
+  color: var(--text-secondary) !important;
 }
 
 [data-theme="light"] #track-record .grid > div > div {
@@ -788,9 +802,47 @@ html:has([data-page="ai-ast"]) footer,
   border-color: var(--border-subtle) !important;
 }
 
-[data-theme="light"] #track-record .grid > div > div:hover {
-  background-color: rgba(246, 245, 240, 0.75) !important; /* Soft, warm bone background tint */
-  border-color: var(--text-primary) !important; /* Premium dark border highlight */
+[data-theme="light"] #track-record .stat-card-label {
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="light"] #track-record .stat-card-number,
+[data-theme="light"] #track-record .stat-card-desc,
+[data-theme="light"] #track-record .stat-card-meta-title {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="light"] #track-record .stat-card-suffix {
+  color: #0077c8 !important;
+}
+
+[data-theme="light"] #track-record .stat-card-icon-box,
+[data-theme="light"] #track-record .stat-card-check-box {
+  background-color: rgba(6, 6, 6, 0.04) !important;
+  border-color: rgba(6, 6, 6, 0.08) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="light"] #track-record .stat-card-meta-border {
+  border-top-color: rgba(6, 6, 6, 0.08) !important;
+}
+
+[data-theme="light"] #track-record .stat-card-meta-sub {
+  color: var(--text-secondary) !important;
+}
+
+/* Ensure hover blue gradient on light theme turns bottom & description text white/cyan for perfect contrast over the blue gradient shade */
+[data-theme="light"] #track-record .grid > div > div:hover .stat-card-desc {
+  color: #ffffff !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5) !important;
+}
+
+[data-theme="light"] #track-record .grid > div > div:hover .stat-card-meta-title {
+  color: #ffffff !important;
+}
+
+[data-theme="light"] #track-record .grid > div > div:hover .stat-card-meta-sub {
+  color: #dbeafe !important;
 }
 
 /* Case Studies (Mitigation Case Files) section light theme overrides */
