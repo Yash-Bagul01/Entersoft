@@ -68,7 +68,7 @@ export default function ValueProposition() {
       {/* Background radial highlight for premium touch */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,163,255,0.015)_0%,transparent_70%)] pointer-events-none" />
 
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12 py-24 md:py-36 flex flex-col items-center justify-center gap-10 md:gap-14 text-center">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-12 pt-20 pb-10 md:pt-32 md:pb-12 flex flex-col items-center justify-center gap-8 md:gap-10 text-center">
         <div className="max-w-[1150px] flex flex-col items-center gap-6 text-center">
           <SectionLabel color="secondary">DEFENSIVE PHILOSOPHY</SectionLabel>
           
@@ -105,17 +105,21 @@ export default function ValueProposition() {
           </motion.h2>
         </div>
 
-        {/* Action Button */}
+        {/* Action Button & Scroll Indicator */}
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           variants={fadeInUpVariants}
-          className="mt-2 text-center"
+          className="mt-2 flex flex-col items-center gap-6 text-center"
         >
-          <Button variant="secondary" size="md" asLink href="#services" className="gap-2">
-            What We Offer <span className="font-sans">→</span>
+          <Button variant="secondary" size="md" asLink href="#track-record" className="gap-2">
+            Explore Track Record <span className="font-sans">↓</span>
           </Button>
+
+          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-text-muted/60 transition-colors">
+            Scroll to unroll deterministic metrics
+          </span>
         </motion.div>
       </div>
     </section>
