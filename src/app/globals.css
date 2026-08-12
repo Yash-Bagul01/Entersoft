@@ -377,6 +377,24 @@ html.lenis, html.lenis body {
 [data-theme="light"] .text-white {
   color: var(--text-primary) !important;
 }
+[data-theme="light"] .dark-panel,
+[data-theme="light"] .dark-panel * {
+  color: inherit;
+}
+[data-theme="light"] .dark-panel h1,
+[data-theme="light"] .dark-panel h2,
+[data-theme="light"] .dark-panel h3,
+[data-theme="light"] .dark-panel .text-white {
+  color: #ffffff !important;
+}
+[data-theme="light"] .dark-panel p,
+[data-theme="light"] .dark-panel .text-neutral-300,
+[data-theme="light"] .dark-panel .text-neutral-400 {
+  color: #d4d4d8 !important;
+}
+[data-theme="light"] .dark-panel .text-neutral-500 {
+  color: #71717a !important;
+}
 [data-theme="light"] #services,
 [data-theme="light"] #services .display-name,
 [data-theme="light"] #services h2,
@@ -581,28 +599,48 @@ html.lenis, html.lenis body {
   -webkit-backdrop-filter: blur(20px) !important;
 }
 
-:root[data-theme="light"] .nav-floating-pill {
-  background-color: rgba(255, 255, 255, 0.95) !important;
-  border-color: rgba(226, 232, 240, 0.9) !important;
-  box-shadow: 0 12px 36px rgba(15, 23, 42, 0.1) !important;
+:root[data-theme="light"] .nav-floating-pill,
+.nav-floating-pill-light,
+[data-page="secrets"] .nav-floating-pill,
+[data-page="sast"] .nav-floating-pill,
+[data-page="sbom"] .nav-floating-pill {
+  background-color: rgba(255, 255, 255, 0.96) !important;
+  border-color: rgba(226, 232, 240, 0.95) !important;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.14) !important;
   color: #0f172a !important;
 }
 
-:root[data-theme="light"] .nav-floating-pill .logo-img {
+:root[data-theme="light"] .nav-floating-pill .logo-img,
+.nav-floating-pill-light .logo-img,
+[data-page="secrets"] .nav-floating-pill .logo-img,
+[data-page="sast"] .nav-floating-pill .logo-img,
+[data-page="sbom"] .nav-floating-pill .logo-img {
   filter: brightness(0) !important;
   opacity: 0.95 !important;
 }
 
 :root[data-theme="light"] .nav-floating-pill nav a,
-:root[data-theme="light"] .nav-floating-pill nav span {
+:root[data-theme="light"] .nav-floating-pill nav span,
+.nav-floating-pill-light nav a,
+.nav-floating-pill-light nav span,
+[data-page="secrets"] .nav-floating-pill nav a,
+[data-page="secrets"] .nav-floating-pill nav span,
+[data-page="sast"] .nav-floating-pill nav a,
+[data-page="sast"] .nav-floating-pill nav span,
+[data-page="sbom"] .nav-floating-pill nav a,
+[data-page="sbom"] .nav-floating-pill nav span {
   color: #0f172a !important;
 }
 
-:root[data-theme="light"] .nav-floating-pill nav a:hover span {
+:root[data-theme="light"] .nav-floating-pill nav a:hover span,
+.nav-floating-pill-light nav a:hover span,
+[data-page="secrets"] .nav-floating-pill nav a:hover span,
+[data-page="sast"] .nav-floating-pill nav a:hover span,
+[data-page="sbom"] .nav-floating-pill nav a:hover span {
   color: #2563eb !important;
 }
 
-:root[data-theme="dark"]:not([data-theme="light"]) .nav-floating-pill {
+:root[data-theme="dark"]:not([data-theme="light"]):not([data-page="secrets"]):not([data-page="sast"]):not([data-page="sbom"]) .nav-floating-pill:not(.nav-floating-pill-light) {
   background-color: rgba(6, 6, 6, 0.90) !important;
   border-color: rgba(255, 255, 255, 0.12) !important;
   box-shadow: 0 16px 45px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05) inset !important;
@@ -1330,14 +1368,32 @@ html:has([data-page="ai-ast"]) footer,
   color: var(--accent);
   background-color: rgba(79, 70, 229, 0.1);
   border: 1px solid rgba(79, 70, 229, 0.2);
-  padding: 4px 10px;
   border-radius: 9999px;
   display: inline-block;
 }
 
+/* ── SECRETS SUBPAGE SPECIFIC STYLES (BUILDERSTABLE NEON BLUE THEME) ─────────── */
+[data-page="secrets"] {
+  --accent-electric-blue: #3B82F6;
+  --accent-blue-glow: rgba(59, 130, 246, 0.4);
+  --accent-blue-light: #60A5FA;
+}
 
+[data-page="secrets"] ::selection {
+  background-color: rgba(59, 130, 246, 0.35);
+  color: #FFFFFF;
+}
 
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 
-
-
+.animate-spin-slow {
+  animation: spin-slow 16s linear infinite;
+}
 

@@ -36,8 +36,11 @@ export default function Navbar() {
   const isCyberOntologyPage = pathname?.startsWith("/platform/cyber-ontology");
   const isSastPage = pathname?.startsWith("/platform/sast");
   const isScaPage = pathname?.startsWith("/platform/sca");
-  const isLightPage = isCyberOntologyPage || isScaPage;
-  const isServicePage = (pathname?.startsWith("/services") || pathname?.startsWith("/platform")) && !isLightPage;
+  const isSbomPage = pathname?.startsWith("/platform/sbom-license-risk");
+  const isSecretsPage = pathname?.startsWith("/platform/secrets");
+  const isPlatformSubpage = isSastPage || isSbomPage;
+  const isLightPage = isCyberOntologyPage || isScaPage || isSecretsPage;
+  const isServicePage = (pathname?.startsWith("/services") || pathname?.startsWith("/platform")) && !isLightPage && !isPlatformSubpage;
   const isAppSecPage = pathname === ROUTES.services.appsec;
   const isVaptPage = pathname === ROUTES.services.vapt;
   const isCompliancePage = pathname === ROUTES.services.compliance;
@@ -217,6 +220,8 @@ export default function Navbar() {
     }
   };
 
+  const isLightNavbar = isLightPage || (isPlatformSubpage && isScrolled);
+
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-50 w-full pointer-events-none">
@@ -227,16 +232,16 @@ export default function Navbar() {
           <div
             className={cn(
               "w-full transition-all duration-500 ease-in-out flex items-center justify-between mx-auto",
-              isLightPage
+              isLightNavbar
                 ? (isScrolled
-                    ? "max-w-[1320px] px-6 py-3 rounded-full border border-slate-200/90 backdrop-blur-xl bg-white/95 text-slate-900 shadow-xl nav-floating-pill"
+                    ? "max-w-[1320px] px-6 py-3 rounded-full border border-slate-200/90 backdrop-blur-xl bg-white/95 text-slate-900 shadow-xl nav-floating-pill nav-floating-pill-light"
                     : "max-w-full px-6 md:px-12 py-5 rounded-none border-none bg-transparent text-slate-900 nav-hero-light-header")
                 : (isScrolled
                     ? "max-w-[1320px] px-6 py-3 rounded-full border backdrop-blur-xl shadow-2xl nav-floating-pill " +
                       (isServicePage
                         ? "bg-[#060606]/90 border-white/12 text-white service-nav-header shadow-[0_16px_40px_rgba(0,0,0,0.6)]"
                         : "bg-[var(--bg-elevated)]/95 border-[var(--border-glass)] text-[var(--text-primary)] shadow-[0_12px_36px_rgba(0,0,0,0.12)]")
-                    : "max-w-full px-6 md:px-12 py-5 rounded-none text-white nav-transparent-header")
+                    : "max-w-full px-6 md:px-12 py-5 rounded-none border-none bg-transparent text-white nav-transparent-header")
             )}
           >
             {/* Logo */}
@@ -248,7 +253,7 @@ export default function Navbar() {
                 height={27}
                 className={cn(
                   "h-6 w-auto object-contain transition-all duration-300 logo-img",
-                  isLightPage && "[filter:brightness(0)] opacity-100"
+                  isLightNavbar && "[filter:brightness(0)] opacity-100"
                 )}
                 priority
               />
@@ -269,10 +274,10 @@ export default function Navbar() {
                       "flex items-center gap-1.5 font-mono text-[11px] font-bold uppercase tracking-wider px-4 py-2 transition-all relative group cursor-pointer",
                       isScrolled ? "rounded-full" : "rounded-md",
                       activeMega === idx
-                        ? (isLightPage 
+                        ? (isLightNavbar 
                             ? "bg-slate-100/90 text-[#08428C] font-extrabold" 
                             : "bg-cyan-500/20 text-cyan-400 font-extrabold")
-                        : (isLightPage
+                        : (isLightNavbar
                             ? "text-slate-800 hover:text-[#08428C] hover:bg-slate-100/80"
                             : "text-slate-100 hover:text-cyan-400 hover:bg-white/10")
                     )}

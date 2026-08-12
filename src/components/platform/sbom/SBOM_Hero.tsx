@@ -319,7 +319,7 @@ export default function SBOM_Hero() {
                   </span>
                   <span className="text-xs text-slate-300 font-normal">
                     Cross-references generated SBOMs against real-time NVD & OSV feeds.
-                  </span>
+              </span>
                 </div>
               </div>
             </motion.div>
@@ -349,15 +349,15 @@ export default function SBOM_Hero() {
               </div>
 
               <div className="w-full pt-1">
-                <Link
-                  href="/#contact"
+              <Link
+                href="/#contact"
                   className="group inline-flex items-center gap-3 bg-white hover:bg-slate-100 text-slate-950 pl-5 pr-2 py-2 rounded-md font-semibold text-sm shadow-xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
-                >
+              >
                   <span className="tracking-tight text-slate-950 font-bold">Request Access</span>
                   <div className="w-7 h-7 rounded bg-slate-950 text-white flex items-center justify-center group-hover:bg-slate-900 transition-colors">
                     <ArrowUpRight className="w-3.5 h-3.5 text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                   </div>
-                </Link>
+              </Link>
               </div>
             </motion.div>
           </div>
