@@ -70,6 +70,9 @@ export default function AppSecVisual() {
       role="img"
       aria-label="AppSec pipeline animated visualization showing Build, Scan, and Deploy steps"
     >
+      <div className="absolute top-3 left-4 font-mono text-[9px] font-bold text-[var(--accent)] tracking-widest uppercase select-none">
+        Illustrative scan simulation — sample data
+      </div>
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.002)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.002)_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none opacity-40" />
 
       {/* Pipeline Container */}

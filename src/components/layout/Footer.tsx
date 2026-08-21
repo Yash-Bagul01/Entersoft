@@ -50,45 +50,39 @@ export default function Footer() {
     {
       title: "Services",
       links: [
-        { name: "Application Assurance", href: "/services/appsec" },
-        { name: "Adversarial Validation", href: "/services/vapt" },
-        { name: "Cloud Resilience", href: "/services/managed-cloud-security" },
-        { name: "Digital Trust", href: "/services/compliance-management" },
-        { name: "Cyber Defense Operations", href: "/services/siem" },
-        { name: "Protocol Assurance", href: "/services/smart-contract-audits" },
-        { name: "AI Systems Assurance", href: "/services/ai-ast" }
+        { name: "Application Security Testing", href: "/services/application-security-testing" },
+        { name: "Penetration Testing & Red Teaming", href: "/services/penetration-testing" },
+        { name: "Cloud & Identity Security", href: "/services/cloud-security" },
+        { name: "GRC, Privacy & Compliance", href: "/services/grc-compliance-privacy" },
+        { name: "Managed Detection & Response", href: "/services/managed-detection-response" },
+        { name: "Smart Contract Security", href: "/services/smart-contract-security" },
+        { name: "AI Security Testing", href: "/services/ai-security-testing" }
       ]
     },
     {
-      title: "Solutions",
+      title: "Platform",
       links: [
-        { name: "Application Security Transformation Program", href: "/services/appsec" },
-        { name: "Continuous Exposure Validation", href: "/services/vapt" },
-        { name: "Cloud Security Transformation", href: "/services/managed-cloud-security" },
-        { name: "Regulatory Readiness & Evidence Program", href: "/services/compliance-management" },
-        { name: "Managed Cyber Defense", href: "/services/siem" },
-        { name: "Digital Asset Launch Assurance", href: "/services/smart-contract-audits" },
-        { name: "AI System Readiness & Red Teaming", href: "/services/ai-ast" }
+        { name: "EnProbe Overview", href: "/platform/enprobe" },
+        { name: "Static Security (SAST)", href: "/platform/sast" },
+        { name: "Open Source Risk (SCA)", href: "/platform/sca" },
+        { name: "SBOM & License Risk", href: "/platform/sbom-license-risk" },
+        { name: "Secrets Detection", href: "/platform/secrets" },
+        { name: "Infrastructure as Code", href: "/platform/iac" }
       ]
     },
     {
       title: "Resources",
       links: [
-        { name: "Threat Briefings", href: "/#insights" },
-        { name: "CrowdStrike Workarounds", href: "/#insights" },
-        { name: "Vulnerability Toolkits", href: "/#insights" },
-        { name: "Whitepapers", href: "/#insights" },
-        { name: "Incident Documentation", href: "/#insights" }
+        { name: "Research & Insights", href: "/#insights" },
+        { name: "Security Advisories", href: "/#insights" },
+        { name: "Sample Deliverables", href: "/contact" }
       ]
     },
     {
       title: "Company",
       links: [
-        { name: "About Entersoft", href: "/#contact" },
-        { name: "Staff Cohort", href: "/#contact" },
-        { name: "Certifications", href: "/#certifications" },
-        { name: "Careers", href: "/#contact" },
-        { name: "Contact Threat Desk", href: "/#contact" }
+        { name: "Accreditations", href: "/company/accreditations" },
+        { name: "Book a Security Briefing", href: "/contact" }
       ]
     }
   ];
@@ -99,10 +93,6 @@ export default function Footer() {
         ? "bg-[#FAFCFF] border-slate-200 text-slate-600" 
         : "bg-[#030712] border-white/10 text-slate-300"
     }`}>
-      <style dangerouslySetInnerHTML={{ __html: `
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
-      ` }} />
-
       <div className="max-w-[1400px] mx-auto px-6 md:px-12 pt-16 md:pt-24 pb-0 relative">
         {/* Main Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 md:gap-12 mb-12 md:mb-16">
@@ -116,8 +106,8 @@ export default function Footer() {
                 height={24}
                 className="h-6 w-auto object-contain self-start"
               />
-              <p className={`text-[12px] leading-relaxed max-w-[320px] ${isLight ? "text-slate-600" : "text-slate-300"}`}>
-                EnProbe — the technology platform. Expert Practices — 14 years of human security judgment. Enterprise Solutions — packaged outcomes for specific customer problems.
+              <p className={`text-[12px] leading-relaxed max-w-[340px] ${isLight ? "text-slate-600" : "text-slate-300"}`}>
+                <strong className="font-semibold text-white">EnProbe</strong> provides continuous security visibility and evidence. <strong className="font-semibold text-white">Entersoft experts</strong> validate complex risk and guide remediation. <strong className="font-semibold text-white">Enterprise programmes</strong> combine platform and expertise into measurable security outcomes.
               </p>
             </div>
             {/* Social Grid */}
@@ -233,9 +223,9 @@ export default function Footer() {
               initial={{ y: "45%", color: isLight ? "rgba(30, 41, 59, 0.2)" : "rgba(255, 255, 255, 0.25)" }}
               whileHover={{ y: "0%", color: isLight ? "#0f172a" : "#ffffff" }}
               transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-              className="font-display font-extrabold uppercase tracking-tighter cursor-pointer text-[14.2vw] leading-none select-none origin-bottom text-center"
+              className="font-display font-semibold uppercase tracking-[-0.035em] cursor-pointer text-[14.2vw] leading-none select-none origin-bottom text-center"
               style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
+                fontFamily: "var(--font-heading)",
                 lineHeight: "0.8"
               }}
             >

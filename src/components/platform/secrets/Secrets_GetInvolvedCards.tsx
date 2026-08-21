@@ -38,7 +38,7 @@ const roleCards: RoleCard[] = [
       "K8s secrets & env drift detection",
       "Cloud provider API sync"
     ],
-    href: "/services/managed-cloud-security",
+    href: "/services/cloud-resilience",
     icon: <Cloud className="w-5 h-5 text-[#2563EB]" />
   },
   {

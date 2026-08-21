@@ -5,11 +5,23 @@ import SmartContractPageRoot from "@/components/services/smart-contract-v2/Smart
 
 const canonicalUrl = getCanonicalUrl(ROUTES.services.smartContract);
 
+const TITLE = "Smart Contract Audit & Web3 Security Services | Entersoft";
+const DESCRIPTION =
+  "Secure smart contracts, DeFi protocols, wallets and blockchain infrastructure through manual review, fuzzing, exploit testing and verified retesting.";
+
 export const metadata: Metadata = {
-  title: "Protocol Assurance | Entersoft Security",
-  description: "Secure your DeFi protocols, token contracts, and blockchain integrations. We provide rigorous smart contract audits with static analysis, symbolic fuzzing, and manual code reviews to prevent exploits.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: {
     canonical: canonicalUrl,
+  },
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    url: canonicalUrl,
+    siteName: "Entersoft Security",
+    locale: "en_US",
+    type: "website",
   },
 };
 
@@ -44,8 +56,8 @@ export default function SmartContractAuditsPage() {
         "@type": "WebPage",
         "@id": `${canonicalUrl}/#webpage`,
         "url": canonicalUrl,
-        "name": "Protocol Assurance | Entersoft Security",
-        "description": "Secure your DeFi protocols, token contracts, and blockchain integrations. We provide rigorous smart contract audits with static analysis, symbolic fuzzing, and manual code reviews to prevent exploits.",
+        "name": TITLE,
+        "description": DESCRIPTION,
         "inLanguage": "en",
         "isPartOf": {
           "@id": `${APP_URL}/#website`

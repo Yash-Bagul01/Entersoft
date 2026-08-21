@@ -40,7 +40,7 @@ export default function InsightsBlog() {
                   hidden: { y: "100%" },
                   visible: { y: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } }
                 }}
-                className="text-3xl md:text-4xl font-display font-medium text-[#F6F5F0] uppercase tracking-tight"
+                className="text-3xl md:text-4xl font-display font-semibold text-[#F6F5F0] uppercase tracking-[-0.025em]"
               >
                 Threat Intelligence Desk
               </motion.h2>
@@ -72,7 +72,7 @@ export default function InsightsBlog() {
 
               {/* Header Info */}
               <div className="flex flex-col gap-4 relative z-10">
-                <div className="flex items-center justify-between text-[10px] font-mono font-bold tracking-wider">
+                <div className="flex items-center justify-between text-[10px] font-mono font-medium tracking-wider">
                   <span className="text-[var(--accent)]">
                     {post.category}
                   </span>
@@ -82,12 +82,12 @@ export default function InsightsBlog() {
                 </div>
                 
                 {/* Headline */}
-                <h3 className="font-display font-bold text-xl text-[#F6F5F0] uppercase tracking-tight group-hover:text-[var(--accent)] group-hover:translate-x-1.5 transition-all duration-300 mt-2">
+                <h3 className="font-display font-semibold text-xl text-[#F6F5F0] uppercase tracking-[-0.02em] group-hover:text-[var(--accent)] group-hover:translate-x-1.5 transition-all duration-300 mt-2">
                   {post.title}
                 </h3>
 
                 {/* Teaser */}
-                <p className="text-[12px] text-[var(--text-secondary)] leading-relaxed font-sans mt-2 group-hover:text-[#F6F5F0] transition-colors duration-300">
+                <p className="text-[12px] text-[var(--text-secondary)] leading-relaxed font-sans mt-2 group-hover:text-[#F6F5F0] transition-colors duration-300 font-normal">
                   {post.teaser}
                 </p>
               </div>

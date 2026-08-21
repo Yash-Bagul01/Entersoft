@@ -3,17 +3,29 @@ import type { Metadata } from "next";
 import { APP_URL, getCanonicalUrl, ROUTES } from "@/config/routes";
 import CDPageRoot from "@/components/services/cyber-defense/CDPageRoot";
 
+const TITLE = "Managed Detection & Response and SIEM Services | Entersoft";
+const DESCRIPTION =
+  "Strengthen 24/7 threat monitoring with managed detection and response, SIEM engineering, threat hunting and analyst-led incident investigation.";
+const CANONICAL = getCanonicalUrl(ROUTES.services.siem);
+
 export const metadata: Metadata = {
-  title: "Cyber Defense Operations | Entersoft Security",
-  description:
-    "Unify security monitoring, detection engineering, threat hunting, investigation and response into one continuous operating model.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: {
-    canonical: getCanonicalUrl(ROUTES.services.siem),
+    canonical: CANONICAL,
+  },
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    url: CANONICAL,
+    siteName: "Entersoft Security",
+    locale: "en_US",
+    type: "website",
   },
 };
 
 export default function CyberDefensePage() {
-  const canonicalUrl = getCanonicalUrl(ROUTES.services.siem);
+  const canonicalUrl = CANONICAL;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -44,8 +56,8 @@ export default function CyberDefensePage() {
         "@type": "WebPage",
         "@id": `${canonicalUrl}/#webpage`,
         "url": canonicalUrl,
-        "name": "Cyber Defense Operations | Entersoft Security",
-        "description": "Unify security monitoring, detection engineering, threat hunting, investigation and response into one continuous operating model.",
+        "name": TITLE,
+        "description": DESCRIPTION,
         "inLanguage": "en",
         "isPartOf": {
           "@id": `${APP_URL}/#website`
@@ -65,7 +77,7 @@ export default function CyberDefensePage() {
         "provider": {
           "@id": `${APP_URL}/#organization`
         },
-        "description": "Unify security monitoring, detection engineering, threat hunting, investigation and response into one continuous operating model.",
+        "description": "MDR and Detection Engineering, delivered through your existing security stack or an Entersoft-managed architecture.",
         "areaServed": {
           "@type": "Country",
           "name": "Global"

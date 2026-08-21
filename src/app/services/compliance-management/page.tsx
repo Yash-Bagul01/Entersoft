@@ -5,16 +5,28 @@ import CompliancePageRoot from "@/components/services/compliance-v2/CompliancePa
 
 const canonicalUrl = getCanonicalUrl(ROUTES.services.compliance);
 
+const TITLE = "GRC, Privacy & Compliance Consulting Services | Entersoft";
+const DESCRIPTION =
+  "Turn ISO 27001, SOC 2, DPDP, GDPR, PCI DSS and sector requirements into implemented controls, evidence and sustainable compliance operations.";
+
 export const metadata: Metadata = {
-  title: "Digital Trust | Entersoft Security",
-  description: "Achieve audit readiness for ISO 27001, GDPR, CERT-In, RBI guidelines, and SOC 2. We guide you through policy drafting, internal validation runs, and auditor liaison.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: {
     canonical: canonicalUrl,
+  },
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    url: canonicalUrl,
+    siteName: "Entersoft Security",
+    locale: "en_US",
+    type: "website",
   },
 };
 
 export default function CompliancePage() {
-  // Structured JSON-LD Data for SEO
+  // Structured JSON-LD Data for Enterprise SEO
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -29,7 +41,7 @@ export default function CompliancePage() {
           "url": "https://d2ghx8biuioax8.cloudfront.net/main-website-images/entersoftLogo.svg",
           "caption": "Entersoft Security Logo"
         },
-        "description": "One scan to know where you are exposed. One report to fix it fast. Award-winning cybersecurity including AppSec, VAPT, Managed Cloud Security, Compliance, SIEM, and Smart Contract audits."
+        "description": "One scan to know where you are exposed. One report to fix it fast. Award-winning cybersecurity including AppSec, VAPT, Managed Cloud Security, Digital Trust, SIEM, and Smart Contract audits."
       },
       {
         "@type": "WebSite",
@@ -44,8 +56,8 @@ export default function CompliancePage() {
         "@type": "WebPage",
         "@id": `${canonicalUrl}/#webpage`,
         "url": canonicalUrl,
-        "name": "Digital Trust | Entersoft Security",
-        "description": "Achieve audit readiness for ISO 27001, GDPR, CERT-In, RBI guidelines, and SOC 2. We guide you through policy drafting, internal validation runs, and auditor liaison.",
+        "name": TITLE,
+        "description": DESCRIPTION,
         "inLanguage": "en",
         "isPartOf": {
           "@id": `${APP_URL}/#website`
@@ -60,15 +72,53 @@ export default function CompliancePage() {
       {
         "@type": "Service",
         "@id": `${canonicalUrl}/#service`,
-        "name": "Digital Trust",
-        "serviceType": "Digital Trust",
+        "name": "Digital Trust & Regulatory Assurance",
+        "serviceType": "Cyber Risk Governance & Regulatory Assurance",
         "provider": {
           "@id": `${APP_URL}/#organization`
         },
-        "description": "Achieve audit readiness for ISO 27001, GDPR, CERT-In, RBI guidelines, and SOC 2. We guide you through policy drafting, internal validation runs, and auditor liaison.",
+        "description": "Transform cyber risk into board-ready digital trust. End-to-end certification readiness, data privacy governance, continuous evidence collection, and registrar advocacy for ISO 27001, SOC 2, GDPR, and RBI guidelines.",
         "areaServed": {
           "@type": "Country",
           "name": "Global"
+        },
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Digital Trust Core Pillars",
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Regulatory & Framework Certification Support",
+                "description": "Turnkey readiness consulting, gap discovery, custom policy engineering, and technical liaison for ISO 27001, SOC 2 Type II, PCI-DSS, and HIPAA."
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Data Privacy & Jurisdictional Sovereignty",
+                "description": "Data mapping, GDPR & DPDP compliance, PII residency boundary enforcement, and cryptographic key custody verification."
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Continuous Compliance & Evidence Telemetry",
+                "description": "Continuous automated evidence collection, real-time cloud configuration drift detection, and tamper-proof audit vaults."
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Third-Party & Vendor Risk Management (TPRM)",
+                "description": "Software supply chain security evaluations, vendor risk tiering, sub-processor audits, and ongoing vulnerability monitoring."
+              }
+            }
+          ]
         },
         "url": canonicalUrl
       },
@@ -100,7 +150,7 @@ export default function CompliancePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       
-      {/* Immersive Black & White Rebuilt Compliance Experience */}
+      {/* Immersive Digital Trust Experience */}
       <CompliancePageRoot />
     </main>
   );

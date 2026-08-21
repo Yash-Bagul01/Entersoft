@@ -193,13 +193,13 @@ export default function Hero() {
                 visible: { y: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } },
               }}
             >
-              <SectionLabel color="accent">SECURITY WITHOUT COMPLEXITY</SectionLabel>
+              <SectionLabel color="accent">APPLICATION-FIRST CYBER ASSURANCE</SectionLabel>
             </motion.div>
           </div>
 
           {/* Headline: Line-Mask Reveal with drop-shadow for visibility */}
           <motion.h1
-            className="text-[clamp(1.8rem,4vw,3.8rem)] font-display font-semibold leading-[1.05] tracking-[-0.02em] text-[#F6F5F0] uppercase text-left whitespace-pre-line drop-shadow-[0_4px_16px_rgba(0,0,0,0.8)]"
+            className="text-[clamp(2.2rem,4.5vw,4.2rem)] font-display font-semibold leading-[1.08] tracking-[-0.02em] text-[#F6F5F0] text-left whitespace-pre-line drop-shadow-[0_4px_16px_rgba(0,0,0,0.8)]"
           >
             <span className="block overflow-hidden pb-[0.05em]">
               <motion.span
@@ -209,7 +209,7 @@ export default function Hero() {
                 }}
                 className="block"
               >
-                AI-Native AppSec.
+                Application-first
               </motion.span>
             </span>
             <span className="block overflow-hidden pb-[0.05em] text-[#F6F5F0] opacity-90">
@@ -220,7 +220,7 @@ export default function Hero() {
                 }}
                 className="block"
               >
-                Expert-Governed.
+                cyber assurance for
               </motion.span>
             </span>
             <span className="block overflow-hidden pb-[0.05em] text-[#F6F5F0] opacity-80">
@@ -231,7 +231,7 @@ export default function Hero() {
                 }}
                 className="block"
               >
-                Evidence-Backed.
+                modern enterprises.
               </motion.span>
             </span>
           </motion.h1>
@@ -243,9 +243,9 @@ export default function Hero() {
                 hidden: { y: "100%", opacity: 0 },
                 visible: { y: 0, opacity: 1, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } },
               }}
-              className="text-[clamp(14px,1.6vw,17px)] font-sans text-[#F6F5F0] opacity-85 leading-relaxed max-w-[620px] text-left drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]"
+              className="text-[clamp(14px,1.6vw,17px)] font-sans text-[#F6F5F0] opacity-85 leading-relaxed max-w-[640px] text-left drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]"
             >
-              AI-Powered Application Security. Governed by Experts.
+              Entersoft combines the EnProbe platform with expert-led security engineering to discover, validate and close risk across applications, APIs, code, cloud, identity, AI systems and digital assets.
             </motion.p>
           </div>
 
@@ -258,19 +258,13 @@ export default function Hero() {
               }}
               className="text-[clamp(11px,1.3vw,13.5px)] font-sans text-[#F6F5F0] opacity-85 tracking-wider flex flex-wrap items-center gap-x-2.5 gap-y-1 text-left drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]"
             >
-              <span className="font-semibold">14 years of AppSec expertise</span>
+              <span className="font-semibold">Since 2013</span>
               <span className="opacity-50">|</span>
-              <span className="font-semibold">Human-validated AI</span>
+              <span className="font-semibold">CREST-accredited penetration testing</span>
               <span className="opacity-50">|</span>
-              <span className="font-semibold">Web</span>
-              <span className="opacity-45">•</span>
-              <span className="font-semibold">API</span>
-              <span className="opacity-45">•</span>
-              <span className="font-semibold">Mobile</span>
-              <span className="opacity-45">•</span>
-              <span className="font-semibold">Code</span>
-              <span className="opacity-45">•</span>
-              <span className="font-semibold">Cloud</span>
+              <span className="font-semibold">CERT-In empanelled auditing organisation</span>
+              <span className="opacity-50">|</span>
+              <span className="font-semibold">ISO/IEC 27001-certified ISMS</span>
             </motion.p>
           </div>
 
@@ -283,12 +277,12 @@ export default function Hero() {
             className="flex flex-wrap items-center gap-3 md:gap-4 mt-4 md:mt-6 w-full sm:w-auto"
           >
             <MagneticButton>
-              <Button variant="primary" size="lg" asLink href="#contact" className="gap-2 w-full sm:w-auto text-center justify-center">
-                REQUEST BRIEFING <ArrowRight className="w-3.5 h-3.5" />
+              <Button variant="primary" size="lg" asLink href="/contact" className="gap-2 w-full sm:w-auto text-center justify-center">
+                Book a Security Briefing <ArrowRight className="w-3.5 h-3.5" />
               </Button>
             </MagneticButton>
-            <Button variant="secondary" size="lg" asLink href="#contact" className="w-full sm:w-auto text-center justify-center">
-              SEE ENPROBE
+            <Button variant="secondary" size="lg" asLink href="/platform/enprobe" className="w-full sm:w-auto text-center justify-center">
+              Explore EnProbe
             </Button>
           </motion.div>
         </motion.div>

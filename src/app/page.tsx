@@ -1,4 +1,7 @@
 import React from "react";
+import type { Metadata } from "next";
+import { getCanonicalUrl, ROUTES } from "@/config/routes";
+import { organizationNode, webPageNode, websiteNode } from "@/config/seo";
 import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/sections/Hero";
 import ValueProposition from "@/components/sections/ValueProposition";
@@ -13,9 +16,41 @@ import FinalCTA from "@/components/sections/FinalCTA";
 import Footer from "@/components/layout/Footer";
 import AnimatedDivider from "@/components/ui/AnimatedDivider";
 
+const TITLE = "Application Security & Penetration Testing | Entersoft";
+const DESCRIPTION =
+  "Entersoft combines EnProbe automation with expert-led application security, penetration testing, cloud, MDR and AI security services for enterprises.";
+const CANONICAL = getCanonicalUrl(ROUTES.home);
+
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: CANONICAL },
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    url: CANONICAL,
+    siteName: "Entersoft Security",
+    locale: "en_US",
+    type: "website",
+  },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    organizationNode,
+    websiteNode,
+    webPageNode({ canonicalUrl: CANONICAL, name: TITLE, description: DESCRIPTION }),
+  ],
+};
+
 export default function Home() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Navbar />
       <main className="flex flex-col w-full relative z-10">
         <Hero />
@@ -27,8 +62,6 @@ export default function Home() {
         <Differentiators />
         <AnimatedDivider />
         <Testimonials />
-        <AnimatedDivider />
-        <CaseStudies />
         <AnimatedDivider />
         <InsightsBlog />
         <AnimatedDivider />

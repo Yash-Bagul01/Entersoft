@@ -1,591 +1,438 @@
 "use client";
 
-import React, { useState, useRef } from "react";
-import { caseStudies, CaseStudyItem } from "@/data/caseStudies";
-import SectionLabel from "../ui/SectionLabel";
-import { ArrowRight, X, ShieldAlert, FileCode2, Cpu, RefreshCw, Layers } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import { scrollRevealVariants, staggerContainerVariants } from "@/lib/animations";
+import React, { useEffect, useId, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { caseStudies } from "@/data/caseStudies";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
-// Case details details local mapping
-const caseDetails: Record<string, { vulnerability: string; strategy: string; impact: string }> = {
-  cision: {
-    vulnerability: "Insecure direct object references (IDOR) and legacy database leaks exposed pre-acquisition due diligence data.",
-    strategy: "Conducted deep-dive manual threat audits and integrated real-time API traffic sanitization rules.",
-    impact: "Eradicated all major threat vectors, securing pre-merger integrations across 14 multi-cloud endpoints."
-  },
-  "nbfc-rbi": {
-    vulnerability: "Non-compliant network segmentation and lack of continuous compliance monitoring violated RBI cyber directives.",
-    strategy: "Implemented micro-segmentation architectures and set up continuous security posture controls.",
-    impact: "Secured licensing clearance with zero violations across 230 backend host systems."
-  },
-  "logistics-appsec": {
-    vulnerability: "Secrets hardcoded in build scripts and vulnerable third-party open-source dependencies in the release pipeline.",
-    strategy: "Built static analysis gates and secret scanners directly into the automated Jenkins/GitLab CI/CD process.",
-    impact: "Prevented pre-compile security leaks and accelerated deployment cycles from 4 hours to 8 minutes."
-  },
-  "fintech-bank": {
-    vulnerability: "Lack of mutual TLS (mTLS) authentication and broken rate-limiting controls on partner-facing APIs.",
-    strategy: "Hardened banking gateway protocols, implemented mTLS, and deployed robust API traffic rate-limiters.",
-    impact: "Validated bank-grade penetration compliance and secured integration with Australia's leading banking platforms within 30 days."
-  }
+/* ============================================================
+   SCENE GEOMETRY
+   Values are in viewBox units where 1000 units = viewport
+   height, so the diagram keeps identical proportions on any
+   screen: circle radius 0.262H, centre offset 0.169H and an
+   overall figure diameter of 0.86H.
+   ============================================================ */
+const C = 500; // scene centre
+const R = 262; // radius of each of the four circles
+const D = 168; // distance of each circle centre from the scene centre
+
+const SAGE = "#535E51"; // solid fill of the four-way intersection
+const SAGE_LINE = "#66735F"; // circle outlines
+
+const CIRCLE_CENTRES = {
+  top: { cx: C, cy: C - D },
+  right: { cx: C + D, cy: C },
+  bottom: { cx: C, cy: C + D },
+  left: { cx: C - D, cy: C },
+} as const;
+
+type NodePos = keyof typeof CIRCLE_CENTRES;
+
+// Four nodes arranged N / E / S / W
+const NODES: Array<{ pos: NodePos; label: string; study: (typeof caseStudies)[number] }> = [
+  { pos: "top", label: "Mergers", study: caseStudies[0] },
+  { pos: "right", label: "Governance", study: caseStudies[1] },
+  { pos: "bottom", label: "Pipeline", study: caseStudies[2] },
+  { pos: "left", label: "Banking", study: caseStudies[3] },
+];
+
+// Symbols sit inside the exclusive lobe of their own circle
+const SYMBOL_OFFSET = D + R * 0.7;
+const SYMBOL_POS: Record<NodePos, { x: number; y: number }> = {
+  top: { x: C, y: C - SYMBOL_OFFSET },
+  right: { x: C + SYMBOL_OFFSET, y: C },
+  bottom: { x: C, y: C + SYMBOL_OFFSET },
+  left: { x: C - SYMBOL_OFFSET, y: C },
 };
 
-function CaseStudyGraphic({ type, isHovered }: { type: string; isHovered: boolean }) {
-  // Common theme-aware container stretching full height and width
-  const containerClass = "w-full h-full min-h-[260px] md:min-h-[300px] relative flex items-center justify-center p-4 select-none overflow-hidden rounded-[8px] bg-transparent";
+const polar = (cx: number, cy: number, r: number, deg: number) => {
+  const rad = (deg * Math.PI) / 180;
+  return [cx + r * Math.cos(rad), cy + r * Math.sin(rad)];
+};
 
-  switch (type) {
-    case "network":
-      // 1. Large 3D Multi-Orbit Field & Refraction Core (High-Contrast Theme Visibility)
-      return (
-        <div className={containerClass}>
-          {/* Ambient Glow Aura */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,163,255,0.18),transparent_70%)] pointer-events-none" />
-          
-          <div className="relative w-44 h-44 md:w-52 md:h-52 flex items-center justify-center">
-            {/* Outer 3D Orbit Ring 1 */}
-            <motion.div
-              animate={{ rotateX: [65, 65, 65], rotateY: [0, 180, 360], rotateZ: [0, 90, 180] }}
-              transition={{ repeat: Infinity, duration: 14, ease: "linear" }}
-              className={`absolute inset-0 rounded-full border-[2px] border-sky-500/70 shadow-[0_0_25px_rgba(0,163,255,0.3)] ${
-                isHovered ? "scale-110 border-sky-400" : ""
-              } transition-all duration-500`}
-            />
+const arc = (cx: number, cy: number, r: number, a1: number, a2: number) => {
+  const [x1, y1] = polar(cx, cy, r, a1);
+  const [x2, y2] = polar(cx, cy, r, a2);
+  const large = Math.abs(a2 - a1) > 180 ? 1 : 0;
+  const sweep = a2 > a1 ? 1 : 0;
+  return `M ${x1.toFixed(2)} ${y1.toFixed(2)} A ${r} ${r} 0 ${large} ${sweep} ${x2.toFixed(2)} ${y2.toFixed(2)}`;
+};
 
-            {/* Middle 3D Gyro Ring 2 */}
-            <motion.div
-              animate={{ rotateX: [45, 45, 45], rotateY: [360, 180, 0], rotateZ: [180, 90, 0] }}
-              transition={{ repeat: Infinity, duration: 10, ease: "linear" }}
-              className="absolute inset-4 rounded-full border-[2px] border-indigo-600/70 border-dashed"
-            />
+// Each detail label curves just outside its own circle, wound so it reads naturally
+const LABEL_R = R + 22;
+const LABEL_ARCS: Record<NodePos, string> = {
+  top: arc(C, C - D, LABEL_R, 200, 340),
+  right: arc(C + D, C, LABEL_R, -70, 70),
+  bottom: arc(C, C + D, LABEL_R, 160, 20),
+  left: arc(C - D, C, LABEL_R, 110, 250),
+};
 
-            {/* Inner Ring 3 */}
-            <motion.div
-              animate={{ rotate: [0, -360] }}
-              transition={{ repeat: Infinity, duration: 18, ease: "linear" }}
-              className="absolute inset-9 rounded-full border-[1.5px] border-cyan-600/60"
-            />
+// The six pairwise overlaps that carry the diagonal hatch
+const PAIRS: Array<[NodePos, NodePos]> = [
+  ["top", "right"],
+  ["right", "bottom"],
+  ["bottom", "left"],
+  ["left", "top"],
+  ["top", "bottom"],
+  ["left", "right"],
+];
 
-            {/* Central Refraction Core */}
-            <motion.div
-              animate={{ scale: [0.95, 1.08, 0.95] }}
-              transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-              className="w-14 h-14 rounded-full bg-gradient-to-tr from-[#0284c7] via-indigo-600 to-sky-400 p-[2px] shadow-[0_6px_25px_rgba(0,163,255,0.5)] backdrop-blur-xl"
-            >
-              <div className="w-full h-full rounded-full bg-[var(--bg-elevated)] border border-[var(--accent)]/40 flex items-center justify-center">
-                <div className="w-4 h-4 rounded-full bg-[var(--accent)] shadow-[0_0_12px_var(--accent)] animate-ping" />
-              </div>
-            </motion.div>
+// Radial dial ticks, elongated towards bottom centre
+const TICKS = Array.from({ length: 120 }, (_, i) => {
+  const rad = ((i * 360) / 120) * (Math.PI / 180);
+  const len = 16 + 16 * Math.pow(Math.max(0, Math.sin(rad)), 8);
+  return {
+    id: i,
+    x1: C + 419 * Math.cos(rad),
+    y1: C + 419 * Math.sin(rad),
+    x2: C + (419 + len) * Math.cos(rad),
+    y2: C + (419 + len) * Math.sin(rad),
+  };
+});
 
-            {/* Floating Orbital Photons */}
-            <motion.div
-              animate={{ rotate: [0, 360] }}
-              transition={{ repeat: Infinity, duration: 7, ease: "linear" }}
-              className="absolute inset-0 pointer-events-none"
-            >
-              <div className="w-3 h-3 rounded-full bg-cyan-500 shadow-[0_0_12px_#06b6d4] absolute top-1 left-1/2 -translate-x-1/2 border border-white/80" />
-              <div className="w-2.5 h-2.5 rounded-full bg-indigo-600 shadow-[0_0_10px_#4f46e5] absolute bottom-2 left-1/2 -translate-x-1/2 border border-white/80" />
-              <div className="w-2.5 h-2.5 rounded-full bg-sky-500 shadow-[0_0_10px_#0284c7] absolute top-1/2 left-1 -translate-y-1/2 border border-white/80" />
-            </motion.div>
-          </div>
-        </div>
-      );
+/* ============================================================
+   SCROLL CHOREOGRAPHY
+   The stage stays pinned for SCROLL_LENGTH, so the zoom-out
+   spans the scroll distance of several ordinary sections.
+   Every phase below is a fraction of that length, so changing
+   the constant rescales the whole sequence.
 
-    case "data":
-      // 2. Large 3D Hex Shield Matrix & Glass Emblem (High-Contrast Theme Visibility)
-      return (
-        <div className={containerClass}>
-          {/* Ambient Spotlight */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.18),transparent_70%)] pointer-events-none" />
+   Zoom decay is sampled from the reference recording: fast at
+   first, then settling. The opening scale is large enough that
+   the sage core alone fills any viewport, including ultrawide,
+   so the section opens as a flat field of colour.
+   ============================================================ */
+const SCROLL_LENGTH = "1000vh";
 
-          {/* Full-Height Hexagonal Mesh Matrix */}
-          <div className="relative w-48 h-48 md:w-56 md:h-56 flex items-center justify-center">
-            <svg className="w-full h-full" viewBox="0 0 160 160" fill="none">
-              <defs>
-                <linearGradient id="hexGradLarge" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#059669" stopOpacity="1" />
-                  <stop offset="50%" stopColor="#0284c7" stopOpacity="0.8" />
-                  <stop offset="100%" stopColor="#4f46e5" stopOpacity="0.5" />
-                </linearGradient>
-              </defs>
-              {/* Outer Large Hexagon */}
-              <motion.polygon
-                points="80,10 145,47.5 145,112.5 80,150 15,112.5 15,47.5"
-                stroke="url(#hexGradLarge)"
-                strokeWidth="2.5"
-                fill="none"
-                animate={{ strokeDashoffset: [0, 300] }}
-                transition={{ repeat: Infinity, duration: 12, ease: "linear" }}
-                strokeDasharray="14 6"
-              />
-              {/* Inner Hexagon */}
-              <polygon
-                points="80,30 125,56 125,104 80,130 35,104 35,56"
-                stroke="rgba(16, 185, 129, 0.6)"
-                strokeWidth="1.5"
-                fill="rgba(16, 185, 129, 0.06)"
-              />
-              {/* Core Hexagon */}
-              <polygon
-                points="80,48 107,63.5 107,96.5 80,112 53,96.5 53,63.5"
-                stroke="rgba(2, 132, 199, 0.7)"
-                strokeWidth="1.5"
-                fill="none"
-              />
-            </svg>
+const ZOOM_STOPS = [0, 0.1, 0.16, 0.24, 0.35, 0.47, 0.6, 0.78, 1];
+const ZOOM_SCALE = [13, 13, 10.6, 5.8, 3.2, 1.95, 1.33, 1, 0.99];
+const ZOOM_LOG = ZOOM_SCALE.map(Math.log);
 
-            {/* Central 3D Glass Emblem */}
-            <motion.div
-              animate={{ y: [-4, 4, -4], rotate: [0, 3, 0, -3, 0] }}
-              transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
-              className={`absolute w-18 h-18 md:w-20 md:h-20 rounded-2xl bg-[var(--bg-elevated)] border-2 border-emerald-500/70 backdrop-blur-xl flex items-center justify-center shadow-[0_12px_35px_rgba(16,185,129,0.3)] ${
-                isHovered ? "border-emerald-400 scale-110 shadow-[0_0_40px_rgba(16,185,129,0.55)]" : ""
-              } transition-all duration-500`}
-            >
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-400 p-[2px]">
-                <div className="w-full h-full rounded-[10px] bg-[var(--bg-elevated)] flex items-center justify-center">
-                  <div className="w-4 h-4 rounded-sm bg-emerald-500 shadow-[0_0_14px_#10b981] rotate-45" />
-                </div>
-              </div>
-            </motion.div>
+const ROTATE_STOPS = [0, 0.24, 0.5, 0.78];
+const ROTATE_DEG = [-8, -7, -3, 0];
 
-            {/* Radiating Ripple Rings */}
-            {isHovered && (
-              <motion.div
-                initial={{ scale: 0.4, opacity: 1 }}
-                animate={{ scale: 1.7, opacity: 0 }}
-                transition={{ repeat: Infinity, duration: 1.6, ease: "easeOut" }}
-                className="absolute w-28 h-28 rounded-full border-2 border-emerald-500/80 pointer-events-none"
-              />
-            )}
-          </div>
-        </div>
-      );
+const DIAL_FADE = [0.1, 0.3]; // dial holds, then dissolves as the zoom takes over
 
-    case "code":
-      // 3. Large Multi-Strand Curved Bezier Flow Lines (High-Contrast Theme Visibility)
-      return (
-        <div className={containerClass}>
-          {/* Ambient Purple Glow */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(168,85,247,0.18),transparent_70%)] pointer-events-none" />
-
-          {/* Full-Height Bezier Flow SVG */}
-          <svg className="w-full h-full min-h-[240px]" viewBox="0 0 200 160" fill="none">
-            <defs>
-              <linearGradient id="beamGradLrg1" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#7c3aed" stopOpacity="0.2" />
-                <stop offset="50%" stopColor="#9333ea" stopOpacity="1" />
-                <stop offset="100%" stopColor="#0284c7" stopOpacity="0.3" />
-              </linearGradient>
-              <linearGradient id="beamGradLrg2" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#0284c7" stopOpacity="0.2" />
-                <stop offset="50%" stopColor="#38bdf8" stopOpacity="1" />
-                <stop offset="100%" stopColor="#7c3aed" stopOpacity="0.3" />
-              </linearGradient>
-            </defs>
-
-            {/* Static Guide Curves */}
-            <path d="M 10,25 C 70,25 130,135 190,135" stroke="rgba(124, 58, 237, 0.4)" strokeWidth="2" />
-            <path d="M 10,60 C 70,60 130,100 190,100" stroke="rgba(2, 132, 199, 0.45)" strokeWidth="2" />
-            <path d="M 10,100 C 70,100 130,60 190,60" stroke="rgba(2, 132, 199, 0.45)" strokeWidth="2" />
-            <path d="M 10,135 C 70,135 130,25 190,25" stroke="rgba(124, 58, 237, 0.4)" strokeWidth="2" />
-
-            {/* Animated Flowing Laser Beams */}
-            <motion.path
-              d="M 10,25 C 70,25 130,135 190,135"
-              stroke="url(#beamGradLrg1)"
-              strokeWidth="3.5"
-              strokeDasharray="50 140"
-              animate={{ strokeDashoffset: [-190, 0] }}
-              transition={{ repeat: Infinity, duration: isHovered ? 1.5 : 3, ease: "linear" }}
-            />
-            <motion.path
-              d="M 10,60 C 70,60 130,100 190,100"
-              stroke="url(#beamGradLrg2)"
-              strokeWidth="3.5"
-              strokeDasharray="60 130"
-              animate={{ strokeDashoffset: [0, -190] }}
-              transition={{ repeat: Infinity, duration: isHovered ? 1.2 : 2.4, ease: "linear" }}
-            />
-            <motion.path
-              d="M 10,100 C 70,100 130,60 190,60"
-              stroke="url(#beamGradLrg2)"
-              strokeWidth="3.5"
-              strokeDasharray="60 130"
-              animate={{ strokeDashoffset: [-190, 0] }}
-              transition={{ repeat: Infinity, duration: isHovered ? 1.4 : 2.8, ease: "linear" }}
-            />
-            <motion.path
-              d="M 10,135 C 70,135 130,25 190,25"
-              stroke="url(#beamGradLrg1)"
-              strokeWidth="3.5"
-              strokeDasharray="50 140"
-              animate={{ strokeDashoffset: [0, -190] }}
-              transition={{ repeat: Infinity, duration: isHovered ? 1.8 : 3.5, ease: "linear" }}
-            />
-          </svg>
-
-          {/* Focal Intersection Glass Node */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[var(--bg-elevated)] border-2 border-purple-600/70 backdrop-blur-xl flex items-center justify-center shadow-[0_6px_25px_rgba(168,85,247,0.5)]">
-            <div className="w-3.5 h-3.5 rounded-full bg-purple-500 shadow-[0_0_14px_#a855f7] animate-pulse" />
-          </div>
-        </div>
-      );
-
-    case "lines":
-      // 4. Large Dual Undulating Sine Waves & Resonance Lattice (High-Contrast Theme Visibility)
-      return (
-        <div className={containerClass}>
-          {/* Ambient Cyan Glow */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(6,182,212,0.18),transparent_70%)] pointer-events-none" />
-
-          {/* Full-Height Undulating Waves SVG */}
-          <div className="relative w-full h-full flex items-center justify-center">
-            <svg className="w-full h-full min-h-[240px]" viewBox="0 0 200 140" fill="none">
-              <defs>
-                <linearGradient id="waveGradLrg" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#0891b2" stopOpacity="0.4" />
-                  <stop offset="50%" stopColor="#0284c7" stopOpacity="1" />
-                  <stop offset="100%" stopColor="#0891b2" stopOpacity="0.4" />
-                </linearGradient>
-              </defs>
-
-              {/* Wave 1 */}
-              <motion.path
-                d="M 10,70 Q 50,20 100,70 T 190,70"
-                stroke="url(#waveGradLrg)"
-                strokeWidth="3.5"
-                fill="none"
-                animate={{
-                  d: [
-                    "M 10,70 Q 50,20 100,70 T 190,70",
-                    "M 10,70 Q 50,120 100,70 T 190,70",
-                    "M 10,70 Q 50,20 100,70 T 190,70"
-                  ]
-                }}
-                transition={{ repeat: Infinity, duration: isHovered ? 2 : 4, ease: "easeInOut" }}
-              />
-
-              {/* Wave 2 (Counter) */}
-              <motion.path
-                d="M 10,70 Q 50,120 100,70 T 190,70"
-                stroke="rgba(2, 132, 199, 0.7)"
-                strokeWidth="2.5"
-                fill="none"
-                animate={{
-                  d: [
-                    "M 10,70 Q 50,120 100,70 T 190,70",
-                    "M 10,70 Q 50,20 100,70 T 190,70",
-                    "M 10,70 Q 50,120 100,70 T 190,70"
-                  ]
-                }}
-                transition={{ repeat: Infinity, duration: isHovered ? 2 : 4, ease: "easeInOut" }}
-              />
-            </svg>
-
-            {/* Central Floating Glass Orb */}
-            <motion.div
-              animate={{ scale: [0.96, 1.05, 0.96] }}
-              transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut" }}
-              className="absolute w-14 h-14 rounded-full bg-[var(--bg-elevated)] border-2 border-cyan-500/70 backdrop-blur-xl flex items-center justify-center shadow-[0_6px_30px_rgba(6,182,212,0.45)]"
-            >
-              <div className="w-5 h-5 rounded-full bg-gradient-to-tr from-cyan-600 to-sky-400 p-[2px]">
-                <div className="w-full h-full rounded-full bg-[var(--bg-elevated)] flex items-center justify-center">
-                  <div className="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_12px_#22d3ee]" />
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      );
-
-    default:
-      return null;
+// Piecewise interpolation across a table of stops
+const sample = (p: number, stops: number[], values: number[]) => {
+  if (p <= stops[0]) return values[0];
+  for (let i = 1; i < stops.length; i++) {
+    if (p <= stops[i]) {
+      const t = (p - stops[i - 1]) / (stops[i] - stops[i - 1]);
+      return values[i - 1] + (values[i] - values[i - 1]) * t;
+    }
   }
-}
-
-interface CaseStudyCardProps {
-  cs: CaseStudyItem;
-  onSelect: (id: string) => void;
-}
-
-function CaseStudyCard({ cs, onSelect }: CaseStudyCardProps) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const card = cardRef.current;
-    if (!card) return;
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    const rotateX = ((centerY - y) / centerY) * 6; // Soft tilt
-    const rotateY = ((x - centerX) / centerX) * 6;
-
-    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.015, 1.015, 1.015)`;
-    card.style.setProperty("--mouse-x", `${x}px`);
-    card.style.setProperty("--mouse-y", `${y}px`);
-  };
-
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    const card = cardRef.current;
-    if (!card) return;
-    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-    setIsHovered(false);
-  };
-
-  return (
-    <motion.div
-      variants={scrollRevealVariants}
-      className="case-study-card p-8 md:p-10 border-r border-b border-[var(--border-subtle)] bg-[var(--bg-glass)] backdrop-blur-md transition-all duration-500 flex flex-col md:flex-row justify-between items-center gap-8 group relative overflow-hidden"
-      style={{ transformStyle: "preserve-3d" }}
-    >
-      {/* Dynamic Spotlight Mesh Backdrop */}
-      <div
-        ref={cardRef}
-        onMouseMove={handleMouseMove}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        className="absolute inset-0 z-0 pointer-events-auto bg-[radial-gradient(400px_circle_at_var(--mouse-x)_var(--mouse-y),rgba(0,163,255,0.08),transparent_80%)] opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-      />
-
-      {/* Grid Pattern overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(0,163,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,163,255,0.03)_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none opacity-20 group-hover:opacity-40 transition-opacity" />
-
-      {/* Left Details Column */}
-      <div className="w-full md:w-7/12 flex flex-col justify-between gap-6 relative z-10" style={{ transformStyle: "preserve-3d" }}>
-        <div className="flex flex-col gap-3" style={{ transform: "translateZ(15px)" }}>
-          <span className="font-mono text-[10px] font-bold text-[var(--accent)] tracking-wider">
-            {cs.sector}
-          </span>
-          <h3 className="font-display font-bold text-xl md:text-2xl text-[var(--text-primary)] uppercase tracking-tight leading-snug">
-            {cs.title}
-          </h3>
-          <p className="text-[13px] text-[var(--text-secondary)] leading-relaxed font-sans mt-1">
-            {cs.description}
-          </p>
-        </div>
-        
-        {/* Specific Outcome Metric Highlight */}
-        <div className="border-t border-[var(--border-subtle)] pt-4 mt-1" style={{ transform: "translateZ(20px)" }}>
-          <span className="font-mono text-[9px] font-bold text-[var(--text-tertiary)] tracking-widest uppercase block mb-1">
-            Verified Outcome //
-          </span>
-          <p className="text-[12px] text-[var(--text-primary)] font-semibold leading-relaxed font-sans">
-            {cs.outcome}
-          </p>
-        </div>
-
-        <button
-          onClick={() => onSelect(cs.id)}
-          className="inline-flex items-center gap-2 text-[11px] font-mono font-bold text-[var(--text-primary)] hover:text-[var(--accent)] uppercase tracking-wider mt-2 transition-colors cursor-pointer text-left w-fit"
-          data-cursor="link"
-          style={{ transform: "translateZ(25px)" }}
-        >
-          Read Case Study <ArrowRight className="w-3.5 h-3.5" />
-        </button>
-      </div>
-
-      {/* Integrated Borderless Visual Accent (Spans full height vertically, no inner border box!) */}
-      <div 
-        className="w-full md:w-5/12 h-64 md:h-full min-h-[260px] md:min-h-[300px] flex items-center justify-center relative shrink-0 z-10 pointer-events-none"
-        style={{ transform: "translateZ(30px)" }}
-      >
-        <CaseStudyGraphic type={cs.graphicType} isHovered={isHovered} />
-      </div>
-    </motion.div>
-  );
-}
+  return values[values.length - 1];
+};
 
 export default function CaseStudies() {
-  const [activeCaseId, setActiveCaseId] = useState<string | null>(null);
-  const activeCase = caseStudies.find((cs) => cs.id === activeCaseId);
-  const activeDetails = activeCase ? caseDetails[activeCase.id] : null;
+  const containerRef = useRef<HTMLDivElement>(null);
+  const sceneRef = useRef<HTMLDivElement>(null);
+  const dialRef = useRef<HTMLDivElement>(null);
+  const uid = useId().replace(/:/g, "");
+  const isReduced = useReducedMotion();
+
+  useEffect(() => {
+    if (typeof window === "undefined" || isReduced) return;
+
+    const container = containerRef.current;
+    const scene = sceneRef.current;
+    const dial = dialRef.current;
+    if (!container || !scene || !dial) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const ctx = gsap.context(() => {
+      gsap.set([scene, dial], { force3D: true });
+
+      const setSceneScale = gsap.quickSetter(scene, "scale");
+      const setSceneRotate = gsap.quickSetter(scene, "rotation", "deg");
+      const setDialOpacity = gsap.quickSetter(dial, "opacity");
+      const setDialScale = gsap.quickSetter(dial, "scale");
+      const setDialRotate = gsap.quickSetter(dial, "rotation", "deg");
+
+      const render = (p: number) => {
+        // Interpolating in log space keeps the zoom velocity even to the eye
+        setSceneScale(Math.exp(sample(p, ZOOM_STOPS, ZOOM_LOG)));
+        setSceneRotate(sample(p, ROTATE_STOPS, ROTATE_DEG));
+
+        const fade = gsap.utils.clamp(
+          0,
+          1,
+          (p - DIAL_FADE[0]) / (DIAL_FADE[1] - DIAL_FADE[0])
+        );
+        setDialOpacity(1 - fade);
+        setDialScale(1 - fade * 0.16);
+        setDialRotate(fade * 5);
+      };
+
+      // A scrubbed proxy tween smooths the wheel steps. Kept short because
+      // Lenis already applies its own inertia to the scroll position.
+      const proxy = { p: 0 };
+      gsap.to(proxy, {
+        p: 1,
+        ease: "none",
+        onUpdate: () => render(proxy.p),
+        scrollTrigger: {
+          trigger: container,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 0.6,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      render(0);
+    }, container);
+
+    return () => ctx.revert();
+  }, [isReduced]);
+
+  const clipId = (key: string) => `${uid}-clip-${key}`;
 
   return (
-    <section id="case-studies" className="relative w-full bg-[var(--bg-primary)] transition-colors duration-500 overflow-hidden">
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12 py-24 md:py-36 flex flex-col gap-16">
-        
-        {/* Header Block */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-10%" }}
-            variants={{
-              hidden: {},
-              visible: { transition: { staggerChildren: 0.08 } }
-            }}
-            className="max-w-[620px]"
+    <section
+      id="case-studies"
+      ref={containerRef}
+      className="relative w-full bg-[#0D0D0D] text-[#F2F2F2] select-none"
+      style={{ height: isReduced ? "100vh" : SCROLL_LENGTH }}
+    >
+      {/* Pinned full-viewport stage */}
+      <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
+        {/* Faint diagonal texture in the dark field */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-[0.03]"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(135deg, rgba(255,255,255,0.6) 0px, rgba(255,255,255,0.6) 1px, transparent 1px, transparent 26px)",
+          }}
+        />
+
+        {/* ====================================================
+            ZOOMING SCENE — four overlapping circles, hatched
+            pairwise lenses, solid sage four-way intersection
+            ==================================================== */}
+        <div
+          ref={sceneRef}
+          style={{ transform: isReduced ? undefined : `scale(${ZOOM_SCALE[0]})` }}
+          className="absolute inset-0 flex items-center justify-center origin-center will-change-transform"
+        >
+          <svg
+            viewBox="0 0 1000 1000"
+            style={{ overflow: "visible" }}
+            className="h-screen w-screen max-w-none"
+            preserveAspectRatio="xMidYMid meet"
+            aria-hidden="true"
           >
-            <div className="overflow-hidden">
-              <motion.div
-                variants={{
-                  hidden: { y: "100%" },
-                  visible: { y: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } }
-                }}
+            <defs>
+              {Object.entries(CIRCLE_CENTRES).map(([key, { cx, cy }]) => (
+                <clipPath key={key} id={clipId(key)}>
+                  <circle cx={cx} cy={cy} r={R} />
+                </clipPath>
+              ))}
+
+              <pattern
+                id={`${uid}-hatch`}
+                width="9"
+                height="9"
+                patternUnits="userSpaceOnUse"
+                patternTransform="rotate(45)"
               >
-                <SectionLabel color="secondary">PROVEN EFFECTIVENESS</SectionLabel>
-              </motion.div>
-            </div>
-            <div className="overflow-hidden">
-              <motion.h2
-                variants={{
-                  hidden: { y: "100%" },
-                  visible: { y: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } }
-                }}
-                className="text-3xl md:text-4xl font-display font-medium text-[var(--text-primary)] uppercase tracking-tight"
-              >
-                Mitigation Case Files
-              </motion.h2>
-            </div>
-          </motion.div>
-          <div className="font-mono text-[10px] text-[var(--text-tertiary)] uppercase tracking-widest">
-            // METRIC-DRIVEN VULNERABILITY AUDITS
-          </div>
+                <line x1="0" y1="0" x2="0" y2="9" stroke="rgba(226,232,222,0.22)" strokeWidth="1.1" />
+              </pattern>
+
+              {/* Fine pinstripes that only read while zoomed in */}
+              <pattern id={`${uid}-pinstripe`} width="5" height="5" patternUnits="userSpaceOnUse">
+                <line x1="0" y1="0" x2="0" y2="5" stroke="rgba(255,255,255,0.5)" strokeWidth="0.5" />
+              </pattern>
+
+              {Object.entries(LABEL_ARCS).map(([key, d]) => (
+                <path key={`arc-${key}`} id={`${uid}-arc-${key}`} d={d} fill="none" />
+              ))}
+            </defs>
+
+            <rect
+              x="-3000"
+              y="-3000"
+              width="7000"
+              height="7000"
+              fill={`url(#${uid}-pinstripe)`}
+              opacity="0.1"
+            />
+
+            {/* Hatched pairwise intersections */}
+            {PAIRS.map(([a, b]) => (
+              <g key={`${a}-${b}`} clipPath={`url(#${clipId(a)})`}>
+                <g clipPath={`url(#${clipId(b)})`}>
+                  <rect x="0" y="0" width="1000" height="1000" fill={`url(#${uid}-hatch)`} />
+                </g>
+              </g>
+            ))}
+
+            {/* Solid sage core where all four circles intersect */}
+            <g clipPath={`url(#${clipId("top")})`}>
+              <g clipPath={`url(#${clipId("right")})`}>
+                <g clipPath={`url(#${clipId("bottom")})`}>
+                  <g clipPath={`url(#${clipId("left")})`}>
+                    <rect x="0" y="0" width="1000" height="1000" fill={SAGE} />
+                  </g>
+                </g>
+              </g>
+            </g>
+
+            {/* Circle outlines */}
+            {Object.entries(CIRCLE_CENTRES).map(([key, { cx, cy }]) => (
+              <circle
+                key={`ring-${key}`}
+                cx={cx}
+                cy={cy}
+                r={R}
+                fill="none"
+                stroke={SAGE_LINE}
+                strokeWidth="1.6"
+                opacity="0.9"
+              />
+            ))}
+
+            {/* Element symbols, sub-labels and curved detail labels */}
+            {NODES.map(({ pos, label, study }) => {
+              const { x, y } = SYMBOL_POS[pos];
+              return (
+                <g key={study.id}>
+                  <text
+                    x={x}
+                    y={y}
+                    textAnchor="middle"
+                    fill="#F2F2F2"
+                    fontSize="52"
+                    fontWeight="500"
+                    letterSpacing="1"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    {study.symbol}
+                  </text>
+                  <text
+                    x={x}
+                    y={y + 30}
+                    textAnchor="middle"
+                    fill="#F2F2F2"
+                    fillOpacity="0.92"
+                    fontSize="17"
+                    letterSpacing="1.4"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    {label}
+                  </text>
+                  <text
+                    fill="#F2F2F2"
+                    fillOpacity="0.88"
+                    fontSize="14"
+                    letterSpacing="0.6"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    <textPath href={`#${uid}-arc-${pos}`} startOffset="50%" textAnchor="middle">
+                      {study.arcText.replace(/ · /g, " | ")}
+                    </textPath>
+                  </text>
+                </g>
+              );
+            })}
+          </svg>
         </div>
 
-        {/* 2x2 Grid of Case Study Tiles */}
-        <motion.div
-          variants={staggerContainerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 md:grid-cols-2 border-t border-l border-[var(--border-subtle)]"
+        {/* ====================================================
+            SCREEN-ANCHORED DIAL + TITLE
+            ==================================================== */}
+        <div
+          ref={dialRef}
+          style={{ opacity: isReduced ? 0 : 1 }}
+          className="absolute inset-0 flex items-center justify-center pointer-events-none origin-center will-change-transform"
         >
-          {caseStudies.map((cs) => (
-            <CaseStudyCard key={cs.id} cs={cs} onSelect={setActiveCaseId} />
-          ))}
-        </motion.div>
+          <svg viewBox="0 0 1000 1000" className="h-screen w-screen max-w-none" aria-hidden="true">
+            {TICKS.map((t) => (
+              <line
+                key={t.id}
+                x1={t.x1.toFixed(2)}
+                y1={t.y1.toFixed(2)}
+                x2={t.x2.toFixed(2)}
+                y2={t.y2.toFixed(2)}
+                stroke="#F2F2F2"
+                strokeWidth="2.4"
+                opacity="0.92"
+              />
+            ))}
+          </svg>
+
+          <h2 className="absolute font-display text-[clamp(1.6rem,6.6vh,4rem)] font-normal tracking-[-0.01em] text-[#F2F2F2] text-center px-8">
+            Verified Enterprise Delivery
+          </h2>
+        </div>
       </div>
 
-      {/* Dynamic Slide-Out Glass Case File Drawer */}
-      <AnimatePresence>
-        {activeCase && activeDetails && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex justify-end bg-black/75 backdrop-blur-sm"
-            onClick={() => setActiveCaseId(null)}
-          >
-            <motion.div
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 28, stiffness: 180 }}
-              className="w-full max-w-[620px] h-full bg-[var(--bg-elevated)] border-l border-[var(--border-subtle)] p-8 md:p-12 overflow-y-auto flex flex-col justify-between shadow-2xl relative"
-              onClick={(e) => e.stopPropagation()}
+      {/* Accessible Enterprise Case Studies Detail Grid */}
+      <div className="relative z-20 max-w-[1400px] mx-auto px-6 md:px-12 py-16">
+        <div className="flex flex-col gap-4 mb-10 text-left">
+          <span className="font-mono text-xs font-bold text-[var(--accent)] uppercase tracking-widest">// VERIFIED ENGAGEMENT PROOF</span>
+          <h3 className="font-display text-2xl md:text-3xl font-semibold text-white uppercase tracking-tight">Structured Case Studies</h3>
+          <p className="font-sans text-sm text-zinc-400 max-w-2xl">Examine detailed engagement scope, technical approach, technology used, and measured outcomes from enterprise security deliveries.</p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {caseStudies.map((study) => (
+            <article 
+              key={study.id} 
+              className="bg-[#0B132B]/80 border border-white/10 rounded-2xl p-6 md:p-8 flex flex-col justify-between gap-6 backdrop-blur-md hover:border-[var(--accent)]/40 transition-colors"
             >
-              {/* Close Button */}
-              <button
-                onClick={() => setActiveCaseId(null)}
-                className="absolute top-8 right-8 text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:rotate-90 transition-all duration-300 p-1 bg-white/[0.02] border border-[var(--border-subtle)] rounded-[4px] cursor-pointer"
-                aria-label="Close case study"
-              >
-                <X className="w-5 h-5" />
-              </button>
-
-              <div className="flex flex-col gap-10 mt-8">
-                {/* Header info */}
-                <div className="flex flex-col gap-2">
-                  <span className="font-mono text-[10px] font-bold text-[var(--accent)] tracking-widest uppercase">
-                    {activeCase.sector} // MITIGATION CASE FILE
-                  </span>
-                  <h3 className="font-display font-bold text-2xl md:text-3xl text-[var(--text-primary)] uppercase tracking-tight leading-none mt-1">
-                    {activeCase.title}
-                  </h3>
-                  <div className="w-12 h-1 bg-[var(--accent)] mt-4 rounded-full" />
+              <div className="flex flex-col gap-4">
+                <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                  <span className="font-mono text-xs font-bold text-[var(--accent)] tracking-wider uppercase">{study.sector}</span>
+                  <span className="font-mono text-xs text-zinc-500">{study.timeline}</span>
                 </div>
 
-                {/* Case File Metrics */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 border-y border-[var(--border-subtle)] py-8 my-2">
-                  <div className="flex flex-col gap-1.5">
-                    <span className="font-mono text-[9px] text-[var(--text-tertiary)] uppercase tracking-wider">
-                      Vulnerability Level
-                    </span>
-                    <span className="text-[12px] font-bold text-red-500 uppercase flex items-center gap-1.5">
-                      <ShieldAlert className="w-4 h-4" /> CRITICAL
-                    </span>
+                <h4 className="font-display text-xl font-semibold text-white">{study.title}</h4>
+                <p className="font-sans text-xs text-zinc-300 leading-relaxed">{study.description}</p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+                  <div className="bg-black/30 border border-white/5 rounded-xl p-3.5 flex flex-col gap-1">
+                    <span className="font-mono text-[9px] font-bold text-zinc-400 uppercase tracking-widest">Customer Problem</span>
+                    <span className="font-sans text-xs text-zinc-200">{study.customerProblem}</span>
                   </div>
-                  <div className="flex flex-col gap-1.5">
-                    <span className="font-mono text-[9px] text-[var(--text-tertiary)] uppercase tracking-wider">
-                      Audit Scope
-                    </span>
-                    <span className="text-[12px] font-bold text-[var(--text-primary)] uppercase flex items-center gap-1.5">
-                      <Cpu className="w-4 h-4 text-[var(--accent)]" /> AppSec / API
-                    </span>
-                  </div>
-                  <div className="flex flex-col gap-1.5">
-                    <span className="font-mono text-[9px] text-[var(--text-tertiary)] uppercase tracking-wider">
-                      Status
-                    </span>
-                    <span className="text-[12px] font-bold text-green-500 uppercase flex items-center gap-1.5">
-                      <Layers className="w-4 h-4" /> Hardened
-                    </span>
+                  <div className="bg-black/30 border border-white/5 rounded-xl p-3.5 flex flex-col gap-1">
+                    <span className="font-mono text-[9px] font-bold text-zinc-400 uppercase tracking-widest">Agreed Scope</span>
+                    <span className="font-sans text-xs text-zinc-200">{study.agreedScope}</span>
                   </div>
                 </div>
 
-                {/* Detailed Sections */}
-                <div className="flex flex-col gap-8">
-                  <div className="flex flex-col gap-2.5">
-                    <h4 className="font-mono text-[10px] font-bold text-[var(--text-tertiary)] tracking-widest uppercase">
-                      01 / The Vulnerability
-                    </h4>
-                    <p className="text-[13px] text-[var(--text-secondary)] leading-relaxed font-sans">
-                      {activeDetails.vulnerability}
-                    </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="bg-black/30 border border-white/5 rounded-xl p-3.5 flex flex-col gap-1">
+                    <span className="font-mono text-[9px] font-bold text-zinc-400 uppercase tracking-widest">Entersoft Approach</span>
+                    <span className="font-sans text-xs text-zinc-200">{study.entersoftApproach}</span>
                   </div>
-
-                  <div className="flex flex-col gap-2.5">
-                    <h4 className="font-mono text-[10px] font-bold text-[var(--text-tertiary)] tracking-widest uppercase">
-                      02 / Mitigation Strategy
-                    </h4>
-                    <p className="text-[13px] text-[var(--text-secondary)] leading-relaxed font-sans">
-                      {activeDetails.strategy}
-                    </p>
-                  </div>
-
-                  <div className="flex flex-col gap-2.5">
-                    <h4 className="font-mono text-[10px] font-bold text-[var(--text-tertiary)] tracking-widest uppercase">
-                      03 / Security Result
-                    </h4>
-                    <p className="text-[13px] text-[var(--text-secondary)] leading-relaxed font-sans">
-                      {activeDetails.impact}
-                    </p>
+                  <div className="bg-black/30 border border-white/5 rounded-xl p-3.5 flex flex-col gap-1">
+                    <span className="font-mono text-[9px] font-bold text-zinc-400 uppercase tracking-widest">Technology Used</span>
+                    <span className="font-sans text-xs text-zinc-200">{study.technologyUsed}</span>
                   </div>
                 </div>
+
+                <div className="bg-[var(--accent)]/5 border border-[var(--accent)]/20 rounded-xl p-4 flex flex-col gap-1 mt-1">
+                  <span className="font-mono text-[9px] font-bold text-[var(--accent)] uppercase tracking-widest">Measured Result</span>
+                  <span className="font-sans text-xs font-medium text-white">{study.measuredResult}</span>
+                </div>
+
+                <blockquote className="border-l-2 border-[var(--accent)] pl-4 italic text-xs font-sans text-zinc-300 mt-2">
+                  &ldquo;{study.customerQuote}&rdquo;
+                </blockquote>
               </div>
 
-              {/* Bottom Drawer Actions */}
-              <div className="border-t border-[var(--border-subtle)] pt-8 mt-12 flex flex-col md:flex-row justify-between items-center gap-6">
-                <div className="flex flex-col">
-                  <span className="font-mono text-[9px] text-[var(--text-tertiary)] uppercase tracking-widest">
-                    Verified Outcome
-                  </span>
-                  <span className="text-[12.5px] font-bold text-[var(--text-primary)] mt-0.5">
-                    {activeCase.outcome}
-                  </span>
-                </div>
-                <button
-                  onClick={() => setActiveCaseId(null)}
-                  className="px-6 py-3 bg-[var(--text-primary)] text-[var(--bg-primary)] font-mono text-[11px] font-bold uppercase tracking-wider rounded-[3px] hover:bg-[var(--accent)] hover:text-white transition-colors duration-300 cursor-pointer shrink-0"
-                >
-                  Close File
-                </button>
+              <div className="pt-4 border-t border-white/10 flex items-center justify-between text-[9.5px] font-mono text-zinc-500 uppercase tracking-wider">
+                <span>{study.anonymisationStatement}</span>
+                <span className="text-[var(--accent)] font-bold">{study.metric}</span>
               </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </article>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }

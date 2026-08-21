@@ -16,15 +16,51 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      // Future URL Migration: Permanent 301 Redirect for AppSec page
-      // Uncomment this redirect block when migrating from "/services/appsec" to "/offerings/application-security-assurance"
-      /*
       {
         source: "/services/appsec",
-        destination: "/offerings/application-security-assurance",
-        permanent: true, // 301 redirect
+        destination: "/services/application-security-testing",
+        permanent: true,
       },
-      */
+      {
+        source: "/services/vapt",
+        destination: "/services/penetration-testing",
+        permanent: true,
+      },
+      {
+        source: "/services/cloud-resilience",
+        destination: "/services/cloud-security",
+        permanent: true,
+      },
+      {
+        source: "/services/compliance-management",
+        destination: "/services/grc-compliance-privacy",
+        permanent: true,
+      },
+      {
+        source: "/services/siem",
+        destination: "/services/managed-detection-response",
+        permanent: true,
+      },
+      {
+        source: "/services/smart-contract-audits",
+        destination: "/services/smart-contract-security",
+        permanent: true,
+      },
+      {
+        source: "/services/ai-ast",
+        destination: "/services/ai-security-testing",
+        permanent: true,
+      },
+      {
+        source: "/platform",
+        destination: "/platform/enprobe",
+        permanent: true,
+      },
+      {
+        source: "/company",
+        destination: "/company/accreditations",
+        permanent: true,
+      },
     ];
   },
 };

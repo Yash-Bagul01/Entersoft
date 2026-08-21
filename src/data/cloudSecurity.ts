@@ -1,7 +1,7 @@
 export const cloudHero = {
   eyebrow: 'CLOUD RESILIENCE',
   headline: ['Continuous Visibility.', 'Zero Blind Spots.'],
-  subline: 'AWS, Azure, and GCP. Every resource, every configuration, every permission — monitored continuously by the same senior analysts for 13 years.',
+  subline: 'AWS, Azure, and GCP. Every resource, every configuration, every permission — monitored continuously by senior analysts since 2013.',
 };
 
 export const cloudScenes = [
@@ -56,7 +56,7 @@ export const cloudCoverage = {
 
 export const cloudEvidence = [
   { value: '600+', label: 'Clients secured across cloud and on-prem' },
-  { value: '13 Yrs', label: 'Same senior analysts, zero attrition' },
-  { value: '0 Breaches', label: "On Entersoft's watch, 13 years running" },
+  { value: 'Since 2013', label: 'Senior engineering practice' },
+  { value: 'Verified', label: "Delivery track record since 2013" },
   { value: '<15 Min', label: 'Mean triage time on confirmed cloud alerts' },
 ];

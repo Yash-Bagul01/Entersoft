@@ -1,6 +1,9 @@
 export type Service = {
   index: string
+  plainLanguageTitle: string
+  brandedDescriptor: string
   displayName: string
+  category: string
   descriptor: string
   hoverCardHeading: string
   hoverCardBody: string
@@ -16,7 +19,10 @@ export type ServiceItem = Service;
 export const services: Service[] = [
   {
     index: '01',
-    displayName: 'APPLICATION ASSURANCE',
+    plainLanguageTitle: 'Application and Product Security',
+    brandedDescriptor: 'Application Assurance',
+    displayName: 'Application Assurance',
+    category: 'APPLICATION AND PRODUCT SECURITY',
     descriptor: 'APPSEC • DEVSECOPS • SECURE SDLC',
     hoverCardHeading: 'Application Security Transformation',
     hoverCardBody: 'Embed expert-led testing, secure engineering and continuous assurance across applications, APIs, code and release workflows.',
@@ -27,7 +33,10 @@ export const services: Service[] = [
   },
   {
     index: '02',
-    displayName: 'ADVERSARIAL VALIDATION',
+    plainLanguageTitle: 'Penetration Testing and Red Teaming',
+    brandedDescriptor: 'Adversarial Validation',
+    displayName: 'Adversarial Validation',
+    category: 'PENETRATION TESTING AND RED TEAMING',
     descriptor: 'PEN TESTING • RED TEAMING • ATTACK PATHS',
     hoverCardHeading: 'Adversarial Security Validation',
     hoverCardBody: 'Recreate real attacker behavior to expose attack paths, validate exploitability and prioritize what must be fixed.',
@@ -38,18 +47,24 @@ export const services: Service[] = [
   },
   {
     index: '03',
-    displayName: 'CLOUD RESILIENCE',
-    descriptor: 'CLOUD • CONTAINERS • IDENTITY',
-    hoverCardHeading: 'Cloud Security Transformation',
-    hoverCardBody: 'Secure cloud architecture, workloads, containers, identities and configurations from design through operation.',
-    route: '/services/managed-cloud-security',
-    slug: 'managed-cloud-security',
+    plainLanguageTitle: 'Cloud, Identity and Platform Security',
+    brandedDescriptor: 'Cloud Resilience',
+    displayName: 'Cloud Resilience',
+    category: 'CLOUD, IDENTITY AND PLATFORM SECURITY',
+    descriptor: 'ASSESSMENT • PEN TESTING • CSPM • MDR',
+    hoverCardHeading: 'Modular Cloud Security Practice',
+    hoverCardBody: 'Structurally separated cloud security: Assessment, Penetration Testing, Posture Management (EnProbe), Managed Detection, and Container/IaC Security.',
+    route: '/services/cloud-resilience',
+    slug: 'cloud-resilience',
     legacyName: 'MANAGED CLOUD SECURITY',
     image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop',
   },
   {
     index: '04',
-    displayName: 'DIGITAL TRUST',
+    plainLanguageTitle: 'GRC, Privacy and Audit Readiness',
+    brandedDescriptor: 'Digital Trust',
+    displayName: 'Digital Trust',
+    category: 'GRC, PRIVACY AND AUDIT READINESS',
     descriptor: 'GRC • PRIVACY • AUDIT READINESS',
     hoverCardHeading: 'Cyber Risk & Regulatory Assurance',
     hoverCardBody: 'Translate controls into board-ready risk decisions, audit-ready evidence and sustained compliance.',
@@ -60,10 +75,13 @@ export const services: Service[] = [
   },
   {
     index: '05',
-    displayName: 'CYBER DEFENSE OPERATIONS',
-    descriptor: 'MDR • SIEM • DETECTION ENGINEERING',
-    hoverCardHeading: 'Managed Cyber Defense',
-    hoverCardBody: 'Unify security monitoring, detection engineering, threat hunting, investigation and response into one continuous operating model.',
+    plainLanguageTitle: 'MDR, SIEM and Detection Engineering',
+    brandedDescriptor: 'Cyber Defense Operations',
+    displayName: 'Cyber Defense Operations',
+    category: 'MDR, SIEM AND DETECTION ENGINEERING',
+    descriptor: 'MDR • DETECTION ENGINEERING • MANAGED STACK',
+    hoverCardHeading: 'Cyber Defense Operations',
+    hoverCardBody: 'MDR and Detection Engineering, delivered through your existing security stack or an Entersoft-managed architecture.',
     route: '/services/siem',
     slug: 'siem',
     legacyName: 'MANAGED SIEM & MONITORING',
@@ -71,7 +89,10 @@ export const services: Service[] = [
   },
   {
     index: '06',
-    displayName: 'PROTOCOL ASSURANCE',
+    plainLanguageTitle: 'Smart Contract and Web3 Security',
+    brandedDescriptor: 'Protocol Assurance',
+    displayName: 'Protocol Assurance',
+    category: 'SMART CONTRACT AND WEB3 SECURITY',
     descriptor: 'SMART CONTRACTS • DEFI • BLOCKCHAIN',
     hoverCardHeading: 'Digital Asset & Protocol Security',
     hoverCardBody: 'Secure smart contracts, wallets, bridges and protocols before code moves value.',
@@ -82,7 +103,10 @@ export const services: Service[] = [
   },
   {
     index: '07',
-    displayName: 'AI SYSTEMS ASSURANCE',
+    plainLanguageTitle: 'AI and Agentic-System Security',
+    brandedDescriptor: 'AI Systems Assurance',
+    displayName: 'AI Systems Assurance',
+    category: 'AI AND AGENTIC-SYSTEM SECURITY',
     descriptor: 'LLM • RAG • AGENTS • MODEL APIS',
     hoverCardHeading: 'AI Security & Model Assurance',
     hoverCardBody: 'Assess AI applications, models, agents, data flows and autonomous actions before production.',
@@ -193,109 +217,138 @@ export const servicePagesData: Record<string, ServicePageData> = {
       { question: "Do you offer retesting?", answer: "Yes. We provide unlimited retesting within 90 days of the initial report to verify that all patches have been correctly applied." }
     ]
   },
+  "cloud-resilience": {
+    slug: "cloud-resilience",
+    name: "Cloud Resilience",
+    category: "CLOUD RESILIENCE",
+    tagline: "Modular cloud security, penetration testing, posture management, and MDR.",
+    heroStatement: "Which Cloud Security Outcome\nAre You Buying?",
+    overview: "Structurally separated cloud resilience offerings: Cloud Security Assessment, Cloud & Identity Penetration Testing, Posture Management (EnProbe), Managed Cloud Detection & Response, and Container/IaC Security.",
+    col2Description: "Multi-Cloud Governance",
+    col3Metadata: "Assessment • Pen Testing • CSPM • MDR",
+    process: [
+      { index: "01", title: "Outcome Selection", description: "Select between fixed assessment, penetration testing, EnProbe CSPM, managed MDR, or container security." },
+      { index: "02", title: "Scope Calibration", description: "Establish exact cloud boundary, provider APIs, identity federation, and workload perimeters." },
+      { index: "03", title: "Execution & Telemetry", description: "Execute expert-led testing or deploy continuous EnProbe posture telemetry." },
+      { index: "04", title: "Remediation & Assurance", description: "Receive prioritized IaC fixes, PoC attack chains, and continuous drift alerts." }
+    ],
+    deliverables: [
+      "Modular Cloud Security Findings",
+      "IAM Privilege & Trust Maps",
+      "EnProbe Real-Time Posture Analytics",
+      "Executive & Technical Remediation Plan"
+    ],
+    integrations: ["AWS", "Azure", "GCP", "Kubernetes", "Terraform"],
+    stats: [
+      { value: "5", label: "Modular Offerings" },
+      { value: "AWS/Azure/GCP", label: "Multi-Cloud Coverage" },
+      { value: "24/7", label: "MDR Detection Option" }
+    ],
+    faqs: [
+      { question: "How is Cloud Resilience structured at Entersoft?", answer: "We offer 5 distinct offerings: Cloud Security Assessment (fixed review), Cloud & Identity Pen Testing (active exploitation), Posture Management (continuous EnProbe CSPM), Managed Detection & Response (24/7 MDR), and Kubernetes/IaC Security." },
+      { question: "What is the difference between Assessment and Penetration Testing?", answer: "A Cloud Assessment is a configuration and IAM review against CIS baselines. Penetration Testing actively exploits misconfigurations and role chains to demonstrate real attack paths and business impact." },
+      { question: "What is EnProbe?", answer: "EnProbe is Entersoft's cloud-native security posture platform that continuously monitors AWS, Azure, and GCP environments for configuration drift, IAM over-privilege, and network exposure." }
+    ]
+  },
   "managed-cloud-security": {
     slug: "managed-cloud-security",
     name: "Cloud Resilience",
     category: "CLOUD RESILIENCE",
     tagline: "Continuous cloud posture auditing and threat detection.",
-    heroStatement: "Continuous Posture Monitoring.\nRuntime Threat Defense.",
-    overview: "Secure your multi-cloud infrastructure (AWS, Azure, GCP) continuously. We monitor configurations, analyze access paths, detect leaked secrets, and provide automated remediation.",
-    col2Description: "Code-to-Cloud Control",
-    col3Metadata: "DevSecOps • Cloud • Identity",
+    heroStatement: "Which Cloud Security Outcome\nAre You Buying?",
+    overview: "Structurally separated cloud resilience offerings: Cloud Security Assessment, Cloud & Identity Penetration Testing, Posture Management (EnProbe), Managed Cloud Detection & Response, and Container/IaC Security.",
+    col2Description: "Multi-Cloud Governance",
+    col3Metadata: "Assessment • Pen Testing • CSPM • MDR",
     process: [
-      { index: "01", title: "Telemetry Setup", description: "Connect read-only IAM access to AWS, Azure, and GCP via secure API." },
-      { index: "02", title: "Configuration Review", description: "Audit cloud instances against CIS Benchmarks, SOC2, and ISO control frameworks." },
-      { index: "03", title: "IAM Exposure Audit", description: "Analyze privilege escalations, dormant keys, and over-permissive policies." },
-      { index: "04", title: "Continuous Alerting", description: "Flag real-time misconfigurations and anomalies inside your SOC stack." }
+      { index: "01", title: "Outcome Selection", description: "Select between fixed assessment, penetration testing, EnProbe CSPM, managed MDR, or container security." },
+      { index: "02", title: "Scope Calibration", description: "Establish exact cloud boundary, provider APIs, identity federation, and workload perimeters." },
+      { index: "03", title: "Execution & Telemetry", description: "Execute expert-led testing or deploy continuous EnProbe posture telemetry." },
+      { index: "04", title: "Remediation & Assurance", description: "Receive prioritized IaC fixes, PoC attack chains, and continuous drift alerts." }
     ],
     deliverables: [
-      "CSPM Posture Analytics",
-      "IAM Exposure Heatmap",
-      "CIS Benchmark Gap Report",
-      "Runtime Security Telemetry"
+      "Modular Cloud Security Findings",
+      "IAM Privilege & Trust Maps",
+      "EnProbe Real-Time Posture Analytics",
+      "Executive & Technical Remediation Plan"
     ],
-    integrations: ["AWS", "Azure", "GCP", "Kubernetes"],
+    integrations: ["AWS", "Azure", "GCP", "Kubernetes", "Terraform"],
     stats: [
-      { value: "24/7", label: "Real-time Audits" },
-      { value: "100%", label: "Multi-Cloud Visibility" },
-      { value: "5 min", label: "Alert Response Time" }
+      { value: "5", label: "Modular Offerings" },
+      { value: "AWS/Azure/GCP", label: "Multi-Cloud Coverage" },
+      { value: "24/7", label: "MDR Detection Option" }
     ],
     faqs: [
-      { question: "Do you need write permissions to our cloud?", answer: "No. We connect using read-only IAM roles and audit APIs. Remediation is delivered as infrastructure-as-code (IaC) templates for your team to apply." },
-      { question: "Which compliance frameworks are mapped?", answer: "We map controls to CIS Benchmarks, ISO 27001, SOC 2, HIPAA, and PCI-DSS automatically." },
-      { question: "What cloud providers do you support?", answer: "We support AWS, Microsoft Azure, Google Cloud Platform (GCP), and hybrid Kubernetes environments." },
-      { question: "How does real-time alerting work?", answer: "Our systems monitor runtime logs (like AWS CloudTrail) and push alerts to your Slack, Microsoft Teams, or SIEM within minutes of a security event." }
+      { question: "How is Cloud Resilience structured at Entersoft?", answer: "We offer 5 distinct offerings: Cloud Security Assessment (fixed review), Cloud & Identity Pen Testing (active exploitation), Posture Management (continuous EnProbe CSPM), Managed Detection & Response (24/7 MDR), and Kubernetes/IaC Security." }
     ]
   },
   "compliance-management": {
     slug: "compliance-management",
     name: "Digital Trust",
     category: "DIGITAL TRUST",
-    tagline: "Framework readiness, gap analysis, and certification support.",
-    heroStatement: "Rigorous Auditing Readiness.\nFramework Certification Support.",
-    overview: "Achieve audit readiness for ISO 27001, GDPR, CERT-In, RBI guidelines, and SOC 2. We guide you through gap analyses, policy drafting, training, and liaison with auditors.",
-    col2Description: "Trust & Evidence Grid",
-    col3Metadata: "Governance • Audit • Compliance",
+    tagline: "Cyber risk, regulatory assurance, and continuous evidence governance.",
+    heroStatement: "Transform Cyber Risk into\nBoard-Ready Digital Trust.",
+    overview: "Establish measurable, audit-ready governance across security controls, regulatory mandates (ISO 27001, SOC 2, GDPR, RBI, CERT-In), data privacy, continuous evidence collection, and third-party risk.",
+    col2Description: "Trust & Evidence Architecture",
+    col3Metadata: "GRC • Privacy • Continuous Assurance",
     process: [
-      { index: "01", title: "Framework Scoping", description: "Define boundaries of your organization's compliance targets." },
-      { index: "02", title: "Gap Identification", description: "Perform detailed audits against target controls to catalog missing links." },
-      { index: "03", title: "Policy Implementation", description: "Draft custom policies, implement ISMS procedures, and train staff." },
-      { index: "04", title: "Internal Validation Audit", description: "Run simulated external audits to verify control operation." },
-      { index: "05", title: "Liaison & Certification", description: "Coordinate with external auditing bodies to guide you to certificate issuance." }
+      { index: "01", title: "Scope & Context Definition", description: "Define system boundaries, technical perimeter, data stores, and regulatory obligations." },
+      { index: "02", title: "Diagnostic Gap Assessment", description: "Audit current controls against target frameworks to catalog deficiencies and exposure." },
+      { index: "03", title: "Control & Policy Engineering", description: "Draft custom policies, implement ISMS technical safeguards, and harden architectures." },
+      { index: "04", title: "Evidence Pipeline Readiness", description: "Stream automated telemetry into immutable audit vaults for external verification." },
+      { index: "05", title: "Registrar Liaison & Certification", description: "Serve as technical advocate during independent registrar audits to achieve certification." }
     ],
     deliverables: [
-      "Audit-Ready ISMS Manual",
-      "Employee Training & Support Documentation",
-      "Risk Assessment Register",
-      "Liaison Coordination Log"
+      "Audit-Ready ISMS Manual & SoA",
+      "Automated Evidence Collection Vault",
+      "Regulatory Gap & Remediation Matrix",
+      "Technical Registrar Liaison Packet"
     ],
-    integrations: ["ISO 27001", "SOC 2", "GDPR", "RBI Guidelines"],
+    integrations: ["ISO 27001", "SOC 2 Type II", "GDPR / DPDP", "RBI Guidelines", "PCI-DSS 4.0", "CERT-In"],
     stats: [
-      { value: "100%", label: "Audit Success Rate" },
-      { value: "14 years", label: "Compliance Service" },
-      { value: "4+", label: "Frameworks Supported" }
+      { value: "7+", label: "Frameworks Supported" },
+      { value: "100%", label: "Human-Validated Controls" },
+      { value: "24/7", label: "Evidence Telemetry" }
     ],
     faqs: [
-      { question: "How long does ISO 27001 certification take?", answer: "An organization typically requires 3 to 6 months to implement controls and complete the two stages of the external certification audit." },
-      { question: "What is Entersoft's role in the audit?", answer: "We act as your compliance consulting partner—conducting gaps, drafting policies, implementing controls, running the internal audit, and joining external audit meetings as your technical advocate." },
-      { question: "Do you supply software tools?", answer: "We help you select and configure compliance automation tools, but our primary focus is expert consulting, custom policy drafting, and hands-on control implementation." },
-      { question: "What RBI guidelines do you cover?", answer: "We cover the full spectrum of cyber security guidelines for NBFCs, payment gateways, and banking entities, ensuring 100% compliance with CERT-In VAPT reporting requirements." },
-      { question: "What happens if we fail our readiness check?", answer: "We identify gaps during internal audits and resolve them before the official external audit occurs, resulting in our 100% certification success rate." },
-      { question: "Do you provide certification directly?", answer: "No. To maintain independence, certifications must be issued by licensed external registrars. We prepare you and work directly with the registrar to secure compliance." }
+      { question: "How is Digital Trust different from traditional compliance?", answer: "Traditional compliance is a point-in-time annual checklist. Digital Trust is an ongoing operating model combining automated telemetry, continuous drift detection, custom policy engineering, and hands-on auditor liaison to keep your enterprise permanently audit-ready." },
+      { question: "What is Entersoft's role in the audit?", answer: "We act as your advisory and readiness partner—conducting gap analyses, drafting policies, implementing controls, running simulated internal dry runs, and joining external audit meetings as your technical advocate." },
+      { question: "Do you supply software tools?", answer: "We connect automated read-only evidence pipelines to your cloud and identity providers while focusing on expert GRC advisory, custom policy engineering, and hands-on control defense." },
+      { question: "What RBI and CERT-In guidelines do you cover?", answer: "We cover the complete spectrum of cybersecurity mandates for banking, NBFCs, and fintechs, including mandatory 180-day log retention verification and CERT-In empanelled audit reporting." },
+      { question: "Do you provide certification directly?", answer: "To maintain independence, official ISO 27001 certificates and SOC 2 reports must be issued by accredited external registrars and licensed CPA firms. We prepare you and work directly with the registrar to secure compliance." }
     ]
   },
   siem: {
     slug: "siem",
     name: "Cyber Defense Operations",
     category: "CYBER DEFENSE OPERATIONS",
-    tagline: "Managed SIEM and 24/7 Security Operations Center monitoring.",
-    heroStatement: "24/7 SOC Event Monitoring.\nManaged Threat Hunting.",
-    overview: "Leverage our 24/7 Managed SIEM and SOC. We aggregate logs across endpoints, networks, databases, and clouds to run correlation rules and stop threats instantly.",
+    tagline: "MDR and Detection Engineering, delivered through your existing security stack or an Entersoft-managed architecture.",
+    heroStatement: "MDR & Detection Engineering.\nExisting Stack or Managed Architecture.",
+    overview: "MDR and Detection Engineering, delivered through your existing security stack or an Entersoft-managed architecture. Senior analysts provide telemetry correlation, alert triage, root-cause investigation, and continuous rule tuning.",
     col2Description: "Signal-to-Risk Operations",
-    col3Metadata: "SOC • SIEM • Threat Monitoring",
+    col3Metadata: "MDR • Detection Engineering • Flexible Stack",
     process: [
-      { index: "01", title: "Log Source Setup", description: "Connect firewalls, directory services, databases, and servers to SIEM collector." },
-      { index: "02", title: "Correlation Configuration", description: "Write custom security rules tailored to detect your specific threat surface." },
-      { index: "03", title: "24/7 SOC Triage", description: "Our team monitors security events around the clock to filter out false alerts." },
-      { index: "04", title: "Orchestrated Response", description: "Deploy pre-built SOAR playbooks to automatically isolate compromised assets." }
+      { index: "01", title: "Log & Telemetry Connection", description: "Connect cloud, network, identity, and endpoint feeds to your existing stack or managed collector." },
+      { index: "02", title: "Detection Engineering", description: "Develop and tune custom detection rules tailored to your environment and threat profile." },
+      { index: "03", title: "Analyst Triage & Investigation", description: "Senior analysts evaluate security events, perform root-cause analysis, and filter out false alerts." },
+      { index: "04", title: "Containment & Remediation", description: "Provide actionable containment guidance and same-day remediation support for confirmed incidents." }
     ],
     deliverables: [
-      "Weekly Security Posture Summary",
-      "SIEM System Health Audits",
-      "Incident Response Playbooks",
-      "Compliance Log Archives"
+      "Continuous Detection Engineering & Rule Tuning",
+      "Root Cause Investigation & Triage Reports",
+      "Same-Day Containment Guidance",
+      "Telemetry Integration & Health Verification"
     ],
-    integrations: ["Splunk", "Microsoft Sentinel", "Wazuh", "Elastic"],
+    integrations: ["Splunk", "Microsoft Sentinel", "Wazuh", "Elastic", "CrowdStrike"],
     stats: [
-      { value: "24/7/365", label: "Log Monitoring" },
-      { value: "< 5 min", label: "MTTD" },
-      { value: "99.9%", label: "Correlation Accuracy" }
+      { value: "MDR & DETECTION", label: "Senior-Led Operations" },
+      { value: "HYBRID", label: "Existing or Managed Stack" },
+      { value: "TUNED", label: "Continuous Noise Reduction" }
     ],
     faqs: [
-      { question: "Do we need to buy our own SIEM software?", answer: "No. We can deploy our proprietary open-standards SIEM stack, or we can manage and optimize your existing instance of Splunk, Sentinel, or QRadar." },
-      { question: "What is your average response time?", answer: "Our Security Operations Center maintains a Mean Time to Detect (MTTD) of under 5 minutes for critical severity alerts." },
-      { question: "How do you handle log storage?", answer: "Logs are compressed, encrypted, and archived for up to 1 year (or longer, based on compliance needs) in write-once-read-many (WORM) storage." },
-      { question: "What alerts require human contact?", answer: "Only verified, high-risk security incidents. We filter out noise, so you are only contacted when an actionable threat requires remediation or isolated actions." }
+      { question: "Do we need to buy or replace our existing SIEM software?", answer: "No. Entersoft analysts operate with your existing security stack (Splunk, Sentinel, Elastic, QRadar, etc.) or can deliver through an Entersoft-managed detection architecture." },
+      { question: "How does Entersoft handle false positives?", answer: "Senior analysts verify alerts manually and feed incident learnings back into custom detection rules to continuously reduce recurring noise through rule tuning." },
+      { question: "What is included versus customer-owned during incident containment?", answer: "Entersoft provides active threat investigation and immediate containment guidance. Customer engineering teams retain authorization and control over host isolation or credential actions in their environment." },
+      { question: "What alerts trigger customer notification?", answer: "Only verified, high-confidence security incidents. We filter out noise so your engineering team receives clear, actionable investigation and containment guidance." }
     ]
   },
   "smart-contract-audits": {

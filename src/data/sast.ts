@@ -219,7 +219,7 @@ export const faqs = {
   items: [
     {
       q: "How does EnProbe SAST achieve such a low false-positive rate?",
-      a: "Unlike traditional legacy SAST tools that rely on simple regex pattern matching, EnProbe uses a semantic engine that builds a full Abstract Syntax Tree (AST) and Control Flow Graph (CFG). We then apply advanced taint analysis to track data flow from sources (user input) to sinks (dangerous functions). A finding is only flagged if there is a clear, unvalidated path from a source to a sink, ensuring almost zero false positives.",
+      a: "Unlike traditional legacy SAST tools that rely on simple regex pattern matching, EnProbe uses a semantic engine that builds a full Abstract Syntax Tree (AST) and Control Flow Graph (CFG). We then apply advanced taint analysis to track data flow from sources (user input) to sinks (dangerous functions). A finding is only flagged if there is a clear, unvalidated path from a source to a sink, delivering human-validated findings.",
     },
     {
       q: "Does EnProbe SAST store my source code?",

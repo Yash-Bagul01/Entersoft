@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 const OTHER_SERVICES = [
   { name: "APPLICATION ASSURANCE", href: "/services/appsec" },
   { name: "ADVERSARIAL VALIDATION", href: "/services/vapt" },
-  { name: "CLOUD RESILIENCE", href: "/services/managed-cloud-security" },
+  { name: "CLOUD RESILIENCE", href: "/services/cloud-resilience" },
   { name: "DIGITAL TRUST", href: "/services/compliance-management" },
   { name: "CYBER DEFENSE OPERATIONS", href: "/services/siem" },
   { name: "PROTOCOL ASSURANCE", href: "/services/smart-contract-audits" },

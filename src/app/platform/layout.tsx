@@ -37,7 +37,7 @@ export default function PlatformLayout({
 
   return (
     <div 
-      data-page={isCyberOntology ? "cyber-ontology" : isSast ? "sast" : isSca ? "sca" : isIac ? "iac" : isSbom ? "sbom" : isSecrets ? "secrets" : "platform"} 
+      data-page={isCyberOntology ? "cyber-ontology" : isSast ? "sast" : isSca ? "sca" : isSbom ? "sbom" : isSecrets ? "secrets" : "platform"} 
       className={isLightPage ? "bg-[#FAFCFF] text-slate-900 min-h-screen" : "dark bg-[#0A0A0A] text-white min-h-screen"}
     >
       <Navbar />

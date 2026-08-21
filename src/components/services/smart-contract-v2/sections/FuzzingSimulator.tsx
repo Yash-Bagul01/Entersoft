@@ -377,7 +377,7 @@ export default function FuzzingSimulator() {
           {/* Minimal Status overlays */}
           <div className="absolute right-6 top-6 z-20 font-mono text-[8px] text-[#6e6e6e] flex items-center gap-2">
             <span className="w-1 h-1 rounded-full bg-[#e5ff5d] animate-pulse" />
-            <span className="tracking-widest uppercase">ACTIVE INVARIANT RUNNER</span>
+            <span className="tracking-widest uppercase">ACTIVE INVARIANT RUNNER — SAMPLE DATA</span>
           </div>
 
           <div className="absolute left-6 bottom-6 z-20 font-mono text-[8px] text-[#9c9c9c] flex flex-col gap-1 text-left">

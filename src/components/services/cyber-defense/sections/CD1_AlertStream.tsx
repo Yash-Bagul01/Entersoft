@@ -16,11 +16,11 @@ export default function CD1_AlertStream() {
       <div className="w-full px-6 py-3.5 flex items-center justify-between border-b border-[var(--cd-border)] bg-[#080C14]/90 backdrop-blur-md shrink-0">
         <div className="flex items-center gap-3">
           <span className="font-mono text-xs font-bold uppercase tracking-widest text-[#60A5FA]">
-            LIVE THREAT FEED
+            THREAT STREAM SIMULATION
           </span>
           <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-[#60A5FA] opacity-60" />
           <span className="hidden sm:inline-block font-mono text-[10px] text-[#64748B] tracking-wider">
-            SOC TELEMETRY STREAM
+            SOC TELEMETRY STREAM — SAMPLE DATA
           </span>
         </div>
 

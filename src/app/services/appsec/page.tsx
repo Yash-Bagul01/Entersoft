@@ -3,11 +3,24 @@ import type { Metadata } from "next";
 import AppSecPlatformPage from "@/components/services/AppSecPlatformPage";
 import { APP_URL, getCanonicalUrl, ROUTES } from "@/config/routes";
 
+const TITLE = "Web, API & Mobile Application Security Testing | Entersoft";
+const DESCRIPTION =
+  "Secure web, API and mobile releases with expert-led application security testing, business-logic validation, remediation guidance and retesting.";
+const CANONICAL = getCanonicalUrl(ROUTES.services.appsec);
+
 export const metadata: Metadata = {
-  title: "Application Assurance | Web, API & Mobile AppSec | Entersoft",
-  description: "Protect your business with comprehensive Application Assurance services for web, API, mobile, and cloud applications. Identify vulnerabilities early with expert AppSec assessments from Entersoft.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: {
-    canonical: getCanonicalUrl(ROUTES.services.appsec),
+    canonical: CANONICAL,
+  },
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    url: CANONICAL,
+    siteName: "Entersoft Security",
+    locale: "en_US",
+    type: "website",
   },
 };
 
@@ -51,7 +64,7 @@ const appSecFaqs = [
 ];
 
 export default function AppSecPage() {
-  const canonicalUrl = getCanonicalUrl(ROUTES.services.appsec);
+  const canonicalUrl = CANONICAL;
   
   const jsonLd = {
     "@context": "https://schema.org",
@@ -82,8 +95,8 @@ export default function AppSecPage() {
         "@type": "WebPage",
         "@id": `${canonicalUrl}/#webpage`,
         "url": canonicalUrl,
-        "name": "Application Assurance | Web, API & Mobile AppSec | Entersoft",
-        "description": "Protect your business with comprehensive Application Assurance services for web, API, mobile, and cloud applications. Identify vulnerabilities early with expert AppSec assessments from Entersoft.",
+        "name": TITLE,
+        "description": DESCRIPTION,
         "inLanguage": "en",
         "isPartOf": {
           "@id": `${APP_URL}/#website`

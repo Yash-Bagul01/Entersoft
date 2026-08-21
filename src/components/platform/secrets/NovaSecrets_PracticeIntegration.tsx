@@ -32,7 +32,7 @@ const practices: Practice[] = [
     title: "Cloud Resilience",
     category: "CSPM • CWPP • CLOUD IAM POSTURE",
     description: "Prevents AWS IAM keys, Azure credentials, and GCP service accounts from leaking into repositories and triggers instant automated rotation playbooks.",
-    href: "/services/managed-cloud-security",
+    href: "/services/cloud-resilience",
     capabilities: [
       "Continuous cloud provider IAM key sync",
       "Automated key revocation & vault re-seeding",

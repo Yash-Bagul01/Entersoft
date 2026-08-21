@@ -14,10 +14,10 @@ const TRADITIONAL_ISSUES = [
 ];
 
 export const ENTERSOFT_ADVANTAGES = [
-  { title: "<15 MIN HUMAN TRIAGE SLA", desc: "Every CRITICAL alert evaluated and verified by a senior SOC lead before escalation." },
+  { title: "SENIOR-LED TRIAGE & INVESTIGATION", desc: "Alerts evaluated and verified by senior security analysts before escalation to your engineering team." },
   { title: "UNIFIED CORRELATION MODEL", desc: "Cross-surface signal ingestion across AWS/Azure, EDR, IAM, WAF, and network NDR." },
-  { title: "ACTIVE THREAT CONTAINMENT", desc: "Immediate isolation of compromised credentials, host nodes, and attacker C2 channels." },
-  { title: "CONTINUOUS DETECTION TUNING", desc: "Custom detection rules continuously engineered for your specific cloud & application footprint." },
+  { title: "ACTIVE CONTAINMENT GUIDANCE", desc: "Immediate containment guidance to isolate compromised credentials, host nodes, and attacker C2 channels." },
+  { title: "CONTINUOUS DETECTION TUNING", desc: "Custom detection rules continuously engineered for your specific environment to reduce recurring noise." },
 ];
 
 export default function CD_ComparisonBlock() {
@@ -75,7 +75,7 @@ export default function CD_ComparisonBlock() {
 
               <div className="mt-8 pt-4 border-t border-white/10">
                 <span className="font-mono text-[11px] text-red-400/80 uppercase tracking-wider block">
-                  RESULT: HIGH MTTR & BLIND SPOTS
+                  RESULT: HIGH MTTR & UNRESOLVED NOISE
                 </span>
               </div>
             </CDGlowCard>
@@ -101,7 +101,7 @@ export default function CD_ComparisonBlock() {
                     THE ENTERSOFT MODEL
                   </span>
                   <span className="font-mono text-[10px] text-[#60A5FA] uppercase px-2.5 py-1 rounded bg-[rgba(59,130,246,0.12)] border border-[rgba(96,165,250,0.25)]">
-                    CONTINUOUS SOC
+                    CONTINUOUS MDR
                   </span>
                 </div>
 
@@ -124,7 +124,7 @@ export default function CD_ComparisonBlock() {
 
               <div className="mt-8 pt-4 border-t border-[var(--cd-border)]">
                 <span className="font-mono text-[11px] text-[#60A5FA] uppercase tracking-wider block">
-                  RESULT: &lt;15 MIN TRIAGE & FULL SURFACES COVERAGE
+                  RESULT: SENIOR ANALYST TRIAGE & CONTINUOUS RULE TUNING
                 </span>
               </div>
             </CDGlowCard>

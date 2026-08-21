@@ -508,7 +508,7 @@ export default function CyberOntologyRoot() {
                 <h4 className="text-[20px] font-bold font-display text-slate-900">Cloud Security & Resilience</h4>
                 <p className="text-[14px] text-slate-600 mt-2 font-sans">Provides the asset dependency map needed to contextualize CSPM findings and multi-cloud misconfigurations.</p>
               </div>
-              <Link href="/services/managed-cloud-security" className="inline-flex items-center gap-2 font-mono text-[12px] font-bold text-[#08428C] uppercase tracking-wider hover:underline pt-2">
+              <Link href="/services/cloud-resilience" className="inline-flex items-center gap-2 font-mono text-[12px] font-bold text-[#08428C] uppercase tracking-wider hover:underline pt-2">
                 <span>Explore Practice</span> <ChevronRight className="w-4 h-4" />
               </Link>
             </div>
@@ -631,7 +631,7 @@ export default function CyberOntologyRoot() {
           </h2>
 
           <p style={{ color: "#cbd5e1" }} className="text-[17px] text-slate-300 !text-slate-300 font-sans max-w-[620px] leading-relaxed">
-            Establish a baseline. An Entersoft threat coordinator will analyze your asset architecture and respond within 2 hours.
+            Establish a baseline. An Entersoft security coordinator will analyze your asset architecture and respond within 2 hours.
           </p>
 
           <div className="pt-4">

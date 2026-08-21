@@ -1,27 +1,67 @@
-export const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://entersoftsecurity.com";
+/**
+ * The single canonical production host. Every canonical URL, sitemap entry and
+ * JSON-LD @id resolves against this, so the site never presents two indexable
+ * hostnames for the same page. It is intentionally not environment-driven: a
+ * canonical URL must always point at production, whatever host serves the page.
+ */
+export const PRODUCTION_URL = "https://www.entersoftsecurity.com";
+
+export const APP_URL = PRODUCTION_URL;
+
+/**
+ * Deploy-specific base, used only for `metadataBase` so relative asset URLs
+ * resolve against the host actually serving the page.
+ */
+export const METADATA_BASE = (
+  process.env.NEXT_PUBLIC_APP_URL || PRODUCTION_URL
+).replace(/\/$/, "");
+
+/** Preview, staging and local builds must not be indexable. */
+export const IS_PRODUCTION_HOST = (() => {
+  try {
+    return ["www.entersoftsecurity.com", "entersoftsecurity.com"].includes(
+      new URL(METADATA_BASE).hostname
+    );
+  } catch {
+    return false;
+  }
+})();
 
 export const SERVICE_SLUGS = {
-  appsec: "appsec", // Future: "application-security-assurance"
-  vapt: "vapt",
-  cloud: "managed-cloud-security",
-  compliance: "compliance-management",
-  siem: "siem",
-  smartContract: "smart-contract-audits",
-  aiAst: "ai-ast",
+  appsec: "application-security-testing",
+  vapt: "penetration-testing",
+  cloud: "cloud-security",
+  compliance: "grc-compliance-privacy",
+  siem: "managed-detection-response",
+  smartContract: "smart-contract-security",
+  aiAst: "ai-security-testing",
 } as const;
 
 export const ROUTES = {
   home: "/",
+  contact: "/contact",
+  company: {
+    accreditations: "/company/accreditations",
+  },
   services: {
-    appsec: `/services/${SERVICE_SLUGS.appsec}`, // Future: `/offerings/${SERVICE_SLUGS.appsec}`
+    appsec: `/services/${SERVICE_SLUGS.appsec}`,
     vapt: `/services/${SERVICE_SLUGS.vapt}`,
     cloud: `/services/${SERVICE_SLUGS.cloud}`,
     compliance: `/services/${SERVICE_SLUGS.compliance}`,
     siem: `/services/${SERVICE_SLUGS.siem}`,
     smartContract: `/services/${SERVICE_SLUGS.smartContract}`,
     aiAst: `/services/${SERVICE_SLUGS.aiAst}`,
+    cloudResilience: {
+      hub: `/services/${SERVICE_SLUGS.cloud}`,
+      assessment: `/services/${SERVICE_SLUGS.cloud}/assessment`,
+      penetrationTesting: `/services/${SERVICE_SLUGS.cloud}/penetration-testing`,
+      postureManagement: `/services/${SERVICE_SLUGS.cloud}/posture-management`,
+      managedDetection: `/services/${SERVICE_SLUGS.cloud}/managed-detection`,
+      containersIac: `/services/${SERVICE_SLUGS.cloud}/containers-iac`,
+    },
   },
   platform: {
+    enprobe: "/platform/enprobe",
     sast: "/platform/sast",
     sca: "/platform/sca",
     sbomLicenseRisk: "/platform/sbom-license-risk",
@@ -59,7 +99,7 @@ export function getServiceKeyFromSlug(slug: string): string {
     return "appsec";
   }
   if (slug === SERVICE_SLUGS.vapt || slug === "vapt") return "vapt";
-  if (slug === SERVICE_SLUGS.cloud || slug === "managed-cloud-security" || slug === "cloud") return "managed-cloud-security";
+  if (slug === SERVICE_SLUGS.cloud || slug === "cloud-resilience" || slug === "managed-cloud-security" || slug === "cloud") return "cloud-resilience";
   if (slug === SERVICE_SLUGS.compliance || slug === "compliance-management" || slug === "compliance") return "compliance-management";
   if (slug === SERVICE_SLUGS.siem || slug === "siem") return "siem";
   if (slug === SERVICE_SLUGS.smartContract || slug === "smart-contract-audits" || slug === "smart-contract") return "smart-contract-audits";
@@ -77,6 +117,7 @@ export function getServiceRoute(slug: string): string {
       return ROUTES.services.appsec;
     case "vapt":
       return ROUTES.services.vapt;
+    case "cloud-resilience":
     case "managed-cloud-security":
       return ROUTES.services.cloud;
     case "compliance-management":

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown, Shield, Code, Cloud, CheckSquare, Server, Cpu, HelpCircle, Layers, FileText, Database, Target, Zap, Activity, Eye, Compass, Workflow, Key, Terminal, Box } from "lucide-react";
+import { Menu, X, ChevronDown, Shield, Code, Cloud, CheckSquare, Server, Cpu, HelpCircle, Layers, FileText, Database, Target, Zap, Activity, Eye, Compass, Workflow, Key, Terminal, Box, Award } from "lucide-react";
 import { Button } from "../ui/Button";
 import { cn } from "@/lib/utils";
 import ThemeToggle from "../ui/ThemeToggle";
@@ -24,6 +24,7 @@ interface NavItem {
   megaMenu?: {
     blurb: string;
     ctaText?: string;
+    ctaHref?: string;
     sections: {
       title: string;
       items: MegaItem[];
@@ -65,39 +66,32 @@ export default function Navbar() {
   const navItems: NavItem[] = [
     {
       label: "Platform",
-      href: ROUTES.platform.sast,
+      href: ROUTES.platform.enprobe,
       megaMenu: {
-        blurb: "EnProbe — Zero-noise AppSec platform unifying SAST, DAST, SCA, API Security, ASPM, and Threat Intelligence.",
+        blurb: "EnProbe — continuous security visibility, vulnerability lifecycle management, and evidence across your enterprise.",
         ctaText: "Explore EnProbe Platform →",
+        ctaHref: ROUTES.platform.enprobe,
         sections: [
           {
-            title: "Scan Code",
+            title: "Core Platform",
             items: [
-              { name: "SAST", href: ROUTES.platform.sast, desc: "Early static security analysis", icon: <Code className="w-4 h-4" /> },
-              { name: "Open Source (SCA)", href: ROUTES.platform.sca, desc: "Find vulnerable dependencies", icon: <Database className="w-4 h-4" /> },
-              { name: "SBOM & License Risk", href: ROUTES.platform.sbomLicenseRisk, desc: "Generate SBOMs and track licenses", icon: <CheckSquare className="w-4 h-4" /> },
-              { name: "Secrets", href: ROUTES.platform.secrets, desc: "Detect exposed secrets in applications", icon: <Key className="w-4 h-4" /> },
-              { name: "Infrastructure as Code", href: ROUTES.platform.iac, desc: "Ingest IaC security findings", icon: <Terminal className="w-4 h-4" /> },
-              { name: "Container", href: ROUTES.platform.container, desc: "Track container image vulnerabilities", icon: <Box className="w-4 h-4" /> }
+              { name: "EnProbe Overview", href: ROUTES.platform.enprobe, desc: "Continuous visibility, decisioning & evidence", icon: <Code className="w-4 h-4" /> },
+              { name: "Static Security (SAST)", href: ROUTES.platform.sast, desc: "Source code flaw discovery", icon: <Code className="w-4 h-4" /> },
+              { name: "Open Source Risk (SCA)", href: ROUTES.platform.sca, desc: "Vulnerable third-party libraries", icon: <Database className="w-4 h-4" /> },
+              { name: "SBOM & License Governance", href: ROUTES.platform.sbomLicenseRisk, desc: "Generate SBOMs & track license risk", icon: <CheckSquare className="w-4 h-4" /> },
+              { name: "Secrets Detection", href: ROUTES.platform.secrets, desc: "Find exposed credentials in code", icon: <Key className="w-4 h-4" /> },
+              { name: "Infrastructure as Code", href: ROUTES.platform.iac, desc: "IaC configuration risk scanning", icon: <Terminal className="w-4 h-4" /> }
             ]
           },
           {
-            title: "Test Runtime",
+            title: "Runtime & Exposure",
             items: [
-              { name: "DAST & AI DAST", href: ROUTES.platform.dast, desc: "Test runtime, prove exploitability", icon: <Activity className="w-4 h-4" /> },
-              { name: "Agentic Pentesting", href: ROUTES.platform.agenticPentesting, desc: "Automate real-world attack techniques", icon: <Zap className="w-4 h-4" /> },
-              { name: "API Security Testing", href: ROUTES.platform.apiSecurity, desc: "Discover and test APIs", icon: <Compass className="w-4 h-4" /> },
-              { name: "Attack Surface Management", href: ROUTES.platform.attackSurfaceManagement, desc: "Identify exposed apps and endpoints", icon: <Target className="w-4 h-4" /> },
-              { name: "Cloud AppSec", href: ROUTES.platform.cloudAppsec, desc: "Get a single-pane view of cloud app risk", icon: <Cloud className="w-4 h-4" /> },
-              { name: "AI AppSec", href: ROUTES.platform.aiAppsec, desc: "Scan smarter, accelerate remediation", icon: <Cpu className="w-4 h-4" /> }
-            ]
-          },
-          {
-            title: "Manage Vulnerabilities",
-            items: [
-              { name: "Vulnerability Management (ASPM)", href: ROUTES.platform.aspm, desc: "Centralize and correlate AppSec findings", icon: <Workflow className="w-4 h-4" /> },
-              { name: "Compliance & Executive Reporting", href: ROUTES.platform.complianceReporting, desc: "Measure risk and impact", icon: <Shield className="w-4 h-4" /> },
-              { name: "Threat Intelligence", href: ROUTES.platform.threatIntelligence, desc: "Reachability, exploitability, and business logic", icon: <Eye className="w-4 h-4" /> }
+              { name: "DAST & Dynamic Testing", href: ROUTES.platform.dast, desc: "Runtime exploitability testing", icon: <Activity className="w-4 h-4" /> },
+              { name: "Agentic Pentesting", href: ROUTES.platform.agenticPentesting, desc: "Automate adversarial workflows", icon: <Zap className="w-4 h-4" /> },
+              { name: "API Security Testing", href: ROUTES.platform.apiSecurity, desc: "Discover and test API endpoints", icon: <Compass className="w-4 h-4" /> },
+              { name: "Attack Surface Visibility", href: ROUTES.platform.attackSurfaceManagement, desc: "Identify reachable endpoints", icon: <Target className="w-4 h-4" /> },
+              { name: "Cloud AppSec", href: ROUTES.platform.cloudAppsec, desc: "Single-pane cloud application risk", icon: <Cloud className="w-4 h-4" /> },
+              { name: "AI AppSec", href: ROUTES.platform.aiAppsec, desc: "LLM & pipeline assurance", icon: <Cpu className="w-4 h-4" /> }
             ]
           }
         ]
@@ -107,24 +101,46 @@ export default function Navbar() {
       label: "Services",
       href: "/#services",
       megaMenu: {
-        blurb: "7 specialized practice areas delivering continuous security, penetration testing, compliance readiness, and AI system defense.",
-        ctaText: "View All Practices →",
+        blurb: "Enterprise security engineering: Application security, penetration testing, cloud, GRC, MDR, smart contracts, and AI security.",
+        ctaText: "Explore Expert Services →",
         sections: [
           {
             title: "Core Practices",
             items: [
-              { name: "Application Assurance", href: ROUTES.services.appsec, desc: "APPSEC • DEVSECOPS • SECURE SDLC", icon: <Code className="w-4 h-4" /> },
-              { name: "Adversarial Validation", href: ROUTES.services.vapt, desc: "PENETRATION TESTING • RED TEAMING", icon: <Shield className="w-4 h-4" /> },
-              { name: "Cloud Resilience", href: ROUTES.services.cloud, desc: "CSPM • CWPP • CLOUD POSTURE", icon: <Cloud className="w-4 h-4" /> },
-              { name: "Digital Trust", href: ROUTES.services.compliance, desc: "ISO 27001 • SOC 2 • CERT-IN", icon: <CheckSquare className="w-4 h-4" /> }
+              { name: "Application Security", href: ROUTES.services.appsec, desc: "Web, API & Mobile AST", icon: <Code className="w-4 h-4" /> },
+              { name: "Penetration Testing", href: ROUTES.services.vapt, desc: "CREST-Accredited Pen Testing", icon: <Shield className="w-4 h-4" /> },
+              { name: "Cloud Security", href: ROUTES.services.cloud, desc: "AWS, Azure, GCP & Identity", icon: <Cloud className="w-4 h-4" /> },
+              { name: "GRC, Privacy & Compliance", href: ROUTES.services.compliance, desc: "ISO 27001, SOC 2, DPDP", icon: <CheckSquare className="w-4 h-4" /> }
             ]
           },
           {
-            title: "Specialized Security",
+            title: "Specialized Practices",
             items: [
-              { name: "Cyber Defense Operations", href: ROUTES.services.siem, desc: "MDR • SOC • THREAT MONITORING", icon: <Server className="w-4 h-4" /> },
-              { name: "Protocol Assurance", href: ROUTES.services.smartContract, desc: "WEB3 • SMART CONTRACT AUDITS", icon: <Cpu className="w-4 h-4" /> },
-              { name: "AI Systems Assurance", href: ROUTES.services.aiAst, desc: "AI AST • LLM SECURITY • PROMPT GUARD", icon: <Layers className="w-4 h-4" /> }
+              { name: "Managed Detection & Response", href: ROUTES.services.siem, desc: "Continuous 24/7 MDR Operations", icon: <Server className="w-4 h-4" /> },
+              { name: "Smart Contract Security", href: ROUTES.services.smartContract, desc: "Web3 & Protocol Audits", icon: <Cpu className="w-4 h-4" /> },
+              { name: "AI Security Testing", href: ROUTES.services.aiAst, desc: "LLM, RAG & Agentic Red-Teaming", icon: <Zap className="w-4 h-4" /> }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      label: "Solutions",
+      href: "/#services",
+      megaMenu: {
+        blurb: "Outcome-aligned solutions connecting technology, specialist expertise, and enterprise security programmes.",
+        ctaText: "View All Solutions →",
+        sections: [
+          {
+            title: "Enterprise Solutions",
+            items: [
+              { name: "AppSec Transformation", href: ROUTES.services.appsec, desc: "Embed security into release cycles", icon: <Code className="w-4 h-4" /> },
+              { name: "Continuous Exposure Management", href: ROUTES.platform.enprobe, desc: "Visibility, prioritisation & evidence", icon: <Eye className="w-4 h-4" /> },
+              { name: "Cloud Security Transformation", href: ROUTES.services.cloud, desc: "Posture, containers & IAM controls", icon: <Cloud className="w-4 h-4" /> },
+              { name: "Managed Cyber Defense", href: ROUTES.services.siem, desc: "Continuous threat monitoring", icon: <Server className="w-4 h-4" /> },
+              { name: "Regulatory Readiness", href: ROUTES.services.compliance, desc: "Turn compliance into evidence", icon: <CheckSquare className="w-4 h-4" /> },
+              { name: "Digital Asset Launch Assurance", href: ROUTES.services.smartContract, desc: "Pre-launch smart contract audits", icon: <Cpu className="w-4 h-4" /> },
+              { name: "AI Security Readiness", href: ROUTES.services.aiAst, desc: "Secure AI deployments", icon: <Zap className="w-4 h-4" /> }
             ]
           }
         ]
@@ -132,17 +148,20 @@ export default function Navbar() {
     },
     {
       label: "Industries",
-      href: "/#case-studies",
+      href: "/#services",
       megaMenu: {
-        blurb: "Sector-specific deployment: custom-tailored security postures engineered for financial services, fintech, healthcare, SaaS, government, critical infrastructure, and digital assets.",
-        ctaText: "View Sector Solutions →",
+        blurb: "Tailored cybersecurity postures engineered for regulated and high-growth technology sectors.",
+        ctaText: "Explore Industries →",
         sections: [
           {
-            title: "Focus Areas",
+            title: "Sectors Served",
             items: [
-              { name: "Fintech & Banking", href: "/#case-studies", desc: "API integrations & bank-ready audits.", icon: <CheckSquare className="w-4 h-4" /> },
-              { name: "NBFC compliance", href: "/#case-studies", desc: "Adhering strictly to RBI cybersecurity rules.", icon: <Shield className="w-4 h-4" /> },
-              { name: "Logistics Enterprise", href: "/#case-studies", desc: "Protecting global supply chain software.", icon: <Server className="w-4 h-4" /> }
+              { name: "BFSI & Fintech", href: ROUTES.contact, desc: "Banking, payments & API compliance", icon: <Shield className="w-4 h-4" /> },
+              { name: "SaaS & Technology", href: ROUTES.contact, desc: "Release assurance & SOC 2 evidence", icon: <Code className="w-4 h-4" /> },
+              { name: "Healthcare & Life Sciences", href: ROUTES.contact, desc: "HIPAA & health data boundaries", icon: <CheckSquare className="w-4 h-4" /> },
+              { name: "Government & Public Sector", href: ROUTES.contact, desc: "CERT-In empanelled auditing", icon: <Award className="w-4 h-4" /> },
+              { name: "Manufacturing & Infrastructure", href: ROUTES.contact, desc: "Critical infrastructure security", icon: <Server className="w-4 h-4" /> },
+              { name: "Web3 & Digital Assets", href: ROUTES.contact, desc: "Protocol & smart contract audits", icon: <Cpu className="w-4 h-4" /> }
             ]
           }
         ]
@@ -152,15 +171,15 @@ export default function Navbar() {
       label: "Resources",
       href: "/#insights",
       megaMenu: {
-        blurb: "Technical research, vulnerability writeups, and industry responses from Entersoft threat analysts.",
-        ctaText: "Read Research & Insights →",
+        blurb: "Practical security research, vulnerability writeups, and security advisories by Entersoft analysts.",
+        ctaText: "Read Research & Advisories →",
         sections: [
           {
-            title: "Documentation & Updates",
+            title: "Knowledge & Evidence",
             items: [
-              { name: "VAPT Security Roundup", href: "/#insights", desc: "Comparing manual and automated methods.", icon: <FileText className="w-4 h-4" /> },
-              { name: "CrowdStrike Resolution", href: "/#insights", desc: "Best-practice workaround documentation.", icon: <HelpCircle className="w-4 h-4" /> },
-              { name: "Cyberattacks Retrospective", href: "/#insights", desc: "Case reviews of critical web leaks.", icon: <Shield className="w-4 h-4" /> }
+              { name: "Research & Insights", href: "/#insights", desc: "Practical guidance for engineering teams", icon: <FileText className="w-4 h-4" /> },
+              { name: "Security Advisories", href: "/#insights", desc: "Technical vulnerability disclosures", icon: <HelpCircle className="w-4 h-4" /> },
+              { name: "Sample Deliverables", href: ROUTES.contact, desc: "Examine report structure & evidence", icon: <Layers className="w-4 h-4" /> }
             ]
           }
         ]
@@ -168,16 +187,17 @@ export default function Navbar() {
     },
     {
       label: "Company",
-      href: "/#contact",
+      href: ROUTES.company.accreditations,
       megaMenu: {
-        blurb: "14 years of uninterrupted cyber defense led by a stable, veteran engineering cohort.",
-        ctaText: "About Entersoft →",
+        blurb: "Since 2013 · CREST-accredited penetration testing · CERT-In empanelled auditing organisation.",
+        ctaText: "Verify Accreditations →",
+        ctaHref: ROUTES.company.accreditations,
         sections: [
           {
-            title: "About Us",
+            title: "Corporate",
             items: [
-              { name: "Corporate Overview", href: "/#contact", desc: "14 years breach-free engineering.", icon: <Layers className="w-4 h-4" /> },
-              { name: "Certifications Strip", href: "/#certifications", desc: "Empanelled and audited credentials.", icon: <CheckSquare className="w-4 h-4" /> }
+              { name: "Accreditations", href: ROUTES.company.accreditations, desc: "CREST, CERT-In, ISO 27001", icon: <Award className="w-4 h-4" /> },
+              { name: "Contact & Briefing", href: ROUTES.contact, desc: "Book an enterprise security briefing", icon: <Layers className="w-4 h-4" /> }
             ]
           }
         ]
@@ -208,7 +228,7 @@ export default function Navbar() {
       case "Platform":
         return "-left-28 w-[980px]";
       case "Services":
-        return "-left-36 w-[860px]";
+        return "-left-48 w-[980px]";
       case "Industries":
         return "-left-44 w-[640px]";
       case "Resources":
@@ -271,12 +291,12 @@ export default function Navbar() {
                   <Link
                     href={item.href}
                     className={cn(
-                      "flex items-center gap-1.5 font-mono text-[11px] font-bold uppercase tracking-wider px-4 py-2 transition-all relative group cursor-pointer",
+                      "flex items-center gap-1.5 font-mono text-[11px] font-medium uppercase tracking-wider px-4 py-2 transition-all relative group cursor-pointer",
                       isScrolled ? "rounded-full" : "rounded-md",
                       activeMega === idx
                         ? (isLightNavbar 
-                            ? "bg-slate-100/90 text-[#08428C] font-extrabold" 
-                            : "bg-cyan-500/20 text-cyan-400 font-extrabold")
+                            ? "bg-slate-100/90 text-[#08428C] font-semibold" 
+                            : "bg-cyan-500/20 text-cyan-400 font-semibold")
                         : (isLightNavbar
                             ? "text-slate-800 hover:text-[#08428C] hover:bg-slate-100/80"
                             : "text-slate-100 hover:text-cyan-400 hover:bg-white/10")
@@ -328,16 +348,31 @@ export default function Navbar() {
                             </p>
                           </div>
                           <div className="pt-4">
-                            <Link
-                              href={item.href}
-                              className={cn(
-                                "text-[12px] font-mono underline transition-colors",
-                                isLightPage ? "text-slate-900 hover:text-[#08428C]" : "text-white hover:text-cyan-400"
-                              )}
-                              data-cursor="link"
-                            >
-                              {item.megaMenu.ctaText || "Explore →"}
-                            </Link>
+                            {item.megaMenu.ctaHref ? (
+                              <a
+                                href={item.megaMenu.ctaHref}
+                                target={item.megaMenu.ctaHref.startsWith("http") ? "_blank" : undefined}
+                                rel={item.megaMenu.ctaHref.startsWith("http") ? "noopener noreferrer" : undefined}
+                                className={cn(
+                                  "text-[12px] font-mono underline transition-colors",
+                                  isLightPage ? "text-slate-900 hover:text-[#08428C]" : "text-white hover:text-cyan-400"
+                                )}
+                                data-cursor="link"
+                              >
+                                {item.megaMenu.ctaText || "Explore →"}
+                              </a>
+                            ) : (
+                              <Link
+                                href={item.href}
+                                className={cn(
+                                  "text-[12px] font-mono underline transition-colors",
+                                  isLightPage ? "text-slate-900 hover:text-[#08428C]" : "text-white hover:text-cyan-400"
+                                )}
+                                data-cursor="link"
+                              >
+                                {item.megaMenu.ctaText || "Explore →"}
+                              </Link>
+                            )}
                           </div>
                         </div>
 
@@ -408,7 +443,7 @@ export default function Navbar() {
                 href="/#contact"
                 className={cn(isLightPage && "!border !border-slate-900 hover:!border-black font-semibold shadow-xs")}
               >
-                Request Briefing
+                Book a Briefing
               </Button>
             </div>
 

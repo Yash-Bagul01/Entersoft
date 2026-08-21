@@ -1,34 +1,64 @@
 import type { Metadata } from "next";
-import { Geist, Inter, JetBrains_Mono } from "next/font/google";
+import { Inter_Tight, Inter, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import SmoothScrollProvider from "@/components/layout/SmoothScrollProvider";
-import CustomCursor from "@/components/layout/CustomCursor";
 import GrainOverlay from "@/components/layout/GrainOverlay";
+import { IS_PRODUCTION_HOST, METADATA_BASE } from "@/config/routes";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const interTight = Inter_Tight({
+  variable: "--font-inter-tight",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
 });
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
+const ibmPlexMono = IBM_Plex_Mono({
+  variable: "--font-ibm-plex-mono",
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  display: "swap",
 });
+
+const SITE_TITLE = "Application Security & Penetration Testing | Entersoft";
+const SITE_DESCRIPTION =
+  "Entersoft combines EnProbe automation with expert-led application security, penetration testing, cloud, MDR and AI security services for enterprises.";
 
 export const metadata: Metadata = {
-  title: "Entersoft Security | Flagship Application & Cloud Security",
-  description: "One scan to know where you are exposed. One report to fix it fast. Award-winning cybersecurity including AppSec, VAPT, Managed Cloud Security, Compliance, SIEM, and Smart Contract audits.",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://entersoftsecurity.com"),
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  metadataBase: new URL(METADATA_BASE),
+  applicationName: "Entersoft Security",
   openGraph: {
-    title: "Entersoft Security | Flagship Application & Cloud Security",
-    description: "One scan to know where you are exposed. One report to fix it fast. Certified VAPT and cybersecurity solutions.",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    siteName: "Entersoft Security",
+    locale: "en_US",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+  },
+  robots: IS_PRODUCTION_HOST
+    ? {
+        index: true,
+        follow: true,
+        googleBot: {
+          index: true,
+          follow: true,
+          "max-image-preview": "large",
+          "max-snippet": -1,
+          "max-video-preview": -1,
+        },
+      }
+    : { index: false, follow: false },
 };
 
 export default function RootLayout({
@@ -41,7 +71,7 @@ export default function RootLayout({
       lang="en"
       data-theme="light"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      className={`${interTight.variable} ${inter.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
       <head>
         <script
@@ -65,7 +95,6 @@ export default function RootLayout({
             {children}
           </div>
         </SmoothScrollProvider>
-        <CustomCursor />
       </body>
     </html>
   );

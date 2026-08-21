@@ -34,7 +34,7 @@ export default function ThreatStream() {
         <span>RUNTIME AUDIT LOG STREAM</span>
         <span className="flex items-center gap-1.5 text-cyan-400">
           <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-          LIVE FEED
+          ILLUSTRATIVE FEED — SAMPLE DATA
         </span>
       </div>
 

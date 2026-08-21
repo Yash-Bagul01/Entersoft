@@ -240,7 +240,7 @@ export const platformPillars: Record<string, PlatformPillar> = {
     whereItFits: [
       {
         serviceName: "Cloud Resilience",
-        serviceHref: "/services/managed-cloud-security",
+        serviceHref: "/services/cloud-resilience",
         description: "Prevents cloud provider credentials from leaking into public Git repositories."
       },
       {
@@ -297,7 +297,7 @@ export const platformPillars: Record<string, PlatformPillar> = {
     whereItFits: [
       {
         serviceName: "Cloud Resilience",
-        serviceHref: "/services/managed-cloud-security",
+        serviceHref: "/services/cloud-resilience",
         description: "Integrates pre-deployment IaC validation with post-deployment CSPM monitoring."
       },
       {
@@ -354,7 +354,7 @@ export const platformPillars: Record<string, PlatformPillar> = {
     whereItFits: [
       {
         serviceName: "Cloud Resilience",
-        serviceHref: "/services/managed-cloud-security",
+        serviceHref: "/services/cloud-resilience",
         description: "Secures containerized workloads across AWS EKS, GCP GKE, and Azure AKS."
       },
       {
@@ -376,7 +376,7 @@ export const platformPillars: Record<string, PlatformPillar> = {
     whatItDoes: [
       {
         title: "Proof-Based Vulnerability Scanning",
-        description: "Safely execute exploit payloads to prove vulnerability presence with zero false positives."
+        description: "Safely execute exploit payloads to prove vulnerability presence with human-validated findings."
       },
       {
         title: "AI-Driven Crawling & Authentication",
@@ -588,7 +588,7 @@ export const platformPillars: Record<string, PlatformPillar> = {
       },
       {
         serviceName: "Cloud Resilience",
-        serviceHref: "/services/managed-cloud-security",
+        serviceHref: "/services/cloud-resilience",
         description: "Identifies shadow cloud accounts and unmanaged internet-facing cloud resources."
       }
     ]
@@ -640,7 +640,7 @@ export const platformPillars: Record<string, PlatformPillar> = {
     whereItFits: [
       {
         serviceName: "Cloud Resilience",
-        serviceHref: "/services/managed-cloud-security",
+        serviceHref: "/services/cloud-resilience",
         description: "Powers continuous cloud security posture management and cloud workload protection."
       },
       {

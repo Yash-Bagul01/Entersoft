@@ -89,7 +89,7 @@ export default function ThreatOperationsRoot() {
               },
               {
                 name: "Cloud Resilience",
-                href: "/services/managed-cloud-security",
+                href: "/services/cloud-resilience",
                 desc: "Detects runtime cloud threats and provides immediate containment against compromised IAM roles."
               }
             ].map((item) => (

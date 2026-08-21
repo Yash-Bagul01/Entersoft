@@ -175,6 +175,7 @@ function DriftTerminal() {
         // Init
         setStage("scanning");
         setLogs([
+          "[DEMO] Illustrative EnProbe workflow — sample data, not customer telemetry.",
           "Initializing Continuous Cloud Posture Scan...",
           "[TELEMETRY] Connected to AWS: us-east-1 via security-audit IAM role.",
           "[TELEMETRY] Connected to GCP: europe-west1 via serviceAccount credential.",
@@ -762,7 +763,7 @@ export default function CloudSecurityPlatformPage({ faqs }: { faqs: { question: 
             </div>
             <div className="flex flex-col gap-1 pl-4 md:pl-8 border-l border-cyan-500/30">
               <span className="font-mono text-[8px] text-zinc-500 uppercase tracking-widest leading-none">TELEMETRY POLLING</span>
-              <span className="font-mono text-xs md:text-[13px] font-bold text-cyan-400 mt-1">REAL-TIME</span>
+              <span className="font-mono text-xs md:text-[13px] font-bold text-cyan-400 mt-1">SAMPLE DATA</span>
             </div>
           </motion.div>
 

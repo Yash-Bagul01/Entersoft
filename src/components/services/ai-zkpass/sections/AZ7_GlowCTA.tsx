@@ -53,9 +53,9 @@ export default function AZ7_GlowCTA() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="font-sans text-base md:text-lg text-[rgba(240,244,255,0.65)] max-w-[480px] leading-relaxed mt-6"
+          className="font-mono text-xs text-[#CCFF33] uppercase tracking-wider max-w-[520px] leading-relaxed mt-6"
         >
-          No commitment. Findings in 48 hours. Senior analyst reviewed.
+          Adversarial Red-Teaming · Expert-Led Assessment
         </motion.p>
 
         {/* High Intensity Neon CTA Button */}
@@ -67,10 +67,10 @@ export default function AZ7_GlowCTA() {
           className="mt-9"
         >
           <a
-            href="/contact"
+            href="/#contact"
             className="cta-primary-btn inline-flex items-center gap-2 px-10 py-4 bg-[#CCFF33] text-[#080808] font-sans font-bold text-base rounded-xl shadow-[0_0_35px_rgba(204,255,51,0.35)] hover:shadow-[0_0_55px_rgba(204,255,51,0.65),0_0_90px_rgba(204,255,51,0.3)] hover:-translate-y-1 transition-all duration-200"
           >
-            <span>Get a Free Assessment</span>
+            <span>Scope an AI Red-Team Assessment</span>
             <ArrowUpRight className="w-5 h-5" />
           </a>
         </motion.div>

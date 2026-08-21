@@ -128,7 +128,7 @@ export default function Testimonials() {
                   hidden: { y: "100%" },
                   visible: { y: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } }
                 }}
-                className="text-3xl font-display font-medium text-[var(--text-primary)] uppercase tracking-tight"
+                className="text-3xl font-display font-semibold text-[var(--text-primary)] uppercase tracking-[-0.025em]"
               >
                 Trusted by Enterprises
               </motion.h2>
@@ -167,13 +167,13 @@ export default function Testimonials() {
               className="w-full flex flex-col gap-8 md:gap-10"
             >
               {/* Giant Quote Block */}
-              <blockquote className="text-[clamp(1.4rem,3vw,2.4rem)] font-display font-light leading-snug text-[var(--text-primary)] tracking-tight uppercase max-w-[1100px] text-left">
+              <blockquote className="text-[clamp(1.4rem,3vw,2.4rem)] font-display font-normal leading-snug text-[var(--text-primary)] tracking-[-0.02em] uppercase max-w-[1100px] text-left">
                 “{active.quote}”
               </blockquote>
 
               {/* Attribution Details */}
               <div className="flex flex-col items-start gap-1">
-                <span className="font-mono text-xs font-bold text-[var(--text-primary)] tracking-wider">
+                <span className="font-mono text-xs font-semibold text-[var(--text-primary)] tracking-wider">
                   {active.author}
                 </span>
                 <span className="font-mono text-[10px] text-[var(--accent)] tracking-widest uppercase">

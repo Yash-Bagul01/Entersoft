@@ -28,13 +28,14 @@ const itemVariants = {
 
 function getEyebrowLabel(slug: string): string {
   switch (slug) {
-    case 'appsec': return 'APPLICATION SECURITY';
-    case 'vapt': return 'OFFENSIVE SECURITY';
-    case 'managed-cloud-security': return 'CLOUD SECURITY';
-    case 'compliance-management': return 'RISK & GOVERNANCE';
-    case 'siem': return 'MANAGED DEFENSE';
-    case 'smart-contract-audits': return 'DIGITAL ASSET SECURITY';
-    case 'ai-ast': return 'AI SECURITY';
+    case 'appsec': return 'APPLICATION AND PRODUCT SECURITY';
+    case 'vapt': return 'PENETRATION TESTING AND RED TEAMING';
+    case 'cloud-resilience':
+    case 'managed-cloud-security': return 'CLOUD, IDENTITY AND PLATFORM SECURITY';
+    case 'compliance-management': return 'GRC, PRIVACY AND AUDIT READINESS';
+    case 'siem': return 'MDR, SIEM AND DETECTION ENGINEERING';
+    case 'smart-contract-audits': return 'SMART CONTRACT AND WEB3 SECURITY';
+    case 'ai-ast': return 'AI AND AGENTIC-SYSTEM SECURITY';
     default: return 'SECURITY PRACTICE';
   }
 }
@@ -192,13 +193,18 @@ export default function ServiceHoverCard({ service, isVisible }: ServiceHoverCar
               initial="hidden" 
               animate="visible"
             >
-              {/* Image wrapper - renders the high-quality stock image for all services */}
+              {/* Image wrapper - renders the high-quality stock image with fluid scale-in reveal */}
               <motion.div className="card-image-wrapper" variants={itemVariants}>
-                <img 
+                <motion.img 
+                  key={`img-${service.slug}`}
                   src={service.image} 
                   alt={service.displayName} 
                   className="card-image"
+                  initial={{ scale: 1.14, opacity: 0.6 }}
+                  animate={{ scale: 1.0, opacity: 1.0 }}
+                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
               </motion.div>
 
               <div className="card-info-content">
@@ -207,11 +213,11 @@ export default function ServiceHoverCard({ service, isVisible }: ServiceHoverCar
                 </motion.span>
 
                 <motion.span className="card-eyebrow" variants={itemVariants}>
-                  {getEyebrowLabel(service.slug)}
+                  {service.category || getEyebrowLabel(service.slug)}
                 </motion.span>
 
                 <motion.h3 className="card-name" variants={itemVariants}>
-                  {service.displayName}
+                  {service.brandedDescriptor || service.displayName}
                 </motion.h3>
 
                 <motion.hr className="card-rule" variants={itemVariants} />
@@ -245,7 +251,7 @@ export default function ServiceHoverCard({ service, isVisible }: ServiceHoverCar
             transform: translateY(0px) translateX(0px);
           }
           50% {
-            transform: translateY(-8px) translateX(4px);
+            transform: translateY(-6px) translateX(3px);
           }
           100% {
             transform: translateY(0px) translateX(0px);
@@ -253,7 +259,7 @@ export default function ServiceHoverCard({ service, isVisible }: ServiceHoverCar
         }
 
         .service-hover-card-inner {
-          animation: float-ambient 5s ease-in-out infinite;
+          animation: float-ambient 6s ease-in-out infinite;
           display: flex;
           flex-direction: column;
           gap: 16px;
@@ -261,11 +267,21 @@ export default function ServiceHoverCard({ service, isVisible }: ServiceHoverCar
 
         .service-hover-card {
           width: 360px;
-          background: var(--bg-elevated);
-          border: 1px solid var(--border-subtle);
-          border-radius: 4px;
+          background: rgba(15, 15, 18, 0.95);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 6px;
           padding: 20px;
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+          box-shadow: 0 24px 50px -10px rgba(0, 0, 0, 0.75), 0 0 25px rgba(0, 163, 255, 0.12), 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+          transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        :root[data-theme="light"] .service-hover-card,
+        [data-theme="light"] .service-hover-card {
+          background: rgba(255, 255, 255, 0.96) !important;
+          border: 1px solid rgba(6, 6, 6, 0.12) !important;
+          box-shadow: 0 24px 50px -10px rgba(0, 0, 0, 0.14), 0 0 25px rgba(0, 119, 200, 0.12), 0 0 0 1px rgba(255, 255, 255, 0.9) inset !important;
         }
 
         .card-image-wrapper {
@@ -282,6 +298,12 @@ export default function ServiceHoverCard({ service, isVisible }: ServiceHoverCar
           flex-shrink: 0;
         }
 
+        :root[data-theme="light"] .card-image-wrapper,
+        [data-theme="light"] .card-image-wrapper {
+          border-color: rgba(6, 6, 6, 0.1) !important;
+          background: rgba(0, 0, 0, 0.04) !important;
+        }
+
         .card-image {
           width: 100%;
           height: 100%;
@@ -294,7 +316,7 @@ export default function ServiceHoverCard({ service, isVisible }: ServiceHoverCar
         }
 
         .card-index {
-          font-family: 'JetBrains Mono', monospace;
+          font-family: var(--font-mono);
           font-size: 11px;
           color: var(--accent);
           letter-spacing: 0.18em;
@@ -302,8 +324,13 @@ export default function ServiceHoverCard({ service, isVisible }: ServiceHoverCar
           margin-bottom: 6px;
         }
 
+        :root[data-theme="light"] .card-index,
+        [data-theme="light"] .card-index {
+          color: #0077c8 !important;
+        }
+
         .card-eyebrow {
-          font-family: 'JetBrains Mono', monospace;
+          font-family: var(--font-mono);
           font-size: 9px;
           color: var(--text-tertiary);
           letter-spacing: 0.15em;
@@ -312,14 +339,26 @@ export default function ServiceHoverCard({ service, isVisible }: ServiceHoverCar
           text-transform: uppercase;
         }
 
+        :root[data-theme="light"] .card-eyebrow,
+        [data-theme="light"] .card-eyebrow {
+          color: #0077c8 !important;
+          font-weight: 600 !important;
+        }
+
         .card-name {
           font-family: var(--font-display), sans-serif;
           font-size: 1.35rem;
-          font-weight: 500;
+          font-weight: 600;
+          letter-spacing: -0.02em;
           text-transform: uppercase;
           color: var(--text-primary);
           line-height: 1.2;
           margin: 0 0 12px 0;
+        }
+
+        :root[data-theme="light"] .card-name,
+        [data-theme="light"] .card-name {
+          color: #060606 !important;
         }
 
         .card-rule {
@@ -328,36 +367,64 @@ export default function ServiceHoverCard({ service, isVisible }: ServiceHoverCar
           margin: 0 0 12px 0;
         }
 
+        :root[data-theme="light"] .card-rule,
+        [data-theme="light"] .card-rule {
+          border-top-color: rgba(6, 6, 6, 0.1) !important;
+        }
+
         .card-heading {
-          font-family: 'Schibsted Grotesk', sans-serif;
+          font-family: var(--font-heading);
           font-size: 14px;
           font-weight: 600;
+          letter-spacing: -0.01em;
           color: var(--text-primary);
           margin: 0 0 8px 0;
         }
 
+        :root[data-theme="light"] .card-heading,
+        [data-theme="light"] .card-heading {
+          color: #0f172a !important;
+        }
+
         .card-body {
-          font-family: 'Schibsted Grotesk', sans-serif;
+          font-family: var(--font-body);
           font-size: 13.5px;
+          font-weight: 400;
           color: var(--text-secondary);
           line-height: 1.55;
           margin: 0 0 16px 0;
         }
 
+        :root[data-theme="light"] .card-body,
+        [data-theme="light"] .card-body {
+          color: #334155 !important;
+        }
+
         .card-descriptor {
-          font-family: 'JetBrains Mono', monospace;
+          font-family: var(--font-mono);
           font-size: 9.5px;
           color: var(--text-tertiary);
           letter-spacing: 0.1em;
           margin: 0 0 20px 0;
         }
 
+        :root[data-theme="light"] .card-descriptor,
+        [data-theme="light"] .card-descriptor {
+          color: #64748b !important;
+        }
+
         .card-cta {
-          font-family: 'Schibsted Grotesk', sans-serif;
+          font-family: var(--font-body);
           font-size: 13px;
+          font-weight: 500;
           color: var(--accent);
           text-decoration: none;
           transition: text-decoration 150ms ease;
+        }
+
+        :root[data-theme="light"] .card-cta,
+        [data-theme="light"] .card-cta {
+          color: #0077c8 !important;
         }
 
         .card-cta:hover {

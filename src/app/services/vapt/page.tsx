@@ -523,8 +523,8 @@ export default function VAPTPage() {
         "@type": "WebPage",
         "@id": `${canonicalUrl}/#webpage`,
         "url": canonicalUrl,
-        "name": "Adversarial Validation | Vulnerability Assessment & Pen Testing | Entersoft",
-        "description": "Expert-driven vulnerability assessment and penetration testing (VAPT) providing real exploit proofs. CERT-In certified audit compliance with zero false-positive reports.",
+        "name": "Penetration Testing Services & VAPT | Entersoft",
+        "description": "CREST-accredited, CERT-In empanelled penetration testing for web, API, mobile, network, cloud and identity environments, with verified evidence.",
         "inLanguage": "en",
         "isPartOf": {
           "@id": `${APP_URL}/#website`
@@ -544,7 +544,7 @@ export default function VAPTPage() {
         "provider": {
           "@id": `${APP_URL}/#organization`
         },
-        "description": "Expert penetration testing with active exploitation proof. CERT-In certified audit compliance with zero false-positive reports.",
+        "description": "Expert-led penetration testing with controlled exploitation and human-validated findings for web, API, mobile, network, cloud and identity environments.",
         "areaServed": {
           "@type": "Country",
           "name": "Global"
@@ -618,7 +618,7 @@ export default function VAPTPage() {
               PROVABLE AUDIT RESOLUTION
             </h2>
             <p className="font-sans text-sm md:text-base text-zinc-400 leading-relaxed max-w-[620px]">
-              Every penetration test runs active manual validation to eliminate false scanner noise, producing incontrovertible evidence.
+              Every penetration test runs active manual validation to eliminate false scanner noise, producing auditable evidence.
             </p>
           </div>
 

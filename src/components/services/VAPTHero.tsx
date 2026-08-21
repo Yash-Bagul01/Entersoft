@@ -523,6 +523,9 @@ export default function VAPTHero({
                       {tagText}
                     </span>
                   ))}
+                  <span className="font-mono text-[9px] font-bold text-zinc-300 tracking-wider uppercase border border-white/20 bg-white/5 px-2.5 py-1 rounded-[2px]">
+                    Expert-Led Testing · Scoped Penetration Engagement
+                  </span>
                 </motion.div>
               </div>
             )}
@@ -542,11 +545,11 @@ export default function VAPTHero({
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
-              className="mt-8 flex lg:hidden"
+              className="mt-8 flex"
             >
               <MagneticButton>
                 <Button variant="primary" size="lg" asLink href="/#contact" className="gap-2">
-                  Request Briefing <ArrowRight className="w-3.5 h-3.5" />
+                  Scope a Penetration Test <ArrowRight className="w-3.5 h-3.5" />
                 </Button>
               </MagneticButton>
             </motion.div>

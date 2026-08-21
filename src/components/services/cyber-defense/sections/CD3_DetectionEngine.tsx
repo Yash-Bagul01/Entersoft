@@ -73,7 +73,7 @@ export default function CD3_DetectionEngine() {
                 </h3>
 
                 <p className="font-sans text-xs sm:text-sm text-[#94A3B8] leading-relaxed">
-                  Correlation rules + ML anomaly detection + expert triage, running 24/7/365.
+                  Correlation rules + behavioral anomaly detection + senior analyst triage.
                 </p>
               </div>
             </motion.div>

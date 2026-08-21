@@ -25,9 +25,10 @@ export default function ServicesLayout({
   const pathname = usePathname();
   const pathSegments = pathname.split("/").filter(Boolean);
   const currentSlug = pathSegments[pathSegments.length - 1] || "";
-  const currentKey = getServiceKeyFromSlug(currentSlug);
+  const isCloud = pathname.startsWith("/services/cloud-resilience") || currentSlug === "cloud-resilience" || currentSlug === "managed-cloud-security";
+  const currentKey = isCloud ? "cloud-resilience" : getServiceKeyFromSlug(currentSlug);
 
-  const noPadding = currentSlug === "vapt" || currentSlug === "appsec" || currentSlug === "managed-cloud-security" || currentSlug === "compliance-management" || currentSlug === "smart-contract-audits" || currentSlug === "ai-ast";
+  const noPadding = currentSlug === "vapt" || currentSlug === "appsec" || isCloud || currentSlug === "compliance-management" || currentSlug === "smart-contract-audits" || currentSlug === "ai-ast";
   const isAiAst = currentSlug === "ai-ast";
 
   // Get the other six services
@@ -49,7 +50,7 @@ export default function ServicesLayout({
           <nav className="w-full border-t border-[var(--border-subtle)] bg-[var(--bg-elevated)]/30 backdrop-blur-sm py-8 relative z-20 mt-16 md:mt-24">
             <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex flex-col gap-4">
               <span className="font-mono text-[9px] font-bold text-[var(--text-secondary)] tracking-widest uppercase">
-                Explore Spectrum
+                Explore Services
               </span>
               <div className="flex flex-wrap items-center gap-x-4 md:gap-x-6 gap-y-3 font-mono text-[10px] font-bold uppercase tracking-wider">
                 {otherServices.map((service, index) => (
@@ -59,7 +60,7 @@ export default function ServicesLayout({
                       href={getServiceRoute(service.slug)}
                       className="text-[var(--text-tertiary)] hover:text-[var(--accent)] transition-colors duration-300"
                     >
-                      {formatNavLabel(service.displayName)}
+                      {service.plainLanguageTitle || service.displayName}
                     </Link>
                   </React.Fragment>
                 ))}

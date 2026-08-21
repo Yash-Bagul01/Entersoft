@@ -1,56 +1,56 @@
 export const hero = {
   eyebrow: 'CYBER DEFENSE OPERATIONS',
-  descriptor: 'MDR • SIEM • DETECTION ENGINEERING',
+  descriptor: 'MDR • DETECTION ENGINEERING • MANAGED STACK',
   headline: {
     before: "Threats don't wait.",
     gradient: "Neither do we.",
     after: '',
   },
-  sub: 'Unify security monitoring, detection engineering, threat hunting, investigation and response into one continuous operating model.',
-  ctaPrimary: { label: 'Start a Conversation', href: '/#contact' },
-  ctaSecondary: { label: 'See Threat Coverage', href: '#coverage' },
+  sub: 'MDR and Detection Engineering, delivered through your existing security stack or an Entersoft-managed architecture.',
+  ctaPrimary: { label: 'Discuss MDR & Detection Engineering', href: '/#contact' },
+  ctaSecondary: { label: 'See Monitored Surfaces', href: '#coverage' },
   heroStats: [
-    { value: '<15 MIN', label: 'Mean Triage Time' },
-    { value: '24/7', label: 'SOC Coverage' },
-    { value: '600+', label: 'Clients Protected' },
+    { value: 'EXISTING OR MANAGED', label: 'Security Stack Delivery' },
+    { value: 'DETECTION', label: 'Engineering & Rule Tuning' },
+    { value: 'SENIOR-LED', label: 'Triage & Investigation' },
   ],
 };
 
 export const alertStream = [
   { time: '00:00:41', severity: 'CRITICAL', event: 'Lateral movement detected — 10.0.1.22 → DC01', status: 'TRIAGING' },
   { time: '00:02:18', severity: 'HIGH', event: 'S3 bucket policy modified — prod-customer-data', status: 'INVESTIGATING' },
-  { time: '00:04:03', severity: 'CRITICAL', event: 'Credential stuffing — 847 failed logins in 90s', status: 'CONTAINED' },
-  { time: '00:05:57', severity: 'HIGH', event: 'Outbound TLS to C2 — 198.51.100.42:443', status: 'BLOCKED' },
+  { time: '00:04:03', severity: 'CRITICAL', event: 'Credential stuffing — high-volume failed logins', status: 'CONTAINED' },
+  { time: '00:05:57', severity: 'HIGH', event: 'Outbound TLS anomaly — 198.51.100.42:443', status: 'BLOCKED' },
   { time: '00:07:12', severity: 'HIGH', event: 'Admin account created without MFA — prod env', status: 'ESCALATED' },
   { time: '00:09:44', severity: 'MED', event: 'CloudTrail logging disabled — us-east-1', status: 'REMEDIATED' },
   { time: '00:11:30', severity: 'HIGH', event: 'Container escape attempt — k8s pod compromise', status: 'INVESTIGATING' },
-  { time: '00:13:55', severity: 'CRITICAL', event: 'Ransomware signature — file encryption pattern', status: 'CONTAINED' },
+  { time: '00:13:55', severity: 'CRITICAL', event: 'Ransomware indicator — file encryption behavior', status: 'CONTAINED' },
 ];
 
 export const metrics = [
-  { value: '<15 MIN', label: 'Mean Triage Time', sub: 'From alert to analyst sign-off', accent: 'blue' },
-  { value: '100%', label: 'Log Coverage', sub: 'Cloud, network, endpoint, identity', accent: 'neon' },
-  { value: '0', label: 'Unreviewed Criticals', sub: 'Every CRITICAL alert triaged', accent: 'blue' },
-  { value: '13 YRS', label: 'Analyst Tenure', sub: 'Same senior team, zero attrition', accent: 'neon' },
+  { value: 'MDR & DETECTION', label: 'Senior-Led Operations', sub: 'Expert triage, threat hunting, and incident investigation guidance', accent: 'blue' },
+  { value: 'HYBRID / MANAGED', label: 'Flexible Delivery Model', sub: 'Operates in your existing security stack or an Entersoft-managed architecture', accent: 'neon' },
+  { value: 'CUSTOM TUNING', label: 'Detection Engineering', sub: 'Continuously reduce recurring noise through rule tuning', accent: 'blue' },
+  { value: 'CROSS-SURFACE', label: 'Telemetry Integration', sub: 'Correlates signals across cloud, identity, endpoint, and network telemetry', accent: 'neon' },
 ];
 
 export const detectionSources = [
   { name: 'CLOUD', sub: 'AWS / Azure / GCP' },
-  { name: 'ENDPOINT', sub: 'EDR / XDR feeds' },
+  { name: 'ENDPOINT', sub: 'EDR / XDR telemetry' },
   { name: 'NETWORK', sub: 'NDR / firewall / flows' },
   { name: 'IDENTITY', sub: 'IAM / AD / Entra' },
-  { name: 'APPLICATION', sub: 'APM / WAF / SAST' },
-  { name: 'EMAIL', sub: 'Phishing / BEC signals' },
+  { name: 'APPLICATION', sub: 'APM / WAF / AppSec' },
+  { name: 'EMAIL', sub: 'BEC / phishing signals' },
   { name: 'API', sub: 'Gateway / runtime calls' },
-  { name: 'THREAT INTEL', sub: 'OSINT / commercial feeds' },
+  { name: 'THREAT INTEL', sub: 'OSINT / threat feeds' },
 ];
 
 export const responseSteps = [
-  { index: '01', verb: 'DETECT', ms: '< 2 MIN', detail: 'Correlation rules and ML models surface anomalies across all ingested log sources before a human analyst is paged.' },
-  { index: '02', verb: 'TRIAGE', ms: '< 15 MIN', detail: 'Senior analyst reviews the alert, assigns severity, eliminates false positives and confirms the incident scope.' },
-  { index: '03', verb: 'INVESTIGATE', ms: '< 45 MIN', detail: 'Root cause analysis: identify the initial access vector, lateral movement path, and blast radius.' },
-  { index: '04', verb: 'CONTAIN', ms: '< 60 MIN', detail: 'Isolate affected assets, block attacker-controlled infrastructure, and cut off active communication channels.' },
-  { index: '05', verb: 'REMEDIATE', ms: 'SAME DAY', detail: 'Coordinate with client teams to remove persistence mechanisms, rotate credentials, and restore clean state.' },
+  { index: '01', verb: 'SIGNAL INGESTION', ms: 'TELEMETRY', detail: 'Correlation rules and behavioral detection surface anomalies across configured telemetry sources for analyst review.' },
+  { index: '02', verb: 'ANALYST TRIAGE', ms: 'VERIFICATION', detail: 'Senior analysts review the alert, verify severity, reduce noise through rule tuning, and confirm incident scope.' },
+  { index: '03', verb: 'INVESTIGATION', ms: 'ROOT CAUSE', detail: 'Root cause analysis: identify initial access vector, lateral movement path, and scope of impact.' },
+  { index: '04', verb: 'CONTAINMENT', ms: 'GUIDANCE', detail: 'Provide immediate containment guidance: isolate affected host nodes, revoke compromised credentials, and block malicious IPs.' },
+  { index: '05', verb: 'REMEDIATION', ms: 'SAME-DAY SUPPORT', detail: 'Same-day containment guidance and remediation support initiated to help customer teams rotate credentials and patch vulnerabilities.' },
 ];
 
 export const coverageGrid = [
@@ -70,9 +70,9 @@ export const techStack = [
   'Defender XDR', 'Datadog Security', 'AWS Security Hub', 'Google SecOps',
 ];
 
-export const proof = [
-  { value: '600+', label: 'Clients protected', accent: 'neon' },
-  { value: '13 YRS', label: 'Same SOC analysts', accent: 'blue' },
-  { value: '0', label: 'Unresolved criticals shipped', accent: 'blue' },
-  { value: '<15', suffix: 'MIN', label: 'Mean triage time', accent: 'neon' },
+export const proof: Array<{ value: string; label: string; accent: string; suffix?: string }> = [
+  { value: 'MDR', label: 'Detection Engineering Operations', accent: 'neon' },
+  { value: 'HYBRID', label: 'Existing Stack or Managed Architecture', accent: 'blue' },
+  { value: 'SENIOR', label: 'Analyst Triage & Investigation', accent: 'blue' },
+  { value: 'TUNED', label: 'Continuous Noise Reduction', accent: 'neon' },
 ];

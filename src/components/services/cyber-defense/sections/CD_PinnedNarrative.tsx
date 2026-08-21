@@ -14,10 +14,10 @@ const NARRATIVE_STAGES = [
     title: "Fragmented tools & alert fatigue.",
     body: "Traditional MSSPs flood security teams with thousands of uncontextualised alerts every week. Disconnected EDR, SIEM, and Cloud logs lead to blind spots, high false positive rates, and slow threat containment.",
     visualTitle: "FRAGMENTED SILOS",
-    visualSub: "847 daily unreviewed logs • High MTTR",
+    visualSub: "Uncorrelated logs • High MTTR",
     diagramType: "problem",
     sideBadges: [
-      { name: "EDR SILO", status: "847 UNFILTERED ALERTS", color: "text-red-400 border-red-500/30 bg-red-500/10" },
+      { name: "EDR SILO", status: "UNFILTERED ALERTS", color: "text-red-400 border-red-500/30 bg-red-500/10" },
       { name: "CLOUD LOGS", status: "NO CORRELATION", color: "text-amber-400 border-amber-500/30 bg-amber-500/10" },
     ],
   },
@@ -25,39 +25,39 @@ const NARRATIVE_STAGES = [
     id: "02",
     tag: "THE OPERATING MODEL",
     title: "Unified continuous operations.",
-    body: "Entersoft unifies security monitoring, custom detection engineering, proactive threat hunting, and incident response into one seamless continuous SOC operating model with direct senior analyst escalation.",
+    body: "Entersoft delivers MDR and Detection Engineering through your existing security stack or an Entersoft-managed architecture, providing continuous telemetry correlation and analyst-led triage.",
     visualTitle: "UNIFIED OPERATING MODEL",
-    visualSub: "Continuous telemetry correlation • Single glass pane",
+    visualSub: "Continuous telemetry correlation • Flexible delivery",
     diagramType: "model",
     sideBadges: [
-      { name: "24/7 SOC LEAD", status: "DIRECT TELEGRAM/SLACK", color: "text-[#60A5FA] border-[#60A5FA]/30 bg-[#3B82F6]/10" },
-      { name: "CORRELATION", status: "0.4ms VELOCITY", color: "text-[#60A5FA] border-[#60A5FA]/30 bg-[#3B82F6]/10" },
+      { name: "DELIVERY MODEL", status: "YOUR STACK OR MANAGED", color: "text-[#60A5FA] border-[#60A5FA]/30 bg-[#3B82F6]/10" },
+      { name: "CORRELATION", status: "HIGH-FIDELITY SIGNALS", color: "text-[#60A5FA] border-[#60A5FA]/30 bg-[#3B82F6]/10" },
     ],
   },
   {
     id: "03",
-    tag: "THE CORRELATION ENGINE",
+    tag: "DETECTION ENGINEERING",
     title: "Multi-surface signal correlation.",
-    body: "Our engine continuously ingests and correlates telemetry across AWS/Azure/GCP, EDR feeds, network NDR, Okta/AD identity, and WAF logs to surface high-fidelity threats before damage occurs.",
+    body: "Our engine ingests and correlates telemetry across AWS/Azure/GCP, EDR feeds, network traffic, IAM identity, and application logs to surface actionable threats before damage occurs.",
     visualTitle: "CROSS-STACK CORRELATION",
-    visualSub: "8 Telemetry Sources → Real-time Anomaly Engine",
+    visualSub: "Multi-source Telemetry → Detection Engine",
     diagramType: "engine",
     sideBadges: [
-      { name: "AWS / AZURE", status: "50K EPS INGESTION", color: "text-[#60A5FA] border-[#60A5FA]/30 bg-[#3B82F6]/10" },
-      { name: "OKTA / AD", status: "ZERO TRUST AUDIT", color: "text-[#60A5FA] border-[#60A5FA]/30 bg-[#3B82F6]/10" },
+      { name: "CLOUD & ENDPOINT", status: "TELEMETRY INGESTION", color: "text-[#60A5FA] border-[#60A5FA]/30 bg-[#3B82F6]/10" },
+      { name: "IDENTITY & WAF", status: "BEHAVIORAL MAPPING", color: "text-[#60A5FA] border-[#60A5FA]/30 bg-[#3B82F6]/10" },
     ],
   },
   {
     id: "04",
-    tag: "THE HUMAN SLA",
-    title: "Senior analyst triage in <15 minutes.",
-    body: "Every single CRITICAL alert is reviewed and verified by a senior SOC analyst with average 13+ years tenure. We cut noise, contain active attacks, and provide clear remediation playbooks.",
-    visualTitle: "SLA GUARANTEE",
-    visualSub: "<15 Min Mean Triage Time • Zero unreviewed criticals",
+    tag: "SENIOR EXPERTISE",
+    title: "Senior analyst triage & investigation.",
+    body: "Critical alerts are investigated and verified by senior security analysts. We continuously reduce recurring noise through rule tuning, contain active threats, and provide clear remediation guidance.",
+    visualTitle: "EXPERT TRIAGE",
+    visualSub: "Senior-led Triage • Verified Incident Scoping",
     diagramType: "sla",
     sideBadges: [
-      { name: "TRIAGE SLA", status: "< 15 MIN GUARANTEED", color: "text-[#60A5FA] border-[#60A5FA]/40 bg-[#3B82F6]/15 font-bold" },
-      { name: "CONTAINMENT", status: "ACTIVE ISOLATION", color: "text-[#60A5FA] border-[#60A5FA]/30 bg-[#3B82F6]/10" },
+      { name: "TRIAGE & ANALYSIS", status: "SENIOR-LED INVESTIGATION", color: "text-[#60A5FA] border-[#60A5FA]/40 bg-[#3B82F6]/15 font-bold" },
+      { name: "CONTAINMENT", status: "ACTIONABLE GUIDANCE", color: "text-[#60A5FA] border-[#60A5FA]/30 bg-[#3B82F6]/10" },
     ],
   },
 ];
@@ -167,18 +167,18 @@ export default function CD_PinnedNarrative() {
                           CROSS-STACK TELEMETRY CORRELATION
                         </span>
                         <span className="font-mono text-[10px] text-[#60A5FA]">
-                          0.4ms Velocity • 8 Ingestion Vectors
+                          Multi-Surface Correlation • Telemetry Ingestion
                         </span>
                       </div>
                     )}
 
                     {current.diagramType === "sla" && (
                       <div className="p-5 rounded-xl bg-[#080C14]/85 backdrop-blur-md border border-[#60A5FA]/40 shadow-2xl flex flex-col items-center gap-1.5">
-                        <span className="font-serif text-4xl font-bold text-[#FFFFFF] drop-shadow-[0_0_20px_#3B82F6]">
-                          &lt;15 MIN
+                        <span className="font-serif text-3xl font-bold text-[#FFFFFF] drop-shadow-[0_0_20px_#3B82F6]">
+                          EXPERT
                         </span>
                         <span className="font-mono text-xs font-bold uppercase tracking-widest text-[#60A5FA]">
-                          GUARANTEED TRIAGE SLA
+                          SENIOR-LED TRIAGE
                         </span>
                       </div>
                     )}
@@ -203,7 +203,7 @@ export default function CD_PinnedNarrative() {
                 <div className="w-2.5 h-2.5 rounded-full bg-[#3B82F6] animate-pulse" />
                 <div className="flex flex-col">
                   <span className="font-mono text-xs font-bold text-[#FFFFFF]">
-                    SOC INGESTION PIPELINE
+                    MDR & DETECTION PIPELINE
                   </span>
                   <span className="font-mono text-[10px] text-[#64748B]">
                     AWS • EDR • OKTA • WAF • NDR
@@ -212,7 +212,7 @@ export default function CD_PinnedNarrative() {
               </div>
               <div className="flex items-center gap-2">
                 <span className="font-mono text-[10px] font-bold text-[#60A5FA] bg-[#3B82F6]/10 border border-[#60A5FA]/30 px-2.5 py-1 rounded">
-                  ACTIVE 24/7
+                  MONITORED
                 </span>
               </div>
             </CDGlowCard>

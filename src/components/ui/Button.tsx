@@ -6,12 +6,14 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   size?: "sm" | "md" | "lg";
   asLink?: boolean;
   href?: string;
+  target?: string;
+  rel?: string;
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "primary", size = "md", asLink, href, children, ...props }, ref) => {
+  ({ className, variant = "primary", size = "md", asLink, href, target, rel, children, ...props }, ref) => {
     const baseClasses =
-      "inline-flex items-center justify-center font-mono uppercase tracking-wider text-[11px] font-bold transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-bg-primary cursor-pointer active:scale-[0.98]";
+      "inline-flex items-center justify-center font-mono uppercase tracking-wider text-[11px] font-semibold transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-bg-primary cursor-pointer active:scale-[0.98]";
     
     const variantClasses = {
       primary: "btn-sweep btn-sweep-primary",
@@ -37,7 +39,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     if (asLink && href) {
       return (
-        <a href={href} className={combinedClasses} data-cursor="link">
+        <a href={href} target={target} rel={rel} className={combinedClasses} data-cursor="link">
           {content}
         </a>
       );

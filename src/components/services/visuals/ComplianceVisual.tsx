@@ -33,7 +33,7 @@ const frameworksData: Record<string, FrameworkDetails> = {
     title: "GDPR Privacy Standard",
     score: 100,
     description: "Strict privacy safeguards and personal data boundaries.",
-    accentColor: "rgba(16, 185, 129, 1)", // emerald
+    accentColor: "rgba(56, 189, 248, 1)", // sky blue
     outcomes: [
       { label: "Data Boundaries", detail: "Residency limits and transit channels audited." },
       { label: "API Encryption", detail: "TLS 1.3 enforced across public ingress points." },
@@ -44,7 +44,7 @@ const frameworksData: Record<string, FrameworkDetails> = {
     title: "SOC 2 Type II Audits",
     score: 97,
     description: "Security and confidentiality trust principles verified.",
-    accentColor: "rgba(245, 158, 11, 1)", // amber/gold
+    accentColor: "rgba(0, 163, 255, 1)", // electric blue
     outcomes: [
       { label: "Ingress Governance", detail: "MFA rules & root access credentials verified." },
       { label: "WAF Telemetry", detail: "Intrusion logs streaming to security operations." },
@@ -66,7 +66,7 @@ const frameworksData: Record<string, FrameworkDetails> = {
     title: "CIS Hardening Guidelines",
     score: 99,
     description: "Configuration profiles validated against cloud security baselines.",
-    accentColor: "rgba(16, 185, 129, 1)", // emerald
+    accentColor: "rgba(96, 165, 250, 1)", // blue-400
     outcomes: [
       { label: "Root Permissions", detail: "Global root API administrative keys disabled." },
       { label: "VPC Ingress Rules", detail: "Public inbound SSH/RDP ports closed." },
@@ -495,7 +495,7 @@ export default function ComplianceVisual() {
                     <div 
                       className={`w-3.5 h-3.5 rounded-full flex items-center justify-center border shrink-0 transition-all duration-300 ${
                         isChecked
-                          ? "bg-green-500/10 border-green-500/30 text-green-400"
+                          ? "bg-sky-500/10 border-sky-500/30 text-sky-400"
                           : "bg-zinc-800/10 border-zinc-700/30 text-zinc-500"
                       }`}
                     >

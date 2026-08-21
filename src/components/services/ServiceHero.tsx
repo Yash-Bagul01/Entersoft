@@ -15,6 +15,8 @@ interface ServiceHeroProps {
   statsNode?: React.ReactNode;
   col2Description?: string;
   col3Metadata?: string;
+  ctaText?: string;
+  deliveryBadge?: string;
 }
 
 export default function ServiceHero({
@@ -26,6 +28,8 @@ export default function ServiceHero({
   statsNode,
   col2Description,
   col3Metadata,
+  ctaText = "BOOK A SECURITY BRIEFING",
+  deliveryBadge,
 }: ServiceHeroProps) {
   const [fwText, setFwText] = React.useState("ISO 27001");
 
@@ -228,9 +232,14 @@ contract DeFiBridge {
             >
               <MagneticButton>
                 <Button variant="primary" size="lg" asLink href="/#contact" className="gap-2">
-                  GET A FREE CONSULTATION <span className="font-sans">→</span>
+                  {ctaText} <span className="font-sans">→</span>
                 </Button>
               </MagneticButton>
+              {deliveryBadge && (
+                <span className="font-mono text-[10px] text-zinc-400 font-bold uppercase tracking-wider bg-white/5 border border-white/10 px-3 py-2 rounded-lg">
+                  {deliveryBadge}
+                </span>
+              )}
             </motion.div>
           </motion.div>
 

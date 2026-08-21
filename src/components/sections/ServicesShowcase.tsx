@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { services, Service } from "@/data/services";
@@ -64,16 +64,20 @@ function ServiceRow({ service, index, isActive, isFinePointer, onHover }: Servic
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) return;
     
-    const yTo = gsap.quickTo(rowEl, "y", { duration: 0.4, ease: "power3.out" });
+    const yTo = gsap.quickTo(rowEl, "y", { duration: 0.35, ease: "power2.out" });
+    const xTo = gsap.quickTo(rowEl, "x", { duration: 0.35, ease: "power2.out" });
     
     const handleMouseMove = (e: MouseEvent) => {
       const rect = rowEl.getBoundingClientRect();
       const relY = e.clientY - (rect.top + rect.height / 2);
-      yTo(relY * 0.06); // 6% of distance
+      const relX = e.clientX - (rect.left + rect.width / 2);
+      yTo(relY * 0.05); // subtle vertical magnetic response
+      xTo(Math.max(-8, Math.min(8, relX * 0.01))); // subtle horizontal response
     };
     
     const handleMouseLeave = () => {
       yTo(0);
+      xTo(0);
     };
     
     rowEl.addEventListener("mousemove", handleMouseMove);
@@ -146,14 +150,21 @@ function ServiceRow({ service, index, isActive, isFinePointer, onHover }: Servic
           {service.index}
         </span>
         
-        <div className="flex flex-col lg:flex-row lg:items-center gap-1">
-          {/* Display name */}
-          <h3 className="display-name font-display font-medium text-[clamp(1.4rem,2.5vw,2.4rem)] tracking-tight text-[var(--text-primary)] leading-none uppercase transition-colors duration-200">
+        <div className="flex flex-col gap-1 py-1">
+          {/* Eyebrow: Plain-Language Category */}
+          <span className={`font-mono text-[9px] sm:text-[10px] uppercase font-bold tracking-[0.12em] transition-colors duration-200 ${
+            isActive ? "text-[var(--accent)]" : "text-[var(--text-secondary)]"
+          }`}>
+            {service.category}
+          </span>
+          
+          {/* Primary Branded Title */}
+          <h3 className="display-name font-display font-medium text-[clamp(1.3rem,2.2vw,2.2rem)] tracking-tight text-[var(--text-primary)] leading-none transition-colors duration-200">
             {scrambledName}
           </h3>
           
           {/* Tablet Descriptor: shown below name on 640px - 1024px */}
-          <span className={`descriptor-tablet font-mono text-[10px] uppercase tracking-[0.1em] transition-colors duration-200 hidden sm:inline-block lg:hidden mt-1.5 ${
+          <span className={`descriptor-tablet font-mono text-[10px] uppercase tracking-[0.1em] transition-colors duration-200 hidden sm:inline-block lg:hidden mt-1 ${
             isActive ? "text-[var(--text-secondary)]" : "text-[var(--text-tertiary)]"
           }`}>
             {service.descriptor}
@@ -197,53 +208,127 @@ export default function ServicesShowcase() {
 
   const containerRef = useRef<HTMLDivElement>(null);
   const floatingCardRef = useRef<HTMLDivElement>(null);
-  const xSetter = useRef<any>(null);
-  const ySetter = useRef<any>(null);
+  
+  // Physics & Animation State Refs
+  const mouseTarget = useRef({ x: -500, y: -500 });
+  const currentPos = useRef({ x: -500, y: -500 });
+  const prevMouse = useRef({ x: 0, y: 0 });
+  const mouseVelocity = useRef({ x: 0, y: 0 });
+  const currentRotation = useRef(0);
+  const currentSkew = useRef(0);
+  const currentTiltX = useRef(0);
+  const currentScale = useRef(0.8);
+  const currentOpacity = useRef(0);
+  
+  const lastScrollY = useRef(0);
+  const scrollVelocity = useRef(0);
+  const rafIdRef = useRef<number | null>(null);
+  const isHoveredRef = useRef(false);
+
+  useEffect(() => {
+    isHoveredRef.current = activeService !== null;
+  }, [activeService]);
 
   useEffect(() => {
     setIsMounted(true);
     setIsFinePointer(window.matchMedia("(pointer: fine)").matches);
   }, []);
 
+  // Physics animation loop: tracks mouse position, velocity, scroll delta, tilt, and skew
   useEffect(() => {
     if (!isMounted || !isFinePointer) return;
-    
+
     const el = floatingCardRef.current;
     if (!el) return;
-    
-    xSetter.current = gsap.quickTo(el, "x", { duration: 0.45, ease: "power2.out" });
-    ySetter.current = gsap.quickTo(el, "y", { duration: 0.45, ease: "power2.out" });
-    
+
     const handleGlobalMouseMove = (e: MouseEvent) => {
-      if (xSetter.current && ySetter.current) {
-        const cardEl = el.querySelector(".service-hover-card") as HTMLElement;
-        const cardWidth = cardEl && cardEl.offsetWidth > 100 ? cardEl.offsetWidth : 360;
-        const cardHeight = cardEl && cardEl.offsetHeight > 100 ? cardEl.offsetHeight : 440;
-        const padding = 20;
-        
-        let x = e.clientX + 20;
-        let y = e.clientY + 20;
-        
-        if (x + cardWidth > window.innerWidth - padding) {
-          x = e.clientX - cardWidth - 20;
-        }
-        
-        if (y + cardHeight > window.innerHeight - padding) {
-          y = window.innerHeight - cardHeight - padding;
-        }
-        
-        if (x < padding) x = padding;
-        if (y < padding) y = padding;
-        
-        xSetter.current(x);
-        ySetter.current(y);
+      const cardWidth = 360;
+      const cardHeight = 440;
+      const padding = 24;
+
+      let targetX = e.clientX + 24;
+      let targetY = e.clientY + 24;
+
+      // Smart collision boundary detection: flips to left side of cursor if close to right edge
+      if (targetX + cardWidth > window.innerWidth - padding) {
+        targetX = e.clientX - cardWidth - 24;
       }
+      if (targetY + cardHeight > window.innerHeight - padding) {
+        targetY = window.innerHeight - cardHeight - padding;
+      }
+      if (targetX < padding) targetX = padding;
+      if (targetY < padding) targetY = padding;
+
+      mouseTarget.current = { x: targetX, y: targetY };
+
+      // Calculate instantaneous mouse velocity
+      const vx = e.clientX - prevMouse.current.x;
+      const vy = e.clientY - prevMouse.current.y;
+      prevMouse.current = { x: e.clientX, y: e.clientY };
+
+      mouseVelocity.current = {
+        x: vx,
+        y: vy,
+      };
     };
-    
+
+    const handleScroll = () => {
+      const currentScroll = window.scrollY || window.pageYOffset;
+      scrollVelocity.current = currentScroll - lastScrollY.current;
+      lastScrollY.current = currentScroll;
+    };
+
     window.addEventListener("mousemove", handleGlobalMouseMove, { passive: true });
-    
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    // Main 60fps/120fps physics loop with LERP and dynamic skew/tilt/rotation
+    const LERP_POS = 0.12; // Smooth tracking lag
+    const LERP_ROT = 0.08; // Fluid inertia decay
+    const LERP_SCALE = 0.15; // Snappy entry/exit scaling
+
+    const tick = () => {
+      // Decay velocity over time when mouse is stationary
+      mouseVelocity.current.x *= 0.92;
+      mouseVelocity.current.y *= 0.92;
+      scrollVelocity.current *= 0.88;
+
+      // 1. Position LERP
+      currentPos.current.x += (mouseTarget.current.x - currentPos.current.x) * LERP_POS;
+      currentPos.current.y += (mouseTarget.current.y - currentPos.current.y) * LERP_POS;
+
+      // 2. Velocity-driven dynamic rotation (mouse X movement + scroll velocity)
+      const targetRotation = Math.max(-14, Math.min(14, (mouseVelocity.current.x * 0.15) + (scrollVelocity.current * 0.25)));
+      currentRotation.current += (targetRotation - currentRotation.current) * LERP_ROT;
+
+      // 3. Dynamic horizontal skew based on lateral acceleration
+      const targetSkew = Math.max(-8, Math.min(8, mouseVelocity.current.x * 0.07));
+      currentSkew.current += (targetSkew - currentSkew.current) * LERP_ROT;
+
+      // 4. Subtle 3D tilt pitch based on vertical velocity
+      const targetTiltX = Math.max(-10, Math.min(10, -mouseVelocity.current.y * 0.08));
+      currentTiltX.current += (targetTiltX - currentTiltX.current) * LERP_ROT;
+
+      // 5. Scale & Opacity spring
+      const targetScale = isHoveredRef.current ? 1.0 : 0.8;
+      const targetOpacity = isHoveredRef.current ? 1.0 : 0.0;
+      currentScale.current += (targetScale - currentScale.current) * LERP_SCALE;
+      currentOpacity.current += (targetOpacity - currentOpacity.current) * LERP_SCALE;
+
+      // Apply hardware accelerated direct transforms
+      if (el) {
+        el.style.transform = `translate3d(${currentPos.current.x}px, ${currentPos.current.y}px, 0) scale(${currentScale.current}) rotate(${currentRotation.current}deg) skewX(${currentSkew.current}deg) rotateX(${currentTiltX.current}deg)`;
+        el.style.opacity = `${currentOpacity.current}`;
+      }
+
+      rafIdRef.current = requestAnimationFrame(tick);
+    };
+
+    rafIdRef.current = requestAnimationFrame(tick);
+
     return () => {
       window.removeEventListener("mousemove", handleGlobalMouseMove);
+      window.removeEventListener("scroll", handleScroll);
+      if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
     };
   }, [isMounted, isFinePointer]);
 
@@ -355,6 +440,11 @@ export default function ServicesShowcase() {
         .right-instruction:hover {
           color: var(--text-secondary);
         }
+
+        .service-row {
+          transform-style: preserve-3d;
+          perspective: 1000px;
+        }
       `}} />
       
       {/* Header (Uniform for all viewports) */}
@@ -363,18 +453,18 @@ export default function ServicesShowcase() {
           <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 w-full">
             <span className="font-mono text-[12px] text-[var(--accent-neon)] uppercase tracking-[0.18em]">
               // ENTERPRISE SERVICES & MANAGED SOLUTIONS
-                    </span>
+            </span>
             <span className="right-instruction font-mono text-[12px] text-[var(--text-tertiary)] uppercase tracking-[0.14em] transition-colors duration-200 shrink-0">
               {isFinePointer ? "HOVER TO EXPLORE //" : "TAP TO EXPLORE //"}
-                      </span>
+            </span>
           </div>
           
-          <h2 className="text-display font-display font-medium text-[clamp(2.4rem,4.5vw,4.2rem)] text-[var(--text-primary)] uppercase tracking-tight leading-none">
-            OUR CYBER ASSURANCE SYSTEM
+          <h2 className="text-display font-display font-semibold text-[clamp(1.8rem,3.8vw,3.2rem)] text-[var(--text-primary)] uppercase tracking-[-0.03em] leading-tight max-w-[850px]">
+            Security starts at the application layer—but it does not stop there.
           </h2>
           
-          <p className="supporting-statement font-sans text-[clamp(14px,1.6vw,17px)] text-[var(--text-secondary)] leading-[1.5] mt-2.5 max-w-[600px]">
-            {"Seven integrated practices. One operating model to turn risk into validated decisions, remediation and continuous resilience."
+          <p className="supporting-statement font-sans text-[clamp(14px,1.6vw,17px)] text-[var(--text-secondary)] leading-[1.5] mt-2.5 max-w-[750px]">
+            {"Applications concentrate business logic, customer data, identities, APIs and cloud services. Entersoft starts with the software that runs the business, then connects application risk to the infrastructure, identities, controls and operations around it."
               .split(" ")
               .map((word, i, arr) => (
                 <React.Fragment key={i}>
@@ -385,8 +475,8 @@ export default function ServicesShowcase() {
                 </React.Fragment>
               ))}
           </p>
-            </div>
-                    </div>
+        </div>
+      </div>
                     
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="w-full h-px bg-[var(--border-subtle)] mt-3 mb-6" />
@@ -404,25 +494,25 @@ export default function ServicesShowcase() {
                 onHover={setActiveService}
               />
             ))}
-              </div>
-            </div>
           </div>
+        </div>
+      </div>
 
-      {/* Floating Hover Card */}
+      {/* Floating Hover Card with Fluid Mouse Scroll & Velocity Skew */}
       {isMounted && isFinePointer && (
         <div
           ref={floatingCardRef}
-          className="pointer-events-none fixed z-[99999] top-0 left-0"
-                  style={{
-            opacity: activeService ? 1 : 0,
+          className="pointer-events-none fixed z-[99999] top-0 left-0 transform-gpu"
+          style={{
+            opacity: 0,
             pointerEvents: "none",
             willChange: "transform, opacity",
-            transition: "opacity 0.2s ease",
+            transformOrigin: "center center",
           }}
         >
           <ServiceHoverCard service={activeService} isVisible={activeService !== null} />
-          </div>
-        )}
+        </div>
+      )}
     </div>
   );
 }

@@ -51,7 +51,7 @@ export default function AIV3_ArchitectureScan() {
               <h3 className="font-serif text-lg font-bold">Entersoft AI Deep Assurance</h3>
             </div>
             <p className="font-sans text-xs text-white/90 leading-relaxed">
-              Full semantic analysis of system prompts, multi-tenant vector boundaries, and autonomous agent tool call permissions with 0% false positives.
+              Full semantic analysis of system prompts, multi-tenant vector boundaries, and autonomous agent tool call permissions delivering human-validated findings.
             </p>
           </div>
         </div>

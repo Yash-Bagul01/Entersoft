@@ -236,7 +236,7 @@ function FindVisual() {
 
       {/* Top Header */}
       <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-2.5 text-[9.5px] text-zinc-400 select-none">
-        <span>ATTACK TOPOLOGY MAP // SCANNING</span>
+        <span>ATTACK TOPOLOGY MAP // ILLUSTRATIVE SIMULATION — SAMPLE DATA</span>
         <span className="text-[var(--accent)] text-[9px] font-bold tracking-widest uppercase">
           FIND CAPABILITY
         </span>
@@ -1930,7 +1930,7 @@ export default function AppSecPlatformPage({ faqs }: AppSecPlatformPageProps) {
                 </span>
               </p>
               <p className="text-[clamp(18px,2vw,22px)] font-sans font-semibold text-zinc-400 leading-snug">
-                Continuous discovery unlocks automated <Link href="/services/managed-cloud-security" className="text-[var(--accent)] hover:underline">managed cloud security</Link> and application defense.
+                Continuous discovery unlocks automated <Link href="/services/cloud-resilience" className="text-[var(--accent)] hover:underline">cloud resilience</Link> and application defense.
               </p>
             </div>
           </div>
@@ -1973,7 +1973,7 @@ export default function AppSecPlatformPage({ faqs }: AppSecPlatformPageProps) {
                 </span>
               </p>
               <p className="text-[clamp(18px,2vw,22px)] font-sans font-semibold text-zinc-400 leading-snug">
-                Human-in-the-loop validation removes false positives completely.
+                Human-in-the-loop validation delivers human-validated findings.
               </p>
             </div>
           </div>

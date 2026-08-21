@@ -22,7 +22,7 @@ export default function AZ3_AssessProcess() {
             <GradientText>verified finding.</GradientText>
           </h2>
           <p className="font-sans text-sm md:text-base text-[rgba(240,244,255,0.6)] leading-relaxed mt-1">
-            Senior analyst-led methodology guaranteeing zero false positives and actionable remediation playbooks.
+            Senior analyst-led methodology guaranteeing human-validated findings and actionable remediation playbooks.
           </p>
         </div>
 

@@ -19,24 +19,23 @@ export default function CloudEvidenceBand() {
             </span>
           </div>
 
-          {/* Card 2: 13 Yrs */}
+          {/* Card 2: Since 2013 */}
           <div className="flex flex-col gap-2">
-            <span className="font-mono text-4xl sm:text-5xl lg:text-[4.5rem] font-bold text-zinc-100 tracking-tight leading-none">
-              <AnimatedCounter value={13} /> Yrs
+            <span className="font-mono text-3xl sm:text-4xl lg:text-[3.2rem] font-bold text-zinc-100 tracking-tight leading-none">
+              2013
             </span>
             <span className="font-mono text-[9px] text-zinc-500 uppercase tracking-widest leading-normal">
-              Same senior analysts, zero attrition
+              Senior practice established since 2013
             </span>
           </div>
 
-          {/* Card 3: 0 Breaches */}
+          {/* Card 3: Track Record */}
           <div className="flex flex-col gap-2">
-            <span className="font-mono text-4xl sm:text-5xl lg:text-[4.5rem] font-bold text-zinc-100 tracking-tight leading-none relative">
-              0
-              <span className="absolute bottom-1.5 left-0 right-0 h-[3px] bg-cyan-400 opacity-80" style={{ maxWidth: "45px" }} />
+            <span className="font-mono text-3xl sm:text-4xl lg:text-[3.2rem] font-bold text-cyan-400 tracking-tight leading-none">
+              VERIFIED
             </span>
             <span className="font-mono text-[9px] text-zinc-500 uppercase tracking-widest leading-normal mt-1">
-              On Entersoft&apos;s watch, 13 years running
+              Enterprise delivery track record
             </span>
           </div>
 

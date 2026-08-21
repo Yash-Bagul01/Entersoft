@@ -52,10 +52,10 @@ export default function ComplianceBackgroundCanvas() {
     whiteDirLight.position.set(5, 5, 5);
     scene.add(whiteDirLight);
 
-    // Signature Lime Green Accent Light
-    const limeAccentLight = new THREE.PointLight(0xCCFF33, 0, 20); // starts dark
-    limeAccentLight.position.set(0, 2, 4);
-    scene.add(limeAccentLight);
+    // Signature Electric Azure / Blue Accent Light
+    const blueAccentLight = new THREE.PointLight(0x00A3FF, 0, 20); // starts dark
+    blueAccentLight.position.set(0, 2, 4);
+    scene.add(blueAccentLight);
 
     // --- Geometry Data ---
     // A symmetrical dual-geodesic structure (24 nodes)
@@ -247,7 +247,7 @@ export default function ComplianceBackgroundCanvas() {
       });
 
       faceMaterial.opacity = 0.15;
-      limeAccentLight.intensity = 3.0;
+      blueAccentLight.intensity = 3.0;
       renderer.render(scene, camera);
       return;
     }
@@ -354,17 +354,17 @@ export default function ComplianceBackgroundCanvas() {
         faceMeshes[idx].geometry.attributes.position.needsUpdate = true;
       });
 
-      // 5. Lime Green certified moment (Proof & CTA, progress 0.72 to 1.0)
-      let limeIntensity = 0;
+      // 5. Electric Azure certified moment (Proof & CTA, progress 0.72 to 1.0)
+      let blueIntensity = 0;
       if (animState.progress > 0.7) {
-        limeIntensity = Math.min((animState.progress - 0.7) / 0.15, 1) * 3.5; // Max intensity 3.5
+        blueIntensity = Math.min((animState.progress - 0.7) / 0.15, 1) * 3.5; // Max intensity 3.5
       }
-      limeAccentLight.intensity = limeIntensity;
+      blueAccentLight.intensity = blueIntensity;
 
-      // Animate lime accent light position slightly for specular highlights
+      // Animate blue accent light position slightly for specular highlights
       const lightTime = performance.now() * 0.001;
-      limeAccentLight.position.x = Math.sin(lightTime * 0.8) * 3;
-      limeAccentLight.position.z = Math.cos(lightTime * 0.8) * 3 + 2;
+      blueAccentLight.position.x = Math.sin(lightTime * 0.8) * 3;
+      blueAccentLight.position.z = Math.cos(lightTime * 0.8) * 3 + 2;
 
       renderer.render(scene, camera);
       frameId = requestAnimationFrame(tick);

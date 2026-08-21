@@ -35,7 +35,7 @@ export default function SIEMVisual() {
       <div className="flex flex-col gap-4 w-full h-full justify-between relative z-10">
         <div className="flex justify-between items-center border-b border-[var(--border-subtle)] pb-3 select-none">
           <span className="font-mono text-[9px] font-bold text-[var(--accent)] tracking-widest uppercase">
-            LIVE MONITORING TELEMETRY
+            Illustrative telemetry — sample data
           </span>
           <span className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
         </div>

@@ -26,7 +26,7 @@ cp .env.example .env.local
 
 | Variable Name | Required | Default Value | Description |
 | :--- | :--- | :--- | :--- |
-| `NEXT_PUBLIC_APP_URL` | No (fallback provided) | `https://entersoftsecurity.com` | The canonical URL of the application. Used for metadataBase SEO mapping. |
+| `NEXT_PUBLIC_APP_URL` | No (fallback provided) | `https://www.entersoftsecurity.com` | Base URL of the deployment. Used for `metadataBase` only. Canonical URLs, sitemap entries and JSON-LD `@id`s always use the production host defined by `PRODUCTION_URL` in `src/config/routes.ts`. Any host other than `entersoftsecurity.com` (with or without `www`) is served as `noindex`. |
 
 ---
 

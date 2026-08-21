@@ -43,8 +43,7 @@ export default function Differentiators() {
   const rows = [
     { cards: capabilities.slice(0, 2), className: 'row-left-heavy' },
     { cards: capabilities.slice(2, 4), className: 'row-right-heavy' },
-    { cards: capabilities.slice(4, 6), className: 'row-right-heavy' },
-    { cards: capabilities.slice(6, 8), className: 'row-left-heavy' },
+    { cards: capabilities.slice(4, 6), className: 'row-left-heavy' },
   ]
 
   // Lenis Scroll-Velocity Skew effect on grid wrapper
@@ -181,9 +180,9 @@ export default function Differentiators() {
         .diff-heading {
           font-family: var(--font-heading, sans-serif);
           font-size: clamp(1.8rem, 3.2vw, 3rem);
-          font-weight: 700;
+          font-weight: 600;
           color: var(--text-primary);
-          letter-spacing: -0.02em;
+          letter-spacing: -0.025em;
           line-height: 1.1;
           margin: 0;
           text-transform: uppercase;
@@ -336,7 +335,7 @@ export default function Differentiators() {
             viewport={{ once: true }}
             transition={{ duration: 0.4, ease: 'easeOut' }}
           >
-            // CYBER OPERATING MODEL
+            // CUSTOMER OUTCOMES
           </motion.span>
 
           <motion.h2
@@ -346,12 +345,12 @@ export default function Differentiators() {
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
           >
-            FROM SECURITY SIGNALS TO GOVERNED ACTION.
+            Why enterprises choose Entersoft
           </motion.h2>
 
           <p className="diff-intro font-sans">
             {wordReveal(
-              'Entersoft starts with application risk and connects it to cloud, identity, endpoint, threat and control context—turning fragmented signals into governed decisions and verified action.',
+              'A high score does not always mean high business risk—and a low score can hide a damaging attack path. Entersoft evaluates findings using technical severity, exploitability, reachability, control context and business impact.',
               isReducedMotion
             )}
           </p>
