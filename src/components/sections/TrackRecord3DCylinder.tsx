@@ -4,11 +4,96 @@ import React, { useRef, useState, useEffect, useCallback } from "react";
 import * as THREE from "three";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValue, MotionValue } from "framer-motion";
 import SectionLabel from "../ui/SectionLabel";
 import { Button } from "../ui/Button";
 import { fadeInUpVariants } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+
+interface PhilosophyToken {
+  text: string;
+  highlight: boolean;
+}
+
+function JitterWordSpan({
+  token,
+  index,
+  total,
+  progress,
+  isLight,
+}: {
+  token: PhilosophyToken;
+  index: number;
+  total: number;
+  progress: MotionValue<number>;
+  isLight: boolean;
+}) {
+  // Stagger window per word with smooth overlap
+  const start = index / total;
+  const end = Math.min(1.0, (index + 1.25) / total);
+
+  // Clearly visible priorly (opacity 0.52 -> 1.0)
+  const opacity = useTransform(progress, [start, end], [0.52, 1.0]);
+  const scale = useTransform(progress, [start, end], [0.98, 1.0]);
+
+  const inactiveColor = isLight ? "#475569" : "#7C8DAB";
+
+  const activeColor = token.highlight
+    ? isLight
+      ? "#1E52C8" // deep azure against the alabaster surface
+      : "#96CBFF" // bright sky against the jet-black surface
+    : isLight
+    ? "#060606"
+    : "#F1F5FF";
+
+  const color = useTransform(progress, [start, end], [inactiveColor, activeColor]);
+
+  return (
+    <motion.span
+      style={{
+        display: "inline-block",
+        whiteSpace: "pre",
+        opacity,
+        scale,
+        color,
+        textShadow:
+          token.highlight && !isLight ? "0 0 20px rgba(150, 203, 255, 0.42)" : undefined,
+      }}
+      className={`inline-block transition-all duration-150 cursor-default select-none hover:scale-[1.04] ${
+        token.highlight ? "font-semibold" : "font-medium"
+      }`}
+    >
+      {token.text}
+    </motion.span>
+  );
+}
+
+function JitterScrollText({
+  tokens,
+  isLight,
+  pinnedProgress,
+}: {
+  tokens: PhilosophyToken[];
+  isLight: boolean;
+  pinnedProgress: MotionValue<number>;
+}) {
+  return (
+    <h2 className="text-[clamp(1.5rem,3.4vw,2.8rem)] font-display font-medium leading-[1.2] tracking-[-0.02em] uppercase text-center flex flex-wrap justify-center gap-x-[0.28em] gap-y-[0.2em]">
+      {tokens.map((token, index) => (
+        <React.Fragment key={index}>
+          <JitterWordSpan
+            token={token}
+            index={index}
+            total={tokens.length}
+            progress={pinnedProgress}
+            isLight={isLight}
+          />
+          {index < tokens.length - 1 ? " " : ""}
+        </React.Fragment>
+      ))}
+    </h2>
+  );
+}
 
 interface CardSpec {
   value: string;
@@ -634,6 +719,7 @@ export default function TrackRecord3DCylinder() {
   const headerRef = useRef<HTMLElement>(null);
   const brandBgRef = useRef<HTMLDivElement>(null);
   const isReduced = useReducedMotion();
+  const pinnedTextProgress = useMotionValue(0);
 
   const [theme, setTheme] = useState<"dark" | "light">("dark");
   const [activeIndex, setActiveIndex] = useState(0);
@@ -987,7 +1073,7 @@ export default function TrackRecord3DCylinder() {
       const st = ScrollTrigger.create({
         trigger: sectionEl,
         start: "top top",
-        end: "+=1700",
+        end: "+=1900",
         pin: true,
         pinSpacing: true,
         anticipatePin: 1,
@@ -996,7 +1082,15 @@ export default function TrackRecord3DCylinder() {
         onUpdate: (self) => {
           const p = self.progress;
 
-          if (p <= 0.08) {
+          // Update pinned text reveal progress for Jitter word reveal animation (0.0 -> 0.22)
+          if (p <= 0.22) {
+            const textP = Math.min(1, p / 0.18);
+            pinnedTextProgress.set(textP);
+          } else {
+            pinnedTextProgress.set(1);
+          }
+
+          if (p <= 0.16) {
             // PHASE 1: Defensive Philosophy in foreground, Prominent Visible Top-down circle in background
             if (philosophyRef.current) {
               philosophyRef.current.style.opacity = "1";
@@ -1020,9 +1114,9 @@ export default function TrackRecord3DCylinder() {
 
             targetTiltX.current = -Math.PI / 2;
             baseScale.current = 0.72;
-          } else if (p > 0.08 && p <= 0.38) {
-            // PHASE 2: Instant Unrolling on user's natural scroll (p: 0.08 -> 0.38)
-            const t = (p - 0.08) / 0.30; // Normalized 0 -> 1
+          } else if (p > 0.16 && p <= 0.45) {
+            // PHASE 2: Instant Unrolling on user's natural scroll (p: 0.16 -> 0.45)
+            const t = (p - 0.16) / 0.29; // Normalized 0 -> 1
             const easeT = gsap.parseEase("power2.out")(t);
 
             // Defensive Philosophy text fades out smoothly
@@ -1031,7 +1125,6 @@ export default function TrackRecord3DCylinder() {
               philosophyRef.current.style.transform = `translateY(${-easeT * 100}px)`;
               philosophyRef.current.style.pointerEvents = "none";
             }
-
             // Circle transitions from 0.80 to 1.0 as it unrolls upright
             if (canvasContainerRef.current) {
               canvasContainerRef.current.style.opacity = `${0.80 + easeT * 0.20}`;
@@ -1239,43 +1332,12 @@ export default function TrackRecord3DCylinder() {
         <div className="max-w-[1150px] flex flex-col items-center gap-6 md:gap-8 text-center pointer-events-auto">
           <SectionLabel color="secondary">DEFENSIVE PHILOSOPHY</SectionLabel>
 
-          {/* Main Statement Word-by-Word Reveal Animation */}
-          <motion.h2
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-10%" }}
-            className="text-[clamp(1.5rem,3.4vw,2.8rem)] font-display font-medium leading-[1.2] tracking-[-0.02em] uppercase text-center flex flex-wrap justify-center gap-x-[0.25em] gap-y-[0.15em]"
-          >
-            {PHILOSOPHY_TOKENS.map((token, index) => (
-              <React.Fragment key={index}>
-                <motion.span
-                  variants={itemVariants}
-                  whileHover={
-                    token.highlight
-                      ? {
-                          scale: 1.05,
-                          textShadow: "0 0 12px rgba(0,163,255,0.25)",
-                          transition: { duration: 0.2, ease: "easeOut" },
-                        }
-                      : {
-                          y: -2,
-                          transition: { duration: 0.2, ease: "easeOut" },
-                        }
-                  }
-                  className={`inline-block transition-all duration-300 cursor-default hover:text-accent ${
-                    token.highlight
-                      ? "text-text-secondary font-semibold"
-                      : "text-text-primary"
-                  }`}
-                  style={{ display: "inline-block", whiteSpace: "pre" }}
-                >
-                  {token.text}
-                </motion.span>
-                {index < PHILOSOPHY_TOKENS.length - 1 ? " " : ""}
-              </React.Fragment>
-            ))}
-          </motion.h2>
+          {/* Main Statement Jitter Scroll Text Reveal Animation */}
+          <JitterScrollText
+            tokens={PHILOSOPHY_TOKENS}
+            isLight={isLight}
+            pinnedProgress={pinnedTextProgress}
+          />
 
           {/* Action Button & Scroll Prompt */}
           <motion.div

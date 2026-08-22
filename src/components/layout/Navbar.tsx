@@ -53,13 +53,25 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setIsScrolled(true);
+      const heroEl = document.getElementById("hero");
+      if (heroEl) {
+        const rect = heroEl.getBoundingClientRect();
+        // Keep navbar static during Hero section; start pill animation only when Hero section ends at Defensive Philosophy
+        if (rect.bottom <= 120) {
+          setIsScrolled(true);
+        } else {
+          setIsScrolled(false);
+        }
       } else {
-        setIsScrolled(false);
+        if (window.scrollY > 400) {
+          setIsScrolled(true);
+        } else {
+          setIsScrolled(false);
+        }
       }
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 

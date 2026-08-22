@@ -1,4 +1,4 @@
-import React from "react";
+dimport React from "react";
 import type { Metadata } from "next";
 import SmartContractPageRoot from "@/components/services/smart-contract-v2/SmartContractPageRoot";
 import ServiceCTA from "@/components/services/ServiceCTA";

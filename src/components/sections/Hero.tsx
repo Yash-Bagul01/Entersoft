@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { ChevronDown, ArrowRight } from "lucide-react";
 import { Button } from "../ui/Button";
 import MagneticButton from "../ui/MagneticButton";
-import SectionLabel from "../ui/SectionLabel";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useSmoothScroll } from "@/components/layout/SmoothScrollProvider";
 import { gsap } from "gsap";
@@ -16,10 +15,11 @@ export default function Hero() {
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
   
-  const [videoReady, setVideoReady] = useState(false);
-  const [videoError, setVideoError] = useState(false);
+  const h1GroupRef = useRef<HTMLDivElement>(null);
+  const paragraph2Ref = useRef<HTMLDivElement>(null);
+  const buttonsRef = useRef<HTMLDivElement>(null);
+
   const shouldReduceMotion = useReducedMotion();
   const lenis = useSmoothScroll();
 
@@ -37,47 +37,63 @@ export default function Hero() {
     }
   };
 
-  // GSAP Parallax scrolling animations
+  // GSAP ScrollTrigger Pinned Text Crossfade Sequence
   useEffect(() => {
     if (typeof window === "undefined" || shouldReduceMotion) return;
 
     gsap.registerPlugin(ScrollTrigger);
 
     const container = containerRef.current;
-    const videoContainer = videoContainerRef.current;
-    const video = videoRef.current;
-    const overlay = overlayRef.current;
-    const content = contentRef.current;
+    const h1GroupEl = h1GroupRef.current;
+    const p2El = paragraph2Ref.current;
 
-    if (!container || !videoContainer || !overlay || !content) return;
+    if (!container || !h1GroupEl || !p2El) return;
 
     const ctx = gsap.context(() => {
-      // 1. Pin the video container inside the hero wrapper during scroll
+      // Pinned ScrollTrigger Timeline: Keeps background and CTAs static while driving text crossfade
       ScrollTrigger.create({
         trigger: container,
-        pin: videoContainer,
         start: "top top",
-        end: "bottom top",
-        scrub: true,
-      });
+        end: "+=650",
+        pin: true,
+        pinSpacing: true,
+        scrub: 0.3,
+        onUpdate: (self) => {
+          const p = self.progress;
 
-      // 2. Parallax scale the video element, shrink the videoContainer into a card, and darken the overlay while fading out content
-      gsap.timeline({
-        scrollTrigger: {
-          trigger: container,
-          start: "top top",
-          end: "bottom top",
-          scrub: true,
-        }
-      })
-      .to(video, { scale: 1.12, ease: "none" }, 0)
-      .to(videoContainer, {
-        clipPath: "inset(4% 6% 8% 6% rounded 24px)",
-        scale: 0.95,
-        ease: "power1.inOut",
-      }, 0)
-      .to(overlay, { backgroundColor: "rgba(6, 6, 6, 0.95)", ease: "none" }, 0)
-      .to(content, { opacity: 0, y: -60, ease: "none" }, 0);
+          if (p <= 0.10) {
+            // Phase 1: H1 3-Line Headline + Since 2013 Line fully visible
+            gsap.to(h1GroupEl, { opacity: 1, y: 0, filter: "blur(0px)", overwrite: "auto", duration: 0.1 });
+            gsap.to(p2El, { opacity: 0, y: 30, filter: "blur(4px)", overwrite: "auto", duration: 0.1 });
+          } else if (p > 0.10 && p <= 0.65) {
+            // Phase 2: Smooth Crossfade between H1 Group and Entersoft Combines Paragraph
+            const t = (p - 0.10) / 0.55; // 0 -> 1
+            const easeT = gsap.parseEase("power2.out")(t);
+
+            // Fade out H1 Group upwards smoothly
+            gsap.to(h1GroupEl, {
+              opacity: Math.max(0, 1 - easeT * 1.5),
+              y: -easeT * 30,
+              filter: `blur(${easeT * 5}px)`,
+              overwrite: "auto",
+              duration: 0.1,
+            });
+
+            // Fade in Paragraph 2 smoothly from below
+            gsap.to(p2El, {
+              opacity: Math.min(1, easeT * 1.5),
+              y: 30 * (1 - easeT),
+              filter: `blur(${(1 - easeT) * 4}px)`,
+              overwrite: "auto",
+              duration: 0.1,
+            });
+          } else {
+            // Phase 3: Statement 2 fully visible
+            gsap.to(h1GroupEl, { opacity: 0, y: -30, filter: "blur(6px)", overwrite: "auto", duration: 0.1 });
+            gsap.to(p2El, { opacity: 1, y: 0, filter: "blur(0px)", overwrite: "auto", duration: 0.1 });
+          }
+        },
+      });
     });
 
     return () => {
@@ -85,7 +101,7 @@ export default function Hero() {
     };
   }, [shouldReduceMotion]);
 
-  // Video viewport lifecycle controller
+  // Video autoplay controller
   useEffect(() => {
     const video = videoRef.current;
     if (!video || shouldReduceMotion) return;
@@ -134,16 +150,14 @@ export default function Hero() {
     <section
       id="hero"
       ref={containerRef}
-      className="relative w-full h-[100vh] h-[100dvh] overflow-hidden flex flex-col justify-center items-center px-6 md:px-12 bg-[#060606] select-none"
+      className="relative w-full h-[100vh] h-[100dvh] overflow-hidden flex flex-col justify-between items-start px-6 md:px-12 pt-20 md:pt-22 pb-12 md:pb-16 bg-[#060606] select-none"
     >
-      {/* Background Layer Container */}
+      {/* Static Pinned Background Layer */}
       <div
         ref={videoContainerRef}
         className="absolute inset-0 w-full h-full bg-[#060606] z-0 overflow-hidden pointer-events-none"
-        style={{ clipPath: "inset(0% 0% 0% 0% rounded 0px)" }}
       >
         {shouldReduceMotion ? (
-          /* Ambient subtle CSS pulse for reduced motion accessibility */
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,163,255,0.03)_0%,transparent_80%)] animate-pulse duration-[6000ms]" />
         ) : (
           <video
@@ -154,141 +168,89 @@ export default function Hero() {
             loop
             playsInline
             preload="auto"
-            onError={(e) => {
-              console.error("Hero video load error:", e);
-              setVideoError(true);
-            }}
-            className="absolute inset-0 w-full h-full object-cover origin-center"
+            className="absolute inset-0 w-full h-full object-cover origin-center opacity-85"
             aria-hidden="true"
           />
         )}
 
-        {/* Cinematic Linear Gradient Masks (Inside container so it clips/scales together) */}
+        {/* Gradient Mask Overlay */}
         <div
           ref={overlayRef}
           className="absolute inset-0 z-10 pointer-events-none transition-all duration-300 hero-gradient-overlay"
         />
       </div>
 
-      {/* Hero Content Container */}
-      <div ref={contentRef} className="relative z-20 max-w-[1400px] w-full flex flex-col justify-center items-start pt-16 h-full">
-        <motion.div
-          variants={{
-            hidden: {},
-            visible: {
-              transition: {
-                staggerChildren: 0.08, // STAGGER.base
-              },
-            },
-          }}
-          initial="hidden"
-          animate="visible"
-          className="max-w-[850px] flex flex-col items-start gap-4 md:gap-6"
-        >
-          {/* Eyebrow Label: Line Mask Reveal */}
-          <div className="overflow-hidden">
-            <motion.div
-              variants={{
-                hidden: { y: "100%" },
-                visible: { y: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } },
-              }}
+      {/* Main Content Container (Left Aligned & Clean Layout) */}
+      <div className="relative z-20 max-w-[1280px] w-full flex-1 flex flex-col justify-center items-start text-left">
+        
+        {/* Dynamic Text Frame (H1 Group & Statement 2 Crossfade) */}
+        <div className="relative w-full max-w-[1080px]">
+          
+          {/* Statement 1: 3-Line Display H1 + Since 2013 Technical Credentials Line (Initial View) */}
+          <div ref={h1GroupRef} className="flex flex-col items-start text-left max-w-[1020px]">
+            <h1
+              className="text-[clamp(2.2rem,4.6vw,4.5rem)] font-display font-semibold leading-[1.07] tracking-[-0.025em] text-[#F6F5F0] drop-shadow-[0_4px_24px_rgba(0,0,0,0.9)] select-none text-left"
             >
-              <SectionLabel color="accent">APPLICATION-FIRST CYBER ASSURANCE</SectionLabel>
-            </motion.div>
+              Application-first
+              <br />
+              cyber assurance for
+              <br />
+              modern enterprises.
+            </h1>
+
+            {/* Technical Credentials Row (Since 2013 Line) */}
+            <div className="mt-4 md:mt-5 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[clamp(11.5px,1.35vw,14px)] font-mono text-white/80 tracking-wider text-left max-w-[900px]">
+              <span className="font-semibold text-[#96CBFF]">Since 2013 (13+ Years)</span>
+              <span className="text-white/30">|</span>
+              <span className="font-medium text-white/90">CREST-accredited penetration testing</span>
+              <span className="text-white/30">|</span>
+              <span className="font-medium text-white/90">CERT-In empanelled auditing organisation</span>
+              <span className="text-white/30">|</span>
+              <span className="font-medium text-white/90">ISO/IEC 27001-certified ISMS</span>
+            </div>
           </div>
 
-          {/* Headline: Line-Mask Reveal with drop-shadow for visibility */}
-          <motion.h1
-            className="text-[clamp(2.2rem,4.5vw,4.2rem)] font-display font-semibold leading-[1.08] tracking-[-0.02em] text-[#F6F5F0] text-left whitespace-pre-line drop-shadow-[0_4px_16px_rgba(0,0,0,0.8)]"
+          {/* Statement 2: Entersoft Combines Paragraph (Scroll State Only) */}
+          <div
+            ref={paragraph2Ref}
+            className="absolute inset-0 flex flex-col justify-center items-start opacity-0 pointer-events-none transition-all max-w-[1020px]"
+            style={{ transform: "translateY(30px)", filter: "blur(4px)" }}
           >
-            <span className="block overflow-hidden pb-[0.05em]">
-              <motion.span
-                variants={{
-                  hidden: { y: "100%" },
-                  visible: { y: 0, transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } },
-                }}
-                className="block"
-              >
-                Application-first
-              </motion.span>
-            </span>
-            <span className="block overflow-hidden pb-[0.05em] text-[#F6F5F0] opacity-90">
-              <motion.span
-                variants={{
-                  hidden: { y: "100%" },
-                  visible: { y: 0, transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } },
-                }}
-                className="block"
-              >
-                cyber assurance for
-              </motion.span>
-            </span>
-            <span className="block overflow-hidden pb-[0.05em] text-[#F6F5F0] opacity-80">
-              <motion.span
-                variants={{
-                  hidden: { y: "100%" },
-                  visible: { y: 0, transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } },
-                }}
-                className="block"
-              >
-                modern enterprises.
-              </motion.span>
-            </span>
-          </motion.h1>
+            <p className="text-[clamp(1.4rem,3vw,2.7rem)] font-display font-medium leading-[1.24] tracking-[-0.02em] text-[#F6F5F0]/95 text-left drop-shadow-[0_4px_20px_rgba(0,0,0,0.9)]">
+              Entersoft combines the <span className="text-[#96CBFF] font-semibold">EnProbe</span> platform with expert-led security engineering to discover, validate and close risk across applications, APIs, code, cloud, identity, AI systems and digital assets.
+            </p>
 
-          {/* Subhead: Smooth reveal with text-shadow and brightened text for readability */}
-          <div className="overflow-hidden mt-2">
-            <motion.p
-              variants={{
-                hidden: { y: "100%", opacity: 0 },
-                visible: { y: 0, opacity: 1, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } },
-              }}
-              className="text-[clamp(14px,1.6vw,17px)] font-sans text-[#F6F5F0] opacity-85 leading-relaxed max-w-[640px] text-left drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]"
-            >
-              Entersoft combines the EnProbe platform with expert-led security engineering to discover, validate and close risk across applications, APIs, code, cloud, identity, AI systems and digital assets.
-            </motion.p>
+            {/* Technical Credentials Row (Since 2013 Line) Below Statement 2 */}
+            <div className="mt-4 md:mt-5 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[clamp(11.5px,1.35vw,14px)] font-mono text-white/80 tracking-wider text-left max-w-[900px]">
+              <span className="font-semibold text-[#96CBFF]">Since 2013 (13+ Years)</span>
+              <span className="text-white/30">|</span>
+              <span className="font-medium text-white/90">CREST-accredited penetration testing</span>
+              <span className="text-white/30">|</span>
+              <span className="font-medium text-white/90">CERT-In empanelled auditing organisation</span>
+              <span className="text-white/30">|</span>
+              <span className="font-medium text-white/90">ISO/IEC 27001-certified ISMS</span>
+            </div>
           </div>
+        </div>
 
-          {/* Technical Specs Line */}
-          <div className="overflow-hidden mt-3">
-            <motion.p
-              variants={{
-                hidden: { y: "100%", opacity: 0 },
-                visible: { y: 0, opacity: 1, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.1 } },
-              }}
-              className="text-[clamp(11px,1.3vw,13.5px)] font-sans text-[#F6F5F0] opacity-85 tracking-wider flex flex-wrap items-center gap-x-2.5 gap-y-1 text-left drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]"
-            >
-              <span className="font-semibold">Since 2013</span>
-              <span className="opacity-50">|</span>
-              <span className="font-semibold">CREST-accredited penetration testing</span>
-              <span className="opacity-50">|</span>
-              <span className="font-semibold">CERT-In empanelled auditing organisation</span>
-              <span className="opacity-50">|</span>
-              <span className="font-semibold">ISO/IEC 27001-certified ISMS</span>
-            </motion.p>
-          </div>
-
-          {/* Call-to-actions */}
-          <motion.div
-            variants={{
-              hidden: { y: 20, opacity: 0 },
-              visible: { y: 0, opacity: 1, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } },
-            }}
-            className="flex flex-wrap items-center gap-3 md:gap-4 mt-4 md:mt-6 w-full sm:w-auto"
-          >
-            <MagneticButton>
-              <Button variant="primary" size="lg" asLink href="/contact" className="gap-2 w-full sm:w-auto text-center justify-center">
-                Book a Security Briefing <ArrowRight className="w-3.5 h-3.5" />
-              </Button>
-            </MagneticButton>
-            <Button variant="secondary" size="lg" asLink href="/platform/enprobe" className="w-full sm:w-auto text-center justify-center">
-              Explore EnProbe
-            </Button>
-          </motion.div>
-        </motion.div>
       </div>
 
-      {/* Bottom Scroll Cue */}
+      {/* Static Call-To-Action Buttons (Locked Left Position at Bottom) */}
+      <div
+        ref={buttonsRef}
+        className="relative z-30 flex flex-wrap items-center gap-4 pt-4 w-full sm:w-auto"
+      >
+        <MagneticButton>
+          <Button variant="primary" size="lg" asLink href="/contact" className="gap-2 w-full sm:w-auto text-center justify-center shadow-lg shadow-black/40">
+            Book a Security Briefing <ArrowRight className="w-3.5 h-3.5" />
+          </Button>
+        </MagneticButton>
+        <Button variant="secondary" size="lg" asLink href="/platform/enprobe" className="w-full sm:w-auto text-center justify-center">
+          Explore EnProbe
+        </Button>
+      </div>
+
+      {/* Bottom Scroll Cue Indicator */}
       <motion.button
         onClick={handleScrollToNext}
         initial={{ opacity: 0, y: -10 }}
@@ -296,21 +258,20 @@ export default function Hero() {
         whileHover={{ opacity: 1, scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         transition={{
-          opacity: { delay: 1.2, duration: 0.6 },
-          y: { delay: 1.2, duration: 0.6 },
-          scale: { duration: 0.2 },
+          opacity: { delay: 0.8, duration: 0.6 },
+          y: { delay: 0.8, duration: 0.6 },
         }}
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 hidden min-[600px]:flex flex-col items-center gap-1.5 cursor-pointer bg-transparent border-none outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-lg px-4 py-2 select-none max-h-[600px]:hidden"
+        className="absolute bottom-6 right-8 md:right-16 z-30 hidden sm:flex items-center gap-2 cursor-pointer bg-transparent border-none outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-lg px-3 py-1.5 select-none"
         aria-label="Scroll to next section"
       >
-        <span className="font-mono text-[9px] font-bold tracking-[0.2em] text-[var(--text-secondary)] uppercase">
+        <span className="font-mono text-[10px] font-bold tracking-[0.2em] text-[var(--text-secondary)] uppercase">
           SCROLL
         </span>
         <motion.div
-          animate={{ y: [0, 6, 0] }}
+          animate={{ y: [0, 5, 0] }}
           transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
         >
-          <ChevronDown className="w-4 h-4 text-[#F6F5F0]" />
+          <ChevronDown className="w-3.5 h-3.5 text-[#F6F5F0]" />
         </motion.div>
       </motion.button>
     </section>

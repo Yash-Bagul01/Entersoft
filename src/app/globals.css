@@ -103,6 +103,11 @@ html, body {
   cursor: default !important;
 }
 
+.font-canela {
+  font-family: 'Fraunces', 'Instrument Serif', 'Cormorant Garamond', Georgia, serif;
+  font-optical-sizing: auto;
+}
+
 a,
 button,
 [role="button"],
@@ -475,7 +480,6 @@ html.lenis, html.lenis body {
 [data-theme="light"] #hero .btn-sweep-secondary:hover .btn-sweep-label {
   color: #060606 !important;
 }
-
 /* Form fields (Inputs, Textareas) */
 [data-theme="light"] input,
 [data-theme="light"] textarea {
