@@ -28,7 +28,7 @@ export default function AZPageRoot() {
       className="w-full relative text-[#F0F4FF] overflow-x-hidden select-none bg-[#05070F]"
       style={{
         // CSS variables extracted directly from zkpass.org design system
-        // @ts-ignore
+        // @ts-expect-error Custom CSS variables
         "--zk-bg": "#05070F",
         "--zk-surface": "#0B0E1A",
         "--zk-surface-2": "#111525",

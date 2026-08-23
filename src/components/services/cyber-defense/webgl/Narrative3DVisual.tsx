@@ -10,7 +10,10 @@ interface Narrative3DVisualProps {
 export default function Narrative3DVisual({ stageIndex }: Narrative3DVisualProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef(stageIndex);
-  stageRef.current = stageIndex;
+
+  useEffect(() => {
+    stageRef.current = stageIndex;
+  }, [stageIndex]);
 
   useEffect(() => {
     const container = containerRef.current;

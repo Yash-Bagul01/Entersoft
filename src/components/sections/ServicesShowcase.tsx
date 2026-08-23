@@ -115,7 +115,6 @@ function ServiceRow({ service, index, isActive, isFinePointer, onHover }: Servic
       ref={rowRef}
       role="listitem"
       aria-label={`${service.displayName} — ${service.hoverCardHeading}`}
-      aria-expanded={isActive ? "true" : "false"}
       tabIndex={0}
       onMouseEnter={() => isFinePointer && onHover(service)}
       onMouseLeave={() => isFinePointer && onHover(null)}
