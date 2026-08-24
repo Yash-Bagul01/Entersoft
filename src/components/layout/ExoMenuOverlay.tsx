@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { X } from "lucide-react";
@@ -56,7 +56,7 @@ const secondaryNavItems: SecondaryNavItem[] = [
   { id: "contact", label: "Contact Us", href: ROUTES.contact, image: "/images/menu/services.png" },
 ];
 
-const overlayVariants = {
+const overlayVariants: Variants = {
   closed: {
     y: "-100%",
     transition: {
@@ -73,7 +73,7 @@ const overlayVariants = {
   },
 };
 
-const contentVariants = {
+const contentVariants: Variants = {
   closed: {
     opacity: 0,
     y: 20,
