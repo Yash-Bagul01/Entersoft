@@ -23,17 +23,18 @@ export default function Hero() {
   const shouldReduceMotion = useReducedMotion();
   const lenis = useSmoothScroll();
 
-  const handleScrollToNext = () => {
-    if (lenis) {
-      lenis.scrollTo("#value-proposition", {
+  const handleScrollToNext = (e?: React.MouseEvent) => {
+    if (e) e.preventDefault();
+    const targetEl = document.getElementById("track-record") || document.querySelector("main > section:nth-of-type(2)");
+    if (lenis && targetEl) {
+      lenis.scrollTo(targetEl as HTMLElement, {
         duration: 1.2,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       });
+    } else if (targetEl) {
+      targetEl.scrollIntoView({ behavior: "smooth" });
     } else {
-      const nextSection = document.getElementById("value-proposition");
-      if (nextSection) {
-        nextSection.scrollIntoView({ behavior: "smooth" });
-      }
+      window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
     }
   };
 
@@ -254,24 +255,24 @@ export default function Hero() {
       <motion.button
         onClick={handleScrollToNext}
         initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 0.6, y: 0 }}
+        animate={{ opacity: 0.8, y: 0 }}
         whileHover={{ opacity: 1, scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         transition={{
           opacity: { delay: 0.8, duration: 0.6 },
           y: { delay: 0.8, duration: 0.6 },
         }}
-        className="absolute bottom-6 right-8 md:right-16 z-30 hidden sm:flex items-center gap-2 cursor-pointer bg-transparent border-none outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-lg px-3 py-1.5 select-none"
+        className="absolute bottom-6 right-8 md:right-16 z-30 flex items-center gap-2 cursor-pointer bg-transparent border-none outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-lg px-3 py-1.5 select-none pointer-events-auto group"
         aria-label="Scroll to next section"
       >
-        <span className="font-mono text-[10px] font-bold tracking-[0.2em] text-[var(--text-secondary)] uppercase">
+        <span className="font-mono text-[11px] font-bold tracking-[0.2em] text-white/90 group-hover:text-white uppercase transition-colors">
           SCROLL
         </span>
         <motion.div
           animate={{ y: [0, 5, 0] }}
           transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
         >
-          <ChevronDown className="w-3.5 h-3.5 text-[#F6F5F0]" />
+          <ChevronDown className="w-4 h-4 text-white/90 group-hover:text-white transition-colors" />
         </motion.div>
       </motion.button>
     </section>

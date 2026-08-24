@@ -10,6 +10,7 @@ import ThemeToggle from "../ui/ThemeToggle";
 import Link from "next/link";
 import Image from "next/image";
 import { ROUTES } from "@/config/routes";
+import ExoMenuOverlay from "./ExoMenuOverlay";
 
 interface MegaItem {
   name: string;
@@ -50,6 +51,23 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeMega, setActiveMega] = useState<number | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [exoMenuOpen, setExoMenuOpen] = useState(false);
+  const [currentTheme, setCurrentTheme] = useState<string>("dark");
+
+  useEffect(() => {
+    const checkTheme = () => {
+      const theme = document.documentElement.getAttribute("data-theme") || "dark";
+      setCurrentTheme(theme);
+    };
+    checkTheme();
+    window.addEventListener("themeChange", checkTheme);
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    return () => {
+      window.removeEventListener("themeChange", checkTheme);
+      observer.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -238,21 +256,20 @@ export default function Navbar() {
   const getDropdownStyle = (label: string) => {
     switch (label) {
       case "Platform":
-        return "-left-28 w-[980px]";
+        return "left-1/2 -translate-x-1/2 w-[900px] max-w-[calc(100vw-2rem)]";
       case "Services":
-        return "-left-48 w-[980px]";
+        return "left-1/2 -translate-x-1/2 w-[900px] max-w-[calc(100vw-2rem)]";
+      case "Solutions":
+        return "left-1/2 -translate-x-1/2 w-[840px] max-w-[calc(100vw-2rem)]";
       case "Industries":
-        return "-left-44 w-[640px]";
-      case "Resources":
-        return "right-0 left-auto w-[600px]";
-      case "Company":
-        return "right-0 left-auto w-[560px]";
+        return "left-1/2 -translate-x-1/2 w-[640px] max-w-[calc(100vw-2rem)]";
       default:
-        return "-left-28 w-[800px]";
+        return "left-1/2 -translate-x-1/2 w-[840px] max-w-[calc(100vw-2rem)]";
     }
   };
 
   const isLightNavbar = isLightPage || (isPlatformSubpage && isScrolled);
+  const isLightFloatingPill = (isLightNavbar || currentTheme === "light") && isScrolled;
 
   return (
     <>
@@ -263,11 +280,9 @@ export default function Navbar() {
         )}>
           <div
             className={cn(
-              "w-full transition-all duration-500 ease-in-out flex items-center justify-between mx-auto",
-              isLightNavbar
-                ? (isScrolled
-                    ? "max-w-[1320px] px-6 py-3 rounded-full border border-slate-200/90 backdrop-blur-xl bg-white/95 text-slate-900 shadow-xl nav-floating-pill nav-floating-pill-light"
-                    : "max-w-full px-6 md:px-12 py-5 rounded-none border-none bg-transparent text-slate-900 nav-hero-light-header")
+              "w-full transition-all duration-500 ease-in-out flex items-center justify-between mx-auto relative",
+              isLightFloatingPill
+                ? "max-w-[1320px] px-6 py-3 rounded-full border border-slate-200/90 backdrop-blur-xl bg-white/95 text-slate-900 shadow-xl nav-floating-pill nav-floating-pill-light"
                 : (isScrolled
                     ? "max-w-[1320px] px-6 py-3 rounded-full border backdrop-blur-xl shadow-2xl nav-floating-pill " +
                       (isServicePage
@@ -285,43 +300,37 @@ export default function Navbar() {
                 height={27}
                 className={cn(
                   "h-6 w-auto object-contain transition-all duration-300 logo-img",
-                  isLightNavbar && "[filter:brightness(0)] opacity-100"
+                  isLightFloatingPill && "[filter:brightness(0)] opacity-100"
                 )}
                 priority
               />
             </Link>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center space-x-1">
-              {navItems.map((item, idx) => (
+            {/* Desktop Navbar Dropdown Links: Platform, Services, Solutions (Centered) */}
+            <nav className="hidden lg:flex items-center gap-2 xl:gap-4 z-50 lg:absolute lg:left-1/2 lg:-translate-x-1/2">
+              {navItems.slice(0, 3).map((item, idx) => (
                 <div
                   key={item.label}
-                  className="relative"
+                  className="relative group py-2"
                   onMouseEnter={() => setActiveMega(idx)}
                   onMouseLeave={() => setActiveMega(null)}
                 >
                   <Link
                     href={item.href}
+                    onClick={(e) => {
+                      // Allow toggling dropdown on click
+                      setActiveMega(activeMega === idx ? null : idx);
+                    }}
                     className={cn(
-                      "flex items-center gap-1.5 font-mono text-[11px] font-medium uppercase tracking-wider px-4 py-2 transition-all relative group cursor-pointer",
-                      isScrolled ? "rounded-full" : "rounded-md",
-                      activeMega === idx
-                        ? (isLightNavbar 
-                            ? "bg-slate-100/90 text-[#08428C] font-semibold" 
-                            : "bg-cyan-500/20 text-cyan-400 font-semibold")
-                        : (isLightNavbar
-                            ? "text-slate-800 hover:text-[#08428C] hover:bg-slate-100/80"
-                            : "text-slate-100 hover:text-cyan-400 hover:bg-white/10")
+                      "flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold uppercase tracking-wider transition-all duration-300 cursor-pointer",
+                      isLightFloatingPill
+                        ? "text-slate-700 hover:text-slate-950 hover:bg-slate-100"
+                        : "text-slate-300 hover:text-white hover:bg-white/10",
+                      activeMega === idx && (isLightFloatingPill ? "bg-slate-100 text-slate-950" : "bg-white/10 text-white")
                     )}
-                    data-cursor="link"
                   >
                     <span>{item.label}</span>
-                    <ChevronDown
-                      className={cn(
-                        "w-3.5 h-3.5 transition-transform duration-300 opacity-70 group-hover:opacity-100",
-                        activeMega === idx && "transform rotate-180 opacity-100 text-cyan-400"
-                      )}
-                    />
+                    <ChevronDown className={cn("w-3.5 h-3.5 transition-transform duration-300 opacity-60 group-hover:opacity-100", activeMega === idx && "rotate-180")} />
                   </Link>
 
                   {/* Mega Dropdown */}
@@ -333,8 +342,8 @@ export default function Navbar() {
                         exit={{ opacity: 0, y: 8, scale: 0.98 }}
                         transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
                         className={cn(
-                          "absolute top-full border p-8 mt-3 rounded-[20px] shadow-2xl flex gap-7 nav-dropdown-box z-50 transition-colors duration-300 max-w-[calc(100vw-3rem)]",
-                          isLightPage
+                          "absolute top-full border p-6 lg:p-8 mt-3 rounded-[20px] shadow-2xl flex gap-6 lg:gap-7 nav-dropdown-box z-50 transition-colors duration-300 max-w-[calc(100vw-2rem)] pointer-events-auto",
+                          isLightNavbar
                             ? "bg-white/98 border-slate-200 text-slate-900 shadow-xl"
                             : "bg-[#090F1E]/95 border-white/20 text-white shadow-2xl shadow-cyan-950/80 backdrop-blur-2xl",
                           getDropdownStyle(item.label)
@@ -343,18 +352,18 @@ export default function Navbar() {
                         {/* Left Info Blurb */}
                         <div className={cn(
                           "w-[230px] shrink-0 flex flex-col justify-between border-r pr-6",
-                          isLightPage ? "border-slate-200" : "border-white/10"
+                          isLightNavbar ? "border-slate-200" : "border-white/10"
                         )}>
                           <div>
                             <span className={cn(
                               "font-mono text-[11.5px] font-bold uppercase tracking-widest block mb-2.5",
-                              isLightPage ? "text-[#08428C]" : "text-cyan-400"
+                              isLightNavbar ? "text-[#08428C]" : "text-cyan-400"
                             )}>
                               Overview
                             </span>
                             <p className={cn(
                               "text-[13px] leading-relaxed font-sans",
-                              isLightPage ? "text-slate-600" : "text-slate-200"
+                              isLightNavbar ? "text-slate-600" : "text-slate-200"
                             )}>
                               {item.megaMenu.blurb}
                             </p>
@@ -367,7 +376,7 @@ export default function Navbar() {
                                 rel={item.megaMenu.ctaHref.startsWith("http") ? "noopener noreferrer" : undefined}
                                 className={cn(
                                   "text-[12px] font-mono underline transition-colors",
-                                  isLightPage ? "text-slate-900 hover:text-[#08428C]" : "text-white hover:text-cyan-400"
+                                  isLightNavbar ? "text-slate-900 hover:text-[#08428C]" : "text-white hover:text-cyan-400"
                                 )}
                                 data-cursor="link"
                               >
@@ -378,7 +387,7 @@ export default function Navbar() {
                                 href={item.href}
                                 className={cn(
                                   "text-[12px] font-mono underline transition-colors",
-                                  isLightPage ? "text-slate-900 hover:text-[#08428C]" : "text-white hover:text-cyan-400"
+                                  isLightNavbar ? "text-slate-900 hover:text-[#08428C]" : "text-white hover:text-cyan-400"
                                 )}
                                 data-cursor="link"
                               >
@@ -388,46 +397,46 @@ export default function Navbar() {
                           </div>
                         </div>
 
-                        {/* Right Links Directory */}
+                        {/* Right Sections & Subitems Grid */}
                         <div className={cn(
-                          "flex-1 grid gap-6",
-                          item.megaMenu.sections.length === 3 ? "grid-cols-3" : item.megaMenu.sections.length === 2 ? "grid-cols-2" : "grid-cols-1"
+                          "flex-1 grid gap-8",
+                          item.megaMenu.sections.length > 1 ? "grid-cols-2" : "grid-cols-1"
                         )}>
-                          {item.megaMenu.sections.map((section) => (
-                            <div key={section.title} className="flex flex-col gap-3.5">
+                          {item.megaMenu.sections.map((sec) => (
+                            <div key={sec.title} className="space-y-3">
                               <span className={cn(
-                                "font-mono text-[11px] font-bold uppercase tracking-wider",
-                                isLightPage ? "text-slate-500" : "text-cyan-400"
+                                "font-mono text-[11px] font-bold uppercase tracking-wider block",
+                                isLightNavbar ? "text-slate-500" : "text-slate-400"
                               )}>
-                                {section.title}
+                                {sec.title}
                               </span>
-                              <div className="flex flex-col gap-2">
-                                {section.items.map((subItem) => (
+                              <div className="space-y-1">
+                                {sec.items.map((subItem) => (
                                   <Link
                                     key={subItem.name}
                                     href={subItem.href}
                                     className={cn(
                                       "flex items-start gap-3 group p-2.5 rounded-[8px] transition-all",
-                                      isLightPage ? "hover:bg-slate-100" : "hover:bg-white/10"
+                                      isLightNavbar ? "hover:bg-slate-100" : "hover:bg-white/10"
                                     )}
                                     data-cursor="link"
                                   >
                                     <div className={cn(
                                       "mt-0.5 transition-colors shrink-0",
-                                      isLightPage ? "text-[#08428C]" : "text-cyan-400"
+                                      isLightNavbar ? "text-[#08428C]" : "text-cyan-400"
                                     )}>
                                       {subItem.icon}
                                     </div>
                                     <div className="flex flex-col gap-0.5">
                                       <span className={cn(
                                         "text-[12.5px] font-bold transition-colors leading-tight",
-                                        isLightPage ? "text-slate-900 group-hover:text-[#08428C]" : "text-white group-hover:text-cyan-300 font-bold"
+                                        isLightNavbar ? "text-slate-900 group-hover:text-[#08428C]" : "text-white group-hover:text-cyan-300 font-bold"
                                       )}>
                                         {subItem.name}
                                       </span>
                                       <span className={cn(
                                         "text-[10.5px] font-sans leading-snug transition-colors",
-                                        isLightPage ? "text-slate-500 group-hover:text-slate-800" : "text-slate-300 group-hover:text-white"
+                                        isLightNavbar ? "text-slate-500 group-hover:text-slate-800" : "text-slate-300 group-hover:text-white"
                                       )}>
                                         {subItem.desc}
                                       </span>
@@ -445,8 +454,27 @@ export default function Navbar() {
               ))}
             </nav>
 
-            {/* Right Button Action & Theme Toggle */}
-            <div className="hidden lg:flex items-center gap-4">
+            {/* Right Action Bar with Exo Ape Styled Menu Button */}
+            <div className="hidden lg:flex items-center gap-4 z-50">
+              {/* Exo Ape Styled Header Menu Button */}
+              <button
+                onClick={() => setExoMenuOpen(true)}
+                className={cn(
+                  "flex items-center gap-3 py-1.5 px-3 rounded-full transition-all duration-300 font-sans text-xs uppercase tracking-widest cursor-pointer group",
+                  isLightFloatingPill
+                    ? "text-slate-900 hover:text-black font-bold"
+                    : "text-slate-300 hover:text-white font-semibold"
+                )}
+                data-cursor="link"
+                aria-label="Open fullscreen navigation menu"
+              >
+                <span>Menu</span>
+                <div className="flex flex-col gap-1 w-4 justify-center items-end">
+                  <span className="w-4 h-[1.5px] bg-current transition-all duration-300 group-hover:w-5" />
+                  <span className="w-2.5 h-[1.5px] bg-current transition-all duration-300 group-hover:w-5" />
+                </div>
+              </button>
+
               {!isServicePage && !isLightPage && <ThemeToggle />}
               <Button
                 variant="primary"
@@ -463,16 +491,29 @@ export default function Navbar() {
             <div className="lg:hidden z-50 flex items-center gap-4">
               {!isServicePage && !isLightPage && <ThemeToggle />}
               <button
-                onClick={toggleMobileMenu}
-                className="text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors focus:outline-none p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
-                aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+                onClick={() => setExoMenuOpen(true)}
+                className={cn(
+                  "focus:outline-none p-2 min-h-[44px] min-w-[44px] flex items-center justify-center gap-3 font-sans text-xs uppercase tracking-widest font-medium transition-colors",
+                  isLightFloatingPill
+                    ? "text-slate-900 hover:text-black font-bold"
+                    : "text-slate-300 hover:text-white"
+                )}
+                aria-label="Open menu"
               >
-                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                <span>Menu</span>
+                <div className="flex flex-col gap-1 w-4 justify-center items-end">
+                  <span className="w-4 h-[1.5px] bg-current" />
+                  <span className="w-2.5 h-[1.5px] bg-current" />
+                </div>
               </button>
             </div>
           </div>
         </div>
       </header>
+
+      {/* Exo Ape Fullscreen Menu Overlay */}
+      <ExoMenuOverlay isOpen={exoMenuOpen} onClose={() => setExoMenuOpen(false)} />
+
 
       {/* Mobile Fullscreen Menu Takeover */}
       <AnimatePresence>

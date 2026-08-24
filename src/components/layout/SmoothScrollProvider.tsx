@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useRef } from "react";
+import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import Lenis from "lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -16,6 +16,7 @@ export default function SmoothScrollProvider({
   children: React.ReactNode;
 }) {
   const lenisRef = useRef<Lenis | null>(null);
+  const [lenisState, setLenisState] = useState<Lenis | null>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
   const shouldReduceMotion = useReducedMotion();
 
@@ -24,17 +25,18 @@ export default function SmoothScrollProvider({
     gsap.registerPlugin(ScrollTrigger);
 
     const lenis = new Lenis({
-      duration: shouldReduceMotion ? 0 : 1.15,                 // higher = heavier, more "weighted" glide
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // exponential ease-out
+      duration: shouldReduceMotion ? 0 : 1.2,                 // Exo Ape styled smooth momentum duration
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Exo Ape signature bezier easing [0.76, 0, 0.24, 1] equivalent
       orientation: "vertical",
       smoothWheel: true,
-      wheelMultiplier: shouldReduceMotion ? 1.0 : 0.9,           // slightly damped, not 1:1 with the wheel
-      touchMultiplier: 2.0,           // increase for more responsive touch
-      syncTouch: false,               // CRITICAL: false = native touch scroll on mobile
+      wheelMultiplier: shouldReduceMotion ? 1.0 : 1.0,           
+      touchMultiplier: 2.0,           
+      syncTouch: false,               
       infinite: false,
     });
 
     lenisRef.current = lenis;
+    setLenisState(lenis);
 
     // Sync GSAP ScrollTrigger with Lenis scroll updates
     lenis.on("scroll", (e) => {
@@ -46,8 +48,6 @@ export default function SmoothScrollProvider({
 
     const refreshHandler = () => lenis.resize();
     ScrollTrigger.addEventListener("refresh", refreshHandler);
-
-
 
     // Run Lenis tick within GSAP's ticker to prevent desync rubber-banding
     const updateTicker = (time: number) => {
@@ -88,11 +88,12 @@ export default function SmoothScrollProvider({
       gsap.ticker.remove(updateTicker);
       document.removeEventListener("click", handleAnchorClick);
       lenisRef.current = null;
+      setLenisState(null);
     };
   }, [shouldReduceMotion]);
 
   return (
-    <SmoothScrollContext.Provider value={lenisRef.current}>
+    <SmoothScrollContext.Provider value={lenisState}>
       {/* 2px fixed scroll progress bar at the very top of the viewport */}
       <div
         ref={progressBarRef}
