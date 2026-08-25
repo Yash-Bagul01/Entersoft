@@ -38,7 +38,7 @@ export default function Hero() {
     }
   };
 
-  // GSAP ScrollTrigger Pinned Text Crossfade Sequence
+  // GSAP ScrollTrigger Pinned Text Crossfade Sequence (Hardware Accelerated Timeline)
   useEffect(() => {
     if (typeof window === "undefined" || shouldReduceMotion) return;
 
@@ -51,50 +51,35 @@ export default function Hero() {
     if (!container || !h1GroupEl || !p2El) return;
 
     const ctx = gsap.context(() => {
-      // Pinned ScrollTrigger Timeline: Keeps background and CTAs static while driving text crossfade
-      ScrollTrigger.create({
-        trigger: container,
-        start: "top top",
-        end: "+=650",
-        pin: true,
-        pinSpacing: true,
-        scrub: 0.3,
-        onUpdate: (self) => {
-          const p = self.progress;
+      // Set initial states with 3D transform layers
+      gsap.set(h1GroupEl, { opacity: 1, y: 0, force3D: true });
+      gsap.set(p2El, { opacity: 0, y: 30, force3D: true });
 
-          if (p <= 0.10) {
-            // Phase 1: H1 3-Line Headline + Since 2013 Line fully visible
-            gsap.to(h1GroupEl, { opacity: 1, y: 0, filter: "blur(0px)", overwrite: "auto", duration: 0.1 });
-            gsap.to(p2El, { opacity: 0, y: 30, filter: "blur(4px)", overwrite: "auto", duration: 0.1 });
-          } else if (p > 0.10 && p <= 0.65) {
-            // Phase 2: Smooth Crossfade between H1 Group and Entersoft Combines Paragraph
-            const t = (p - 0.10) / 0.55; // 0 -> 1
-            const easeT = gsap.parseEase("power2.out")(t);
-
-            // Fade out H1 Group upwards smoothly
-            gsap.to(h1GroupEl, {
-              opacity: Math.max(0, 1 - easeT * 1.5),
-              y: -easeT * 30,
-              filter: `blur(${easeT * 5}px)`,
-              overwrite: "auto",
-              duration: 0.1,
-            });
-
-            // Fade in Paragraph 2 smoothly from below
-            gsap.to(p2El, {
-              opacity: Math.min(1, easeT * 1.5),
-              y: 30 * (1 - easeT),
-              filter: `blur(${(1 - easeT) * 4}px)`,
-              overwrite: "auto",
-              duration: 0.1,
-            });
-          } else {
-            // Phase 3: Statement 2 fully visible
-            gsap.to(h1GroupEl, { opacity: 0, y: -30, filter: "blur(6px)", overwrite: "auto", duration: 0.1 });
-            gsap.to(p2El, { opacity: 1, y: 0, filter: "blur(0px)", overwrite: "auto", duration: 0.1 });
-          }
+      // Declarative timeline scrubbed smoothly without dynamic CPU filter blur thrashing
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: container,
+          start: "top top",
+          end: "+=600",
+          pin: true,
+          pinSpacing: true,
+          scrub: 0.4,
+          fastScrollEnd: true,
         },
       });
+
+      tl.to(h1GroupEl, {
+        opacity: 0,
+        y: -30,
+        ease: "power2.inOut",
+        duration: 0.6,
+      }, 0.1)
+      .to(p2El, {
+        opacity: 1,
+        y: 0,
+        ease: "power2.inOut",
+        duration: 0.6,
+      }, 0.25);
     });
 
     return () => {
@@ -122,8 +107,8 @@ export default function Hero() {
       }
     };
 
-    video.addEventListener("canplaythrough", playVideo);
-    video.addEventListener("loadeddata", playVideo);
+    video.addEventListener("canplaythrough", playVideo, { once: true });
+    video.addEventListener("loadeddata", playVideo, { once: true });
     
     playVideo();
 
@@ -134,13 +119,11 @@ export default function Hero() {
       window.removeEventListener("touchstart", handleTrigger);
     };
 
-    window.addEventListener("scroll", handleTrigger, { passive: true });
-    window.addEventListener("click", handleTrigger, { passive: true });
-    window.addEventListener("touchstart", handleTrigger, { passive: true });
+    window.addEventListener("scroll", handleTrigger, { passive: true, once: true });
+    window.addEventListener("click", handleTrigger, { passive: true, once: true });
+    window.addEventListener("touchstart", handleTrigger, { passive: true, once: true });
 
     return () => {
-      video.removeEventListener("canplaythrough", playVideo);
-      video.removeEventListener("loadeddata", playVideo);
       window.removeEventListener("scroll", handleTrigger);
       window.removeEventListener("click", handleTrigger);
       window.removeEventListener("touchstart", handleTrigger);
@@ -156,7 +139,8 @@ export default function Hero() {
       {/* Static Pinned Background Layer */}
       <div
         ref={videoContainerRef}
-        className="absolute inset-0 w-full h-full bg-[#060606] z-0 overflow-hidden pointer-events-none"
+        className="absolute inset-0 w-full h-full bg-[#060606] z-0 overflow-hidden pointer-events-none transform-gpu"
+        style={{ transform: "translateZ(0)", willChange: "transform" }}
       >
         {shouldReduceMotion ? (
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,163,255,0.03)_0%,transparent_80%)] animate-pulse duration-[6000ms]" />
@@ -169,7 +153,8 @@ export default function Hero() {
             loop
             playsInline
             preload="auto"
-            className="absolute inset-0 w-full h-full object-cover origin-center opacity-85"
+            className="absolute inset-0 w-full h-full object-cover origin-center opacity-85 transform-gpu"
+            style={{ transform: "translateZ(0)", backfaceVisibility: "hidden" }}
             aria-hidden="true"
           />
         )}
@@ -187,7 +172,7 @@ export default function Hero() {
         {/* Dynamic Text Frame (H1 Group & Statement 2 Crossfade) */}
         <div className="relative w-full max-w-[1080px]">
           
-          {/* Statement 1: 3-Line Display H1 + Since 2013 Technical Credentials Line (Initial View) */}
+          {/* Statement 1: 3-Line Display H1 + Description Paragraph + Technical Credentials Line */}
           <div ref={h1GroupRef} className="flex flex-col items-start text-left max-w-[1020px]">
             <h1
               className="text-[clamp(2.2rem,4.6vw,4.5rem)] font-display font-semibold leading-[1.07] tracking-[-0.025em] text-[#F6F5F0] drop-shadow-[0_4px_24px_rgba(0,0,0,0.9)] select-none text-left"
@@ -198,6 +183,11 @@ export default function Hero() {
               <br />
               modern enterprises.
             </h1>
+
+            {/* Entersoft Combines Paragraph - Fully visible, sharp, clear */}
+            <p className="mt-4 md:mt-5 text-[clamp(1.1rem,1.8vw,1.4rem)] font-display font-normal leading-[1.4] text-white/90 text-left max-w-[880px] drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]">
+              Entersoft combines the <span className="text-[#96CBFF] font-semibold">EnProbe</span> platform with expert-led security engineering to discover, validate and close risk across applications, APIs, code, cloud, identity, AI systems and digital assets.
+            </p>
 
             {/* Technical Credentials Row (Since 2013 Line) */}
             <div className="mt-4 md:mt-5 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[clamp(11.5px,1.35vw,14px)] font-mono text-white/80 tracking-wider text-left max-w-[900px]">
@@ -211,11 +201,10 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Statement 2: Entersoft Combines Paragraph (Scroll State Only) */}
+          {/* Statement 2: Full Display Paragraph (Scroll State View) */}
           <div
             ref={paragraph2Ref}
-            className="absolute inset-0 flex flex-col justify-center items-start opacity-0 pointer-events-none transition-all max-w-[1020px]"
-            style={{ transform: "translateY(30px)", filter: "blur(4px)" }}
+            className="absolute inset-0 flex flex-col justify-center items-start opacity-0 pointer-events-none max-w-[1020px]"
           >
             <p className="text-[clamp(1.4rem,3vw,2.7rem)] font-display font-medium leading-[1.24] tracking-[-0.02em] text-[#F6F5F0]/95 text-left drop-shadow-[0_4px_20px_rgba(0,0,0,0.9)]">
               Entersoft combines the <span className="text-[#96CBFF] font-semibold">EnProbe</span> platform with expert-led security engineering to discover, validate and close risk across applications, APIs, code, cloud, identity, AI systems and digital assets.

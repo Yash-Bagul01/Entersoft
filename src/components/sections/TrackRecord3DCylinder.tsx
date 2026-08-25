@@ -755,6 +755,8 @@ export default function TrackRecord3DCylinder() {
   const dragStartAngle = useRef(0);
   const scrollTriggerInstance = useRef<ScrollTrigger | null>(null);
   const reqAnimFrameId = useRef<number | null>(null);
+  const prevActiveIdxRef = useRef(-1);
+  const isVisibleRef = useRef(true);
 
   // Mouse hover parallax & dynamic glare position
   const mouseCoords = useRef({ x: 0.5, y: 0.5, isOver: false });
@@ -969,9 +971,21 @@ export default function TrackRecord3DCylinder() {
 
     let frameCount = 0;
 
+    // IntersectionObserver to pause rendering when section is out of viewport
+    const visibilityObserver = new IntersectionObserver(
+      ([entry]) => {
+        isVisibleRef.current = entry.isIntersecting;
+      },
+      { threshold: 0.02 }
+    );
+    if (container) {
+      visibilityObserver.observe(container);
+    }
+
     // 7. Render Loop with real-time hover glare & mouse parallax tilt
     const renderLoop = () => {
       reqAnimFrameId.current = requestAnimationFrame(renderLoop);
+      if (!isVisibleRef.current) return;
       frameCount++;
 
       // Smooth continuous idle drift in top-down circle view
@@ -1007,16 +1021,19 @@ export default function TrackRecord3DCylinder() {
         mouseLight.position.y = (0.5 - mouseCoords.current.y) * 5.5;
       }
 
-      // Active card index calculation
+      // Active card index calculation - Guard state update to prevent 60fps React re-renders
       const normAngle = ((-rotationAngle.current % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
       const activeIdx = Math.round(normAngle / (Math.PI / 2)) % CARDS_DATA.length;
-      setActiveIndex(activeIdx);
+      if (prevActiveIdxRef.current !== activeIdx) {
+        prevActiveIdxRef.current = activeIdx;
+        setActiveIndex(activeIdx);
+      }
 
-      // Dynamic Canvas Texture Specular Glare update on active card (smoothened at 30fps)
-      if (currentTiltX.current > -0.2 && frameCount % 2 === 0) {
-        const targetGX = mouseCoords.current.isOver ? mouseCoords.current.x * 2800 : 1400;
-        const targetGY = mouseCoords.current.isOver ? mouseCoords.current.y * 1200 : 200;
-        const targetGI = mouseCoords.current.isOver ? 1.45 : 1.0;
+      // Dynamic Canvas Texture Specular Glare update on active card (only when hovered & throttled)
+      if (currentTiltX.current > -0.2 && mouseCoords.current.isOver && frameCount % 3 === 0) {
+        const targetGX = mouseCoords.current.x * 2800;
+        const targetGY = mouseCoords.current.y * 1200;
+        const targetGI = 1.45;
 
         glareCoords.current.x += (targetGX - glareCoords.current.x) * 0.15;
         glareCoords.current.y += (targetGY - glareCoords.current.y) * 0.15;
@@ -1054,6 +1071,7 @@ export default function TrackRecord3DCylinder() {
 
     return () => {
       window.removeEventListener("resize", handleResize);
+      visibilityObserver.disconnect();
       if (reqAnimFrameId.current) cancelAnimationFrame(reqAnimFrameId.current);
       renderer.dispose();
       scene.clear();

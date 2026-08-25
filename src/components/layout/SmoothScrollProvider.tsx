@@ -55,8 +55,8 @@ export default function SmoothScrollProvider({
     };
     gsap.ticker.add(updateTicker);
 
-    // Disable lag smoothing to keep ScrollTrigger animations synced in real-time
-    gsap.ticker.lagSmoothing(0);
+    // Enable lag smoothing to gracefully compensate for any main-thread frame hitches (500ms max lag, 33ms target)
+    gsap.ticker.lagSmoothing(500, 33);
 
     // Intercept in-page anchor links for buttery-smooth scrolling
     const handleAnchorClick = (e: MouseEvent) => {

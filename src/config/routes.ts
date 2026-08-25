@@ -39,6 +39,7 @@ export const SERVICE_SLUGS = {
 
 export const ROUTES = {
   home: "/",
+  solutions: "/solutions",
   contact: "/contact",
   company: {
     accreditations: "/company/accreditations",

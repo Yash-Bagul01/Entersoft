@@ -156,10 +156,11 @@ export default function Navbar() {
     },
     {
       label: "Solutions",
-      href: "/#services",
+      href: ROUTES.solutions,
       megaMenu: {
         blurb: "Outcome-aligned solutions connecting technology, specialist expertise, and enterprise security programmes.",
         ctaText: "View All Solutions →",
+        ctaHref: ROUTES.solutions,
         sections: [
           {
             title: "Enterprise Solutions",
