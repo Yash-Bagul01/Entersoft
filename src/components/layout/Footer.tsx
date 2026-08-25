@@ -11,6 +11,10 @@ import { motion } from "framer-motion";
 export default function Footer() {
   const pathname = usePathname();
   const isLight = pathname === "/platform/cyber-ontology";
+  const isSast = pathname === "/platform/sast";
+  const isSbom = pathname === "/platform/sbom-license-risk";
+  const isSecrets = pathname === "/platform/secrets";
+  const isSolutions = pathname === "/solutions";
   const [motionActive, setMotionActive] = useState(true);
 
   useEffect(() => {
@@ -20,6 +24,10 @@ export default function Footer() {
       setMotionActive(false);
     }
   }, []);
+
+  if (isSast || isSbom || isSecrets || isSolutions) {
+    return null;
+  }
 
   const handleToggleMotion = () => {
     // Simulate toggling motion configurations

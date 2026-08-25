@@ -172,10 +172,10 @@ export default function Hero() {
         {/* Dynamic Text Frame (H1 Group & Statement 2 Crossfade) */}
         <div className="relative w-full max-w-[1080px]">
           
-          {/* Statement 1: 3-Line Display H1 + Description Paragraph + Technical Credentials Line */}
+          {/* Statement 1: 3-Line Display H1 + Technical Credentials Line */}
           <div ref={h1GroupRef} className="flex flex-col items-start text-left max-w-[1020px]">
             <h1
-              className="text-[clamp(2.2rem,4.6vw,4.5rem)] font-display font-semibold leading-[1.07] tracking-[-0.025em] text-[#F6F5F0] drop-shadow-[0_4px_24px_rgba(0,0,0,0.9)] select-none text-left"
+              className="text-[clamp(2.4rem,5vw,5.2rem)] font-display font-semibold leading-[1.06] tracking-[-0.025em] text-[#F6F5F0] drop-shadow-[0_4px_24px_rgba(0,0,0,0.9)] select-none text-left"
             >
               Application-first
               <br />
@@ -184,13 +184,8 @@ export default function Hero() {
               modern enterprises.
             </h1>
 
-            {/* Entersoft Combines Paragraph - Fully visible, sharp, clear */}
-            <p className="mt-4 md:mt-5 text-[clamp(1.1rem,1.8vw,1.4rem)] font-display font-normal leading-[1.4] text-white/90 text-left max-w-[880px] drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]">
-              Entersoft combines the <span className="text-[#96CBFF] font-semibold">EnProbe</span> platform with expert-led security engineering to discover, validate and close risk across applications, APIs, code, cloud, identity, AI systems and digital assets.
-            </p>
-
             {/* Technical Credentials Row (Since 2013 Line) */}
-            <div className="mt-4 md:mt-5 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[clamp(11.5px,1.35vw,14px)] font-mono text-white/80 tracking-wider text-left max-w-[900px]">
+            <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[clamp(12px,1.4vw,15px)] font-mono text-white/80 tracking-wider text-left max-w-[900px]">
               <span className="font-semibold text-[#96CBFF]">Since 2013 (13+ Years)</span>
               <span className="text-white/30">|</span>
               <span className="font-medium text-white/90">CREST-accredited penetration testing</span>
@@ -201,7 +196,7 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Statement 2: Full Display Paragraph (Scroll State View) */}
+          {/* Statement 2: Full Display Paragraph (Scroll View State) - Crisp, sharp & non-blurry */}
           <div
             ref={paragraph2Ref}
             className="absolute inset-0 flex flex-col justify-center items-start opacity-0 pointer-events-none max-w-[1020px]"
@@ -210,8 +205,8 @@ export default function Hero() {
               Entersoft combines the <span className="text-[#96CBFF] font-semibold">EnProbe</span> platform with expert-led security engineering to discover, validate and close risk across applications, APIs, code, cloud, identity, AI systems and digital assets.
             </p>
 
-            {/* Technical Credentials Row (Since 2013 Line) Below Statement 2 */}
-            <div className="mt-4 md:mt-5 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[clamp(11.5px,1.35vw,14px)] font-mono text-white/80 tracking-wider text-left max-w-[900px]">
+            {/* Technical Credentials Row Below Statement 2 */}
+            <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[clamp(12px,1.4vw,15px)] font-mono text-white/80 tracking-wider text-left max-w-[900px]">
               <span className="font-semibold text-[#96CBFF]">Since 2013 (13+ Years)</span>
               <span className="text-white/30">|</span>
               <span className="font-medium text-white/90">CREST-accredited penetration testing</span>

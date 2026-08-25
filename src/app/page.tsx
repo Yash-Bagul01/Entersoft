@@ -2,7 +2,6 @@ import React from "react";
 import type { Metadata } from "next";
 import { getCanonicalUrl, ROUTES } from "@/config/routes";
 import { organizationNode, webPageNode, websiteNode } from "@/config/seo";
-import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/sections/Hero";
 import ValueProposition from "@/components/sections/ValueProposition";
 import StatsCounter from "@/components/sections/StatsCounter";
@@ -13,7 +12,6 @@ import CaseStudies from "@/components/sections/CaseStudies";
 import InsightsBlog from "@/components/sections/InsightsBlog";
 import CertificationsMarquee from "@/components/sections/CertificationsMarquee";
 import FinalCTA from "@/components/sections/FinalCTA";
-import Footer from "@/components/layout/Footer";
 import AnimatedDivider from "@/components/ui/AnimatedDivider";
 
 const TITLE = "Application Security & Penetration Testing | Entersoft";
@@ -51,7 +49,6 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Navbar />
       <main className="flex flex-col w-full relative z-10">
         <Hero />
         <AnimatedDivider />
@@ -69,7 +66,6 @@ export default function Home() {
         <AnimatedDivider />
         <FinalCTA />
       </main>
-      <Footer />
     </>
   );
 }

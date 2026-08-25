@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useEffect } from "react";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
 import { usePathname } from "next/navigation";
 
 export default function PlatformLayout({
@@ -40,13 +38,11 @@ export default function PlatformLayout({
       data-page={isCyberOntology ? "cyber-ontology" : isSast ? "sast" : isSca ? "sca" : isSbom ? "sbom" : isSecrets ? "secrets" : "platform"} 
       className={isLightPage ? "bg-[#FAFCFF] text-slate-900 min-h-screen" : "dark bg-[#0A0A0A] text-white min-h-screen"}
     >
-      <Navbar />
       <div className={`w-full min-h-[80vh] flex flex-col justify-between ${isLightPage ? "bg-[#FAFCFF] text-slate-900" : "bg-[#0A0A0A] text-white"}`}>
         <div className="flex-1 flex flex-col">
           {children}
         </div>
       </div>
-      {!isLightPage && !isSast && !isSbom && !isSecrets && <Footer />}
     </div>
   );
 }

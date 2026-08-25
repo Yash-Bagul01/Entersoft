@@ -269,8 +269,10 @@ export default function Navbar() {
     }
   };
 
-  const isLightNavbar = isLightPage || (isPlatformSubpage && isScrolled);
-  const isLightFloatingPill = (isLightNavbar || currentTheme === "light") && isScrolled;
+  const isLightThemeActive = currentTheme === "light" || isLightPage;
+  const isLightNavbar = isLightThemeActive || (isPlatformSubpage && isScrolled);
+  const isLightFloatingPill = isLightThemeActive && isScrolled;
+  const isLightNavHeader = isLightFloatingPill || isLightPage;
 
   return (
     <>
@@ -289,7 +291,9 @@ export default function Navbar() {
                       (isServicePage
                         ? "bg-[#060606]/90 border-white/12 text-white service-nav-header shadow-[0_16px_40px_rgba(0,0,0,0.6)]"
                         : "bg-[var(--bg-elevated)]/95 border-[var(--border-glass)] text-[var(--text-primary)] shadow-[0_12px_36px_rgba(0,0,0,0.12)]")
-                    : "max-w-full px-6 md:px-12 py-5 rounded-none border-none bg-transparent text-white nav-transparent-header")
+                    : (isLightNavHeader
+                        ? "max-w-full px-6 md:px-12 py-5 rounded-none border-none bg-transparent text-slate-900 nav-transparent-header"
+                        : "max-w-full px-6 md:px-12 py-5 rounded-none border-none bg-transparent text-white nav-transparent-header"))
             )}
           >
             {/* Logo */}
@@ -301,7 +305,7 @@ export default function Navbar() {
                 height={27}
                 className={cn(
                   "h-6 w-auto object-contain transition-all duration-300 logo-img",
-                  isLightFloatingPill && "[filter:brightness(0)] opacity-100"
+                  isLightNavHeader ? "[filter:brightness(0)] opacity-100" : "brightness-0 invert opacity-90 hover:opacity-100"
                 )}
                 priority
               />
@@ -324,10 +328,10 @@ export default function Navbar() {
                     }}
                     className={cn(
                       "flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold uppercase tracking-wider transition-all duration-300 cursor-pointer",
-                      isLightFloatingPill
-                        ? "text-slate-700 hover:text-slate-950 hover:bg-slate-100"
-                        : "text-slate-300 hover:text-white hover:bg-white/10",
-                      activeMega === idx && (isLightFloatingPill ? "bg-slate-100 text-slate-950" : "bg-white/10 text-white")
+                      isLightNavHeader
+                        ? "text-slate-800 hover:text-slate-950 hover:bg-slate-200/70 font-bold"
+                        : "text-slate-200 hover:text-white hover:bg-white/10",
+                      activeMega === idx && (isLightNavHeader ? "bg-slate-200 text-slate-950" : "bg-white/10 text-white")
                     )}
                   >
                     <span>{item.label}</span>
@@ -344,7 +348,7 @@ export default function Navbar() {
                         transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
                         className={cn(
                           "absolute top-full border p-6 lg:p-8 mt-3 rounded-[20px] shadow-2xl flex gap-6 lg:gap-7 nav-dropdown-box z-50 transition-colors duration-300 max-w-[calc(100vw-2rem)] pointer-events-auto",
-                          isLightNavbar
+                          isLightNavHeader
                             ? "bg-white/98 border-slate-200 text-slate-900 shadow-xl"
                             : "bg-[#090F1E]/95 border-white/20 text-white shadow-2xl shadow-cyan-950/80 backdrop-blur-2xl",
                           getDropdownStyle(item.label)
@@ -353,18 +357,18 @@ export default function Navbar() {
                         {/* Left Info Blurb */}
                         <div className={cn(
                           "w-[230px] shrink-0 flex flex-col justify-between border-r pr-6",
-                          isLightNavbar ? "border-slate-200" : "border-white/10"
+                          isLightNavHeader ? "border-slate-200" : "border-white/10"
                         )}>
                           <div>
                             <span className={cn(
                               "font-mono text-[11.5px] font-bold uppercase tracking-widest block mb-2.5",
-                              isLightNavbar ? "text-[#08428C]" : "text-cyan-400"
+                              isLightNavHeader ? "text-[#08428C]" : "text-cyan-400"
                             )}>
                               Overview
                             </span>
                             <p className={cn(
                               "text-[13px] leading-relaxed font-sans",
-                              isLightNavbar ? "text-slate-600" : "text-slate-200"
+                              isLightNavHeader ? "text-slate-600" : "text-slate-200"
                             )}>
                               {item.megaMenu.blurb}
                             </p>
@@ -377,7 +381,7 @@ export default function Navbar() {
                                 rel={item.megaMenu.ctaHref.startsWith("http") ? "noopener noreferrer" : undefined}
                                 className={cn(
                                   "text-[12px] font-mono underline transition-colors",
-                                  isLightNavbar ? "text-slate-900 hover:text-[#08428C]" : "text-white hover:text-cyan-400"
+                                  isLightNavHeader ? "text-slate-900 hover:text-[#08428C]" : "text-white hover:text-cyan-400"
                                 )}
                                 data-cursor="link"
                               >
@@ -388,7 +392,7 @@ export default function Navbar() {
                                 href={item.href}
                                 className={cn(
                                   "text-[12px] font-mono underline transition-colors",
-                                  isLightNavbar ? "text-slate-900 hover:text-[#08428C]" : "text-white hover:text-cyan-400"
+                                  isLightNavHeader ? "text-slate-900 hover:text-[#08428C]" : "text-white hover:text-cyan-400"
                                 )}
                                 data-cursor="link"
                               >
@@ -407,7 +411,7 @@ export default function Navbar() {
                             <div key={sec.title} className="space-y-3">
                               <span className={cn(
                                 "font-mono text-[11px] font-bold uppercase tracking-wider block",
-                                isLightNavbar ? "text-slate-500" : "text-slate-400"
+                                isLightNavHeader ? "text-slate-500" : "text-slate-400"
                               )}>
                                 {sec.title}
                               </span>
@@ -418,26 +422,26 @@ export default function Navbar() {
                                     href={subItem.href}
                                     className={cn(
                                       "flex items-start gap-3 group p-2.5 rounded-[8px] transition-all",
-                                      isLightNavbar ? "hover:bg-slate-100" : "hover:bg-white/10"
+                                      isLightNavHeader ? "hover:bg-slate-100" : "hover:bg-white/10"
                                     )}
                                     data-cursor="link"
                                   >
                                     <div className={cn(
                                       "mt-0.5 transition-colors shrink-0",
-                                      isLightNavbar ? "text-[#08428C]" : "text-cyan-400"
+                                      isLightNavHeader ? "text-[#08428C]" : "text-cyan-400"
                                     )}>
                                       {subItem.icon}
                                     </div>
                                     <div className="flex flex-col gap-0.5">
                                       <span className={cn(
                                         "text-[12.5px] font-bold transition-colors leading-tight",
-                                        isLightNavbar ? "text-slate-900 group-hover:text-[#08428C]" : "text-white group-hover:text-cyan-300 font-bold"
+                                        isLightNavHeader ? "text-slate-900 group-hover:text-[#08428C]" : "text-white group-hover:text-cyan-300 font-bold"
                                       )}>
                                         {subItem.name}
                                       </span>
                                       <span className={cn(
                                         "text-[10.5px] font-sans leading-snug transition-colors",
-                                        isLightNavbar ? "text-slate-500 group-hover:text-slate-800" : "text-slate-300 group-hover:text-white"
+                                        isLightNavHeader ? "text-slate-500 group-hover:text-slate-800" : "text-slate-300 group-hover:text-white"
                                       )}>
                                         {subItem.desc}
                                       </span>
@@ -462,7 +466,7 @@ export default function Navbar() {
                 onClick={() => setExoMenuOpen(true)}
                 className={cn(
                   "flex items-center gap-3 py-1.5 px-3 rounded-full transition-all duration-300 font-sans text-xs uppercase tracking-widest cursor-pointer group",
-                  isLightFloatingPill
+                  isLightNavHeader
                     ? "text-slate-900 hover:text-black font-bold"
                     : "text-slate-300 hover:text-white font-semibold"
                 )}
@@ -482,7 +486,12 @@ export default function Navbar() {
                 size="sm"
                 asLink
                 href="/#contact"
-                className={cn(isLightPage && "!border !border-slate-900 hover:!border-black font-semibold shadow-xs")}
+                className={cn(
+                  "transition-all duration-300 rounded-full px-4 py-1.5",
+                  (isLightFloatingPill || isLightPage)
+                    ? "!bg-[#08428C] !text-white hover:!bg-[#06336e] !border-[#08428C] font-semibold shadow-md"
+                    : ""
+                )}
               >
                 Book a Briefing
               </Button>
@@ -495,7 +504,7 @@ export default function Navbar() {
                 onClick={() => setExoMenuOpen(true)}
                 className={cn(
                   "focus:outline-none p-2 min-h-[44px] min-w-[44px] flex items-center justify-center gap-3 font-sans text-xs uppercase tracking-widest font-medium transition-colors",
-                  isLightFloatingPill
+                  isLightNavHeader
                     ? "text-slate-900 hover:text-black font-bold"
                     : "text-slate-300 hover:text-white"
                 )}
