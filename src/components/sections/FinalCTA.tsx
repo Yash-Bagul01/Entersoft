@@ -1,335 +1,465 @@
 "use client";
 
 import React, { useState } from "react";
-import SectionLabel from "../ui/SectionLabel";
-import { Button } from "../ui/Button";
-import MagneticButton from "../ui/MagneticButton";
-import { ShieldCheck, Mail, Send, Check } from "lucide-react";
+import { Calendar, Check, Send, ShieldCheck } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { BackgroundRippleEffect } from "../ui/BackgroundRippleEffect";
+import SectionLabel from "../ui/SectionLabel";
+import MagneticButton from "../ui/MagneticButton";
 
 interface FinalCTAProps {
   theme?: "light" | "dark";
 }
 
+const SERVICES_OPTIONS = [
+  "Application Security (AppSec)",
+  "Penetration Testing (VAPT)",
+  "Cloud & IaC Security",
+  "AI Systems Security",
+  "Compliance & GRC (ISO/CERT-In)",
+  "MDR & Threat Operations",
+  "Smart Contract Audit",
+  "EnProbe Platform Demo",
+];
+
 export default function FinalCTA({ theme = "dark" }: FinalCTAProps) {
-  const [intentType, setIntentType] = useState<"briefing" | "scoped" | "sample">("briefing");
-  const [email, setEmail] = useState("");
+  const [clientTab, setClientTab] = useState<"domestic" | "international">("international");
+  const [selectedServices, setSelectedServices] = useState<string[]>([
+    "Application Security (AppSec)",
+  ]);
   const [name, setName] = useState("");
-  const [company, setCompany] = useState("");
-  const [area, setArea] = useState("Application Assurance (AppSec)");
-  const [message, setMessage] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [discoverySource, setDiscoverySource] = useState("");
+  const [projectDetails, setProjectDetails] = useState("");
+  
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const isLight = theme === "light";
+
+  const toggleService = (service: string) => {
+    setSelectedServices((prev) =>
+      prev.includes(service)
+        ? prev.filter((s) => s !== service)
+        : [...prev, service]
+    );
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !name) return;
+
     setIsSubmitting(true);
-    
-    // Simulate API request
     setTimeout(() => {
       setIsSubmitting(false);
       setSubmitted(true);
-    }, 1500);
+    }, 1200);
   };
 
   return (
-    <section id="contact" className={`relative w-full overflow-hidden ${isLight ? "bg-[#FAFCFF] border-t border-slate-200/80" : "bg-[#030712] text-white border-t border-white/10"}`}>
-      {/* Background Ambience */}
-      {!isLight && (
-        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none opacity-50" />
-        </div>
-      )}
+    <section
+      id="contact"
+      className={`relative w-full overflow-hidden transition-colors duration-500 contact-section-theme ${
+        isLight
+          ? "bg-[#FAFCFF] text-slate-900 border-t border-slate-200/80"
+          : "bg-[#060606] text-white border-t border-white/10"
+      }`}
+    >
+      {/* Light & Dark Theme CSS Overrides for 100% Text Visibility */}
+      <style jsx global>{`
+        [data-theme="light"] .contact-section-theme {
+          background-color: #FAFCFF !important;
+          color: #0f172a !important;
+          border-color: rgba(226, 232, 240, 0.9) !important;
+        }
 
-      {isLight && (
-        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none" />
-        </div>
-      )}
+        [data-theme="light"] .contact-section-theme .contact-main-heading {
+          color: #0f172a !important;
+        }
 
-      {/* Background Ripple Effect Grid */}
-      <div 
-        className={`absolute inset-0 h-full w-full overflow-hidden z-[1] pointer-events-auto ${isLight ? "opacity-10" : "opacity-20 dark:opacity-15"}`}
-        style={{
-          maskImage: "radial-gradient(circle at center, black 30%, transparent 85%)",
-          WebkitMaskImage: "radial-gradient(circle at center, black 30%, transparent 85%)",
-        }}
-      >
-        <BackgroundRippleEffect rows={12} cols={32} cellSize={64} />
-      </div>
+        [data-theme="light"] .contact-section-theme .contact-label {
+          color: #1e293b !important;
+          font-weight: 500 !important;
+        }
 
-      <div className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-12 py-24 md:py-36 flex flex-col items-center text-center gap-10">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-10%" }}
-          variants={{
-            hidden: {},
-            visible: { transition: { staggerChildren: 0.08 } }
-          }}
-          className="max-w-[720px] flex flex-col items-center gap-4"
-        >
-          <div className="overflow-hidden">
-            <motion.div
-              variants={{
-                hidden: { y: "100%" },
-                visible: { y: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } }
-              }}
-            >
-              <SectionLabel color="accent" className={`mb-2 ${isLight ? "text-[#0B4FD2]" : ""}`}>ENTERPRISE SECURITY BRIEFING</SectionLabel>
-            </motion.div>
-          </div>
-          <div className="overflow-hidden">
-            <motion.h2
-              variants={{
-                hidden: { y: "100%" },
-                visible: { y: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } }
-              }}
-              className={`text-[clamp(2rem,4.5vw,4rem)] font-display font-semibold uppercase tracking-[-0.03em] leading-tight ${isLight ? "text-slate-900" : "!text-white drop-shadow-md"}`}
-            >
-              Book a Security Briefing
-            </motion.h2>
-          </div>
-          <p className={`text-[14px] leading-relaxed max-w-[540px] font-sans mt-1 ${isLight ? "text-slate-600" : "!text-slate-200 font-normal"}`}>
-            Discuss your application security, cloud posture, or compliance roadmap with senior technical practice leads. An Entersoft security coordinator will respond within 2 business hours.
-          </p>
-        </motion.div>
+        [data-theme="light"] .contact-section-theme .contact-input {
+          background-color: #ffffff !important;
+          border-color: #cbd5e1 !important;
+          color: #0f172a !important;
+        }
 
-        {/* Briefing submission widget */}
-        <div className={`w-full max-w-[540px] border-2 backdrop-blur-md rounded-2xl p-6 md:p-8 flex flex-col items-stretch text-left shadow-xl relative ${
-          isLight ? "!bg-white !border-slate-300/90 shadow-slate-900/5" : "border-white/15 bg-[#0B132B]/80 text-white shadow-2xl shadow-cyan-950/40"
-        }`}>
+        [data-theme="light"] .contact-section-theme .contact-input::placeholder {
+          color: #94a3b8 !important;
+        }
+
+        [data-theme="light"] .contact-section-theme .contact-input:focus {
+          border-color: #0284c7 !important;
+          box-shadow: 0 0 0 1px #0284c7 !important;
+        }
+
+        [data-theme="light"] .contact-section-theme .pill-unselected {
+          background-color: #f1f5f9 !important;
+          border-color: #cbd5e1 !important;
+          color: #334155 !important;
+        }
+
+        [data-theme="light"] .contact-section-theme .pill-unselected:hover {
+          background-color: #e2e8f0 !important;
+          border-color: #94a3b8 !important;
+        }
+
+        [data-theme="light"] .contact-section-theme .pill-selected {
+          background-color: #0f172a !important;
+          color: #ffffff !important;
+          box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15) !important;
+        }
+
+        [data-theme="light"] .contact-section-theme .tab-unselected {
+          background-color: #f1f5f9 !important;
+          color: #475569 !important;
+        }
+
+        [data-theme="light"] .contact-section-theme .tab-selected {
+          background-color: #0f172a !important;
+          color: #ffffff !important;
+        }
+
+        [data-theme="light"] .contact-section-theme .book-call-btn {
+          background-color: #ffffff !important;
+          border-color: #cbd5e1 !important;
+          color: #0f172a !important;
+        }
+
+        [data-theme="light"] .contact-section-theme .book-call-btn:hover {
+          background-color: #0f172a !important;
+          color: #ffffff !important;
+        }
+
+        [data-theme="light"] .contact-section-theme .contact-submit-btn {
+          background-color: #0f172a !important;
+          color: #ffffff !important;
+        }
+
+        [data-theme="light"] .contact-section-theme .contact-submit-btn:hover {
+          background-color: #0284c7 !important;
+        }
+
+        [data-theme="light"] .contact-section-theme .contact-footer-info {
+          color: #64748b !important;
+        }
+      `}</style>
+
+      {/* Background Radial Glow */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_20%_20%,rgba(0,163,255,0.04),transparent_70%)] pointer-events-none" />
+
+      <div className="relative z-10 max-w-[1360px] mx-auto px-6 md:px-12 py-16 lg:py-24">
+        
+        {/* Split Grid Layout (Left: Heading & Tabs, Right: Form Questions) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
           
-          <div className={`flex items-center justify-between border-b pb-4 mb-5 ${isLight ? "border-slate-200" : "border-white/10"}`}>
-            <div className="flex items-center gap-2">
-              <Mail className={`w-4 h-4 ${isLight ? "text-[#0B4FD2]" : "text-cyan-400"}`} />
-              <span className={`font-mono text-[10px] font-bold uppercase tracking-widest ${isLight ? "!text-slate-900" : "text-cyan-400"}`}>
-                SECURE RESPONSE DESK
-              </span>
+          {/* Left Column: Heading, Client Tabs & Book a Call CTA */}
+          <div className="lg:col-span-5 flex flex-col justify-between gap-6 lg:sticky lg:top-28">
+            <div className="flex flex-col gap-4">
+              <SectionLabel color={isLight ? "accent" : "secondary"}>
+                // CONTACT ENTERSOFT
+              </SectionLabel>
+
+              <h1 className={`contact-main-heading font-display text-[clamp(1.25rem,2.2vw,1.85rem)] font-normal tracking-tight leading-[1.35] ${
+                isLight ? "text-slate-900" : "text-slate-100"
+              }`}>
+                Got an application security requirement, a wild idea, or compliance roadmap? We’re all ears.
+              </h1>
+
+              {/* Client Region Switcher Pill Tabs */}
+              <div className="flex flex-wrap items-center gap-2.5 pt-1">
+                <button
+                  type="button"
+                  onClick={() => setClientTab("domestic")}
+                  className={`px-3.5 py-1.5 rounded-full text-[11px] font-mono tracking-wider transition-all duration-300 cursor-pointer ${
+                    clientTab === "domestic"
+                      ? isLight
+                        ? "bg-slate-900 text-white font-medium shadow-sm tab-selected"
+                        : "bg-white text-black font-semibold shadow-md shadow-white/10 tab-selected"
+                      : isLight
+                      ? "bg-slate-100 text-slate-600 hover:bg-slate-200 tab-unselected"
+                      : "bg-white/[0.04] text-slate-300 border border-white/10 hover:bg-white/[0.08] tab-unselected"
+                  }`}
+                >
+                  Local client (India / APAC)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setClientTab("international")}
+                  className={`px-3.5 py-1.5 rounded-full text-[11px] font-mono tracking-wider transition-all duration-300 cursor-pointer ${
+                    clientTab === "international"
+                      ? isLight
+                        ? "bg-slate-900 text-white font-medium shadow-sm tab-selected"
+                        : "bg-white text-black font-semibold shadow-md shadow-white/10 tab-selected"
+                      : isLight
+                      ? "bg-slate-100 text-slate-600 hover:bg-slate-200 tab-unselected"
+                      : "bg-white/[0.04] text-slate-300 border border-white/10 hover:bg-white/[0.08] tab-unselected"
+                  }`}
+                >
+                  International client
+                </button>
+              </div>
             </div>
-            <span className="font-mono text-[9px] text-zinc-400">SOC 2 TYPE II</span>
+
+            {/* Book a Call Action Button */}
+            <div className="pt-1">
+              <a
+                href="https://calendar.app.google/VZXgQpSpvyiG4P296"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`book-call-btn inline-flex items-center gap-3 px-5 py-2.5 rounded-full border text-[11px] font-mono tracking-wider uppercase transition-all duration-300 ${
+                  isLight
+                    ? "border-slate-300 bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow-sm"
+                    : "border-white/20 bg-white/[0.05] text-white hover:bg-white hover:text-black shadow-md shadow-black/40"
+                }`}
+              >
+                <div className="w-6 h-6 rounded-full bg-cyan-500/20 flex items-center justify-center transition-colors">
+                  <Calendar className="w-3 h-3 text-cyan-400" />
+                </div>
+                <span>Book a call</span>
+              </a>
+            </div>
           </div>
 
-          <AnimatePresence mode="wait">
-            {!submitted ? (
-              <motion.form
-                key="form"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onSubmit={handleSubmit}
-                className="flex flex-col gap-4"
-              >
-                {/* Buyer Intent Selector */}
-                <div className="flex flex-col gap-1.5 mb-1">
-                  <label className={`font-mono text-[10px] font-bold uppercase tracking-wider ${isLight ? "!text-slate-700" : "text-slate-300"}`}>
-                    Engagement Objective *
-                  </label>
-                  <div className="grid grid-cols-3 gap-2">
-                    {[
-                      { id: "briefing", label: "Security Briefing", desc: "Discuss posture" },
-                      { id: "scoped", label: "Scoped Assessment", desc: "Define testing scope" },
-                      { id: "sample", label: "Sample Deliverable", desc: "Examine report structure" },
-                    ].map((opt) => (
-                      <button
-                        key={opt.id}
-                        type="button"
-                        onClick={() => setIntentType(opt.id as "briefing" | "scoped" | "sample")}
-                        className={`p-2 rounded-xl text-left border text-xs font-sans transition-all flex flex-col justify-between min-h-[54px] cursor-pointer ${
-                          intentType === opt.id
-                            ? isLight
-                              ? "border-[#0B4FD2] bg-blue-50/70 text-slate-900 font-semibold"
-                              : "border-[var(--accent)] bg-[var(--accent)]/10 text-white font-semibold"
-                            : isLight
-                            ? "border-slate-200 text-slate-600 bg-white"
-                            : "border-white/10 text-zinc-400 bg-black/20 hover:border-white/20"
-                        }`}
-                      >
-                        <span className="font-bold text-[10.5px] leading-tight block">{opt.label}</span>
-                        <span className="text-[9px] opacity-75 font-mono block mt-0.5">{opt.desc}</span>
-                      </button>
-                    ))}
-                  </div>
-                  {intentType === "sample" && (
-                    <span className="text-[9.5px] font-mono text-cyan-400 mt-0.5">
-                      ✓ Sample deliverable will include sanitised illustrative report structure (sample data).
-                    </span>
-                  )}
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="flex flex-col gap-1.5">
-                    <label htmlFor="name" className={`font-mono text-[10px] font-bold uppercase tracking-wider ${isLight ? "!text-slate-700" : "text-slate-300"}`}>
-                      Full Name *
+          {/* Right Column: Stacked Form Questions */}
+          <div className="lg:col-span-7 w-full">
+            <AnimatePresence mode="wait">
+              {!submitted ? (
+                <motion.form
+                  key="contact-form-right-refined"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.35 }}
+                  onSubmit={handleSubmit}
+                  className="flex flex-col gap-6"
+                >
+                  {/* Question 1: Name */}
+                  <div className="flex flex-col gap-2">
+                    <label
+                      htmlFor="contact-name"
+                      className={`contact-label text-[13px] sm:text-[14px] font-sans tracking-wide ${
+                        isLight ? "text-slate-900 font-medium" : "text-slate-300 font-normal"
+                      }`}
+                    >
+                      What should I call you? *
                     </label>
                     <input
-                      id="name"
+                      id="contact-name"
                       type="text"
                       required
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      placeholder="Jane Doe"
-                      className={`w-full h-10 border-2 px-3.5 rounded-xl text-xs font-sans outline-none transition-colors ${
-                        isLight 
-                          ? "!bg-white !border-slate-300 focus:!border-[#0B4FD2] !text-slate-900 font-medium placeholder:!text-slate-400" 
-                          : "bg-slate-900/90 border-slate-700 focus:border-cyan-400 text-white placeholder-slate-500"
+                      placeholder="Type your Name"
+                      className={`contact-input w-full h-11 px-3.5 rounded-lg text-[13px] font-sans outline-none border transition-all duration-200 ${
+                        isLight
+                          ? "bg-white border-slate-300 focus:border-slate-900 text-slate-900 placeholder:text-slate-400 shadow-sm"
+                          : "bg-white/[0.02] border-white/12 focus:border-cyan-400 focus:bg-white/[0.05] text-white placeholder:text-neutral-500"
                       }`}
                     />
                   </div>
 
-                  <div className="flex flex-col gap-1.5">
-                    <label htmlFor="email" className={`font-mono text-[10px] font-bold uppercase tracking-wider ${isLight ? "!text-slate-700" : "text-slate-300"}`}>
-                      Work Email *
+                  {/* Question 2: Email */}
+                  <div className="flex flex-col gap-2">
+                    <label
+                      htmlFor="contact-email"
+                      className={`contact-label text-[13px] sm:text-[14px] font-sans tracking-wide ${
+                        isLight ? "text-slate-900 font-medium" : "text-slate-300 font-normal"
+                      }`}
+                    >
+                      Where do I reach you? *
                     </label>
                     <input
-                      id="email"
+                      id="contact-email"
                       type="email"
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="jane@company.com"
-                      className={`w-full h-10 border-2 px-3.5 rounded-xl text-xs font-sans outline-none transition-colors ${
-                        isLight 
-                          ? "!bg-white !border-slate-300 focus:!border-[#0B4FD2] !text-slate-900 font-medium placeholder:!text-slate-400" 
-                          : "bg-slate-900/90 border-slate-700 focus:border-cyan-400 text-white placeholder-slate-500"
+                      placeholder="Type your Email"
+                      className={`contact-input w-full h-11 px-3.5 rounded-lg text-[13px] font-sans outline-none border transition-all duration-200 ${
+                        isLight
+                          ? "bg-white border-slate-300 focus:border-slate-900 text-slate-900 placeholder:text-slate-400 shadow-sm"
+                          : "bg-white/[0.02] border-white/12 focus:border-cyan-400 focus:bg-white/[0.05] text-white placeholder:text-neutral-500"
                       }`}
                     />
                   </div>
-                </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="flex flex-col gap-1.5">
-                    <label htmlFor="company" className={`font-mono text-[10px] font-bold uppercase tracking-wider ${isLight ? "!text-slate-700" : "text-slate-300"}`}>
-                      Company Name *
+                  {/* Question 3: Phone */}
+                  <div className="flex flex-col gap-2">
+                    <label
+                      htmlFor="contact-phone"
+                      className={`contact-label text-[13px] sm:text-[14px] font-sans tracking-wide ${
+                        isLight ? "text-slate-900 font-medium" : "text-slate-300 font-normal"
+                      }`}
+                    >
+                      What's the best number to reach you?
                     </label>
                     <input
-                      id="company"
-                      type="text"
-                      required
-                      value={company}
-                      onChange={(e) => setCompany(e.target.value)}
-                      placeholder="Acme Enterprise"
-                      className={`w-full h-10 border-2 px-3.5 rounded-xl text-xs font-sans outline-none transition-colors ${
-                        isLight 
-                          ? "!bg-white !border-slate-300 focus:!border-[#0B4FD2] !text-slate-900 font-medium placeholder:!text-slate-400" 
-                          : "bg-slate-900/90 border-slate-700 focus:border-cyan-400 text-white placeholder-slate-500"
+                      id="contact-phone"
+                      type="tel"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder="Type your phone number"
+                      className={`contact-input w-full h-11 px-3.5 rounded-lg text-[13px] font-sans outline-none border transition-all duration-200 ${
+                        isLight
+                          ? "bg-white border-slate-300 focus:border-slate-900 text-slate-900 placeholder:text-slate-400 shadow-sm"
+                          : "bg-white/[0.02] border-white/12 focus:border-cyan-400 focus:bg-white/[0.05] text-white placeholder:text-neutral-500"
                       }`}
                     />
                   </div>
 
-                  <div className="flex flex-col gap-1.5">
-                    <label htmlFor="area" className={`font-mono text-[10px] font-bold uppercase tracking-wider ${isLight ? "!text-slate-700" : "text-slate-300"}`}>
-                      Area of Interest *
+                  {/* Question 4: Discovery */}
+                  <div className="flex flex-col gap-2">
+                    <label
+                      htmlFor="contact-discovery"
+                      className={`contact-label text-[13px] sm:text-[14px] font-sans tracking-wide ${
+                        isLight ? "text-slate-900 font-medium" : "text-slate-300 font-normal"
+                      }`}
+                    >
+                      How did you find me?
                     </label>
-                    <select
-                      id="area"
-                      value={area}
-                      onChange={(e) => setArea(e.target.value)}
-                      className={`w-full h-10 border-2 px-3 rounded-xl text-xs font-sans outline-none transition-colors ${
-                        isLight 
-                          ? "!bg-white !border-slate-300 focus:!border-[#0B4FD2] !text-slate-900 font-medium" 
-                          : "bg-slate-900/90 border-slate-700 focus:border-cyan-400 text-white"
+                    <input
+                      id="contact-discovery"
+                      type="text"
+                      value={discoverySource}
+                      onChange={(e) => setDiscoverySource(e.target.value)}
+                      placeholder="Google, Instagram, Linkedin.."
+                      className={`contact-input w-full h-11 px-3.5 rounded-lg text-[13px] font-sans outline-none border transition-all duration-200 ${
+                        isLight
+                          ? "bg-white border-slate-300 focus:border-slate-900 text-slate-900 placeholder:text-slate-400 shadow-sm"
+                          : "bg-white/[0.02] border-white/12 focus:border-cyan-400 focus:bg-white/[0.05] text-white placeholder:text-neutral-500"
                       }`}
-                    >
-                      <option value="Application Assurance (AppSec)">Application Assurance (AppSec)</option>
-                      <option value="Adversarial Validation (Pen Testing)">Adversarial Validation (Pen Testing)</option>
-                      <option value="Cloud Resilience (Cloud Security)">Cloud Resilience (Cloud Security)</option>
-                      <option value="Digital Trust (GRC & Compliance)">Digital Trust (GRC & Compliance)</option>
-                      <option value="Cyber Defense Operations (MDR/SIEM)">Cyber Defense Operations (MDR/SIEM)</option>
-                      <option value="Protocol Assurance (Smart Contracts)">Protocol Assurance (Smart Contracts)</option>
-                      <option value="AI Systems Assurance (AI Security)">AI Systems Assurance (AI Security)</option>
-                      <option value="EnProbe Platform Demo">EnProbe Platform Demonstration</option>
-                    </select>
+                    />
                   </div>
-                </div>
 
-                <div className="flex flex-col gap-1.5">
-                  <label htmlFor="message" className={`font-mono text-[10px] font-bold uppercase tracking-wider ${isLight ? "!text-slate-700" : "text-slate-300"}`}>
-                    Initial Enquiry Details (Optional)
-                  </label>
-                  <textarea
-                    id="message"
-                    rows={2}
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    placeholder="Share non-sensitive high-level objectives. Sensitive technical details can be transferred through an agreed secure channel after qualification."
-                    className={`w-full border-2 p-3 rounded-xl text-xs font-sans outline-none resize-none transition-colors ${
-                      isLight 
-                        ? "!bg-white !border-slate-300 focus:!border-[#0B4FD2] !text-slate-900 font-medium placeholder:!text-slate-400" 
-                        : "bg-slate-900/90 border-slate-700 focus:border-cyan-400 text-white placeholder-slate-500"
-                    }`}
-                  />
-                </div>
-
-                <div className="text-[10px] font-sans text-slate-400 leading-normal">
-                  Please share only information appropriate for an initial enquiry. Sensitive security information can be transferred through an agreed secure channel after engagement qualification.
-                </div>
-
-                <div className="mt-2">
-                  <MagneticButton>
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className={`w-full gap-2 h-11 rounded-xl font-semibold flex items-center justify-center transition-all duration-200 cursor-pointer shadow-md text-xs font-mono tracking-wider ${
-                        isLight 
-                          ? "!bg-[#111827] hover:!bg-black !text-white" 
-                          : "bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-black"
+                  {/* Question 5: Services Choice (Interactive Pill Tags) */}
+                  <div className="flex flex-col gap-2.5">
+                    <label
+                      className={`contact-label text-[13px] sm:text-[14px] font-sans tracking-wide ${
+                        isLight ? "text-slate-900 font-medium" : "text-slate-300 font-normal"
                       }`}
                     >
-                      {isSubmitting ? "TRANSMITTING REQUEST..." : (
-                        <>
-                          <span>
-                            {intentType === "scoped" 
-                              ? "REQUEST A SCOPED ASSESSMENT" 
-                              : intentType === "sample" 
-                              ? "VIEW A SAMPLE DELIVERABLE" 
-                              : "BOOK A SECURITY BRIEFING"}
-                          </span>
-                          <Send className="w-3.5 h-3.5 text-current" />
-                        </>
-                      )}
-                    </button>
-                  </MagneticButton>
-                </div>
-              </motion.form>
-            ) : (
-              <motion.div
-                key="success"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                className="flex flex-col items-center justify-center py-6 text-center gap-4"
-              >
-                <div className={`w-12 h-12 rounded-full border flex items-center justify-center ${isLight ? "border-[#0B4FD2] bg-blue-50" : "border-[var(--accent)] bg-white/[0.01]"}`}>
-                  <Check className={`w-6 h-6 animate-pulse ${isLight ? "text-[#0B4FD2]" : "text-[var(--accent)]"}`} />
-                </div>
-                <div className="flex flex-col gap-1">
-                  <span className={`font-mono text-[11px] font-bold uppercase tracking-wider ${isLight ? "text-slate-900" : "text-[var(--text-primary)]"}`}>
-                    Briefing Request Received
-                  </span>
-                  <span className={`text-[11px] font-sans ${isLight ? "text-slate-600" : "text-[var(--text-secondary)]"}`}>
-                    An Entersoft security coordinator will contact you at <strong>{email}</strong> within 2 business hours.
-                  </span>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                      Which services do you need?
+                    </label>
 
-          {/* Secure disclaimer label */}
-          <div className={`mt-5 pt-3 border-t flex items-center justify-between text-[9px] font-mono uppercase tracking-wider ${
-            isLight ? "border-slate-100 text-slate-400" : "border-[var(--border-subtle)] text-[var(--text-tertiary)]"
-          }`}>
-            <div className="flex items-center gap-1.5">
-              <ShieldCheck className="w-4 h-4" />
-              <span>Confidential submission</span>
-            </div>
-            <span>SOC 2 Type II ISMS</span>
+                    <div className="flex flex-wrap gap-2 pt-0.5">
+                      {SERVICES_OPTIONS.map((service) => {
+                        const isSelected = selectedServices.includes(service);
+                        return (
+                          <button
+                            key={service}
+                            type="button"
+                            onClick={() => toggleService(service)}
+                            className={`px-3.5 py-1.5 rounded-full text-[11px] font-mono tracking-wide transition-all duration-200 cursor-pointer flex items-center gap-2 select-none ${
+                              isSelected
+                                ? isLight
+                                  ? "bg-slate-900 text-white font-medium shadow-sm pill-selected"
+                                  : "bg-white text-black font-semibold shadow-md shadow-white/10 pill-selected"
+                                : isLight
+                                ? "bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200/80 pill-unselected"
+                                : "bg-white/[0.03] border border-white/12 text-slate-300 hover:border-white/30 hover:bg-white/[0.07] pill-unselected"
+                            }`}
+                          >
+                            <span
+                              className={`w-1.5 h-1.5 rounded-full transition-colors ${
+                                isSelected
+                                  ? isLight
+                                    ? "bg-cyan-400"
+                                    : "bg-cyan-500"
+                                  : "bg-white/30"
+                              }`}
+                            />
+                            <span>{service}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Question 6: Tell me about your project */}
+                  <div className="flex flex-col gap-2">
+                    <label
+                      htmlFor="contact-details"
+                      className={`contact-label text-[13px] sm:text-[14px] font-sans tracking-wide ${
+                        isLight ? "text-slate-900 font-medium" : "text-slate-300 font-normal"
+                      }`}
+                    >
+                      Tell me about your project
+                    </label>
+                    <textarea
+                      id="contact-details"
+                      rows={3}
+                      value={projectDetails}
+                      onChange={(e) => setProjectDetails(e.target.value)}
+                      placeholder="What are you building?"
+                      className={`contact-input w-full p-3.5 rounded-lg text-[13px] font-sans outline-none border resize-none transition-all duration-200 ${
+                        isLight
+                          ? "bg-white border-slate-300 focus:border-slate-900 text-slate-900 placeholder:text-slate-400 shadow-sm"
+                          : "bg-white/[0.02] border-white/12 focus:border-cyan-400 focus:bg-white/[0.05] text-white placeholder:text-neutral-500"
+                      }`}
+                    />
+                  </div>
+
+                  {/* Submit Button Action */}
+                  <div className="pt-3 flex flex-col sm:flex-row items-center justify-between gap-5">
+                    <MagneticButton>
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className={`contact-submit-btn w-full sm:w-auto px-7 h-11 rounded-full text-[11px] font-mono font-bold tracking-widest uppercase transition-all duration-300 cursor-pointer shadow-md flex items-center justify-center gap-2.5 ${
+                          isLight
+                            ? "bg-slate-900 hover:bg-black text-white shadow-slate-900/10"
+                            : "bg-white hover:bg-cyan-400 text-black shadow-white/10"
+                        }`}
+                      >
+                        {isSubmitting ? (
+                          <span>Transmitting...</span>
+                        ) : (
+                          <>
+                            <span>Send Request</span>
+                            <Send className="w-3 h-3 text-current" />
+                          </>
+                        )}
+                      </button>
+                    </MagneticButton>
+
+                    <div className="contact-footer-info flex items-center gap-3.5 text-[10px] font-mono tracking-wider text-slate-400">
+                      <div className="flex items-center gap-1.5">
+                        <ShieldCheck className="w-3.5 h-3.5 text-cyan-500" />
+                        <span>Confidential Enquiry</span>
+                      </div>
+                      <span>•</span>
+                      <span>SOC 2 Type II ISMS</span>
+                    </div>
+                  </div>
+                </motion.form>
+              ) : (
+                <motion.div
+                  key="contact-success-right-refined"
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="py-10 px-8 rounded-2xl border border-cyan-500/20 bg-cyan-950/10 flex flex-col items-center justify-center text-center gap-4 max-w-[580px]"
+                >
+                  <div className="w-12 h-12 rounded-full bg-cyan-400/20 border border-cyan-400 flex items-center justify-center text-cyan-400">
+                    <Check className="w-6 h-6" />
+                  </div>
+                  <h3 className="font-display text-xl font-medium text-white">
+                    Request Received
+                  </h3>
+                  <p className="text-xs sm:text-sm font-sans text-slate-300 leading-relaxed max-w-[440px]">
+                    Thank you, <strong>{name}</strong>! An Entersoft security coordinator will contact you at <strong>{email}</strong> within 2 business hours.
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
         </div>
+
       </div>
     </section>
   );

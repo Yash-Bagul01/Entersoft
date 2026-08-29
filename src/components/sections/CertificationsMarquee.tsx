@@ -372,13 +372,13 @@ export default function CertificationsMarquee() {
       {/* Header Block */}
       <div className="max-w-[1400px] w-full mx-auto px-6 md:px-12 mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-4 relative z-10">
         <div>
-          <SectionLabel color="secondary">REGULATORY CREDENTIALS</SectionLabel>
-          <h2 className="text-3xl md:text-4xl font-display font-semibold text-[#F6F5F0] uppercase tracking-[-0.025em] mt-3">
+          <SectionLabel color="secondary">// Regulatory Credentials</SectionLabel>
+          <h2 className="text-3xl md:text-4xl font-display font-semibold text-[#F6F5F0] tracking-[-0.025em] mt-3">
             Accredited Security Compliance
           </h2>
         </div>
-        <div className="font-mono text-[11px] text-[var(--text-tertiary)] uppercase tracking-widest pb-1.5">
-          {"// ACCREDITED SEC AUDIT MATRICES"}
+        <div className="font-mono text-[11px] text-[var(--text-tertiary)] tracking-widest pb-1.5">
+          {"// Accredited Sec Audit Matrices"}
         </div>
       </div>
 

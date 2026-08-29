@@ -31,7 +31,7 @@ export default function InsightsBlog() {
                   visible: { y: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } }
                 }}
               >
-                <SectionLabel color="secondary">BLOGS</SectionLabel>
+                <SectionLabel color="secondary">// Security Briefs & Insights</SectionLabel>
               </motion.div>
             </div>
             <div className="overflow-hidden">
@@ -40,15 +40,15 @@ export default function InsightsBlog() {
                   hidden: { y: "100%" },
                   visible: { y: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } }
                 }}
-                className="text-3xl md:text-4xl font-display font-semibold text-[#F6F5F0] uppercase tracking-[-0.025em]"
+                className="text-3xl md:text-4xl font-display font-semibold text-[#F6F5F0] tracking-[-0.025em]"
               >
                 Threat Intelligence Desk
               </motion.h2>
             </div>
           </motion.div>
           <div>
-            <span className="font-mono text-[10px] text-[var(--text-tertiary)] uppercase tracking-widest block mb-1">
-              // RECENT SECURITY BRIEFS
+            <span className="font-mono text-[10px] text-[var(--text-tertiary)] tracking-widest block mb-1">
+              // Recent Security Briefs
             </span>
           </div>
         </div>

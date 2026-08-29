@@ -147,13 +147,13 @@ export default function Hero() {
         ) : (
           <video
             ref={videoRef}
-            src="/videos/hero-bg.mp4"
+            src="/videos/hero-background-optimized.mp4"
             autoPlay
             muted
             loop
             playsInline
             preload="auto"
-            className="absolute inset-0 w-full h-full object-cover origin-center opacity-85 transform-gpu"
+            className="absolute inset-0 w-full h-full object-cover origin-center opacity-100 transform-gpu"
             style={{ transform: "translateZ(0)", backfaceVisibility: "hidden" }}
             aria-hidden="true"
           />

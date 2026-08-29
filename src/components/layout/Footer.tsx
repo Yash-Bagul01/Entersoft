@@ -3,43 +3,61 @@
 import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { Shield, ArrowUp, Zap, ZapOff } from "lucide-react";
-import { Button } from "../ui/Button";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
 export default function Footer() {
   const pathname = usePathname();
-  const isLight = pathname === "/platform/cyber-ontology";
-  const isSast = pathname === "/platform/sast";
-  const isSbom = pathname === "/platform/sbom-license-risk";
-  const isSecrets = pathname === "/platform/secrets";
-  const isSolutions = pathname === "/solutions";
+  const [currentTheme, setCurrentTheme] = useState<string>("dark");
   const [motionActive, setMotionActive] = useState(true);
 
+  // Dynamic MutationObserver to track data-theme attribute on <html> element
   useEffect(() => {
-    // Read local storage or reduced-motion query to show active status
+    const updateTheme = () => {
+      if (typeof document !== "undefined") {
+        const themeAttr = document.documentElement.getAttribute("data-theme") || "dark";
+        setCurrentTheme(themeAttr);
+      }
+    };
+
+    updateTheme();
+
+    const observer = new MutationObserver(updateTheme);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
     const reducedQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (reducedQuery.matches) {
       setMotionActive(false);
     }
   }, []);
 
+  const isSast = pathname === "/platform/sast";
+  const isSbom = pathname === "/platform/sbom-license-risk";
+  const isSecrets = pathname === "/platform/secrets";
+  const isSolutions = pathname === "/solutions";
+
   if (isSast || isSbom || isSecrets || isSolutions) {
     return null;
   }
 
+  const isLight = currentTheme === "light" || pathname === "/platform/cyber-ontology";
+
   const handleToggleMotion = () => {
-    // Simulate toggling motion configurations
     const current = motionActive;
     setMotionActive(!current);
     
-    // Dispatch custom event to notify hooks (useReducedMotion / customCursor)
     if (typeof window !== "undefined") {
       const event = new CustomEvent("motionChange", { detail: !current });
       window.dispatchEvent(event);
       
-      // Optionally reload or apply css class to body
       if (current) {
         document.documentElement.classList.add("reduce-motion-override");
       } else {
@@ -96,9 +114,9 @@ export default function Footer() {
   ];
 
   return (
-    <footer className={`w-full border-t select-none relative overflow-hidden ${
+    <footer className={`w-full border-t select-none relative overflow-hidden transition-colors duration-500 ${
       isLight 
-        ? "bg-[#FAFCFF] border-slate-200 text-slate-600" 
+        ? "bg-[#FAFCFF] border-slate-200/90 text-slate-800" 
         : "bg-[#030712] border-white/10 text-slate-300"
     }`}>
       <div className="max-w-[1400px] mx-auto px-6 md:px-12 pt-16 md:pt-24 pb-0 relative">
@@ -112,28 +130,29 @@ export default function Footer() {
                 alt="Entersoft Security Logo"
                 width={120}
                 height={24}
-                className="h-6 w-auto object-contain self-start"
+                className={`h-6 w-auto object-contain self-start ${isLight ? "[filter:brightness(0)]" : ""}`}
               />
-              <p className={`text-[12px] leading-relaxed max-w-[340px] ${isLight ? "text-slate-600" : "text-slate-300"}`}>
-                <strong className="font-semibold text-white">EnProbe</strong> provides continuous security visibility and evidence. <strong className="font-semibold text-white">Entersoft experts</strong> validate complex risk and guide remediation. <strong className="font-semibold text-white">Enterprise programmes</strong> combine platform and expertise into measurable security outcomes.
+              <p className={`text-[12px] leading-relaxed max-w-[340px] ${isLight ? "text-slate-700 font-normal" : "text-slate-300"}`}>
+                <strong className={`font-semibold ${isLight ? "text-slate-900" : "text-white"}`}>EnProbe</strong> provides continuous security visibility and evidence. <strong className={`font-semibold ${isLight ? "text-slate-900" : "text-white"}`}>Entersoft experts</strong> validate complex risk and guide remediation. <strong className={`font-semibold ${isLight ? "text-slate-900" : "text-white"}`}>Enterprise programmes</strong> combine platform and expertise into measurable security outcomes.
               </p>
             </div>
-            {/* Social Grid */}
-            <div className="flex items-center gap-4 text-white">
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer" className={`transition-colors p-2.5 min-h-[44px] min-w-[44px] rounded-[2px] inline-flex items-center justify-center ${isLight ? "bg-slate-100 border border-slate-200 hover:text-blue-600" : "bg-slate-900 border border-slate-800 hover:text-cyan-400 text-slate-300"}`} aria-label="GitHub" data-cursor="link">
+
+            {/* Social Links */}
+            <div className="flex items-center gap-3">
+              <a href="https://github.com" target="_blank" rel="noopener noreferrer" className={`transition-colors p-2.5 rounded-lg inline-flex items-center justify-center ${isLight ? "bg-slate-100 border border-slate-300 text-slate-800 hover:bg-slate-900 hover:text-white" : "bg-slate-900 border border-slate-800 text-slate-300 hover:text-cyan-400"}`} aria-label="GitHub">
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
                   <path d="M9 18c-4.51 2-5-2-7-2" />
                 </svg>
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className={`transition-colors p-2.5 min-h-[44px] min-w-[44px] rounded-[2px] inline-flex items-center justify-center ${isLight ? "bg-slate-100 border border-slate-200 hover:text-blue-600" : "bg-slate-900 border border-slate-800 hover:text-cyan-400 text-slate-300"}`} aria-label="LinkedIn" data-cursor="link">
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className={`transition-colors p-2.5 rounded-lg inline-flex items-center justify-center ${isLight ? "bg-slate-100 border border-slate-300 text-slate-800 hover:bg-slate-900 hover:text-white" : "bg-slate-900 border border-slate-800 text-slate-300 hover:text-cyan-400"}`} aria-label="LinkedIn">
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
                   <rect x="2" y="9" width="4" height="12" />
                   <circle cx="4" cy="4" r="2" />
                 </svg>
               </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className={`transition-colors p-2.5 min-h-[44px] min-w-[44px] rounded-[2px] inline-flex items-center justify-center ${isLight ? "bg-slate-100 border border-slate-200 hover:text-blue-600" : "bg-slate-900 border border-slate-800 hover:text-cyan-400 text-slate-300"}`} aria-label="Twitter" data-cursor="link">
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className={`transition-colors p-2.5 rounded-lg inline-flex items-center justify-center ${isLight ? "bg-slate-100 border border-slate-300 text-slate-800 hover:bg-slate-900 hover:text-white" : "bg-slate-900 border border-slate-800 text-slate-300 hover:text-cyan-400"}`} aria-label="Twitter">
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
                 </svg>
@@ -154,10 +173,11 @@ export default function Footer() {
                   <li key={link.name}>
                     <a
                       href={link.href}
-                      className={`text-[11px] transition-colors leading-normal py-1 min-h-[36px] flex items-center ${
-                        isLight ? "text-slate-600 hover:text-blue-600" : "text-slate-300 hover:text-cyan-300 font-normal"
+                      className={`text-[12px] transition-colors leading-normal py-1 flex items-center ${
+                        isLight
+                          ? "text-slate-700 hover:text-slate-900 font-medium"
+                          : "text-slate-300 hover:text-cyan-300 font-normal"
                       }`}
-                      data-cursor="link"
                     >
                       {link.name}
                     </a>
@@ -168,34 +188,33 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Hairline Border Divider */}
+        {/* Divider Line */}
         <div className={`w-full h-px mb-8 ${isLight ? "bg-slate-200" : "bg-slate-800"}`} />
 
         {/* Footer Sub-bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6 relative z-10 mb-4">
-          <div className={`flex flex-wrap items-center gap-x-6 gap-y-2 text-[10px] font-mono tracking-widest uppercase ${
-            isLight ? "text-slate-600" : "text-slate-400"
+          <div className={`flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] font-mono tracking-wider ${
+            isLight ? "text-slate-700 font-medium" : "text-slate-400"
           }`}>
             <span>© ENTERSOFT SECURITY</span>
-            <span className="opacity-40">|</span>
-            <span className="opacity-40">EST. 2013</span>
-            <span className="opacity-40">|</span>
-            <Link href="/#privacy" className="hover:text-cyan-300 transition-colors" data-cursor="link">Privacy Policy</Link>
-            <span className="opacity-40">|</span>
-            <Link href="/#terms" className="hover:text-cyan-300 transition-colors" data-cursor="link">Terms of Service</Link>
+            <span className="opacity-40">•</span>
+            <span>EST. 2013</span>
+            <span className="opacity-40">•</span>
+            <Link href="/#privacy" className={`transition-colors ${isLight ? "hover:text-slate-900" : "hover:text-cyan-300"}`}>Privacy Policy</Link>
+            <span className="opacity-40">•</span>
+            <Link href="/#terms" className={`transition-colors ${isLight ? "hover:text-slate-900" : "hover:text-cyan-300"}`}>Terms of Service</Link>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             {/* Motion Settings Toggle */}
             <button
               onClick={handleToggleMotion}
-              className={`flex items-center gap-2 font-mono text-[10px] tracking-wider uppercase transition-colors border px-3 py-1.5 rounded-[2px] ${
+              className={`flex items-center gap-2 font-mono text-[10px] tracking-wider uppercase transition-colors border px-3 py-1.5 rounded-full ${
                 isLight 
-                  ? "border-slate-200 text-slate-600 hover:text-slate-900 bg-slate-50" 
+                  ? "border-slate-300 text-slate-800 hover:bg-slate-100 bg-white shadow-sm" 
                   : "border-slate-800 text-slate-300 hover:text-white bg-slate-900/60"
               }`}
               title={motionActive ? "Disable scroll smooth & parallax animations" : "Enable scroll smooth & parallax animations"}
-              data-cursor="link"
             >
               {motionActive ? (
                 <>
@@ -213,22 +232,23 @@ export default function Footer() {
             {/* Scroll Top Button */}
             <button
               onClick={handleScrollTop}
-              className={`p-2 border rounded-[2px] transition-all ${
-                isLight ? "border-slate-200 text-slate-700 hover:border-slate-900" : "border-slate-800 text-slate-200 hover:border-white hover:text-white"
+              className={`p-2 border rounded-full transition-all ${
+                isLight
+                  ? "border-slate-300 text-slate-800 hover:bg-slate-900 hover:text-white bg-white shadow-sm"
+                  : "border-slate-800 text-slate-200 hover:border-white hover:text-white"
               }`}
               aria-label="Scroll to top"
-              data-cursor="link"
             >
               <ArrowUp className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
 
-        {/* Giant ENTERSOFT Interactive Pop-up directly integrated into the footer */}
+        {/* Giant ENTERSOFT Interactive Graphic directly in footer */}
         <div className="relative w-full flex justify-center overflow-hidden h-[12vw] min-h-[90px] max-h-[180px] pointer-events-auto">
           <div className="relative w-full flex justify-center overflow-visible top-[2vw]">
             <motion.h1 
-              initial={{ y: "45%", color: isLight ? "rgba(30, 41, 59, 0.2)" : "rgba(255, 255, 255, 0.25)" }}
+              initial={{ y: "45%", color: isLight ? "rgba(15, 23, 42, 0.18)" : "rgba(255, 255, 255, 0.25)" }}
               whileHover={{ y: "0%", color: isLight ? "#0f172a" : "#ffffff" }}
               transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
               className="font-display font-semibold uppercase tracking-[-0.035em] cursor-pointer text-[14.2vw] leading-none select-none origin-bottom text-center"

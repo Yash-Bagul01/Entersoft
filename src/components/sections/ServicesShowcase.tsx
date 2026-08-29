@@ -450,15 +450,15 @@ export default function ServicesShowcase() {
       <div className="max-w-[1400px] w-full mx-auto px-6 lg:px-12 pt-14 pb-3">
         <div className="header-block flex flex-col gap-3">
           <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 w-full">
-            <span className="font-mono text-[12px] text-[var(--accent-neon)] uppercase tracking-[0.18em]">
-              // ENTERPRISE SERVICES & MANAGED SOLUTIONS
+            <span className="font-mono text-[12px] text-[var(--accent-neon)] tracking-[0.18em]">
+              // Enterprise Services & Managed Solutions
             </span>
             <span className="right-instruction font-mono text-[12px] text-[var(--text-tertiary)] uppercase tracking-[0.14em] transition-colors duration-200 shrink-0">
               {isFinePointer ? "HOVER TO EXPLORE //" : "TAP TO EXPLORE //"}
             </span>
           </div>
           
-          <h2 className="text-display font-display font-semibold text-[clamp(1.8rem,3.8vw,3.2rem)] text-[var(--text-primary)] uppercase tracking-[-0.03em] leading-tight max-w-[850px]">
+          <h2 className="text-display font-display font-semibold text-[clamp(1.8rem,3.8vw,3.2rem)] text-[var(--text-primary)] tracking-[-0.03em] leading-tight max-w-[850px]">
             Security starts at the application layer—but it does not stop there.
           </h2>
           

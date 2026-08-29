@@ -119,7 +119,7 @@ export default function Testimonials() {
                   visible: { y: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } }
                 }}
               >
-                <SectionLabel color="secondary">OPERATIONAL VALIDATION</SectionLabel>
+                <SectionLabel color="secondary">// Operational Validation</SectionLabel>
               </motion.div>
             </div>
             <div className="overflow-hidden">
@@ -128,7 +128,7 @@ export default function Testimonials() {
                   hidden: { y: "100%" },
                   visible: { y: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } }
                 }}
-                className="text-3xl font-display font-semibold text-[var(--text-primary)] uppercase tracking-[-0.025em]"
+                className="text-3xl font-display font-semibold text-[var(--text-primary)] tracking-[-0.025em]"
               >
                 Trusted by Enterprises
               </motion.h2>

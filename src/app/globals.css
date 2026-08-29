@@ -311,7 +311,7 @@ html.lenis, html.lenis body {
 
 /* Custom hero background overlay gradient class */
 .hero-gradient-overlay {
-  background: linear-gradient(180deg, rgba(6,6,6,0.8) 0%, rgba(6,6,6,0.55) 50%, rgba(6,6,6,0.85) 100%);
+  background: linear-gradient(180deg, rgba(6,6,6,0.35) 0%, rgba(6,6,6,0.12) 50%, rgba(6,6,6,0.5) 100%);
 }
 
 /* Light Theme overrides for hardcoded styles and elements */
@@ -408,7 +408,7 @@ html.lenis, html.lenis body {
 }
 
 [data-theme="light"] #hero .hero-gradient-overlay {
-  background: linear-gradient(180deg, rgba(6, 6, 6, 0.8) 0%, rgba(6, 6, 6, 0.55) 50%, rgba(6, 6, 6, 0.85) 100%) !important;
+  background: linear-gradient(180deg, rgba(6, 6, 6, 0.35) 0%, rgba(6, 6, 6, 0.12) 50%, rgba(6, 6, 6, 0.5) 100%) !important;
 }
 
 [data-theme="light"] #hero .text-\[\#F6F5F0\]:not(.btn-sweep-primary):not(.btn-sweep-primary *),
