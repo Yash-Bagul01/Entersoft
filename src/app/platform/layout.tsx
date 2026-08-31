@@ -15,7 +15,9 @@ export default function PlatformLayout({
   const isIac = pathname === "/platform/iac";
   const isSbom = pathname === "/platform/sbom-license-risk";
   const isSecrets = pathname === "/platform/secrets";
-  const isLightPage = isCyberOntology || isSca || isSecrets || isIac;
+  const isDast = pathname === "/platform/dast";
+  const isLightPage = isCyberOntology || isSca || isSecrets;
+  const isExoCase = isDast || isIac;
 
   useEffect(() => {
     if (isLightPage) {
@@ -28,14 +30,33 @@ export default function PlatformLayout({
       document.documentElement.classList.add("dark");
     }
 
+    const html = document.documentElement;
+    const body = document.body;
+    if (isExoCase) {
+      html.style.setProperty("overflow-x", "clip", "important");
+      body.style.setProperty("overflow-x", "clip", "important");
+      body.style.setProperty("overflow-y", "visible", "important");
+    }
+
     return () => {
       document.documentElement.removeAttribute("data-theme");
+      html.style.removeProperty("overflow-x");
+      body.style.removeProperty("overflow-x");
+      body.style.removeProperty("overflow-y");
     };
-  }, [isLightPage]);
+  }, [isLightPage, isExoCase]);
+
+  if (isExoCase) {
+    return (
+      <div data-page={isDast ? "dast" : "iac"} className="bg-white min-h-screen">
+        {children}
+      </div>
+    );
+  }
 
   return (
-    <div 
-      data-page={isCyberOntology ? "cyber-ontology" : isSast ? "sast" : isSca ? "sca" : isSbom ? "sbom" : isSecrets ? "secrets" : "platform"} 
+    <div
+      data-page={isCyberOntology ? "cyber-ontology" : isSast ? "sast" : isSca ? "sca" : isSbom ? "sbom" : isSecrets ? "secrets" : "platform"}
       className={isLightPage ? "bg-[#FAFCFF] text-slate-900 min-h-screen" : "dark bg-[#0A0A0A] text-white min-h-screen"}
     >
       <div className={`w-full min-h-[80vh] flex flex-col justify-between ${isLightPage ? "bg-[#FAFCFF] text-slate-900" : "bg-[#0A0A0A] text-white"}`}>

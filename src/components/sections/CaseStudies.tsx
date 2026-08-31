@@ -373,7 +373,7 @@ export default function CaseStudies() {
       {/* Accessible Enterprise Case Studies Detail Grid */}
       <div className="relative z-20 max-w-[1400px] mx-auto px-6 md:px-12 py-16">
         <div className="flex flex-col gap-4 mb-10 text-left">
-          <span className="font-mono text-xs font-bold text-[var(--accent)] uppercase tracking-widest">// VERIFIED ENGAGEMENT PROOF</span>
+          <span className="font-mono text-xs font-bold text-[var(--accent)] uppercase tracking-widest">VERIFIED ENGAGEMENT PROOF</span>
           <h3 className="font-display text-2xl md:text-3xl font-semibold text-white uppercase tracking-tight">Structured Case Studies</h3>
           <p className="font-sans text-sm text-zinc-400 max-w-2xl">Examine detailed engagement scope, technical approach, technology used, and measured outcomes from enterprise security deliveries.</p>
         </div>

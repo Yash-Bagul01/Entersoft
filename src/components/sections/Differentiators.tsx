@@ -335,7 +335,7 @@ export default function Differentiators() {
             viewport={{ once: true }}
             transition={{ duration: 0.4, ease: 'easeOut' }}
           >
-            // Customer Outcomes
+            Customer Outcomes
           </motion.span>
 
           <motion.h2
@@ -364,7 +364,7 @@ export default function Differentiators() {
             viewport={{ once: true }}
             transition={{ delay: 0.3, duration: 0.5 }}
           >
-            // Application-first. Enterprise-wide.
+            Application-first. Enterprise-wide.
           </motion.span>
         </div>
       </div>

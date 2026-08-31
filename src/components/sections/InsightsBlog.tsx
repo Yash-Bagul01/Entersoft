@@ -31,7 +31,7 @@ export default function InsightsBlog() {
                   visible: { y: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } }
                 }}
               >
-                <SectionLabel color="secondary">// Security Briefs & Insights</SectionLabel>
+                <SectionLabel color="secondary">Security Briefs & Insights</SectionLabel>
               </motion.div>
             </div>
             <div className="overflow-hidden">
@@ -48,7 +48,7 @@ export default function InsightsBlog() {
           </motion.div>
           <div>
             <span className="font-mono text-[10px] text-[var(--text-tertiary)] tracking-widest block mb-1">
-              // Recent Security Briefs
+              Recent Security Briefs
             </span>
           </div>
         </div>

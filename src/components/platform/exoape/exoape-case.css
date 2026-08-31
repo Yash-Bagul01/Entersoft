@@ -1,0 +1,52 @@
+/* Shared Exo Ape / Fluid Glass case-study type + motion */
+
+/* overflow-x: hidden on html/body makes a scroll container and kills
+   sticky / ScrollTrigger pins. clip does not. */
+html:has(.exoape-case),
+html:has(.exoape-case) body {
+  overflow-x: clip !important;
+}
+
+html:has(.exoape-case) body {
+  overflow-y: visible !important;
+}
+
+.exoape-case,
+.exoape-case h1,
+.exoape-case h2,
+.exoape-case h3,
+.exoape-case h4 {
+  font-family: var(--font-inter-tight), var(--font-inter), system-ui, sans-serif;
+}
+
+.exoape-case h1,
+.exoape-case h2,
+.exoape-case h3 {
+  font-weight: 300;
+}
+
+.exoape-reveal {
+  display: block;
+  overflow: hidden;
+}
+
+.exoape-reveal-inner,
+.exoape-case [data-hero-line],
+.exoape-case [data-overlay-line] {
+  display: block;
+  will-change: transform;
+}
+
+.exoape-case [data-collage-item] {
+  position: relative;
+  overflow: hidden;
+}
+
+.exoape-case [data-collage-media] {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -22%;
+  height: 144%;
+  will-change: transform;
+}

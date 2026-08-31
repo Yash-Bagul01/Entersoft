@@ -161,7 +161,7 @@ export default function FinalCTA({ theme = "dark" }: FinalCTAProps) {
           <div className="lg:col-span-5 flex flex-col justify-between gap-6 lg:sticky lg:top-28">
             <div className="flex flex-col gap-4">
               <SectionLabel color={isLight ? "accent" : "secondary"}>
-                // CONTACT ENTERSOFT
+                CONTACT ENTERSOFT
               </SectionLabel>
 
               <h1 className={`contact-main-heading font-display text-[clamp(1.25rem,2.2vw,1.85rem)] font-normal tracking-tight leading-[1.35] ${

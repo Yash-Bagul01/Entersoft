@@ -1,211 +1,170 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { testimonials } from "@/data/testimonials";
-import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import React, { useMemo } from "react";
+import { testimonials, TestimonialItem } from "@/data/testimonials";
 import SectionLabel from "../ui/SectionLabel";
+import { ShieldCheck, Star } from "lucide-react";
 
 export default function Testimonials() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [direction, setDirection] = useState(0); // -1 for prev, 1 for next
-  const autoplayRef = useRef<NodeJS.Timeout | null>(null);
-
-  const slideVariants = {
-    enter: (dir: number) => ({
-      x: dir > 0 ? 50 : -50,
-      opacity: 0,
-    }),
-    center: {
-      x: 0,
-      opacity: 1,
-      transition: {
-        x: { type: "spring" as const, stiffness: 300, damping: 30 },
-        opacity: { duration: 0.4 },
-      },
-    },
-    exit: (dir: number) => ({
-      x: dir > 0 ? -50 : 50,
-      opacity: 0,
-      transition: {
-        x: { type: "spring" as const, stiffness: 300, damping: 30 },
-        opacity: { duration: 0.3 },
-      },
-    }),
-  };
-
-  const startAutoplay = () => {
-    stopAutoplay();
-    autoplayRef.current = setInterval(() => {
-      setDirection(1);
-      setActiveIndex((prev) => (prev + 1) % testimonials.length);
-    }, 8000);
-  };
-
-  const stopAutoplay = () => {
-    if (autoplayRef.current) {
-      clearInterval(autoplayRef.current);
-      autoplayRef.current = null;
-    }
-  };
-
-  useEffect(() => {
-    startAutoplay();
-    return () => stopAutoplay();
-  }, []);
-
-  const handleNext = () => {
-    stopAutoplay();
-    setDirection(1);
-    setActiveIndex((prev) => (prev + 1) % testimonials.length);
-    startAutoplay();
-  };
-
-  const handlePrev = () => {
-    stopAutoplay();
-    setDirection(-1);
-    setActiveIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-    startAutoplay();
-  };
-
-  const active = testimonials[activeIndex];
-  const touchStartX = useRef<number | null>(null);
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartX.current === null) return;
-    const touchEndX = e.changedTouches[0].clientX;
-    const diff = touchStartX.current - touchEndX;
-    if (Math.abs(diff) > 40) {
-      if (diff > 0) handleNext();
-      else handlePrev();
-    }
-    touchStartX.current = null;
-  };
+  // Split 12 testimonials evenly across 3 columns (4 items per column)
+  const col1 = useMemo(() => testimonials.slice(0, 4), []);
+  const col2 = useMemo(() => testimonials.slice(4, 8), []);
+  const col3 = useMemo(() => testimonials.slice(8, 12), []);
 
   return (
     <section
       id="operational-validation"
-      className="relative w-full bg-[var(--bg-primary)] transition-colors duration-500 overflow-hidden"
-      onMouseEnter={stopAutoplay}
-      onMouseLeave={startAutoplay}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
+      className="relative w-full bg-[var(--bg-primary)] text-[var(--text-primary)] transition-colors duration-500 overflow-hidden py-24 md:py-36 select-none"
     >
-      {/* Background Mesh Backdrop */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,var(--accent-glow,rgba(0,163,255,0.06)),transparent_70%)] pointer-events-none" />
+      {/* Background Subtle Radial Glow Atmosphere */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_15%,rgba(0,163,255,0.05)_0%,transparent_70%)] pointer-events-none" />
 
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12 py-24 md:py-36 flex flex-col gap-12 md:gap-16 relative z-10">
-        
-        {/* Header Block */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-10%" }}
-            variants={{
-              hidden: {},
-              visible: { transition: { staggerChildren: 0.08 } }
-            }}
-            className="flex flex-col items-start"
-          >
-            <div className="overflow-hidden">
-              <motion.div
-                variants={{
-                  hidden: { y: "100%" },
-                  visible: { y: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } }
-                }}
-              >
-                <SectionLabel color="secondary">// Operational Validation</SectionLabel>
-              </motion.div>
-            </div>
-            <div className="overflow-hidden">
-              <motion.h2
-                variants={{
-                  hidden: { y: "100%" },
-                  visible: { y: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } }
-                }}
-                className="text-3xl font-display font-semibold text-[var(--text-primary)] tracking-[-0.025em]"
-              >
-                Trusted by Enterprises
-              </motion.h2>
-            </div>
-          </motion.div>
+      <div className="max-w-[1400px] w-full mx-auto px-6 md:px-12 flex flex-col gap-12 md:gap-16 relative z-10">
 
-          {/* Navigation Buttons */}
-          <div className="flex items-center gap-3">
-            <button
-              onClick={handlePrev}
-              className="w-12 h-12 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-elevated)] flex items-center justify-center text-[var(--text-primary)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors cursor-pointer"
-              aria-label="Previous testimonial"
-            >
-              <ArrowLeft className="w-5 h-5" />
-            </button>
-            <button
-              onClick={handleNext}
-              className="w-12 h-12 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-elevated)] flex items-center justify-center text-[var(--text-primary)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors cursor-pointer"
-              aria-label="Next testimonial"
-            >
-              <ArrowRight className="w-5 h-5" />
-            </button>
+        {/* ── Section Header ────────────────────────────────────────────── */}
+        <div className="flex flex-col items-center text-center max-w-[840px] mx-auto gap-4">
+          <SectionLabel color="secondary">Operational Validation</SectionLabel>
+          <h2 className="text-[clamp(2.2rem,4vw,3.6rem)] font-display font-semibold tracking-[-0.03em] leading-[1.08] text-[var(--text-primary)]">
+            Trusted by Enterprise Security Leaders
+          </h2>
+          <p className="text-[clamp(15px,1.3vw,18px)] font-sans text-[var(--text-secondary)] leading-[1.6] max-w-[720px]">
+            From global manufacturing conglomerates to regulated fintech platforms, explore how Entersoft delivers zero false-positive vulnerability verification and continuous cyber assurance.
+          </p>
+        </div>
+
+        {/* ── Testimonials Columns Grid Container ─────────────────────── */}
+        <div className="relative w-full h-[680px] md:h-[760px] overflow-hidden rounded-3xl border border-[var(--border-subtle)]/40 bg-[var(--bg-primary)]/40 p-2 md:p-4">
+          
+          {/* Top Linear Gradient Vignette Mask */}
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-32 md:h-40 bg-gradient-to-b from-[var(--bg-primary)] via-[var(--bg-primary)]/80 to-transparent z-20" />
+
+          {/* Bottom Linear Gradient Vignette Mask */}
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 md:h-40 bg-gradient-to-t from-[var(--bg-primary)] via-[var(--bg-primary)]/80 to-transparent z-20" />
+
+          {/* 3 Columns Layout Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 h-full w-full">
+            
+            {/* Column 1 (Scroll UP) */}
+            <TestimonialColumn items={col1} direction="up" duration="34s" />
+
+            {/* Column 2 (Scroll DOWN - Hidden on mobile, visible md+) */}
+            <TestimonialColumn items={col2} direction="down" duration="40s" className="hidden md:flex" />
+
+            {/* Column 3 (Scroll UP - Hidden on mobile/tablet, visible lg+) */}
+            <TestimonialColumn items={col3} direction="up" duration="30s" className="hidden lg:flex" />
+
           </div>
         </div>
 
-        {/* Carousel Slide Area */}
-        <div className="relative min-h-[380px] sm:min-h-[320px] md:min-h-[280px] w-full flex items-center">
-          <AnimatePresence initial={false} custom={direction} mode="wait">
-            <motion.div
-              key={active.id}
-              custom={direction}
-              variants={slideVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              className="w-full flex flex-col gap-8 md:gap-10"
-            >
-              {/* Giant Quote Block */}
-              <blockquote className="text-[clamp(1.4rem,3vw,2.4rem)] font-display font-normal leading-snug text-[var(--text-primary)] tracking-[-0.02em] uppercase max-w-[1100px] text-left">
-                “{active.quote}”
-              </blockquote>
-
-              {/* Attribution Details */}
-              <div className="flex flex-col items-start gap-1">
-                <span className="font-mono text-xs font-semibold text-[var(--text-primary)] tracking-wider">
-                  {active.author}
-                </span>
-                <span className="font-mono text-[10px] text-[var(--accent)] tracking-widest uppercase">
-                  {active.role} // {active.company}
-                </span>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        {/* Progress Indicators */}
-        <div className="flex items-center gap-2">
-          {testimonials.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => {
-                stopAutoplay();
-                setDirection(idx > activeIndex ? 1 : -1);
-                setActiveIndex(idx);
-                startAutoplay();
-              }}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                idx === activeIndex
-                  ? "w-8 bg-[var(--accent)]"
-                  : "w-2 bg-[var(--border-subtle)] hover:bg-[var(--text-tertiary)]"
-              }`}
-              aria-label={`Go to slide ${idx + 1}`}
-            />
-          ))}
-        </div>
-
       </div>
+
+      {/* Global CSS for Marquee Infinite Scroll Animations & Pause State */}
+      <style jsx global>{`
+        @keyframes marqueeUp {
+          0% {
+            transform: translateY(0%);
+          }
+          100% {
+            transform: translateY(-50%);
+          }
+        }
+
+        @keyframes marqueeDown {
+          0% {
+            transform: translateY(-50%);
+          }
+          100% {
+            transform: translateY(0%);
+          }
+        }
+
+        .animate-marquee-up {
+          animation: marqueeUp var(--marquee-duration, 32s) linear infinite;
+        }
+
+        .animate-marquee-down {
+          animation: marqueeDown var(--marquee-duration, 38s) linear infinite;
+        }
+
+        .column-track:hover .animate-marquee-up,
+        .column-track:hover .animate-marquee-down {
+          animation-play-state: paused !important;
+        }
+      `}</style>
     </section>
+  );
+}
+
+{/* ── Sub-Component for Individual Column Track ──────────────────────── */}
+interface ColumnProps {
+  items: TestimonialItem[];
+  direction: "up" | "down";
+  duration: string;
+  className?: string;
+}
+
+function TestimonialColumn({ items, direction, duration, className = "" }: ColumnProps) {
+  // Duplicate array items to create 100% seamless gapless 50% translation loop
+  const duplicatedItems = [...items, ...items];
+
+  return (
+    <div
+      className={`column-track relative flex flex-col overflow-hidden h-full ${className}`}
+    >
+      <div
+        className={`flex flex-col gap-6 w-full ${
+          direction === "up" ? "animate-marquee-up" : "animate-marquee-down"
+        }`}
+        style={{ "--marquee-duration": duration } as React.CSSProperties}
+      >
+        {duplicatedItems.map((item, index) => (
+          <TestimonialCard key={`${item.id}-${index}`} item={item} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+{/* ── Sub-Component for Testimonial Card ─────────────────────────────── */}
+function TestimonialCard({ item }: { item: TestimonialItem }) {
+  return (
+    <div className="w-full shrink-0 p-6 md:p-7 rounded-2xl bg-[var(--bg-elevated)]/85 backdrop-blur-md border border-[var(--border-subtle)] shadow-lg hover:border-[var(--accent)]/50 hover:shadow-xl hover:shadow-[var(--accent)]/5 transition-all duration-300 group cursor-pointer">
+      
+      {/* Header: Author Avatar & Metadata */}
+      <div className="flex items-center gap-3.5 pb-4 mb-4 border-b border-[var(--border-subtle)]/60">
+        <div
+          className={`w-11 h-11 rounded-full bg-gradient-to-br ${
+            item.avatarColor || "from-blue-500 to-indigo-600"
+          } flex items-center justify-center text-white font-mono text-sm font-bold shadow-md shrink-0`}
+        >
+          {item.initials}
+        </div>
+        <div className="flex flex-col items-start min-w-0">
+          <span className="font-sans text-sm font-bold text-[var(--text-primary)] truncate group-hover:text-[var(--accent)] transition-colors">
+            {item.author}
+          </span>
+          <span className="font-sans text-xs text-[var(--text-tertiary)] truncate">
+            {item.role} • <span className="font-mono text-[var(--text-secondary)] font-medium">{item.company}</span>
+          </span>
+        </div>
+      </div>
+
+      {/* Body Quote */}
+      <blockquote className="text-sm md:text-[15px] font-sans leading-[1.65] text-[var(--text-secondary)] font-normal tracking-[-0.01em] mb-5">
+        “{item.quote}”
+      </blockquote>
+
+      {/* Footer Row: Badge & Verified Metric Pill */}
+      <div className="flex items-center justify-between gap-2 pt-2">
+        <span className="font-mono text-[10px] text-[var(--text-tertiary)] uppercase tracking-wider">
+          {item.badge}
+        </span>
+
+        <div className="flex items-center gap-1 font-mono text-[10px] font-semibold text-[var(--accent)] bg-[var(--accent)]/10 px-2.5 py-1 rounded-md border border-[var(--accent)]/20 shrink-0">
+          <ShieldCheck className="w-3 h-3 text-[var(--accent)]" />
+          <span>{item.metric}</span>
+        </div>
+      </div>
+    </div>
   );
 }

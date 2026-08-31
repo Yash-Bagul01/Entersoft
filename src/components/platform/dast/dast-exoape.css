@@ -1,0 +1,34 @@
+/* DAST case-study page — Exo Ape / Fluid Glass motion + type */
+
+.dast-exoape,
+.dast-exoape h1,
+.dast-exoape h2,
+.dast-exoape h3,
+.dast-exoape h4 {
+  font-family: var(--font-inter-tight), var(--font-inter), system-ui, sans-serif;
+}
+
+.dast-exoape h1,
+.dast-exoape h2,
+.dast-exoape h3 {
+  font-weight: 300;
+}
+
+.dast-reveal {
+  display: block;
+  overflow: hidden;
+}
+
+.dast-reveal-inner {
+  display: block;
+  will-change: transform;
+}
+
+.dast-exoape [data-hero-line] {
+  display: block;
+  will-change: transform;
+}
+
+.dast-fade {
+  will-change: transform, opacity;
+}

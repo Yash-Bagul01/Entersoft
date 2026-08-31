@@ -43,6 +43,7 @@ export default function Footer() {
   const isSbom = pathname === "/platform/sbom-license-risk";
   const isSecrets = pathname === "/platform/secrets";
   const isSolutions = pathname === "/solutions";
+  const isExoCase = pathname === "/platform/dast" || pathname === "/platform/iac";
 
   if (isSast || isSbom || isSecrets || isSolutions) {
     return null;
@@ -112,6 +113,124 @@ export default function Footer() {
       ]
     }
   ];
+
+  if (isExoCase) {
+    const INK = "#0d0e13";
+    const MUTED = "#6f7076";
+    const CREAM = "#f2f0eb";
+
+    return (
+      <footer
+        className="w-full select-none relative overflow-hidden"
+        style={{
+          backgroundColor: CREAM,
+          color: INK,
+          fontFamily: "var(--font-inter-tight), var(--font-inter), system-ui, sans-serif",
+        }}
+      >
+        <div className="mx-auto max-w-[1440px] px-6 md:px-10 pt-[12vh] pb-0">
+          <div className="grid grid-cols-12 gap-y-12 mb-[10vh]">
+            <div className="col-span-12 md:col-span-4 md:col-start-1 flex flex-col gap-6">
+              <Image
+                src="https://d2ghx8biuioax8.cloudfront.net/main-website-images/entersoftLogo.svg"
+                alt="Entersoft Security Logo"
+                width={120}
+                height={24}
+                className="h-6 w-auto object-contain self-start [filter:brightness(0)]"
+              />
+              <p className="text-[14px] leading-[21px] max-w-[34ch] font-light" style={{ color: MUTED }}>
+                EnProbe provides continuous security visibility and evidence. Entersoft experts validate complex risk and guide remediation.
+              </p>
+              <div className="flex items-center gap-5 text-[13px]">
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="hover:opacity-60 transition-opacity">
+                  GitHub
+                </a>
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:opacity-60 transition-opacity">
+                  LinkedIn
+                </a>
+                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:opacity-60 transition-opacity">
+                  X
+                </a>
+              </div>
+            </div>
+
+            {footerLinks.map((column, i) => (
+              <div
+                key={column.title}
+                className={`col-span-6 md:col-span-2 ${i === 0 ? "md:col-start-6" : ""}`}
+              >
+                <div className="flex items-center gap-2 text-[13px] leading-none mb-5">
+                  <span aria-hidden="true">+</span>
+                  <span>{column.title}</span>
+                </div>
+                <ul className="flex flex-col gap-2.5">
+                  {column.links.map((link) => (
+                    <li key={link.name}>
+                      <a
+                        href={link.href}
+                        className="text-[13px] leading-[20px] font-light transition-opacity hover:opacity-50"
+                        style={{ color: MUTED }}
+                      >
+                        {link.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
+          <div className="h-px w-full" style={{ backgroundColor: "rgba(13,14,19,0.12)" }} />
+
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 py-8">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[12px] font-light" style={{ color: MUTED }}>
+              <span>© Entersoft Security</span>
+              <span aria-hidden="true">·</span>
+              <span>Est. 2013</span>
+              <span aria-hidden="true">·</span>
+              <Link href="/#privacy" className="hover:opacity-50 transition-opacity">Privacy</Link>
+              <span aria-hidden="true">·</span>
+              <Link href="/#terms" className="hover:opacity-50 transition-opacity">Terms</Link>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <button
+                onClick={handleToggleMotion}
+                className="flex items-center gap-2 text-[12px] tracking-[0.02em] transition-opacity hover:opacity-50"
+                style={{ color: MUTED }}
+                title={motionActive ? "Disable scroll smooth & parallax animations" : "Enable scroll smooth & parallax animations"}
+              >
+                {motionActive ? <Zap className="w-3.5 h-3.5" /> : <ZapOff className="w-3.5 h-3.5" />}
+                <span>{motionActive ? "Motion on" : "Motion off"}</span>
+              </button>
+              <button
+                onClick={handleScrollTop}
+                className="p-2 border transition-colors hover:bg-[#0d0e13] hover:text-[#f2f0eb]"
+                style={{ borderColor: "rgba(13,14,19,0.18)", color: INK }}
+                aria-label="Scroll to top"
+              >
+                <ArrowUp className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+
+          <div className="relative w-full flex justify-center overflow-hidden h-[11vw] min-h-[80px] max-h-[160px]">
+            <div className="relative w-full flex justify-center overflow-visible top-[1.5vw]">
+              <motion.h1
+                initial={{ y: "45%", color: "rgba(13, 14, 19, 0.10)" }}
+                whileHover={{ y: "0%", color: INK }}
+                transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+                className="font-light uppercase tracking-[-0.05em] cursor-pointer text-[13.5vw] leading-none select-none origin-bottom text-center"
+                style={{ fontFamily: "var(--font-inter-tight), var(--font-inter), system-ui, sans-serif", lineHeight: "0.8" }}
+              >
+                ENTERSOFT
+              </motion.h1>
+            </div>
+          </div>
+        </div>
+      </footer>
+    );
+  }
 
   return (
     <footer className={`w-full border-t select-none relative overflow-hidden transition-colors duration-500 ${

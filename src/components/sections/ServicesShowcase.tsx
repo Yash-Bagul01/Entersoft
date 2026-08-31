@@ -451,15 +451,15 @@ export default function ServicesShowcase() {
         <div className="header-block flex flex-col gap-3">
           <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 w-full">
             <span className="font-mono text-[12px] text-[var(--accent-neon)] tracking-[0.18em]">
-              // Enterprise Services & Managed Solutions
+              Enterprise Services & Managed Solutions
             </span>
             <span className="right-instruction font-mono text-[12px] text-[var(--text-tertiary)] uppercase tracking-[0.14em] transition-colors duration-200 shrink-0">
-              {isFinePointer ? "HOVER TO EXPLORE //" : "TAP TO EXPLORE //"}
+              {isFinePointer ? "HOVER TO EXPLORE" : "TAP TO EXPLORE"}
             </span>
           </div>
           
           <h2 className="text-display font-display font-semibold text-[clamp(1.8rem,3.8vw,3.2rem)] text-[var(--text-primary)] tracking-[-0.03em] leading-tight max-w-[850px]">
-            Security starts at the application layer—but it does not stop there.
+            Security starts at the application layer, but it does not stop there.
           </h2>
           
           <p className="supporting-statement font-sans text-[clamp(14px,1.6vw,17px)] text-[var(--text-secondary)] leading-[1.5] mt-2.5 max-w-[750px]">

@@ -118,7 +118,7 @@ export default function ValueProposition() {
         {/* 5-Step Delivery Model Lifecycle Section */}
         <div className="w-full max-w-[1240px] pt-12 border-t border-[var(--border-subtle)] flex flex-col items-center gap-8 text-center mt-4">
           <div className="flex flex-col items-center gap-2">
-            <span className="font-mono text-xs font-bold text-[var(--accent)] tracking-widest uppercase">// ENGAGEMENT LIFECYCLE</span>
+            <span className="font-mono text-xs font-bold text-[var(--accent)] tracking-widest uppercase">ENGAGEMENT LIFECYCLE</span>
             <h3 className="text-xl md:text-2xl font-display font-semibold text-[var(--text-primary)] uppercase tracking-tight">
               5-Step Delivery Model
             </h3>

@@ -42,7 +42,8 @@ export default function Navbar() {
   const isSecretsPage = pathname?.startsWith("/platform/secrets");
   const isPlatformSubpage = isSastPage || isSbomPage;
   const isLightPage = isCyberOntologyPage || isScaPage || isSecretsPage;
-  const isServicePage = (pathname?.startsWith("/services") || pathname?.startsWith("/platform")) && !isLightPage && !isPlatformSubpage;
+  const isExoCase = pathname === "/platform/dast" || pathname === "/platform/iac";
+  const isServicePage = (pathname?.startsWith("/services") || pathname?.startsWith("/platform")) && !isLightPage && !isPlatformSubpage && !isExoCase;
   const isAppSecPage = pathname === ROUTES.services.appsec;
   const isVaptPage = pathname === ROUTES.services.vapt;
   const isCompliancePage = pathname === ROUTES.services.compliance;
@@ -71,21 +72,15 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
+      const heroWrap = document.getElementById("hero-wrap");
       const heroEl = document.getElementById("hero");
-      if (heroEl) {
+      if (heroWrap) {
+        setIsScrolled(heroWrap.getBoundingClientRect().bottom <= 96);
+      } else if (heroEl) {
         const rect = heroEl.getBoundingClientRect();
-        // Keep navbar static during Hero section; start pill animation only when Hero section ends at Defensive Philosophy
-        if (rect.bottom <= 120) {
-          setIsScrolled(true);
-        } else {
-          setIsScrolled(false);
-        }
+        setIsScrolled(rect.bottom <= 120);
       } else {
-        if (window.scrollY > 400) {
-          setIsScrolled(true);
-        } else {
-          setIsScrolled(false);
-        }
+        setIsScrolled(window.scrollY > 400);
       }
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -270,8 +265,8 @@ export default function Navbar() {
   };
 
   const isLightThemeActive = currentTheme === "light" || isLightPage;
-  const isLightNavbar = isLightThemeActive || (isPlatformSubpage && isScrolled);
-  const isLightFloatingPill = isLightThemeActive && isScrolled;
+  const isLightNavbar = isLightThemeActive || (isPlatformSubpage && isScrolled) || (isExoCase && isScrolled);
+  const isLightFloatingPill = (isLightThemeActive && isScrolled) || (isExoCase && isScrolled);
   const isLightNavHeader = isLightFloatingPill || isLightPage;
 
   return (
@@ -480,7 +475,7 @@ export default function Navbar() {
                 </div>
               </button>
 
-              {!isServicePage && !isLightPage && <ThemeToggle />}
+              {!isServicePage && !isLightPage && !isExoCase && <ThemeToggle />}
               <Button
                 variant="primary"
                 size="sm"
@@ -499,7 +494,7 @@ export default function Navbar() {
 
             {/* Mobile Menu Icon & Theme Toggle */}
             <div className="lg:hidden z-50 flex items-center gap-4">
-              {!isServicePage && !isLightPage && <ThemeToggle />}
+              {!isServicePage && !isLightPage && !isExoCase && <ThemeToggle />}
               <button
                 onClick={() => setExoMenuOpen(true)}
                 className={cn(
