@@ -16,8 +16,9 @@ export default function PlatformLayout({
   const isSbom = pathname === "/platform/sbom-license-risk";
   const isSecrets = pathname === "/platform/secrets";
   const isDast = pathname === "/platform/dast";
+  const isAgentic = pathname === "/platform/agentic-pentesting";
   const isLightPage = isCyberOntology || isSca || isSecrets;
-  const isExoCase = isDast || isIac;
+  const isExoCase = isDast || isIac || isAgentic;
 
   useEffect(() => {
     if (isLightPage) {

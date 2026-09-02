@@ -130,11 +130,24 @@ export default function Hero() {
     };
   }, [shouldReduceMotion]);
 
+  const creds = (
+    <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[clamp(14px,1.15vw,16px)] leading-[1.45] tracking-[0.01em] text-white/75">
+      <span>Since 2013 (13+ Years)</span>
+      <span className="text-white/30">·</span>
+      <span>CREST-accredited penetration testing</span>
+      <span className="text-white/30">·</span>
+      <span>CERT-In empanelled auditing organisation</span>
+      <span className="text-white/30">·</span>
+      <span>ISO/IEC 27001-certified ISMS</span>
+    </div>
+  );
+
   return (
     <section
       id="hero"
       ref={containerRef}
-      className="relative w-full h-[100vh] h-[100dvh] overflow-hidden flex flex-col justify-between items-start px-6 md:px-12 pt-20 md:pt-22 pb-12 md:pb-16 bg-[#060606] select-none"
+      className="landing-hero relative w-full h-[100vh] h-[100dvh] overflow-hidden bg-[#060606] select-none text-white"
+      style={{ fontFamily: "var(--font-inter-tight), var(--font-inter), system-ui, sans-serif" }}
     >
       {/* Static Pinned Background Layer */}
       <div
@@ -159,80 +172,49 @@ export default function Hero() {
           />
         )}
 
-        {/* Gradient Mask Overlay */}
         <div
           ref={overlayRef}
           className="absolute inset-0 z-10 pointer-events-none transition-all duration-300 hero-gradient-overlay"
         />
       </div>
 
-      {/* Main Content Container (Left Aligned & Clean Layout) */}
-      <div className="relative z-20 max-w-[1280px] w-full flex-1 flex flex-col justify-center items-start text-left">
-        
-        {/* Dynamic Text Frame (H1 Group & Statement 2 Crossfade) */}
-        <div className="relative w-full max-w-[1080px]">
-          
-          {/* Statement 1: 3-Line Display H1 + Technical Credentials Line */}
-          <div ref={h1GroupRef} className="flex flex-col items-start text-left max-w-[1020px]">
-            <h1
-              className="text-[clamp(2.4rem,5vw,5.2rem)] font-display font-semibold leading-[1.06] tracking-[-0.025em] text-[#F6F5F0] drop-shadow-[0_4px_24px_rgba(0,0,0,0.9)] select-none text-left"
-            >
+      {/* Scroll-in statement — same slot as DAST/IaC intro (top-left) */}
+      <div
+        ref={paragraph2Ref}
+        className="absolute inset-x-0 top-0 z-20 px-6 md:px-10 pt-28 md:pt-32 opacity-0 pointer-events-none"
+      >
+        <div className="mx-auto max-w-[1440px] flex flex-col items-start">
+          <p className="max-w-[22em] text-[clamp(1.65rem,2.9vw,2.65rem)] font-light leading-[1.32] tracking-[-0.018em] text-white">
+            Entersoft combines the EnProbe platform with expert-led security engineering to discover, validate and close risk across applications, APIs, code, cloud, identity, AI systems and digital assets.
+          </p>
+          {creds}
+        </div>
+      </div>
+
+      {/* Title + CTA — DAST/IaC bottom bar: display left, actions right */}
+      <div className="absolute inset-x-0 bottom-0 z-20 px-6 md:px-10 pb-10 md:pb-14">
+        <div className="mx-auto max-w-[1440px] flex flex-col items-start gap-7">
+          <div ref={h1GroupRef} className="max-w-[1100px]">
+            <h1 className="text-[clamp(2.45rem,5.8vw,6.1rem)] font-light leading-[0.96] tracking-[-0.038em] text-white">
               Application-first
               <br />
               cyber assurance for
               <br />
               modern enterprises.
             </h1>
-
-            {/* Technical Credentials Row (Since 2013 Line) */}
-            <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[clamp(12px,1.4vw,15px)] font-mono text-white/80 tracking-wider text-left max-w-[900px]">
-              <span className="font-semibold text-[#96CBFF]">Since 2013 (13+ Years)</span>
-              <span className="text-white/30">|</span>
-              <span className="font-medium text-white/90">CREST-accredited penetration testing</span>
-              <span className="text-white/30">|</span>
-              <span className="font-medium text-white/90">CERT-In empanelled auditing organisation</span>
-              <span className="text-white/30">|</span>
-              <span className="font-medium text-white/90">ISO/IEC 27001-certified ISMS</span>
-            </div>
+            {creds}
           </div>
-
-          {/* Statement 2: Full Display Paragraph (Scroll View State) - Crisp, sharp & non-blurry */}
-          <div
-            ref={paragraph2Ref}
-            className="absolute inset-0 flex flex-col justify-center items-start opacity-0 pointer-events-none max-w-[1020px]"
-          >
-            <p className="text-[clamp(1.4rem,3vw,2.7rem)] font-display font-medium leading-[1.24] tracking-[-0.02em] text-[#F6F5F0]/95 text-left drop-shadow-[0_4px_20px_rgba(0,0,0,0.9)]">
-              Entersoft combines the <span className="text-[#96CBFF] font-semibold">EnProbe</span> platform with expert-led security engineering to discover, validate and close risk across applications, APIs, code, cloud, identity, AI systems and digital assets.
-            </p>
-
-            {/* Technical Credentials Row Below Statement 2 */}
-            <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[clamp(12px,1.4vw,15px)] font-mono text-white/80 tracking-wider text-left max-w-[900px]">
-              <span className="font-semibold text-[#96CBFF]">Since 2013 (13+ Years)</span>
-              <span className="text-white/30">|</span>
-              <span className="font-medium text-white/90">CREST-accredited penetration testing</span>
-              <span className="text-white/30">|</span>
-              <span className="font-medium text-white/90">CERT-In empanelled auditing organisation</span>
-              <span className="text-white/30">|</span>
-              <span className="font-medium text-white/90">ISO/IEC 27001-certified ISMS</span>
-            </div>
+          <div ref={buttonsRef} className="flex flex-wrap items-center gap-4">
+            <MagneticButton>
+              <Button variant="primary" size="lg" asLink href="/contact" className="gap-2 w-full sm:w-auto text-center justify-center shadow-lg shadow-black/40">
+                Book a Security Briefing <ArrowRight className="w-3.5 h-3.5" />
+              </Button>
+            </MagneticButton>
+            <Button variant="secondary" size="lg" asLink href="/platform/enprobe" className="w-full sm:w-auto text-center justify-center">
+              Explore EnProbe
+            </Button>
           </div>
         </div>
-
-      </div>
-
-      {/* Static Call-To-Action Buttons (Locked Left Position at Bottom) */}
-      <div
-        ref={buttonsRef}
-        className="relative z-30 flex flex-wrap items-center gap-4 pt-4 w-full sm:w-auto"
-      >
-        <MagneticButton>
-          <Button variant="primary" size="lg" asLink href="/contact" className="gap-2 w-full sm:w-auto text-center justify-center shadow-lg shadow-black/40">
-            Book a Security Briefing <ArrowRight className="w-3.5 h-3.5" />
-          </Button>
-        </MagneticButton>
-        <Button variant="secondary" size="lg" asLink href="/platform/enprobe" className="w-full sm:w-auto text-center justify-center">
-          Explore EnProbe
-        </Button>
       </div>
 
       {/* Bottom Scroll Cue Indicator */}

@@ -42,7 +42,7 @@ export default function Navbar() {
   const isSecretsPage = pathname?.startsWith("/platform/secrets");
   const isPlatformSubpage = isSastPage || isSbomPage;
   const isLightPage = isCyberOntologyPage || isScaPage || isSecretsPage;
-  const isExoCase = pathname === "/platform/dast" || pathname === "/platform/iac";
+  const isExoCase = pathname === "/platform/dast" || pathname === "/platform/iac" || pathname === "/platform/agentic-pentesting";
   const isServicePage = (pathname?.startsWith("/services") || pathname?.startsWith("/platform")) && !isLightPage && !isPlatformSubpage && !isExoCase;
   const isAppSecPage = pathname === ROUTES.services.appsec;
   const isVaptPage = pathname === ROUTES.services.vapt;

@@ -366,7 +366,7 @@ export default function ExoApeCaseStudy({ data }: { data: ExoApeCase }) {
                   className="object-cover"
                 />
               </div>
-              <div className="absolute inset-0 bg-linear-to-t from-black/75 via-black/25 to-black/40" />
+              <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/45 to-black/40" />
             </div>
 
             <div
@@ -375,7 +375,7 @@ export default function ExoApeCaseStudy({ data }: { data: ExoApeCase }) {
             >
               <div className="mx-auto max-w-[1440px] flex flex-wrap items-end justify-between gap-6">
                 <div>
-                  <h1 className="text-[clamp(3rem,8.4vw,8.5rem)] font-light leading-[0.95] tracking-[-0.04em]">
+                  <h1 className="text-[clamp(3rem,8.4vw,8.5rem)] font-light leading-[0.95] tracking-[-0.04em] [text-shadow:_0_4px_30px_rgba(0,0,0,0.95)]">
                     <span className="exoape-reveal">
                       <span data-hero-line className="exoape-reveal-inner">
                         {data.heroTitle}
@@ -515,13 +515,27 @@ export default function ExoApeCaseStudy({ data }: { data: ExoApeCase }) {
       </section>
 
       {/* ── INSET EXPAND ─────────────────────────────────────────────────── */}
-      <section ref={insetRef} className="relative z-10 h-screen w-full overflow-hidden bg-[#0b0c10]">
+      <section ref={insetRef} className="relative z-10 h-screen w-full overflow-hidden bg-[#0d0e13]">
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 opacity-15 pointer-events-none"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 50% 50%, rgba(255,255,255,0.12) 0%, transparent 60%), linear-gradient(112deg, transparent 49.7%, #ffffff15 49.7%, #ffffff15 50.15%, transparent 50.15%)",
+          }}
+        />
         <div
           ref={insetFrameRef}
-          className="absolute inset-0 will-change-[clip-path]"
+          className="absolute inset-0 will-change-[clip-path] shadow-2xl"
           style={{ clipPath: "inset(16% 20% 16% 20%)" }}
         >
           <Image src={data.images.wide} alt={data.images.wideAlt} fill sizes="100vw" className="object-cover" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-black/30 pointer-events-none" />
+          <div className="absolute bottom-8 left-8 md:bottom-12 md:left-12 z-10">
+            <span className="px-4 py-2 rounded-full bg-black/65 backdrop-blur-md border border-white/20 text-white/90 text-[11px] font-mono uppercase tracking-[0.18em]">
+              + EnProbe System Architecture
+            </span>
+          </div>
         </div>
       </section>
 

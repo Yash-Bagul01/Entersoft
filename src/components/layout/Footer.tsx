@@ -43,7 +43,7 @@ export default function Footer() {
   const isSbom = pathname === "/platform/sbom-license-risk";
   const isSecrets = pathname === "/platform/secrets";
   const isSolutions = pathname === "/solutions";
-  const isExoCase = pathname === "/platform/dast" || pathname === "/platform/iac";
+  const isExoCase = pathname === "/platform/dast" || pathname === "/platform/iac" || pathname === "/platform/agentic-pentesting";
 
   if (isSast || isSbom || isSecrets || isSolutions) {
     return null;
