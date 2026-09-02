@@ -49,7 +49,7 @@ export default function PlatformLayout({
 
   if (isExoCase) {
     return (
-      <div data-page={isDast ? "dast" : "iac"} className="bg-white min-h-screen">
+      <div data-page={isAgentic ? "agentic" : isDast ? "dast" : "iac"} className="bg-white min-h-screen">
         {children}
       </div>
     );

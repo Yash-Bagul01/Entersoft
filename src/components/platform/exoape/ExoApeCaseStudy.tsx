@@ -25,6 +25,7 @@ export default function ExoApeCaseStudy({ data }: { data: ExoApeCase }) {
   const heroTitleRef = useRef<HTMLDivElement>(null);
   const heroIntroRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLElement>(null);
+  const explodeRef = useRef<HTMLElement>(null);
 
   const insetRef = useRef<HTMLElement>(null);
   const insetFrameRef = useRef<HTMLDivElement>(null);
@@ -52,48 +53,88 @@ export default function ExoApeCaseStudy({ data }: { data: ExoApeCase }) {
         invalidateOnRefresh: true,
       } as const;
 
-      if (!reduce) {
-        // Fluid Glass collage: the frame stays in the offset grid; the
-        // photograph is taller than the crop and travels through it, while
-        // the crop itself unmasks as it enters. Alternate speeds so columns
-        // drift against each other.
-        root.querySelectorAll<HTMLElement>("[data-collage-item]").forEach((item) => {
-          const media = item.querySelector<HTMLElement>("[data-collage-media]");
-          const speed = Number(item.dataset.speed ?? 16);
-          const dir = speed >= 0 ? 1 : -1;
-          const travel = Math.min(28, Math.max(14, Math.abs(speed)));
+      const explode = explodeRef.current;
+      if (explode && !reduce) {
+        const items = explode.querySelectorAll<HTMLElement>("[data-cluster-item]");
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: explode,
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 0.7,
+            invalidateOnRefresh: true,
+          },
+        });
 
-          gsap.set(item, { clipPath: "inset(16% 12% 16% 12%)" });
+        items.forEach((item, i) => {
+          const isCenter = i === 0;
 
-          gsap.to(item, {
-            clipPath: "inset(0% 0% 0% 0%)",
-            ease: "none",
-            scrollTrigger: {
-              trigger: item,
-              start: "top 92%",
-              end: "top 48%",
-              scrub: 0.7,
-            },
-          });
-
-          if (media) {
-            gsap.fromTo(
-              media,
-              { yPercent: dir * travel, scale: 1.28 },
+          if (isCenter) {
+            // Physically expand ONLY center image from card bounds to 100% full screen (100vw x 100vh)
+            tl.to(
+              item,
               {
-                yPercent: dir * -travel,
-                scale: 1,
+                left: "0%",
+                top: "0%",
+                width: "100vw",
+                height: "100vh",
+                borderRadius: "0px",
+                opacity: 1,
                 ease: "none",
-                force3D: true,
-                scrollTrigger: {
-                  trigger: item,
-                  start: "top bottom",
-                  end: "bottom top",
-                  scrub: 0.85,
-                },
-              }
+                duration: 0.6,
+              },
+              0
+            );
+          } else {
+            // Surrounding 6 items shrink and fade out early
+            const xOut = Number(item.dataset.xOut ?? 0);
+            const yOut = Number(item.dataset.yOut ?? 0);
+            tl.to(
+              item,
+              {
+                xPercent: xOut,
+                yPercent: yOut,
+                scale: 0.8,
+                opacity: 0,
+                ease: "power2.out",
+                duration: 0.25,
+              },
+              0
             );
           }
+
+          const media = item.querySelector<HTMLElement>("[data-collage-media]");
+          if (media) {
+            tl.to(
+              media,
+              {
+                scale: 1,
+                ease: "none",
+                duration: 0.6,
+              },
+              0
+            );
+          }
+        });
+      }
+
+        root.querySelectorAll<HTMLElement>("[data-kenburns]").forEach((el) => {
+          gsap.fromTo(
+            el,
+            { yPercent: 14, scale: 1.2 },
+            {
+              yPercent: -14,
+              scale: 1,
+              ease: "none",
+              force3D: true,
+              scrollTrigger: {
+                trigger: el.parentElement,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: 0.8,
+              },
+            }
+          );
         });
 
         root.querySelectorAll<HTMLElement>("[data-parallax]").forEach((el) => {
@@ -130,11 +171,6 @@ export default function ExoApeCaseStudy({ data }: { data: ExoApeCase }) {
             );
           }
         });
-      } else {
-        root.querySelectorAll<HTMLElement>("[data-collage-item]").forEach((item) => {
-          gsap.set(item, { clipPath: "inset(0% 0% 0% 0%)" });
-        });
-      }
 
       const heroWrapper = heroWrapperRef.current;
       const hero = heroRef.current;
@@ -184,11 +220,11 @@ export default function ExoApeCaseStudy({ data }: { data: ExoApeCase }) {
               invalidateOnRefresh: true,
             },
           })
-          .to(title, { opacity: 0, y: -45, ease: "power1.in", duration: 0.25 }, 0)
-          .to(media, { yPercent: 12, ease: "none", duration: 1 }, 0)
-          .to(intro, { opacity: 1, y: 0, ease: "power1.out", duration: 0.25 }, 0.22)
-          .to(intro, { opacity: 1, y: 0, ease: "none", duration: 0.25 }, 0.47)
-          .to(intro, { opacity: 0, y: -30, ease: "power1.in", duration: 0.2 }, 0.72);
+          .to(title, { opacity: 0, y: -45, ease: "power1.in", duration: 0.18 }, 0)
+          .to(media, { yPercent: 22, ease: "none", duration: 1 }, 0)
+          .to(intro, { opacity: 1, y: 0, ease: "power1.out", duration: 0.16 }, 0.1)
+          .to(intro, { opacity: 1, y: 0, ease: "none", duration: 0.55 }, 0.26)
+          .to(intro, { opacity: 0, y: -28, ease: "power1.in", duration: 0.16 }, 0.82);
 
         gsap.to(overlayLines, {
           yPercent: 0,
@@ -295,24 +331,24 @@ export default function ExoApeCaseStudy({ data }: { data: ExoApeCase }) {
       const nextFrame = nextFrameRef.current;
       const nextCopy = nextCopyRef.current;
       if (next && nextFrame && nextCopy) {
-        gsap.set(nextCopy, { opacity: 0, y: 28 });
+        gsap.set(nextCopy, { opacity: 0.4, y: 16 });
         gsap
           .timeline({
             scrollTrigger: {
               trigger: next,
               start: "top top",
-              end: "+=190%",
-              scrub: 0.9,
+              end: "+=180%",
+              scrub: 0.85,
               ...pinBase,
             },
           })
           .fromTo(
             nextFrame,
-            { clipPath: "inset(22% 29% 22% 29%)" },
+            { clipPath: "inset(18% 24% 18% 24%)" },
             { clipPath: "inset(0% 0% 0% 0%)", ease: "power1.inOut" },
             0
           )
-          .to(nextCopy, { opacity: 1, y: 0, ease: "power2.out", duration: 0.28 }, 0.58);
+          .to(nextCopy, { opacity: 1, y: 0, ease: "power2.out", duration: 0.32 }, 0.2);
       }
     }, root);
 
@@ -338,7 +374,18 @@ export default function ExoApeCaseStudy({ data }: { data: ExoApeCase }) {
     };
   }, [reduce, data.id]);
 
-  const collageSpeed = [22, -18, 26, -20, 18, -14];
+  const collageSpeed = [22, -18, 26, -20, 18, -14, 16];
+  // Exact Fluid Glass rest tiles on a 1440×900 stage (px → %).
+  const explodeScale = [5, 6, 4, 5, 8, 6, 9];
+  const explodeSlots = [
+    { left: "36.81%", top: "24.11%", width: "31.25%", height: "30%" },
+    { left: "15.97%", top: "41.56%", width: "19.17%", height: "40%" },
+    { left: "36.88%", top: "56.56%", width: "26.25%", height: "25%" },
+    { left: "64.93%", top: "56.56%", width: "26.25%", height: "25%" },
+    { left: "10.07%", top: "84.11%", width: "31.25%", height: "30%" },
+    { left: "43.06%", top: "84.11%", width: "20.14%", height: "30%" },
+    { left: "64.93%", top: "84.11%", width: "19.17%", height: "20.56%" },
+  ];
 
   return (
     <div ref={rootRef} className="exoape-case relative w-full bg-white" style={{ color: INK }}>
@@ -354,7 +401,7 @@ export default function ExoApeCaseStudy({ data }: { data: ExoApeCase }) {
             <div
               ref={heroMediaRef}
               className="absolute inset-x-0 will-change-transform"
-              style={{ top: "-26%", height: "152%" }}
+              style={{ top: "-42%", height: "199%" }}
             >
               <div data-hero-plate className="absolute inset-0">
                 <Image
@@ -399,6 +446,7 @@ export default function ExoApeCaseStudy({ data }: { data: ExoApeCase }) {
 
             <div
               ref={heroIntroRef}
+              data-hero-intro
               className="absolute inset-0 z-10 px-6 md:px-10 pt-28 md:pt-36 pb-10 md:pb-14 text-white flex flex-col justify-between"
             >
               <div className="mx-auto max-w-[1440px] h-full flex flex-col justify-between w-full">
@@ -460,28 +508,132 @@ export default function ExoApeCaseStudy({ data }: { data: ExoApeCase }) {
         </section>
       </div>
 
-      {/* ── OFFSET COLLAGE (Fluid Glass: crop + inner-image parallax) ───── */}
-      <section className="relative z-10 bg-white pt-[6vh] pb-[20vh] px-6 md:px-10 overflow-visible">
-        <div className="mx-auto max-w-[1440px] grid grid-cols-12 gap-x-4 gap-y-6 md:gap-x-6 md:gap-y-8">
+      {/* ── PINNED FLUID GLASS CLUSTER ZOOM CAMERA ANIMATION ───── */}
+      <section ref={explodeRef} className="relative z-10 bg-white h-[320vh]">
+        <div className="sticky top-0 h-screen w-full overflow-hidden bg-white">
           {data.images.collage.map((shot, i) => {
-            const spans = [
-              "col-span-12 md:col-span-4 md:col-start-1 aspect-4/5 md:mt-[8vh]",
-              "col-span-12 md:col-span-5 md:col-start-6 aspect-[3/2] md:mt-[2vh]",
-              "col-span-6 md:col-span-3 md:col-start-3 aspect-square md:mt-[14vh]",
-              "col-span-6 md:col-span-5 md:col-start-7 aspect-[3/2] md:mt-[4vh]",
-              "col-span-12 md:col-span-4 md:col-start-2 aspect-[4/3] md:mt-[10vh]",
-              "col-span-12 md:col-span-4 md:col-start-8 aspect-4/5 md:mt-[2vh]",
+            const clusterSlots = [
+              // Item 0: Center Image (ONLY image that enlarges to 100% screen proportion)
+              { left: "30%", top: "25%", width: "40vw", height: "50vh", zIndex: 10, scaleDest: 2.5, xOut: 0, yOut: 0 },
+              // Item 1: Top Left (fades & moves up-left)
+              { left: "6%", top: "6%", width: "22vw", height: "32vh", zIndex: 2, scaleDest: 1.35, xOut: -140, yOut: -120 },
+              // Item 2: Top Right (fades & moves up-right)
+              { left: "70%", top: "4%", width: "24vw", height: "30vh", zIndex: 2, scaleDest: 1.35, xOut: 140, yOut: -120 },
+              // Item 3: Middle Left (fades & moves left)
+              { left: "4%", top: "48%", width: "22vw", height: "36vh", zIndex: 2, scaleDest: 1.35, xOut: -160, yOut: 20 },
+              // Item 4: Middle Right (fades & moves right)
+              { left: "72%", top: "44%", width: "22vw", height: "38vh", zIndex: 2, scaleDest: 1.35, xOut: 160, yOut: 20 },
+              // Item 5: Bottom Left (fades & moves down-left)
+              { left: "12%", top: "80%", width: "26vw", height: "30vh", zIndex: 2, scaleDest: 1.35, xOut: -100, yOut: 140 },
+              // Item 6: Bottom Right (fades & moves down-right)
+              { left: "62%", top: "78%", width: "28vw", height: "32vh", zIndex: 2, scaleDest: 1.35, xOut: 120, yOut: 140 },
             ];
+
+            const slot = clusterSlots[i] ?? clusterSlots[0];
+            const isCenter = i === 0;
+
             return (
               <figure
                 key={shot.src}
-                data-collage-item
-                data-speed={String(collageSpeed[i] ?? 16)}
-                className={`${spans[i] ?? "col-span-6 aspect-3/2"} bg-[#e8e6e1]`}
+                data-cluster-item
+                data-scale-dest={String(slot.scaleDest)}
+                data-x-out={String(slot.xOut)}
+                data-y-out={String(slot.yOut)}
+                className="absolute overflow-hidden bg-[#e8e6e1] group rounded-sm shadow-xl will-change-transform"
+                style={{
+                  left: slot.left,
+                  top: slot.top,
+                  width: slot.width,
+                  height: slot.height,
+                  zIndex: slot.zIndex,
+                }}
               >
-                <div data-collage-media>
-                  <Image src={shot.src} alt={shot.alt} fill sizes="42vw" className="object-cover" />
+                <div data-collage-media className="absolute inset-0">
+                  <Image
+                    src={shot.src}
+                    alt={shot.alt}
+                    fill
+                    sizes={isCenter ? "100vw" : "40vw"}
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                    priority={isCenter}
+                  />
+                  <div
+                    className={
+                      isCenter
+                        ? "absolute inset-0 bg-gradient-to-t from-black/95 via-black/45 to-black/20 opacity-100"
+                        : "absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/10 opacity-90 transition-opacity duration-500 group-hover:opacity-100"
+                    }
+                  />
                 </div>
+
+                {/* Top-left Telemetry Micro Badge */}
+                {shot.tag && (
+                  <div
+                    className={
+                      isCenter
+                        ? "absolute top-5 left-5 md:top-8 md:left-8 z-20 pointer-events-none"
+                        : "absolute top-4 left-4 z-20 pointer-events-none"
+                    }
+                  >
+                    <span
+                      className={
+                        isCenter
+                          ? "inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-white/20 text-[11px] md:text-[12px] font-mono tracking-widest text-white uppercase shadow-2xl [text-shadow:_0_2px_10px_rgba(0,0,0,0.8)]"
+                          : "inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/65 backdrop-blur-md border border-white/15 text-[10px] font-mono tracking-wider text-white uppercase shadow-lg"
+                      }
+                    >
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                      {shot.tag}
+                    </span>
+                  </div>
+                )}
+
+                {/* Bottom Platform Knowledge Overlay */}
+                {(shot.headline || shot.desc || shot.metric) && (
+                  <div
+                    className={
+                      isCenter
+                        ? "absolute inset-x-0 bottom-0 z-20 p-6 md:p-10 text-white flex flex-col justify-end pointer-events-none max-w-3xl"
+                        : "absolute inset-x-0 bottom-0 z-20 p-5 md:p-6 text-white flex flex-col justify-end pointer-events-none"
+                    }
+                  >
+                    {shot.metric && (
+                      <div className="mb-2">
+                        <span
+                          className={
+                            isCenter
+                              ? "inline-block px-3 py-1 rounded-md text-[11px] md:text-[12px] font-medium tracking-wide bg-emerald-500/20 backdrop-blur-md text-emerald-300 border border-emerald-400/30 shadow-lg [text-shadow:_0_1px_8px_rgba(0,0,0,0.9)]"
+                              : "inline-block px-2.5 py-0.5 rounded text-[10px] font-medium tracking-wide bg-white/15 backdrop-blur-sm text-emerald-300 border border-emerald-400/20"
+                          }
+                        >
+                          {shot.metric}
+                        </span>
+                      </div>
+                    )}
+                    {shot.headline && (
+                      <h3
+                        className={
+                          isCenter
+                            ? "text-xl sm:text-2xl md:text-4xl font-light tracking-tight leading-tight text-white [text-shadow:_0_2px_24px_rgba(0,0,0,0.95)]"
+                            : "text-base md:text-lg font-light tracking-tight leading-tight text-white group-hover:text-emerald-200 transition-colors duration-300"
+                        }
+                      >
+                        {shot.headline}
+                      </h3>
+                    )}
+                    {shot.desc && (
+                      <p
+                        className={
+                          isCenter
+                            ? "text-[13px] sm:text-[14px] md:text-[16px] leading-[22px] md:leading-[26px] text-white/90 font-normal mt-2.5 [text-shadow:_0_2px_16px_rgba(0,0,0,0.95)]"
+                            : "text-[12px] md:text-[13px] leading-[18px] text-white/80 font-normal mt-1.5 line-clamp-2 max-w-lg"
+                        }
+                      >
+                        {shot.desc}
+                      </p>
+                    )}
+                  </div>
+                )}
               </figure>
             );
           })}
@@ -607,7 +759,9 @@ export default function ExoApeCaseStudy({ data }: { data: ExoApeCase }) {
                 {data.anticipate.cards.map((card) => (
                   <article key={card.index} className="flex flex-col gap-4">
                     <div className="relative w-full aspect-4/5 overflow-hidden">
-                      <Image src={card.image} alt={card.alt} fill sizes="40vw" className="object-cover" />
+                      <div data-kenburns className="absolute inset-x-0" style={{ top: "-18%", height: "136%" }}>
+                        <Image src={card.image} alt={card.alt} fill sizes="40vw" className="object-cover" />
+                      </div>
                     </div>
                     <div
                       className="self-end w-[min(100%,280px)] px-5 py-5 text-white"
@@ -649,7 +803,9 @@ export default function ExoApeCaseStudy({ data }: { data: ExoApeCase }) {
                 className="w-full md:w-[38vw] lg:w-[30vw] shrink-0 flex flex-col gap-5 px-6 md:px-0"
               >
                 <div className="relative w-full aspect-4/3 overflow-hidden">
-                  <Image src={stage.image} alt={stage.alt} fill sizes="38vw" className="object-cover" />
+                  <div data-kenburns className="absolute inset-x-0" style={{ top: "-18%", height: "136%" }}>
+                    <Image src={stage.image} alt={stage.alt} fill sizes="38vw" className="object-cover" />
+                  </div>
                 </div>
                 <div className="flex items-baseline gap-4">
                   <span className="text-[13px]" style={{ color: MUTED }}>
@@ -831,30 +987,41 @@ export default function ExoApeCaseStudy({ data }: { data: ExoApeCase }) {
       )}
 
       {/* ── NEXT ─────────────────────────────────────────────────────────── */}
-      <section ref={nextRef} className="relative z-10 h-screen w-full overflow-hidden" style={{ backgroundColor: CREAM }}>
+      <section
+        ref={nextRef}
+        data-next-project
+        className="relative z-10 h-screen w-full overflow-hidden bg-[#101115]"
+      >
         <Link href={data.next.href} className="absolute inset-0 block">
           <div
             ref={nextFrameRef}
             className="absolute inset-0 will-change-[clip-path]"
-            style={{ clipPath: "inset(22% 29% 22% 29%)" }}
+            style={{ clipPath: "inset(18% 24% 18% 24%)" }}
           >
-            <Image
-              src={data.images.next}
-              alt={data.images.nextAlt}
-              fill
-              sizes="100vw"
-              className="object-cover brightness-[0.72]"
-            />
-            <div ref={nextCopyRef} className="absolute inset-0 flex items-end px-6 md:px-10 pb-14 text-white">
-              <div>
-                <h2 className="text-[clamp(2.6rem,7vw,6.5rem)] font-light leading-none tracking-[-0.04em]">
-                  {data.next.title}
-                </h2>
-                <p className="mt-3 text-[13px] text-white/75">{data.next.subtitle}</p>
-                <span className="mt-7 w-11 h-11 rounded-full border border-white/45 flex items-center justify-center text-[13px]">
-                  →
-                </span>
-              </div>
+            <div className="relative h-full w-full">
+              <Image
+                src={data.images.next}
+                alt={data.images.nextAlt}
+                fill
+                sizes="100vw"
+                className="object-cover brightness-[0.72]"
+              />
+              <div className="absolute inset-0 bg-black/30" />
+            </div>
+          </div>
+          <div
+            ref={nextCopyRef}
+            className="absolute inset-0 z-10 flex items-end px-6 md:px-10 pb-14 text-white"
+          >
+            <div>
+              <p className="mb-4 text-[13px] tracking-[0.04em] text-white/70">Next</p>
+              <h2 className="text-[clamp(2.6rem,7vw,6.5rem)] font-light leading-none tracking-[-0.04em]">
+                {data.next.title}
+              </h2>
+              <p className="mt-3 text-[13px] text-white/75">{data.next.subtitle}</p>
+              <span className="mt-7 w-11 h-11 rounded-full border border-white/45 flex items-center justify-center text-[13px]">
+                →
+              </span>
             </div>
           </div>
         </Link>

@@ -21,7 +21,14 @@ export type ExoApeCase = {
     mockupAlt: string;
     next: string;
     nextAlt: string;
-    collage: { src: string; alt: string }[];
+    collage: {
+      src: string;
+      alt: string;
+      tag?: string;
+      headline?: string;
+      metric?: string;
+      desc?: string;
+    }[];
   };
   objective: { lines: string[]; body: string };
   solution: { lines: string[]; left: string; right: string };

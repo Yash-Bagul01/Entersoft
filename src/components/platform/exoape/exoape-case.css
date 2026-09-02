@@ -38,15 +38,33 @@ html:has(.exoape-case) body {
 }
 
 .exoape-case [data-collage-item] {
-  position: relative;
   overflow: hidden;
 }
 
-.exoape-case [data-collage-media] {
+.exoape-case [data-collage-media],
+.exoape-case [data-kenburns] {
   position: absolute;
   left: 0;
   right: 0;
   top: -22%;
   height: 144%;
   will-change: transform;
+}
+
+.exoape-case [data-explode-item] {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* Fluid Glass tiles are the photograph — no extra ken-burns crop. */
+.exoape-case [data-explode-item] [data-collage-media] {
+  top: 0;
+  height: 100%;
+}
+
+.exoape-case [data-explode-item] a,
+.exoape-case [data-next-project] a {
+  pointer-events: auto;
 }
