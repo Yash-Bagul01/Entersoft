@@ -23,21 +23,25 @@ export default function AZ5_ProofNumbers() {
       />
 
       <div className="max-w-[1000px] mx-auto flex flex-col items-center justify-center text-center relative z-10">
-        {/* Main 847 -> 12 Numbers Display */}
+        <div className="font-mono text-xs font-bold text-[#CCFF33] tracking-[0.25em] uppercase mb-8">
+          // SIGNAL PRIORITISATION & HUMAN VALIDATION
+        </div>
+
+        {/* Validation Flow Display */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-6 md:gap-12">
-          {/* 847 */}
+          {/* Signal Triage Stage 1 */}
           <div className="flex flex-col items-center">
             <motion.span
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="font-serif text-[clamp(5rem,14vw,12rem)] font-bold text-[#F0F4FF] leading-none tracking-tight"
+              className="font-serif text-[clamp(2.2rem,5vw,4rem)] font-bold text-[#F0F4FF] leading-none tracking-tight"
             >
-              847
+              AUTOMATED
             </motion.span>
-            <span className="font-mono text-xs text-[rgba(240,244,255,0.4)] tracking-[0.2em] uppercase mt-2">
-              SIGNALS FOUND
+            <span className="font-mono text-xs text-[rgba(240,244,255,0.4)] tracking-[0.2em] uppercase mt-3">
+              THREAT TELEMETRY
             </span>
           </div>
 
@@ -52,19 +56,19 @@ export default function AZ5_ProofNumbers() {
             →
           </motion.span>
 
-          {/* 12 */}
+          {/* Signal Triage Stage 2 */}
           <div className="flex flex-col items-center">
             <motion.span
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="font-serif text-[clamp(5rem,14vw,12rem)] font-bold text-[#CCFF33] leading-none tracking-tight shadow-[0_0_50px_rgba(204,255,51,0.2)]"
+              className="font-serif text-[clamp(2.2rem,5vw,4rem)] font-bold text-[#CCFF33] leading-none tracking-tight shadow-[0_0_50px_rgba(204,255,51,0.2)]"
             >
-              12
+              HUMAN
             </motion.span>
-            <span className="font-mono text-xs text-[rgba(240,244,255,0.4)] tracking-[0.2em] uppercase mt-2">
-              VALIDATED THREATS
+            <span className="font-mono text-xs text-[rgba(240,244,255,0.4)] tracking-[0.2em] uppercase mt-3">
+              VALIDATED FINDINGS
             </span>
           </div>
         </div>
@@ -75,13 +79,13 @@ export default function AZ5_ProofNumbers() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="mt-16 pt-8 border-t border-[rgba(204,255,51,0.12)] flex flex-wrap items-center justify-center gap-6 md:gap-10 font-mono text-xs text-[rgba(240,244,255,0.5)] tracking-wider"
+          className="mt-16 pt-8 border-t border-[rgba(204,255,51,0.12)] flex flex-wrap items-center justify-center gap-6 md:gap-10 font-mono text-xs text-[rgba(240,244,255,0.5)] tracking-wider uppercase"
         >
-          <span>98.6% NOISE ELIMINATED</span>
+          <span>RULE-TUNED SIGNAL PRIORITISATION</span>
           <span className="text-[#CCFF33]">|</span>
-          <span>0 FALSE POSITIVES</span>
+          <span>HUMAN-VALIDATED FINDINGS</span>
           <span className="text-[#CCFF33]">|</span>
-          <span>14 YEARS EXPERIENCE</span>
+          <span>14 YEARS OFFENSIVE-SECURITY EXPERTISE</span>
         </motion.div>
       </div>
     </section>

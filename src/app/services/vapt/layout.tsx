@@ -5,9 +5,9 @@ import { getCanonicalUrl, ROUTES } from "@/config/routes";
 /**
  * The VAPT page itself is a client component, so its route metadata lives here.
  */
-const TITLE = "Penetration Testing Services & VAPT | Entersoft";
+const TITLE = "Penetration Testing and Adversarial Validation | Entersoft";
 const DESCRIPTION =
-  "CREST-accredited, CERT-In empanelled penetration testing for web, API, mobile, network, cloud and identity environments, with verified evidence.";
+  "CREST-accredited, CERT-In empanelled penetration testing and adversarial validation for web, API, mobile, network, cloud, and identity environments with human-validated findings and reproducible evidence.";
 const CANONICAL = getCanonicalUrl(ROUTES.services.vapt);
 
 export const metadata: Metadata = {

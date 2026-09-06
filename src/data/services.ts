@@ -159,7 +159,7 @@ export const servicePagesData: Record<string, ServicePageData> = {
     process: [
       { index: "01", title: "Pipeline Integration", description: "Embed SAST, DAST, and SCA analysis into your existing CI/CD gates." },
       { index: "02", title: "Automated Execution", description: "Run deep scans automatically at every git commit or merge request." },
-      { index: "03", title: "Expert Validation", description: "Our senior analysts triage and filter out false-positives manually." },
+      { index: "03", title: "Expert Validation", description: "Our senior analysts triage and validate candidate findings before delivery." },
       { index: "04", title: "Remediation Support", description: "Receive verified fix diffs, code suggestions, and PR-ready changes." },
       { index: "05", title: "Verification & Retest", description: "Re-run automated checks to verify successful remediation." }
     ],
@@ -172,49 +172,50 @@ export const servicePagesData: Record<string, ServicePageData> = {
     integrations: ["Azure DevOps", "GitHub Actions", "Jira", "ServiceNow"],
     stats: [
       { value: "15 min", label: "Scan Integration" },
-      { value: "0", label: "False Positives" },
+      { value: "Verified", label: "Human-Validated Findings" },
       { value: "70+", label: "Assurance Checks" }
     ],
     faqs: [
       { question: "Does AppSec slow down our deployment cycles?", answer: "No. Scans run asynchronously inside your CI/CD pipeline, and developer gates only block on confirmed, high-severity issues validated by our team." },
-      { question: "How do you eliminate false positives?", answer: "Every single alert triggered by our automated scanners is manually reviewed, verified, and annotated by an Entersoft engineer before it is reported to you." },
+      { question: "How do you ensure findings are accurate?", answer: "Every single alert triggered by our automated scanners is manually reviewed, verified, and annotated by an Entersoft engineer before it is reported to you. Every reported finding is human-validated before delivery." },
       { question: "Which languages and frameworks do you support?", answer: "We support over 25 major programming languages and frameworks, including JavaScript/TypeScript, Python, Java, Go, C#, and Ruby." },
       { question: "Can we integrate this with Jira?", answer: "Yes. We offer out-of-the-box integrations with Jira, GitHub, GitLab, and Azure DevOps for automated ticket creation." }
     ]
   },
   vapt: {
     slug: "vapt",
-    name: "Adversarial Validation",
+    name: "Penetration Testing and Adversarial Validation",
     category: "ADVERSARIAL VALIDATION",
-    tagline: "Expert penetration testing with active exploitation proof.",
-    heroStatement: "Targeted Vulnerability Analysis.\nProven Business Impact.",
-    overview: "Move beyond standard automated scanning. Our expert auditors conduct thorough vulnerability assessments and active penetration testing to expose real-world business risks with zero noise.",
+    tagline: "CREST-accredited, CERT-In empanelled penetration testing and adversarial validation.",
+    heroStatement: "Penetration Testing &\nAdversarial Validation.",
+    overview: "Move beyond standard automated scanning. Certified security auditors conduct thorough penetration testing, threat modeling, and manual exploitation to expose real-world business risks with human-validated findings.",
     col2Description: "Exposure Validation Grid",
-    col3Metadata: "VAPT • Attack Surface • Retesting",
+    col3Metadata: "Penetration Testing • Adversarial Validation • Retesting",
     process: [
-      { index: "01", title: "Scoping & Recon", description: "Map your external attack surface, APIs, networks, and logical architecture." },
-      { index: "02", title: "Active Vulnerability Scan", description: "Deploy automated engines to run high-throughput credentialed checks." },
-      { index: "03", title: "Manual Exploit Run", description: "Conduct active manual exploitation to prove real-world business impact." },
-      { index: "04", title: "Evidence Reporting", description: "Deliver detailed findings containing validated Proof-of-Concepts (PoCs)." },
-      { index: "05", title: "Retesting Cycles", description: "Verify all applied patches through an unlimited, comprehensive retest." }
+      { index: "01", title: "Scoping & Rules of Engagement", description: "Establish authorised test boundaries, environment controls, safety rules, and threat model objectives." },
+      { index: "02", title: "Architecture & Surface Analysis", description: "Map external endpoints, APIs, networks, and cloud boundaries using automated recon and threat modeling." },
+      { index: "03", title: "Manual & Business-Logic Testing", description: "Certified security leads execute credentialed manual exploitation, logic abuse testing, and privilege escalation." },
+      { index: "04", title: "Risk Rating & Critical Escalation", description: "Triage findings using CVSS metrics and business impact. Escalate critical risks immediately via priority channels." },
+      { index: "05", title: "Reporting, Retesting & Closure", description: "Deliver technical PoC reports and executive summaries. Re-test fixes and issue formal closure sign-offs." }
     ],
     deliverables: [
-      "CERT-In Compliance Report",
-      "Proof-of-Concept Exploit Videos",
-      "Executive Summary Narrative",
-      "Remediation Roadmap Roadmap"
+      "CERT-In & CRESTEmpanelled Audit Report",
+      "Reproducible Proof-of-Concept Exploit Steps",
+      "Executive Risk Summary Narrative",
+      "Technical Remediation Roadmap"
     ],
     integrations: ["Jira", "ServiceNow", "Slack", "Teams"],
     stats: [
       { value: "100%", label: "Findings Proven" },
       { value: "12k+", label: "Vulnerabilities Found" },
-      { value: "0", label: "False Positives" }
+      { value: "Verified", label: "Human-Validated Findings" }
     ],
     faqs: [
-      { question: "What is the difference between VA and PT?", answer: "Vulnerability Assessment (VA) identifies potential flaws. Penetration Testing (PT) actively exploits those flaws to confirm their impact and prove they are actionable threats." },
-      { question: "How long does a VAPT audit take?", answer: "A typical assessment takes between 2 to 4 weeks depending on the application complexity and scope of endpoints." },
-      { question: "Are you CERT-In empanelled?", answer: "Yes, Entersoft is CERT-In empanelled and CREST certified, allowing us to perform mandatory government and financial audits." },
-      { question: "Do you offer retesting?", answer: "Yes. We provide unlimited retesting within 90 days of the initial report to verify that all patches have been correctly applied." }
+      { question: "What is the difference between Vulnerability Assessment and Penetration Testing?", answer: "Vulnerability Assessments identify candidate flaws using automated tools. Penetration Testing and Adversarial Validation actively exploit flaws within agreed rules of engagement to confirm real-world business impact and eliminate scanner noise." },
+      { question: "How long does a penetration testing engagement take?", answer: "A typical assessment takes between 2 to 4 weeks depending on environment complexity, asset count, and scope parameters." },
+      { question: "Are your penetration tests CERT-In empanelled and CREST accredited?", answer: "Yes, Entersoft is CERT-In empanelled and CREST accredited, supporting mandatory regulatory, financial, and enterprise compliance audits." },
+      { question: "How are critical vulnerabilities escalated during an active test?", answer: "Critical findings are escalated immediately through agreed priority notification channels before report publication, allowing engineering teams to initiate emergency patches right away." },
+      { question: "What is included in the retesting and closure phase?", answer: "Retesting is performed within the agreed engagement scope and retest window. When fixes are validated within agreed scope, finding status is updated and formal closure sign-off is issued." }
     ]
   },
   "cloud-resilience": {
@@ -355,69 +356,69 @@ export const servicePagesData: Record<string, ServicePageData> = {
     slug: "smart-contract-audits",
     name: "Protocol Assurance",
     category: "PROTOCOL ASSURANCE",
-    tagline: "Solidity and Rust audits covering Web3 security vectors.",
-    heroStatement: "Mathematical Code Verification.\nDeFi Protocol Auditing.",
-    overview: "Ensure the integrity of your Web3 protocols. We perform rigorous manual and automated audits of smart contracts written in Solidity, Rust, and Vyper to prevent exploits and front-running.",
-    col2Description: "Chain Assurance",
-    col3Metadata: "Blockchain • DeFi • Smart Contracts",
+    tagline: "Smart Contract and Web3 Security audits across EVM and Rust ecosystems.",
+    heroStatement: "Mathematical Code Verification.\nDeFi & Protocol Security.",
+    overview: "Verify the security and logical integrity of your Web3 protocols. We perform scope-defined formal verification, property-based fuzzing, and expert manual line-by-line audits of smart contracts in Solidity, Rust, Vyper, and Move to prevent economic exploits, reentrancy, and access control flaws.",
+    col2Description: "Chain & Protocol Assurance",
+    col3Metadata: "Blockchain • DeFi • Smart Contracts • Web3",
     process: [
-      { index: "01", title: "Code Compilation", description: "Analyze bytecode and build dependency call graphs of the contracts." },
-      { index: "02", title: "Automated Checks", description: "Run static analysis, symbolic execution, and fuzzing tools." },
-      { index: "03", title: "Manual Review", description: "Perform line-by-line inspection of contract logic, economic loops, and math." },
-      { index: "04", title: "Draft Delivery", description: "Provide a confidential draft report documenting discovered exploit vectors." },
-      { index: "05", title: "Verification & Release", description: "Verify your applied code patches and publish the official public audit report." }
+      { index: "01", title: "Scope & Dependency Mapping", description: "Define test boundaries, target invariants, property definitions, and compile abstract syntax trees." },
+      { index: "02", title: "Automated Symbolic & Fuzz Testing", description: "Execute property-based mutation fuzzing, static analysis, and symbolic boundary evaluation." },
+      { index: "03", title: "Expert Manual Logic Audit", description: "Perform line-by-line code review of state transitions, access controls, precision rounding, and economic loops." },
+      { index: "04", title: "Confidential Findings Delivery", description: "Provide an initial confidential draft report detailing vulnerability taxonomy, severity ratings, and proof-of-concept steps." },
+      { index: "05", title: "Patch Verification & Final Attestation", description: "Verify applied remediation patches during re-audit and issue the final engagement report and attestation." }
     ],
     deliverables: [
-      "Public Audit Findings Report",
-      "Slither & Mythril Analysis Log",
-      "Calculated Economic Risk Sheet",
-      "Verification Certification Badge"
+      "Scope-Defined Security Audit Report",
+      "Vulnerability Taxonomy & Severity Matrix",
+      "Property Fuzzing & Static Analysis Logs",
+      "Remediation Verification & Re-Audit Attestation"
     ],
-    integrations: ["Ethereum", "Solana", "Arbitrum", "Optimism"],
+    integrations: ["Ethereum", "Solana", "Arbitrum", "Optimism", "Polygon", "Base"],
     stats: [
-      { value: "$0", label: "Funds Lost Post-Audit" },
-      { value: "150+", label: "Smart Contracts Audited" },
-      { value: "100%", label: "Math Checked" }
+      { value: "Scope-Defined", label: "Property & Invariant Coverage" },
+      { value: "EVM & Rust", label: "Supported Chain Stack" },
+      { value: "Dual-Pass", label: "Formal & Manual Verification" }
     ],
     faqs: [
-      { question: "What blockchains do you audit?", answer: "We audit Ethereum and EVM-compatible chains (Solidity, Vyper), Cosmos (Go), and Solana (Rust)." },
-      { question: "Do you check for economic exploits?", answer: "Yes. We audit game-theoretical parameters, liquidity bridge access, flash-loan vulnerabilities, and oracle dependency risks." },
-      { question: "How long does a Web3 audit take?", answer: "DeFi audits usually require 1 to 3 weeks depending on the complexity of the contract dependencies and line-count." },
-      { question: "Is our code kept private during the audit?", answer: "Yes. The initial audit and discussions are strictly confidential. We only publish findings to the public domain upon your approval." }
+      { question: "What blockchains and programming languages do you audit?", answer: "We audit Ethereum and EVM-compatible chains (Solidity, Vyper), Solana (Rust), Cosmos (Go), and Move protocols across client-defined scope boundaries." },
+      { question: "How are coverage and testing boundaries established?", answer: "Coverage is measured against the defined engagement scope, properties, attack paths, and test boundaries agreed upon prior to audit execution. We do not use unverified blanket percentages." },
+      { question: "Do you audit economic design and oracle dependencies?", answer: "Yes. Our audit methodology includes economic boundary review, oracle dependency analysis, flash loan vulnerability testing, and precision rounding verification." },
+      { question: "What is your re-audit policy and responsible disclosure process?", answer: "Every engagement includes a dedicated patch verification pass to audit fix implementations. Initial findings remain strictly confidential, adhering to responsible disclosure protocols until client-authorized release." }
     ]
   },
   "ai-ast": {
     slug: "ai-ast",
     name: "AI Systems Assurance",
     category: "AI SYSTEMS ASSURANCE",
-    tagline: "ML-augmented security testing for modern web architectures.",
-    heroStatement: "ML-Powered Security Scans.\nExpert Validation Safeguards.",
-    overview: "Accelerate your AppSec cycle using machine learning. We deploy AI-powered application security testing to detect complex vulnerability patterns, backed by expert validation to ensure zero false-positives.",
+    tagline: "Security assessment of LLM, RAG and agentic AI systems.",
+    heroStatement: "AI Security Assessment.\nExpert Validation Safeguards.",
+    overview: "Assess LLM applications, RAG pipelines, AI agents, and model APIs before production. We apply fourteen years of offensive-security expertise to detect prompt injection, tool abuse, and data leakage, backed by senior analyst human validation.",
     col2Description: "Agentic Application Shield",
     col3Metadata: "LLM • RAG • Agents • Model Workflows",
     process: [
-      { index: "01", title: "AI Engine Training", description: "Tune our scanning model to match the specific code paradigms of your stack." },
-      { index: "02", title: "Continuous Scanning", description: "Feed AST findings to ML classifiers to search for logical anomalies." },
-      { index: "03", title: "Analyst Triage", description: "Verify AI-flagged vulnerabilities manually to prevent alerting noise." },
-      { index: "04", title: "Continuous Learning", description: "Feed feedback loops back into the scanning engines to improve precision." }
+      { index: "01", title: "Attack Surface Scoping", description: "Map system prompts, guardrails, retrieval stores, tool integrations, and agent execution boundaries." },
+      { index: "02", title: "Adversarial Red-Teaming", description: "Execute automated scanning and manual adversarial testing across prompt injection, RAG poisoning, and model escape vectors." },
+      { index: "03", title: "Analyst Triage & Validation", description: "Senior security analysts human-validate every finding before inclusion in the client report." },
+      { index: "04", title: "Remediation & Retesting", description: "Deliver developer-ready fix playbooks and verify patch effectiveness during retesting." }
     ],
     deliverables: [
-      "AI Attack-Surface Inventory",
-      "ML-Assisted Defect Logs",
-      "OWASP Top 10 Gap Analysis",
-      "Vulnerability Trend Analytics"
+      "AI Attack Surface Inventory",
+      "Human-Validated Defect Log",
+      "OWASP Top 10 for LLM Gap Analysis",
+      "Developer Remediation Playbook"
     ],
     integrations: ["OpenAI API", "Hugging Face", "Pinecone", "LangChain"],
     stats: [
-      { value: "10x", label: "Scan Acceleration" },
-      { value: "98%", label: "Detection Precision" },
-      { value: "0", label: "False Positives" }
+      { value: "14 Yrs", label: "Security Engineering Expertise" },
+      { value: "Human-Validated", label: "Analyst Finding Triage" },
+      { value: "Full-Stack", label: "LLM, RAG & Agent Coverage" }
     ],
     faqs: [
-      { question: "Does AI AST replace human auditors?", answer: "No. AI is used to accelerate the pattern-matching process across millions of lines of code. Every issue is still hand-verified by a senior Entersoft expert." },
-      { question: "How does AI AST protect AI apps?", answer: "We look for security risks unique to AI integrations, such as prompt injection vulnerabilities, data leakage through RAG databases, and API exposure paths." },
-      { question: "Can this scan custom AI models?", answer: "Yes. We audit pipeline security, training data inputs, model weights, and custom inference configurations." },
-      { question: "Is our source code shared with third-party AIs?", answer: "No. All machine learning algorithms and classification engines run locally on Entersoft's isolated, secure, on-premise infrastructure." }
+      { question: "Does AI Systems Assurance replace human security analysts?", answer: "No. Automated tools assist in surface scanning, but every reported finding is human-validated by senior Entersoft security analysts before delivery." },
+      { question: "How do you test LLM and agentic application security?", answer: "We conduct adversarial testing across prompt injection, RAG vector store poisoning, guardrail evasion, tool call SSRF/permission sprawl, agent goal hijacking, and cross-context data leakage." },
+      { question: "Can you assess custom models and local RAG deployments?", answer: "Yes. We assess custom model endpoints, RAG retrieval boundaries, system prompts, agent workflows, and API integrations." },
+      { question: "Is our proprietary data or prompt structure shared externally?", answer: "No. All assessment workflows and testing engines run securely in isolated environments. Your code, prompts, and data are never shared or used to train third-party models." }
     ]
   }
 };

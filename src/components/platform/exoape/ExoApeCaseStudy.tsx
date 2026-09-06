@@ -682,11 +682,31 @@ export default function ExoApeCaseStudy({ data }: { data: ExoApeCase }) {
           style={{ clipPath: "inset(16% 20% 16% 20%)" }}
         >
           <Image src={data.images.wide} alt={data.images.wideAlt} fill sizes="100vw" className="object-cover" />
-          <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-black/30 pointer-events-none" />
-          <div className="absolute bottom-8 left-8 md:bottom-12 md:left-12 z-10">
-            <span className="px-4 py-2 rounded-full bg-black/65 backdrop-blur-md border border-white/20 text-white/90 text-[11px] font-mono uppercase tracking-[0.18em]">
-              + EnProbe System Architecture
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/30 pointer-events-none" />
+
+          {/* Top-left Architecture Telemetry Badge */}
+          <div className="absolute top-8 left-8 md:top-12 md:left-12 z-20 pointer-events-none">
+            <span className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-white/20 text-[11px] font-mono tracking-widest text-white uppercase shadow-2xl [text-shadow:_0_2px_10px_rgba(0,0,0,0.8)]">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              + ENPROBE SYSTEM ARCHITECTURE
             </span>
+          </div>
+
+          {/* Bottom-left System Capability Overlay */}
+          <div className="absolute bottom-8 left-8 md:bottom-12 md:left-12 right-8 md:right-auto z-20 pointer-events-none max-w-xl">
+            <div className="p-6 md:p-8 rounded-xl bg-black/80 backdrop-blur-xl border border-white/15 text-white shadow-2xl">
+              <div className="mb-2">
+                <span className="inline-block px-3 py-1 rounded-md text-[11px] font-medium tracking-wide bg-emerald-500/20 backdrop-blur-md text-emerald-300 border border-emerald-400/30 shadow-lg">
+                  Autonomous Execution Sandbox
+                </span>
+              </div>
+              <h3 className="text-lg md:text-2xl font-light tracking-tight text-white leading-tight [text-shadow:_0_2px_18px_rgba(0,0,0,0.95)]">
+                Zero-Day Exploit Tree Planner & Runtime Engine
+              </h3>
+              <p className="text-[13px] md:text-[14px] leading-[22px] text-white/85 font-normal mt-2.5 [text-shadow:_0_1px_12px_rgba(0,0,0,0.95)]">
+                Combines LLM business logic reasoning with deterministic runtime safety bounds, outputting verified exploit chains and framework remediation patches.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -757,20 +777,51 @@ export default function ExoApeCaseStudy({ data }: { data: ExoApeCase }) {
             <div className="col-span-12 md:col-span-6 md:col-start-7 md:h-[78vh] md:overflow-hidden mt-12 md:mt-0">
               <div ref={anticipateRightRef} className="flex flex-col gap-10 will-change-transform pb-24">
                 {data.anticipate.cards.map((card) => (
-                  <article key={card.index} className="flex flex-col gap-4">
-                    <div className="relative w-full aspect-4/5 overflow-hidden">
+                  <article key={card.index} className="flex flex-col group max-w-lg">
+                    <div className="relative w-full aspect-16/10 md:h-[280px] overflow-hidden rounded-md border border-white/10 shadow-2xl">
                       <div data-kenburns className="absolute inset-x-0" style={{ top: "-18%", height: "136%" }}>
-                        <Image src={card.image} alt={card.alt} fill sizes="40vw" className="object-cover" />
+                        <Image
+                          src={card.image}
+                          alt={card.alt}
+                          fill
+                          sizes="40vw"
+                          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+                          quality={95}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-black/20 opacity-95 transition-opacity duration-500 group-hover:opacity-100" />
                       </div>
-                    </div>
-                    <div
-                      className="self-end w-[min(100%,280px)] px-5 py-5 text-white"
-                      style={{ backgroundColor: "#101115" }}
-                    >
-                      <span className="text-[11px] tracking-[0.14em] uppercase text-white/50">
-                        {card.index}. {card.label}
-                      </span>
-                      <p className="mt-3 text-[15px] leading-[22px] font-light">{card.title}</p>
+
+                      {/* Top-left Index & Label Telemetry Badge INSIDE Image */}
+                      <div className="absolute top-3.5 left-3.5 z-20 pointer-events-none flex items-center gap-2">
+                        <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/20 text-[10px] font-mono tracking-wider text-white uppercase shadow-xl [text-shadow:_0_1px_8px_rgba(0,0,0,0.8)]">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                          {card.index} / {card.label}
+                        </span>
+                        {card.tag && (
+                          <span className="hidden sm:inline-flex items-center px-2.5 py-0.5 rounded-full bg-white/15 backdrop-blur-md border border-white/15 text-[9.5px] font-mono tracking-wider text-emerald-300 uppercase shadow-lg">
+                            {card.tag}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Bottom Platform Info Overlay INSIDE Image */}
+                      <div className="absolute inset-x-0 bottom-0 z-20 p-4 md:p-5 text-white flex flex-col justify-end pointer-events-none">
+                        {card.metric && (
+                          <div className="mb-1">
+                            <span className="inline-block px-2.5 py-0.5 rounded text-[10px] font-medium tracking-wide bg-emerald-500/20 backdrop-blur-md text-emerald-300 border border-emerald-400/30 shadow-lg [text-shadow:_0_1px_8px_rgba(0,0,0,0.9)]">
+                              {card.metric}
+                            </span>
+                          </div>
+                        )}
+                        <h3 className="text-base md:text-lg font-light tracking-tight leading-snug text-white [text-shadow:_0_2px_16px_rgba(0,0,0,0.95)] group-hover:text-emerald-200 transition-colors duration-300">
+                          {card.title}
+                        </h3>
+                        {card.desc && (
+                          <p className="text-[11px] md:text-[12px] leading-[17px] md:leading-[19px] text-white/85 font-normal mt-1 [text-shadow:_0_1px_12px_rgba(0,0,0,0.95)] line-clamp-2">
+                            {card.desc}
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </article>
                 ))}

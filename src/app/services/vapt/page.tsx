@@ -305,13 +305,13 @@ const pipelineSteps = [
   {
     key: 0,
     step: "01",
-    titleLine1: "DISCOVERY & SURFACE",
-    titleLine2: "BOUNDARY DIAGNOSTIC",
+    titleLine1: "SCOPING & THREAT MODEL",
+    titleLine2: "RULES OF ENGAGEMENT",
     descLines: [
-      "WE CATALOG AND ANALYZE EXPOSED BOUNDARIES",
-      "TO IDENTIFY GATEWAY THREAT SHADOWS.",
-      "EVERY ENTRY POINT IS ACTIVELY MAPPED",
-      "BEFORE DEEPER LOGIC EXPLOIT STAGES BEGIN."
+      "WE ESTABLISH AUTHORISED TESTING BOUNDARIES & CONTROLS.",
+      "MAPPING EXTERNAL & CLOUD SURFACES VIA AUTOMATED RECON.",
+      "THREAT MODELING AND DATA-HANDLING CONTROLS ARE DEFINED",
+      "BEFORE ACTIVE PENETRATION TESTING EXECUTION BEGINS."
     ],
     color: 0x06b6d4, // Cyan
     type: "globe" as const,
@@ -321,11 +321,11 @@ const pipelineSteps = [
   {
     key: 1,
     step: "02",
-    titleLine1: "CREDENTIALED LOGIC",
-    titleLine2: "PENETRATION & TESTING",
+    titleLine1: "MANUAL PENETRATION",
+    titleLine2: "& BUSINESS LOGIC ABUSE",
     descLines: [
-      "WE SIMULATE AUTHENTICATED THREAT SCENARIOS.",
-      "TESTING API PRIVILEGES AND GATEWAY ACLS",
+      "CERTIFIED SECURITY LEADS EXECUTE MANUAL EXPLOITATION.",
+      "TESTING API PRIVILEGES, ACLS, AND LOGICAL WORKFLOWS",
       "TO UNCOVER CRITICAL DATA ACCESS VECTORS",
       "THAT AUTOMATED SCANNING SYSTEMS MISS."
     ],
@@ -337,13 +337,13 @@ const pipelineSteps = [
   {
     key: 2,
     step: "03",
-    titleLine1: "REMEDIATION SIGNATURE",
-    titleLine2: "& RETEST SIGN-OFF",
+    titleLine1: "RISK RATING, ESCALATION",
+    titleLine2: "& RETEST CLOSURE",
     descLines: [
-      "WE DELIVER COMPLETE EXPLOIT PROOF SCRIPTS.",
-      "SUPPORTING REMEDIATION RE-AUDITS FOR 90 DAYS",
-      "TO CONFIRM FULL ARCHITECTURE STABILITY",
-      "AND PROVABLE THREAT MITIGATION SIGN-OFF."
+      "CRITICAL FINDINGS ARE ESCALATED IMMEDIATELY TO TEAMS.",
+      "WE DELIVER TECHNICAL POC REPORTS AND EXECUTIVE SUMMARIES.",
+      "COMPREHENSIVE RETESTING VERIFIES PATCH COMPLIANCE",
+      "UNTIL FORMAL FINDING CLOSURE CRITERIA ARE SATISFIED."
     ],
     color: 0x10b981, // Emerald
     type: "shield" as const,
@@ -523,8 +523,8 @@ export default function VAPTPage() {
         "@type": "WebPage",
         "@id": `${canonicalUrl}/#webpage`,
         "url": canonicalUrl,
-        "name": "Penetration Testing Services & VAPT | Entersoft",
-        "description": "CREST-accredited, CERT-In empanelled penetration testing for web, API, mobile, network, cloud and identity environments, with verified evidence.",
+        "name": "Penetration Testing and Adversarial Validation | Entersoft",
+        "description": "CREST-accredited, CERT-In empanelled penetration testing and adversarial validation for web, API, mobile, network, cloud, and identity environments with human-validated findings and reproducible evidence.",
         "inLanguage": "en",
         "isPartOf": {
           "@id": `${APP_URL}/#website`
@@ -539,12 +539,12 @@ export default function VAPTPage() {
       {
         "@type": "Service",
         "@id": `${canonicalUrl}/#service`,
-        "name": "Adversarial Validation",
-        "serviceType": "Adversarial Validation",
+        "name": "Penetration Testing and Adversarial Validation",
+        "serviceType": "Penetration Testing and Adversarial Validation",
         "provider": {
           "@id": `${APP_URL}/#organization`
         },
-        "description": "Expert-led penetration testing with controlled exploitation and human-validated findings for web, API, mobile, network, cloud and identity environments.",
+        "description": "Expert-led penetration testing and adversarial validation with controlled exploitation and human-validated findings for web, API, mobile, network, cloud and identity environments.",
         "areaServed": {
           "@type": "Country",
           "name": "Global"
@@ -564,7 +564,7 @@ export default function VAPTPage() {
           {
             "@type": "ListItem",
             "position": 2,
-            "name": "Adversarial Validation",
+            "name": "Penetration Testing and Adversarial Validation",
             "item": canonicalUrl
           }
         ]
@@ -613,12 +613,12 @@ export default function VAPTPage() {
           
           {/* Header block */}
           <div className="flex flex-col gap-3 max-w-[800px] text-left">
-            <SectionLabel color="secondary">01 / PERFORMANCE METRICS</SectionLabel>
+            <SectionLabel color="secondary">01 / METHODOLOGY & ASSURANCE</SectionLabel>
             <h2 className="text-3xl md:text-4xl font-display font-medium uppercase text-white tracking-tight">
-              PROVABLE AUDIT RESOLUTION
+              ENTERPRISE TESTING METHODOLOGY
             </h2>
-            <p className="font-sans text-sm md:text-base text-zinc-400 leading-relaxed max-w-[620px]">
-              Every penetration test runs active manual validation to eliminate false scanner noise, producing auditable evidence.
+            <p className="font-sans text-sm md:text-base text-zinc-400 leading-relaxed max-w-[660px]">
+              Our penetration testing framework combines automated reconnaissance with expert-led manual exploitation, evidence-based risk rating (CVSS), and immediate critical-finding escalation.
             </p>
           </div>
 
@@ -626,9 +626,9 @@ export default function VAPTPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
             {[
               {
-                num: "0%",
-                title: "FALSE POSITIVES",
-                desc: "Every logic vulnerability is manually validated by security leads, eliminating automated scanner noise.",
+                num: "Verified",
+                title: "HUMAN-VALIDATED FINDINGS",
+                desc: "Every reported vulnerability is manually validated by security leads to ensure reproducible evidence and zero noise.",
                 accentColor: "cyan",
                 colorClass: "text-cyan-400",
                 glowColor: "#06b6d4",
@@ -639,8 +639,8 @@ export default function VAPTPage() {
                 hud: (
                   <div className="relative w-full h-14 bg-black/40 rounded border border-white/5 overflow-hidden font-mono text-[9px] p-2 text-zinc-500 flex flex-col justify-between select-none">
                     <div className="flex justify-between items-center text-cyan-400 font-bold">
-                      <span>[ NOISE FILTER: ACTIVE ]</span>
-                      <span className="animate-pulse">0% FALSE</span>
+                      <span>[ TRIAGE FILTER: ACTIVE ]</span>
+                      <span className="animate-pulse">HUMAN VERIFIED</span>
                     </div>
                     <div className="w-full h-1 bg-zinc-900 rounded-full overflow-hidden relative">
                       <motion.div 
@@ -650,7 +650,7 @@ export default function VAPTPage() {
                       />
                     </div>
                     <div className="flex justify-between text-[8px] text-zinc-600">
-                      <span>SCAN NOISE: 0.00%</span>
+                      <span>NOISE REDUCTION: HIGH</span>
                       <span>VALIDATION: 100%</span>
                     </div>
                   </div>
@@ -659,7 +659,7 @@ export default function VAPTPage() {
               {
                 num: "100%",
                 title: "EXPLOIT PROOFS",
-                desc: "We provide Proof of Concept videos and exploit scripts proving target vulnerability impact.",
+                desc: "We provide clear Proof of Concept steps and exploit scripts proving target vulnerability impact.",
                 accentColor: "amber",
                 colorClass: "text-amber-500",
                 glowColor: "#f59e0b",
@@ -670,23 +670,23 @@ export default function VAPTPage() {
                 hud: (
                   <div className="relative w-full h-14 bg-black/40 rounded border border-white/5 overflow-hidden font-mono text-[9px] p-2 text-zinc-500 flex flex-col justify-between select-none">
                     <div className="flex justify-between items-center text-amber-500 font-bold">
-                      <span>[ POC SHELL EXPLOIT ]</span>
-                      <span className="animate-pulse">SUCCESS</span>
+                      <span>[ POC EXPLOIT STEPS ]</span>
+                      <span className="animate-pulse">VERIFIED</span>
                     </div>
                     <div className="text-[8px] text-amber-500/80 leading-none truncate">
                       $ ./exploit_payload.sh --target internal_api
                     </div>
                     <div className="flex justify-between items-center text-[8px] text-zinc-600">
                       <span>VULN: <span className="text-emerald-500 font-bold">[CONFIRMED]</span></span>
-                      <span>ACCURACY: 100%</span>
+                      <span>PROOF: REPRODUCIBLE</span>
                     </div>
                   </div>
                 )
               },
               {
-                num: "90-DAY",
-                title: "RETEST PERIOD",
-                desc: "Get unlimited retesting of patch updates within 90 days to verify configuration stability.",
+                num: "AGREED",
+                title: "RETEST & CLOSURE PERIOD",
+                desc: "Comprehensive retesting of patch updates within the agreed engagement scope to verify configuration stability and satisfy closure criteria.",
                 accentColor: "emerald",
                 colorClass: "text-emerald-500",
                 glowColor: "#10b981",
@@ -714,8 +714,8 @@ export default function VAPTPage() {
                       </div>
                     </div>
                     <div className="flex justify-between text-[8px] text-zinc-600">
-                      <span>CYCLE: 90 DAYS</span>
-                      <span>RETESTS: UNLIMITED</span>
+                      <span>RETEST WINDOW: AGREED SCOPE</span>
+                      <span>STATUS: CLOSURE VERIFIED</span>
                     </div>
                   </div>
                 )
@@ -809,7 +809,7 @@ export default function VAPTPage() {
             </p>
             <div className="mt-4">
               <MagneticButton>
-                <Button variant="primary" size="lg" asLink href="/#contact" className="gap-2 w-full sm:w-auto text-center justify-center">
+                <Button variant="primary" size="lg" asLink href="/contact" className="gap-2 w-full sm:w-auto text-center justify-center">
                   Book a Briefing <ChevronRight className="w-4 h-4" />
                 </Button>
               </MagneticButton>
@@ -832,7 +832,7 @@ export default function VAPTPage() {
       </section>
 
       {/* CTA Footer */}
-      <ServiceCTA />
+      <ServiceCTA buttonHref="/contact" />
 
       {/* SECTION 4: Interactive Giant VAPT Footer (detroit.paris styled) */}
       <footer className="relative w-full bg-[#030712] overflow-hidden select-none pb-0 border-t border-zinc-900/40">

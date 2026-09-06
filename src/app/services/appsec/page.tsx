@@ -39,11 +39,11 @@ const appSecFaqs = [
   },
   {
     question: "Which application security standards and frameworks are supported?",
-    answer: "Our audits align with industry-standard security baselines, including the OWASP Top 10, OWASP Application Security Verification Standard (ASVS), OWASP Mobile Application Security Verification Standard (MASVS), SANS Top 25, and CWE/SANS definitions."
+    answer: "Web and API assurance is aligned to OWASP ASVS verification requirements, while mobile application testing aligns to OWASP MASVS requirements and MASTG testing guidance. Our audits also cover OWASP Top 10, SANS Top 25, and CWE definitions."
   },
   {
     question: "How are vulnerabilities validated and verified?",
-    answer: "We utilize a hybrid model: automated scanner engines detect raw exposure signals, and our certified security analysts validate and triage each candidate manually. This expert verification eliminates false positives entirely before findings are delivered."
+    answer: "We utilize a hybrid model: automated scanner engines detect raw exposure signals, and our certified security analysts validate and triage each candidate manually. Every reported finding is human-validated before delivery."
   },
   {
     question: "Which CI/CD platforms integrate with Entersoft's AppSec workflow?",

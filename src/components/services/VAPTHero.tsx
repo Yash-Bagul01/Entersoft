@@ -156,7 +156,7 @@ function VAPTHeroVisual3D() {
       metrics: [
         { label: "METHOD", val: "Zero Knowledge Exploits" },
         { label: "SCOPES", val: "DNS, IP Ranges, Web App Boundaries" },
-        { label: "RISK RATIO", val: "High Critical Expose" }
+        { label: "SEVERITY SCOPE", val: "High & Critical Risk Focus" }
       ]
     },
     {
@@ -173,7 +173,7 @@ function VAPTHeroVisual3D() {
       metrics: [
         { label: "METHOD", val: "Authenticated APIs & Tokens" },
         { label: "SCOPES", val: "Session hijacking, ACL bypasses" },
-        { label: "RISK RATIO", val: "Privileged Leak Vectors" }
+        { label: "SEVERITY SCOPE", val: "Privilege Escalation Vectors" }
       ]
     },
     {
@@ -190,7 +190,7 @@ function VAPTHeroVisual3D() {
       metrics: [
         { label: "METHOD", val: "Full Git & Config Access" },
         { label: "SCOPES", val: "Data Logic Flow, Logic Validation" },
-        { label: "RISK RATIO", val: "Zero-Day Architectures" }
+        { label: "SEVERITY SCOPE", val: "Architectural & Logic Flaws" }
       ]
     }
   ];
@@ -548,7 +548,7 @@ export default function VAPTHero({
               className="mt-8 flex"
             >
               <MagneticButton>
-                <Button variant="primary" size="lg" asLink href="/#contact" className="gap-2">
+                <Button variant="primary" size="lg" asLink href="/contact" className="gap-2">
                   Scope a Penetration Test <ArrowRight className="w-3.5 h-3.5" />
                 </Button>
               </MagneticButton>

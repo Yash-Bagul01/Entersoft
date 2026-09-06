@@ -86,14 +86,17 @@ export default function SmartContractHero() {
         {/* CTA Buttons */}
         <div className="flex flex-wrap justify-center items-center gap-4 mt-8">
           <a
-            href="/#contact"
+            href="/contact"
             className="cursor-pointer bg-[#e5ff5d] text-[#111111] border border-[#e5ff5d] font-mono text-[10px] font-bold uppercase tracking-wider rounded-[4px] px-6 py-3 hover:bg-transparent hover:text-[#e5ff5d] transition-all flex items-center gap-1.5 shadow-[0_0_15px_rgba(229,255,93,0.15)]"
           >
             <span>Request an Audit Scope</span>
           </a>
-          <span className="font-mono text-[9px] font-bold text-[#e5ff5d] tracking-wider uppercase border border-[#e5ff5d]/20 bg-[#e5ff5d]/5 px-3 py-2.5 rounded-[4px]">
-            Formal Verification Audit · Fixed Engagement
-          </span>
+          <a
+            href="/platform/enprobe"
+            className="cursor-pointer font-mono text-[9px] font-bold text-[#e5ff5d] tracking-wider uppercase border border-[#e5ff5d]/20 bg-[#e5ff5d]/5 px-4 py-3 rounded-[4px] hover:bg-[#e5ff5d]/10 transition-colors"
+          >
+            Explore EnProbe Platform
+          </a>
         </div>
 
         {/* Scanner HUD */}

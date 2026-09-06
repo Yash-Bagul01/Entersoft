@@ -236,7 +236,7 @@ function FindVisual() {
 
       {/* Top Header */}
       <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-2.5 text-[9.5px] text-zinc-400 select-none">
-        <span>ATTACK TOPOLOGY MAP // ILLUSTRATIVE SIMULATION — SAMPLE DATA</span>
+        <span>ATTACK TOPOLOGY MAP // ILLUSTRATIVE WORKFLOW — REPRESENTATIVE APPLICATION ASSURANCE FLOW</span>
         <span className="text-[var(--accent)] text-[9px] font-bold tracking-widest uppercase">
           FIND CAPABILITY
         </span>
@@ -680,7 +680,7 @@ function FixVisual() {
                 <span className="text-gray-400">);</span>
               </>
             ) : (
-              <span className="opacity-25 font-mono text-[9px] italic">Awaiting AI patch...</span>
+              <span className="opacity-40 font-mono text-[9px] italic text-zinc-400">ANALYZING TAINT PATH // DRAFTING REMEDIATION...</span>
             )}
           </div>
         </div>
@@ -758,15 +758,15 @@ function ProveVisual() {
     let active = true;
 
     const runSequence = async () => {
-      // Step 1: Idle
+      // Step 1: Active Initial State
       if (!active) return;
       setCurrentStep("idle");
       setActiveTestIndex(-1);
       setTestStates(["idle", "idle", "idle", "idle"]);
-      setScore(0);
-      setChecks(0);
-      setVulns(0);
-      setRecurrence(100);
+      setScore(85);
+      setChecks(45);
+      setVulns(85);
+      setRecurrence(0.05);
       await delay(1200);
 
       // Step 2: Testing (run suites one by one)
@@ -787,7 +787,7 @@ function ProveVisual() {
       // Step 3: Passed & Score counts up
       if (!active) return;
       setCurrentStep("passed");
-      for (let s = 0; s <= 100; s += 5) {
+      for (let s = 85; s <= 100; s += 3) {
         if (!active) return;
         setScore(s);
         await delay(35);
@@ -798,7 +798,7 @@ function ProveVisual() {
       if (!active) return;
       setCurrentStep("metrics");
       
-      const metricsObj = { checks: 0, vulns: 0, recurrence: 100 };
+      const metricsObj = { checks: 45, vulns: 85, recurrence: 0.05 };
       gsap.to(metricsObj, {
         checks: 70,
         vulns: 12000,
@@ -830,7 +830,7 @@ function ProveVisual() {
   const getStatusText = () => {
     switch (currentStep) {
       case "idle":
-        return "AWAITING COHORT INITIATION...";
+        return "ILLUSTRATIVE WORKFLOW // REGRESSION SUITES ACTIVE";
       case "testing":
         return "REGRESSION SUITES RUNNING...";
       case "passed":
@@ -875,7 +875,7 @@ function ProveVisual() {
           <span className="ml-2 select-none">regression_test_runner.sh</span>
         </div>
         <span className="text-[var(--accent)] font-semibold text-[8px] tracking-widest">
-          PROVE PHASE //
+          ILLUSTRATIVE WORKFLOW — REPRESENTATIVE APPLICATION ASSURANCE FLOW
         </span>
       </div>
 
@@ -1406,8 +1406,8 @@ function InteractiveTour() {
           <h2 className="text-3xl lg:text-4xl font-display font-medium text-[var(--text-primary)] uppercase tracking-tight">
             How it works in practice
           </h2>
-          <p className="text-[12px] md:text-sm text-[var(--text-secondary)] font-sans max-w-[600px] leading-relaxed">
-            Entersoft detects, validates, and helps remediate hundreds of software flaws. Click or hover on a vulnerability category below to audit our specific <Link href="/services/vapt" className="text-[var(--accent)] hover:underline">penetration testing</Link> and application security approaches.
+          <p className="text-[12px] md:text-sm text-[var(--text-secondary)] font-sans max-w-[650px] leading-relaxed">
+            Web/API assurance is aligned to OWASP ASVS verification requirements, while mobile testing is aligned to OWASP MASVS requirements and MASTG testing guidance. Click or hover on a vulnerability category below to audit our specific <Link href="/services/vapt" className="text-[var(--accent)] hover:underline">penetration testing</Link> and application security approaches.
           </p>
         </div>
 
@@ -2019,7 +2019,7 @@ export default function AppSecPlatformPage({ faqs }: AppSecPlatformPageProps) {
               Continuous Validation & Proof of Remediation
             </h2>
             <p className="text-[11px] md:text-[12.5px] text-[var(--text-secondary)] font-sans leading-relaxed select-none">
-              We execute automated attacks against staging and prod environments to verify patches and seal <Link href="/services/compliance-management" className="text-[var(--accent)] hover:underline">compliance management</Link> standards.
+              Automated testing is conducted within agreed engagement environments and authorised testing windows, with rules of engagement, safety controls, and rollback procedures defined for production testing where applicable. Web/API assurance is aligned to OWASP ASVS verification requirements, while mobile testing aligns to OWASP MASVS requirements and MASTG testing guidance to support <Link href="/services/compliance-management" className="text-[var(--accent)] hover:underline">compliance management</Link> standards.
             </p>
 
             {/* Visual Step Cards */}
@@ -2052,7 +2052,7 @@ export default function AppSecPlatformPage({ faqs }: AppSecPlatformPageProps) {
                 </div>
                 <div className="mt-2 select-none">
                   <span className="text-[9px] font-bold text-zinc-300 block leading-tight">Active Re-test</span>
-                  <span className="text-[7.5px] text-zinc-500 block leading-normal mt-0.5">Attacks live routes.</span>
+                  <span className="text-[7.5px] text-zinc-500 block leading-normal mt-0.5">Executes re-tests within scope.</span>
                 </div>
               </div>
 

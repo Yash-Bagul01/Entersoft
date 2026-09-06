@@ -76,7 +76,7 @@ export default function SmartContractPageRoot() {
       />
 
       {/* 7. Final CTA */}
-      <ServiceCTA />
+      <ServiceCTA buttonHref="/contact" />
 
       {/* Force dark theme colors on generic layout components */}
       <style jsx global>{`

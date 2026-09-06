@@ -328,21 +328,21 @@ export default function FuzzingSimulator() {
           <div className="w-16 h-[1px] bg-[#565656]/50" />
           
           <p className="font-sans text-sm text-[#9c9c9c] leading-relaxed max-w-[450px]">
-            We deploy property-based fuzzing and static symbolic checkers to execute millions of contract states. We verify economic boundaries, liquidity ratios, and access paths to ensure your protocol stands up to flash loan manipulation and systemic edge-case exploits.
+            We deploy property-based fuzzing and static symbolic checkers to evaluate defined contract invariants. We verify economic boundaries, liquidity ratios, and access paths to help identify flash loan manipulation and edge-case exploit vectors across the defined engagement scope.
           </p>
 
           <div className="flex flex-col gap-2 font-mono text-[10px] text-[#9c9c9c] tracking-wider uppercase">
             <div className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-[#e5ff5d]" />
-              <span>State Space Exploration: 100%</span>
+              <span>Define test boundaries, properties, paths, tools and achieved coverage per engagement.</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-[#e5ff5d]" />
-              <span>Boundary Check Coverage: 98%+</span>
+              <span>Coverage is measured against the defined engagement scope, properties, attack paths and test boundaries.</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-[#e5ff5d]" />
-              <span>Exploit Proofs: Fully Verified</span>
+              <span>Exploit Proofs: Verified against client-specified invariant properties</span>
             </div>
           </div>
         </div>
@@ -377,13 +377,13 @@ export default function FuzzingSimulator() {
           {/* Minimal Status overlays */}
           <div className="absolute right-6 top-6 z-20 font-mono text-[8px] text-[#6e6e6e] flex items-center gap-2">
             <span className="w-1 h-1 rounded-full bg-[#e5ff5d] animate-pulse" />
-            <span className="tracking-widest uppercase">ACTIVE INVARIANT RUNNER — SAMPLE DATA</span>
+            <span className="tracking-widest uppercase">METHODOLOGY DEMO — ILLUSTRATIVE SIMULATION</span>
           </div>
 
           <div className="absolute left-6 bottom-6 z-20 font-mono text-[8px] text-[#9c9c9c] flex flex-col gap-1 text-left">
             <span className="text-[#e5ff5d] font-bold tracking-widest uppercase">STATE // {state.toUpperCase()}</span>
-            <span className="uppercase">TEST ITERATION: {runs.toLocaleString()} / 50,000</span>
-            <span className="uppercase">BRANCH COVERAGE: {coverage}%</span>
+            <span className="uppercase">SIMULATED ITERATION: {runs.toLocaleString()} / 50,000</span>
+            <span className="uppercase">SIMULATED BRANCH COVERAGE: {coverage}%</span>
           </div>
         </div>
 

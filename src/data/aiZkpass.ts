@@ -5,37 +5,37 @@ export const hero = {
     gradientWord: 'exposes',
     line2: ' what attackers look for.',
   },
-  sub: 'Assess LLMs, RAG pipelines, agents, and model APIs before production. Senior-validated. Zero noise.',
-  ctaPrimary: { label: 'Get a Free Assessment', href: '/contact' },
+  sub: 'Assess LLMs, RAG pipelines, agents, and model APIs before production. Fourteen years of offensive-security expertise applied to AI systems. Human-validated findings.',
+  ctaPrimary: { label: 'Scope an AI Assessment', href: '/contact' },
   ctaSecondary: { label: 'View Threat Scope', href: '#threats' },
 };
 
 export const heroStats = [
   { value: '8', label: 'Attack Classes' },
-  { value: '847→12', label: 'Signal Reduction' },
-  { value: '14 Yrs', label: 'AI Security XP' },
+  { value: 'Analyst', label: 'Signal Prioritisation' },
+  { value: '14 Yrs', label: 'Security Expertise' },
 ];
 
 export const metrics = [
   {
-    value: '600+',
-    label: 'AI Systems Assessed',
-    sub: 'Across LLM, agent and RAG deployments',
+    value: 'Scope-Defined',
+    label: 'AI System Coverage',
+    sub: 'Comprehensive analysis across LLM, RAG, and agentic workflows',
   },
   {
     value: '14 Yrs',
-    label: 'Security Expertise',
-    sub: 'Same senior analysts, zero attrition',
+    label: 'Security Engineering Expertise',
+    sub: 'Fourteen years of offensive-security expertise applied to AI systems',
   },
   {
-    value: '0',
-    label: 'False Positives',
-    sub: 'In the final validated report',
+    value: 'Human-Validated',
+    label: 'Analyst Triage',
+    sub: 'Every reported finding is human-validated before delivery',
   },
   {
-    value: '98.6%',
-    label: 'Noise Eliminated',
-    sub: 'Before findings reach the developer',
+    value: 'Rule-Tuned',
+    label: 'Signal Prioritisation',
+    sub: 'Continuously reduce recurring noise through rule tuning',
   },
 ];
 

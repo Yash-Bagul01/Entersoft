@@ -53,7 +53,7 @@ export default function Hero() {
     const ctx = gsap.context(() => {
       // Set initial states with 3D transform layers
       gsap.set(h1GroupEl, { opacity: 1, y: 0, force3D: true });
-      gsap.set(p2El, { opacity: 0, y: 30, force3D: true });
+      gsap.set(p2El, { opacity: 0, yPercent: -50, y: 30, force3D: true });
 
       // Declarative timeline scrubbed smoothly without dynamic CPU filter blur thrashing
       const tl = gsap.timeline({
@@ -178,10 +178,10 @@ export default function Hero() {
         />
       </div>
 
-      {/* Scroll-in statement — same slot as DAST/IaC intro (top-left) */}
+      {/* Scroll-in statement — positioned in upper-middle area to clear bottom CTAs */}
       <div
         ref={paragraph2Ref}
-        className="absolute inset-x-0 top-0 z-20 px-6 md:px-10 pt-28 md:pt-32 opacity-0 pointer-events-none"
+        className="absolute inset-x-0 top-[38%] -translate-y-1/2 z-20 px-6 md:px-10 opacity-0 pointer-events-none"
       >
         <div className="mx-auto max-w-[1440px] flex flex-col items-start">
           <p className="max-w-[22em] text-[clamp(1.65rem,2.9vw,2.65rem)] font-light leading-[1.32] tracking-[-0.018em] text-white">

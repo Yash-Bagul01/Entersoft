@@ -67,7 +67,7 @@ export default function AZ7_GlowCTA() {
           className="mt-9"
         >
           <a
-            href="/#contact"
+            href="/contact"
             className="cta-primary-btn inline-flex items-center gap-2 px-10 py-4 bg-[#CCFF33] text-[#080808] font-sans font-bold text-base rounded-xl shadow-[0_0_35px_rgba(204,255,51,0.35)] hover:shadow-[0_0_55px_rgba(204,255,51,0.65),0_0_90px_rgba(204,255,51,0.3)] hover:-translate-y-1 transition-all duration-200"
           >
             <span>Scope an AI Red-Team Assessment</span>

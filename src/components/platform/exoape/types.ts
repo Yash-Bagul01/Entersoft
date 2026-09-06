@@ -40,7 +40,16 @@ export type ExoApeCase = {
     marker: string;
     lines: string[];
     body: string;
-    cards: { index: string; label: string; title: string; image: string; alt: string }[];
+    cards: {
+      index: string;
+      label: string;
+      title: string;
+      image: string;
+      alt: string;
+      tag?: string;
+      metric?: string;
+      desc?: string;
+    }[];
   };
   railTitle: string;
   stages: { index: string; title: string; body: string; image: string; alt: string }[];
