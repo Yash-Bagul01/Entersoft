@@ -400,22 +400,14 @@ function drawCardFrontCanvas(
   ctx.imageSmoothingQuality = "high";
 
   const colors = isLight ? spec.lightColors : spec.darkColors;
-  const r = 70; // Smooth curved card corner radius
+  const r = 0; // Pointed card corners (sharp 90-degree edges)
 
-  // 1. Path of the Rounded Card
+  // 1. Path of the Pointed Card
   ctx.beginPath();
-  ctx.moveTo(r, 0);
-  ctx.lineTo(W - r, 0);
-  ctx.quadraticCurveTo(W, 0, W, r);
-  ctx.lineTo(W, H - r);
-  ctx.quadraticCurveTo(W, H, W - r, H);
-  ctx.lineTo(r, H);
-  ctx.quadraticCurveTo(0, H, 0, H - r);
-  ctx.lineTo(0, r);
-  ctx.quadraticCurveTo(0, 0, r, 0);
+  ctx.rect(0, 0, W, H);
   ctx.closePath();
 
-  // Save clip so nothing leaks out past rounded corners
+  // Save clip so nothing leaks out
   ctx.save();
   ctx.clip();
 
@@ -448,6 +440,8 @@ function drawCardFrontCanvas(
   ctx.restore();
 
   // 5. Top Row: Index Capsule, Category Badge, Security Glyph
+  // (Remaining elements retain exact original structure inside pointed card boundary)
+
   const leftX = 160;
   const rightX = 2640;
   const topY = 155;
@@ -607,18 +601,10 @@ function drawCardFrontCanvas(
   // Restore clip to draw outer smooth border
   ctx.restore();
 
-  // 8. Outer Double Rounded Bevel Stroke
+  // 8. Outer Pointed Bevel Stroke
   ctx.save();
   ctx.beginPath();
-  ctx.moveTo(r, 0);
-  ctx.lineTo(W - r, 0);
-  ctx.quadraticCurveTo(W, 0, W, r);
-  ctx.lineTo(W, H - r);
-  ctx.quadraticCurveTo(W, H, W - r, H);
-  ctx.lineTo(r, H);
-  ctx.quadraticCurveTo(0, H, 0, H - r);
-  ctx.lineTo(0, r);
-  ctx.quadraticCurveTo(0, 0, r, 0);
+  ctx.rect(0, 0, W, H);
   ctx.closePath();
 
   ctx.lineWidth = 4;
@@ -629,12 +615,12 @@ function drawCardFrontCanvas(
   ctx.lineWidth = 2;
   ctx.strokeStyle = isLight ? "rgba(255, 255, 255, 0.85)" : "rgba(255, 255, 255, 0.25)";
   ctx.beginPath();
-  ctx.roundRect(14, 14, W - 28, H - 28, r - 8);
+  ctx.rect(14, 14, W - 28, H - 28);
   ctx.stroke();
   ctx.restore();
 }
 
-// Helper to draw the matching frosted back canvas texture with rounded corners
+// Helper to draw the matching frosted back canvas texture with pointed corners
 function drawCardBackCanvas(
   canvas: HTMLCanvasElement,
   spec: CardSpec,
@@ -647,18 +633,10 @@ function drawCardBackCanvas(
   ctx.imageSmoothingEnabled = true;
 
   const colors = isLight ? spec.lightColors : spec.darkColors;
-  const r = 70;
+  const r = 0;
 
   ctx.beginPath();
-  ctx.moveTo(r, 0);
-  ctx.lineTo(W - r, 0);
-  ctx.quadraticCurveTo(W, 0, W, r);
-  ctx.lineTo(W, H - r);
-  ctx.quadraticCurveTo(W, H, W - r, H);
-  ctx.lineTo(r, H);
-  ctx.quadraticCurveTo(0, H, 0, H - r);
-  ctx.lineTo(0, r);
-  ctx.quadraticCurveTo(0, 0, r, 0);
+  ctx.rect(0, 0, W, H);
   ctx.closePath();
 
   ctx.fillStyle = colors.backHex;
@@ -840,7 +818,7 @@ export default function TrackRecord3DCylinder() {
     const cylinderGroup = new THREE.Group();
     cylinderGroup.position.set(0, 0, 0);
     cylinderGroup.rotation.x = isReduced ? -0.015 : -Math.PI / 2;
-    cylinderGroup.scale.setScalar(isReduced ? 1.0 : 0.72);
+    cylinderGroup.scale.setScalar(isReduced ? 0.82 : 0.58);
     scene.add(cylinderGroup);
     cylinderGroupRef.current = cylinderGroup;
 
@@ -848,7 +826,7 @@ export default function TrackRecord3DCylinder() {
     const reflectionGroup = new THREE.Group();
     reflectionGroup.position.set(0, -cardHeight - 0.16, 0);
     reflectionGroup.rotation.x = isReduced ? -0.015 : -Math.PI / 2;
-    reflectionGroup.scale.set(isReduced ? 1.0 : 0.72, isReduced ? -1.0 : -0.72, isReduced ? 1.0 : 0.72);
+    reflectionGroup.scale.set(isReduced ? 0.82 : 0.58, isReduced ? -0.82 : -0.58, isReduced ? 0.82 : 0.58);
     reflectionGroup.visible = isReduced;
     scene.add(reflectionGroup);
     reflectionGroupRef.current = reflectionGroup;
@@ -856,9 +834,9 @@ export default function TrackRecord3DCylinder() {
     // Set initial state
     currentTiltX.current = isReduced ? -0.015 : -Math.PI / 2;
     targetTiltX.current = isReduced ? -0.015 : -Math.PI / 2;
-    baseScale.current = isReduced ? 1.0 : 0.72;
-    dynamicScale.current = isReduced ? 1.0 : 0.72;
-    targetScale.current = isReduced ? 1.0 : 0.72;
+    baseScale.current = isReduced ? 0.82 : 0.58;
+    dynamicScale.current = isReduced ? 0.82 : 0.58;
+    targetScale.current = isReduced ? 0.82 : 0.58;
 
     // Add Ambient, Directional, and Dynamic Interactive Mouse Point Lights
     const ambientLight = new THREE.AmbientLight(0xffffff, isLight ? 1.6 : 1.1);
@@ -1131,7 +1109,7 @@ export default function TrackRecord3DCylinder() {
             }
 
             targetTiltX.current = -Math.PI / 2;
-            baseScale.current = 0.72;
+            baseScale.current = 0.58;
           } else if (p > 0.16 && p <= 0.45) {
             // PHASE 2: Instant Unrolling on user's natural scroll (p: 0.16 -> 0.45)
             const t = (p - 0.16) / 0.29; // Normalized 0 -> 1
@@ -1151,8 +1129,8 @@ export default function TrackRecord3DCylinder() {
             // Unroll Rotation X: from -Math.PI / 2 to -0.015 rad
             targetTiltX.current = -Math.PI / 2 + easeT * (Math.PI / 2 - 0.015);
 
-            // Expand Base Scale: from 0.72 to 1.0
-            baseScale.current = 0.72 + easeT * 0.28;
+            // Expand Base Scale: from 0.58 to 0.82
+            baseScale.current = 0.58 + easeT * 0.24;
 
             // Rotation Y progresses smoothly without resetting
             targetRotationY.current = manualOffset.current - easeT * 0.15;
@@ -1203,7 +1181,7 @@ export default function TrackRecord3DCylinder() {
             }
 
             targetTiltX.current = -0.015;
-            baseScale.current = 1.0;
+            baseScale.current = 0.82;
 
             // 0 -> 1 in Phase 3 rotates continuously through cards
             const baseScrollAngle = -0.15 - t * (Math.PI * 1.5);
@@ -1212,7 +1190,7 @@ export default function TrackRecord3DCylinder() {
 
           // Dynamic scale-on-scroll breathing expansion effect
           const velocity = Math.abs(self.getVelocity());
-          targetScale.current = Math.min(1.025, baseScale.current + velocity * 0.000015);
+          targetScale.current = Math.min(0.85, baseScale.current + velocity * 0.000015);
         },
       });
 

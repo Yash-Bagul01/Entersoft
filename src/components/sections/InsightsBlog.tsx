@@ -98,7 +98,7 @@ export default function InsightsBlog() {
       gsap.set(explores, { opacity: 0 });
 
       const sizePin = () => {
-        pin.style.height = `${Math.round(window.innerHeight * 4.6)}px`;
+        pin.style.height = `${Math.round(window.innerHeight * 2.8)}px`;
       };
       sizePin();
 
@@ -193,7 +193,7 @@ export default function InsightsBlog() {
       ref={rootRef}
       className="relative w-full bg-[#f3f2ee] text-[#1b1b1c]"
     >
-      <div ref={pinRef} data-desk-progress className="relative w-full md:h-[460vh]">
+      <div ref={pinRef} data-desk-progress className="relative w-full md:h-[280vh]">
       <div
         ref={stageRef}
         data-desk-stage

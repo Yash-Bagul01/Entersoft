@@ -142,7 +142,8 @@ export default function Differentiators() {
       {/* Embedded CSS for layout, refined typography & grid specs */}
       <style jsx global>{`
         .differentiators-section {
-          padding: clamp(60px, 7vw, 110px) 0;
+          min-height: 100vh;
+          padding: clamp(96px, 14vh, 168px) 0 clamp(120px, 16vh, 200px);
           max-width: 1400px;
           margin: 0 auto;
           padding-left: clamp(24px, 5vw, 80px);

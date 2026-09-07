@@ -452,10 +452,10 @@ export default function ServicesShowcase() {
           <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 w-full">
             <span className="font-mono text-[12px] text-[var(--accent-neon)] tracking-[0.18em]">
               Enterprise Services & Managed Solutions
-            </span>
+                    </span>
             <span className="right-instruction font-mono text-[12px] text-[var(--text-tertiary)] uppercase tracking-[0.14em] transition-colors duration-200 shrink-0">
               {isFinePointer ? "HOVER TO EXPLORE" : "TAP TO EXPLORE"}
-            </span>
+                      </span>
           </div>
           
           <h2 className="text-display font-display font-semibold text-[clamp(1.8rem,3.8vw,3.2rem)] text-[var(--text-primary)] tracking-[-0.03em] leading-tight max-w-[850px]">
@@ -474,8 +474,8 @@ export default function ServicesShowcase() {
                 </React.Fragment>
               ))}
           </p>
-        </div>
-      </div>
+            </div>
+                    </div>
                     
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="w-full h-px bg-[var(--border-subtle)] mt-3 mb-6" />
@@ -493,16 +493,16 @@ export default function ServicesShowcase() {
                 onHover={setActiveService}
               />
             ))}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
 
       {/* Floating Hover Card with Fluid Mouse Scroll & Velocity Skew */}
       {isMounted && isFinePointer && (
         <div
           ref={floatingCardRef}
           className="pointer-events-none fixed z-[99999] top-0 left-0 transform-gpu"
-          style={{
+                  style={{
             opacity: 0,
             pointerEvents: "none",
             willChange: "transform, opacity",
@@ -510,8 +510,8 @@ export default function ServicesShowcase() {
           }}
         >
           <ServiceHoverCard service={activeService} isVisible={activeService !== null} />
-        </div>
-      )}
+          </div>
+        )}
     </div>
   );
 }

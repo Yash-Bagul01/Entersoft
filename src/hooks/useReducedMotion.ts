@@ -10,7 +10,7 @@ export function useReducedMotion(): boolean {
     if (typeof window === "undefined") return;
 
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setShouldReduceMotion(mediaQuery.matches);
     }, 0);
 
@@ -27,6 +27,7 @@ export function useReducedMotion(): boolean {
     }
 
     return () => {
+      clearTimeout(timer);
       try {
         mediaQuery.removeEventListener("change", handleChange);
       } catch {

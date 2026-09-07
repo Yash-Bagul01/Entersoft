@@ -300,7 +300,7 @@ export default function CaseStudies() {
               const { x, y } = SYMBOL_POS[pos];
               return (
                 <g key={study.id}>
-                  <text
+                <text
                     x={x}
                     y={y}
                     textAnchor="middle"
@@ -311,8 +311,8 @@ export default function CaseStudies() {
                     style={{ fontFamily: "var(--font-mono)" }}
                   >
                     {study.symbol}
-                  </text>
-                  <text
+                </text>
+                <text
                     x={x}
                     y={y + 30}
                     textAnchor="middle"
@@ -323,8 +323,8 @@ export default function CaseStudies() {
                     style={{ fontFamily: "var(--font-mono)" }}
                   >
                     {label}
-                  </text>
-                  <text
+                </text>
+                <text
                     fill="#F2F2F2"
                     fillOpacity="0.88"
                     fontSize="14"
@@ -333,8 +333,8 @@ export default function CaseStudies() {
                   >
                     <textPath href={`#${uid}-arc-${pos}`} startOffset="50%" textAnchor="middle">
                       {study.arcText.replace(/ · /g, " | ")}
-                    </textPath>
-                  </text>
+                  </textPath>
+                </text>
                 </g>
               );
             })}
@@ -366,9 +366,9 @@ export default function CaseStudies() {
 
           <h2 className="absolute font-display text-[clamp(1.6rem,6.6vh,4rem)] font-normal tracking-[-0.01em] text-[#F2F2F2] text-center px-8">
             Verified Enterprise Delivery
-          </h2>
-        </div>
-      </div>
+              </h2>
+            </div>
+                </div>
 
       {/* Accessible Enterprise Case Studies Detail Grid */}
       <div className="relative z-20 max-w-[1400px] mx-auto px-6 md:px-12 py-16">
@@ -376,7 +376,7 @@ export default function CaseStudies() {
           <span className="font-mono text-xs font-bold text-[var(--accent)] uppercase tracking-widest">VERIFIED ENGAGEMENT PROOF</span>
           <h3 className="font-display text-2xl md:text-3xl font-semibold text-white uppercase tracking-tight">Structured Case Studies</h3>
           <p className="font-sans text-sm text-zinc-400 max-w-2xl">Examine detailed engagement scope, technical approach, technology used, and measured outcomes from enterprise security deliveries.</p>
-        </div>
+              </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {caseStudies.map((study) => (
@@ -412,8 +412,8 @@ export default function CaseStudies() {
                   <div className="bg-black/30 border border-white/5 rounded-xl p-3.5 flex flex-col gap-1">
                     <span className="font-mono text-[9px] font-bold text-zinc-400 uppercase tracking-widest">Technology Used</span>
                     <span className="font-sans text-xs text-zinc-200">{study.technologyUsed}</span>
-                  </div>
                 </div>
+              </div>
 
                 <div className="bg-[var(--accent)]/5 border border-[var(--accent)]/20 rounded-xl p-4 flex flex-col gap-1 mt-1">
                   <span className="font-mono text-[9px] font-bold text-[var(--accent)] uppercase tracking-widest">Measured Result</span>
@@ -432,7 +432,7 @@ export default function CaseStudies() {
             </article>
           ))}
         </div>
-      </div>
+          </div>
     </section>
   );
 }

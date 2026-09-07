@@ -11,10 +11,12 @@ export default function ThemeToggle() {
     const savedTheme = localStorage.getItem("theme") as "dark" | "light" | null;
     const initialTheme = savedTheme || "light";
     
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setTheme(initialTheme);
     }, 0);
     document.documentElement.setAttribute("data-theme", initialTheme);
+
+    return () => clearTimeout(timer);
   }, []);
 
   const toggleTheme = () => {

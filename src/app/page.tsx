@@ -3,12 +3,11 @@ import type { Metadata } from "next";
 import { getCanonicalUrl, ROUTES } from "@/config/routes";
 import { organizationNode, webPageNode, websiteNode } from "@/config/seo";
 import Hero from "@/components/sections/Hero";
-import ValueProposition from "@/components/sections/ValueProposition";
 import StatsCounter from "@/components/sections/StatsCounter";
 import ServicesShowcase from "@/components/sections/ServicesShowcase";
 import Differentiators from "@/components/sections/Differentiators";
 import Testimonials from "@/components/sections/Testimonials";
-import CaseStudies from "@/components/sections/CaseStudies";
+import DesignInMotion from "@/components/sections/DesignInMotion";
 import InsightsBlog from "@/components/sections/InsightsBlog";
 import CertificationsMarquee from "@/components/sections/CertificationsMarquee";
 import FinalCTA from "@/components/sections/FinalCTA";
@@ -59,6 +58,7 @@ export default function Home() {
         <Differentiators />
         <AnimatedDivider />
         <Testimonials />
+        <DesignInMotion />
         <AnimatedDivider />
         <InsightsBlog />
         <AnimatedDivider />

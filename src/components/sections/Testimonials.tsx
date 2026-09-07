@@ -1,170 +1,216 @@
 "use client";
 
-import React, { useMemo } from "react";
-import { testimonials, TestimonialItem } from "@/data/testimonials";
-import SectionLabel from "../ui/SectionLabel";
-import { ShieldCheck, Star } from "lucide-react";
+import React, { useCallback, useState } from "react";
+import Link from "next/link";
+import { Familjen_Grotesk } from "next/font/google";
+import { testimonials } from "@/data/testimonials";
+import { ROUTES } from "@/config/routes";
+import { cn } from "@/lib/utils";
+
+const familjen = Familjen_Grotesk({
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+});
+
+const FEATURED = testimonials.slice(0, 5);
+
+function ArrowIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      width="10"
+      height="9"
+      viewBox="0 0 10 9"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      aria-hidden="true"
+    >
+      <path
+        d="M5.474 8.652V6.552L8.33 3.752V4.9L5.474 2.1V0L9.324 3.836V4.816L5.474 8.652ZM0 5.11V3.542H8.61V5.11H0Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+function ChevronLeftIcon() {
+  return (
+    <svg width="14" height="6" viewBox="0 0 14 6" fill="none" aria-hidden="true" className="w-3.5 h-1.5">
+      <path
+        d="M3.66 5.58C3.487 5.18 3.307 4.827 3.12 4.52C2.933 4.2 2.747 3.927 2.56 3.7H13.94V2.62H2.56C2.747 2.38 2.933 2.107 3.12 1.8C3.307 1.48 3.487 1.127 3.66 0.74H2.72C1.88 1.713 0.993 2.433 0.06 2.9V3.42C0.993 3.873 1.88 4.593 2.72 5.58H3.66Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+function ChevronRightIcon() {
+  return (
+    <svg width="14" height="6" viewBox="0 0 14 6" fill="none" aria-hidden="true" className="w-3.5 h-1.5">
+      <path
+        d="M10.34 5.58C10.513 5.18 10.693 4.827 10.88 4.52C11.067 4.2 11.253 3.927 11.44 3.7H0.06V2.62H11.44C11.253 2.38 11.067 2.107 10.88 1.8C10.693 1.48 10.513 1.127 10.34 0.74H11.28C12.12 1.713 13.007 2.433 13.94 2.9V3.42C13.007 3.873 12.12 4.593 11.28 5.58H10.34Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
 
 export default function Testimonials() {
-  // Split 12 testimonials evenly across 3 columns (4 items per column)
-  const col1 = useMemo(() => testimonials.slice(0, 4), []);
-  const col2 = useMemo(() => testimonials.slice(4, 8), []);
-  const col3 = useMemo(() => testimonials.slice(8, 12), []);
+  const [active, setActive] = useState(0);
+  const item = FEATURED[active];
+
+  const go = useCallback((index: number) => {
+    setActive((index + FEATURED.length) % FEATURED.length);
+  }, []);
 
   return (
     <section
       id="operational-validation"
-      className="relative w-full bg-[var(--bg-primary)] text-[var(--text-primary)] transition-colors duration-500 overflow-hidden py-24 md:py-36 select-none"
+      className="relative w-full bg-[var(--bg-primary)] text-[var(--text-primary)] transition-colors duration-500"
     >
-      {/* Background Subtle Radial Glow Atmosphere */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_15%,rgba(0,163,255,0.05)_0%,transparent_70%)] pointer-events-none" />
-
-      <div className="max-w-[1400px] w-full mx-auto px-6 md:px-12 flex flex-col gap-12 md:gap-16 relative z-10">
-
-        {/* ── Section Header ────────────────────────────────────────────── */}
-        <div className="flex flex-col items-center text-center max-w-[840px] mx-auto gap-4">
-          <SectionLabel color="secondary">Operational Validation</SectionLabel>
-          <h2 className="text-[clamp(2.2rem,4vw,3.6rem)] font-display font-semibold tracking-[-0.03em] leading-[1.08] text-[var(--text-primary)]">
-            Trusted by Enterprise Security Leaders
+      <div className="mx-auto w-full max-w-[1440px] px-9 min-h-[100dvh] py-20 lg:py-[9.375rem]">
+        <div className="grid grid-cols-12 gap-6">
+          <h2
+            className={cn(
+              familjen.className,
+              "col-span-12 sm:col-span-6 lg:col-span-5 lg:col-start-2",
+              "text-[clamp(2.75rem,5.94vw,5.344rem)] font-normal leading-[0.95] tracking-[-0.06em] text-[var(--text-primary)]"
+            )}
+          >
+            Operational Validation
           </h2>
-          <p className="text-[clamp(15px,1.3vw,18px)] font-sans text-[var(--text-secondary)] leading-[1.6] max-w-[720px]">
-            From global manufacturing conglomerates to regulated fintech platforms, explore how Entersoft delivers zero false-positive vulnerability verification and continuous cyber assurance.
-          </p>
-        </div>
-
-        {/* ── Testimonials Columns Grid Container ─────────────────────── */}
-        <div className="relative w-full h-[680px] md:h-[760px] overflow-hidden rounded-3xl border border-[var(--border-subtle)]/40 bg-[var(--bg-primary)]/40 p-2 md:p-4">
-          
-          {/* Top Linear Gradient Vignette Mask */}
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-32 md:h-40 bg-gradient-to-b from-[var(--bg-primary)] via-[var(--bg-primary)]/80 to-transparent z-20" />
-
-          {/* Bottom Linear Gradient Vignette Mask */}
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 md:h-40 bg-gradient-to-t from-[var(--bg-primary)] via-[var(--bg-primary)]/80 to-transparent z-20" />
-
-          {/* 3 Columns Layout Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 h-full w-full">
-            
-            {/* Column 1 (Scroll UP) */}
-            <TestimonialColumn items={col1} direction="up" duration="34s" />
-
-            {/* Column 2 (Scroll DOWN - Hidden on mobile, visible md+) */}
-            <TestimonialColumn items={col2} direction="down" duration="40s" className="hidden md:flex" />
-
-            {/* Column 3 (Scroll UP - Hidden on mobile/tablet, visible lg+) */}
-            <TestimonialColumn items={col3} direction="up" duration="30s" className="hidden lg:flex" />
-
+          <div className="col-span-12 sm:col-span-6 lg:col-span-5 flex flex-col justify-end">
+            <p className="font-sans text-[16.2px] font-normal leading-[20px] text-[var(--text-primary)]">
+              Great work is built through
+              <br />
+              partnership. Here&apos;s what
+              <br />
+              our clients say.
+            </p>
           </div>
         </div>
 
+        <div className="grid grid-cols-12 gap-6">
+          <div className="relative my-10 lg:my-20 col-span-12 lg:col-span-10 lg:col-start-2">
+            <div className="absolute top-1/2 left-0 h-px w-full -translate-y-1/2 bg-[var(--text-primary)]/15" />
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 13 13"
+              fill="none"
+              className="relative mx-auto block h-4 w-4 lg:h-[13px] lg:w-[13px] bg-[var(--bg-primary)]"
+              aria-hidden="true"
+            >
+              <line x1="6.5" y1="0" x2="6.5" y2="13" stroke="currentColor" strokeWidth="1" />
+              <line x1="0" y1="6.5" x2="13" y2="6.5" stroke="currentColor" strokeWidth="1" />
+            </svg>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-12 gap-6">
+          <div className="flex flex-col justify-between col-span-12 md:col-span-6 lg:col-span-5 lg:col-start-2 order-2 md:order-1 md:min-h-[420px]">
+            <div className="hidden md:flex flex-col gap-4">
+              {FEATURED.map((entry, index) => {
+                const isActive = index === active;
+                return (
+                  <button
+                    key={entry.id}
+                    type="button"
+                    aria-label={`Show testimonial from ${entry.company}`}
+                    aria-current={isActive ? "true" : undefined}
+                    onClick={() => go(index)}
+                    className={cn(
+                      familjen.className,
+                      "flex items-center gap-4 bg-transparent border-0 p-0 text-left uppercase text-[15.3px] leading-none tracking-[-0.02em] text-[var(--text-primary)] transition-opacity duration-500 ease-in-out cursor-pointer",
+                      isActive ? "opacity-100" : "opacity-30 hover:opacity-100"
+                    )}
+                  >
+                    {entry.company}
+                    <ArrowIcon
+                      className={cn(
+                        "w-2.5 h-2.5 shrink-0 transition-opacity duration-500",
+                        isActive ? "opacity-100" : "opacity-0"
+                      )}
+                    />
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="flex mt-10 md:mt-16">
+              <button
+                type="button"
+                aria-label="Previous client story"
+                onClick={() => go(active - 1)}
+                className="stories-arrow left"
+              >
+                <ChevronLeftIcon />
+              </button>
+              <button
+                type="button"
+                aria-label="Next client story"
+                onClick={() => go(active + 1)}
+                className="stories-arrow right -ml-px"
+              >
+                <ChevronRightIcon />
+              </button>
+            </div>
+          </div>
+
+          <div className="col-span-12 md:col-span-6 lg:col-span-5 order-1 md:order-2 mb-10 md:mb-0">
+            <p
+              className={cn(
+                familjen.className,
+                "md:hidden mb-6 uppercase text-[15.3px] leading-none tracking-[-0.02em] text-[var(--text-primary)]"
+              )}
+            >
+              {item.company}
+            </p>
+
+            <div key={item.id} className="stories-quote-in">
+              <blockquote
+                className={cn(
+                  familjen.className,
+                  "m-0 mb-10 md:mb-20 text-[clamp(1.35rem,2.25vw,2.025rem)] font-normal leading-none tracking-[-0.04em] text-[var(--text-primary)]"
+                )}
+              >
+                {item.quote}
+              </blockquote>
+
+              <div className="flex items-end justify-between gap-6">
+                <div className="flex items-end min-w-0">
+                  <div
+                    className={cn(
+                      "w-14 h-14 md:w-20 md:h-20 overflow-hidden rounded-sm mr-4 md:mr-6 shrink-0 flex items-center justify-center text-white font-mono text-sm font-semibold bg-gradient-to-br",
+                      item.avatarColor || "from-blue-500 to-indigo-600"
+                    )}
+                    aria-hidden="true"
+                  >
+                    {item.initials}
+                  </div>
+                  <div className="min-w-0 pb-0.5">
+                    <p className="font-sans text-[16.2px] font-normal leading-[20px] text-[var(--text-primary)] md:mb-1">
+                      {item.author}
+                    </p>
+                    <p className="font-sans text-[16.2px] font-normal leading-[20px] text-[var(--text-primary)] opacity-60">
+                      {item.role} · {item.company}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <Link
+              href={ROUTES.contact}
+              className="stories-cta mt-10 md:mt-[2.15rem]"
+            >
+              <span>Become a Client</span>
+              <ArrowIcon className="w-2.5 h-2.5" />
+            </Link>
+          </div>
+        </div>
       </div>
-
-      {/* Global CSS for Marquee Infinite Scroll Animations & Pause State */}
-      <style jsx global>{`
-        @keyframes marqueeUp {
-          0% {
-            transform: translateY(0%);
-          }
-          100% {
-            transform: translateY(-50%);
-          }
-        }
-
-        @keyframes marqueeDown {
-          0% {
-            transform: translateY(-50%);
-          }
-          100% {
-            transform: translateY(0%);
-          }
-        }
-
-        .animate-marquee-up {
-          animation: marqueeUp var(--marquee-duration, 32s) linear infinite;
-        }
-
-        .animate-marquee-down {
-          animation: marqueeDown var(--marquee-duration, 38s) linear infinite;
-        }
-
-        .column-track:hover .animate-marquee-up,
-        .column-track:hover .animate-marquee-down {
-          animation-play-state: paused !important;
-        }
-      `}</style>
     </section>
-  );
-}
-
-{/* ── Sub-Component for Individual Column Track ──────────────────────── */}
-interface ColumnProps {
-  items: TestimonialItem[];
-  direction: "up" | "down";
-  duration: string;
-  className?: string;
-}
-
-function TestimonialColumn({ items, direction, duration, className = "" }: ColumnProps) {
-  // Duplicate array items to create 100% seamless gapless 50% translation loop
-  const duplicatedItems = [...items, ...items];
-
-  return (
-    <div
-      className={`column-track relative flex flex-col overflow-hidden h-full ${className}`}
-    >
-      <div
-        className={`flex flex-col gap-6 w-full ${
-          direction === "up" ? "animate-marquee-up" : "animate-marquee-down"
-        }`}
-        style={{ "--marquee-duration": duration } as React.CSSProperties}
-      >
-        {duplicatedItems.map((item, index) => (
-          <TestimonialCard key={`${item.id}-${index}`} item={item} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-{/* ── Sub-Component for Testimonial Card ─────────────────────────────── */}
-function TestimonialCard({ item }: { item: TestimonialItem }) {
-  return (
-    <div className="w-full shrink-0 p-6 md:p-7 rounded-2xl bg-[var(--bg-elevated)]/85 backdrop-blur-md border border-[var(--border-subtle)] shadow-lg hover:border-[var(--accent)]/50 hover:shadow-xl hover:shadow-[var(--accent)]/5 transition-all duration-300 group cursor-pointer">
-      
-      {/* Header: Author Avatar & Metadata */}
-      <div className="flex items-center gap-3.5 pb-4 mb-4 border-b border-[var(--border-subtle)]/60">
-        <div
-          className={`w-11 h-11 rounded-full bg-gradient-to-br ${
-            item.avatarColor || "from-blue-500 to-indigo-600"
-          } flex items-center justify-center text-white font-mono text-sm font-bold shadow-md shrink-0`}
-        >
-          {item.initials}
-        </div>
-        <div className="flex flex-col items-start min-w-0">
-          <span className="font-sans text-sm font-bold text-[var(--text-primary)] truncate group-hover:text-[var(--accent)] transition-colors">
-            {item.author}
-          </span>
-          <span className="font-sans text-xs text-[var(--text-tertiary)] truncate">
-            {item.role} • <span className="font-mono text-[var(--text-secondary)] font-medium">{item.company}</span>
-          </span>
-        </div>
-      </div>
-
-      {/* Body Quote */}
-      <blockquote className="text-sm md:text-[15px] font-sans leading-[1.65] text-[var(--text-secondary)] font-normal tracking-[-0.01em] mb-5">
-        “{item.quote}”
-      </blockquote>
-
-      {/* Footer Row: Badge & Verified Metric Pill */}
-      <div className="flex items-center justify-between gap-2 pt-2">
-        <span className="font-mono text-[10px] text-[var(--text-tertiary)] uppercase tracking-wider">
-          {item.badge}
-        </span>
-
-        <div className="flex items-center gap-1 font-mono text-[10px] font-semibold text-[var(--accent)] bg-[var(--accent)]/10 px-2.5 py-1 rounded-md border border-[var(--accent)]/20 shrink-0">
-          <ShieldCheck className="w-3 h-3 text-[var(--accent)]" />
-          <span>{item.metric}</span>
-        </div>
-      </div>
-    </div>
   );
 }

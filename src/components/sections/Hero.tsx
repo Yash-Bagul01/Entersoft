@@ -60,7 +60,7 @@ export default function Hero() {
         scrollTrigger: {
           trigger: container,
           start: "top top",
-          end: "+=600",
+          end: "+=300",
           pin: true,
           pinSpacing: true,
           scrub: 0.4,
@@ -131,7 +131,7 @@ export default function Hero() {
   }, [shouldReduceMotion]);
 
   const creds = (
-    <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[clamp(14px,1.15vw,16px)] leading-[1.45] tracking-[0.01em] text-white/75">
+    <div className="mt-3.5 md:mt-4 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[clamp(13px,1vw,15px)] leading-[1.45] tracking-[0.01em] text-white/75">
       <span>Since 2013 (13+ Years)</span>
       <span className="text-white/30">·</span>
       <span>CREST-accredited penetration testing</span>
@@ -146,7 +146,7 @@ export default function Hero() {
     <section
       id="hero"
       ref={containerRef}
-      className="landing-hero relative w-full h-[100vh] h-[100dvh] overflow-hidden bg-[#060606] select-none text-white"
+      className="landing-hero relative w-full h-[100vh] h-[100dvh] overflow-hidden bg-[#060606] select-none text-white flex flex-col justify-between"
       style={{ fontFamily: "var(--font-inter-tight), var(--font-inter), system-ui, sans-serif" }}
     >
       {/* Static Pinned Background Layer */}
@@ -178,24 +178,24 @@ export default function Hero() {
         />
       </div>
 
-      {/* Scroll-in statement — positioned in upper-middle area to clear bottom CTAs */}
+      {/* Scroll-in statement — positioned lower in middle area */}
       <div
         ref={paragraph2Ref}
-        className="absolute inset-x-0 top-[38%] -translate-y-1/2 z-20 px-6 md:px-10 opacity-0 pointer-events-none"
+        className="absolute inset-x-0 top-[48%] -translate-y-1/2 z-20 px-6 md:px-10 opacity-0 pointer-events-none"
       >
         <div className="mx-auto max-w-[1440px] flex flex-col items-start">
-          <p className="max-w-[22em] text-[clamp(1.65rem,2.9vw,2.65rem)] font-light leading-[1.32] tracking-[-0.018em] text-white">
+          <p className="max-w-[22em] text-[clamp(1.5rem,2.6vw,2.5rem)] font-light leading-[1.32] tracking-[-0.018em] text-white">
             Entersoft combines the EnProbe platform with expert-led security engineering to discover, validate and close risk across applications, APIs, code, cloud, identity, AI systems and digital assets.
           </p>
           {creds}
         </div>
       </div>
 
-      {/* Title + CTA — DAST/IaC bottom bar: display left, actions right */}
-      <div className="absolute inset-x-0 bottom-0 z-20 px-6 md:px-10 pb-10 md:pb-14">
-        <div className="mx-auto max-w-[1440px] flex flex-col items-start gap-7">
+      {/* Title + CTA — Fitted cleanly inside screen viewport ratio */}
+      <div className="absolute inset-x-0 bottom-16 md:bottom-20 z-20 px-6 md:px-10 pb-0">
+        <div className="mx-auto max-w-[1440px] flex flex-col items-start gap-5 md:gap-6">
           <div ref={h1GroupRef} className="max-w-[1100px]">
-            <h1 className="text-[clamp(2.45rem,5.8vw,6.1rem)] font-light leading-[0.96] tracking-[-0.038em] text-white">
+            <h1 className="text-[clamp(2.2rem,4.8vw,5.2rem)] font-light leading-[0.98] tracking-[-0.035em] text-white">
               Application-first
               <br />
               cyber assurance for
@@ -228,7 +228,7 @@ export default function Hero() {
           opacity: { delay: 0.8, duration: 0.6 },
           y: { delay: 0.8, duration: 0.6 },
         }}
-        className="absolute bottom-6 right-8 md:right-16 z-30 flex items-center gap-2 cursor-pointer bg-transparent border-none outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-lg px-3 py-1.5 select-none pointer-events-auto group"
+        className="absolute bottom-5 right-6 md:right-12 z-30 flex items-center gap-2 cursor-pointer bg-transparent border-none outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-lg px-3 py-1.5 select-none pointer-events-auto group"
         aria-label="Scroll to next section"
       >
         <span className="font-mono text-[11px] font-bold tracking-[0.2em] text-white/90 group-hover:text-white uppercase transition-colors">
