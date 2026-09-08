@@ -1,10 +1,13 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import Link from "next/link";
 import { Familjen_Grotesk } from "next/font/google";
 import { testimonials } from "@/data/testimonials";
 import { ROUTES } from "@/config/routes";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useStripeWipe } from "@/hooks/useStripeWipe";
+import StripeWipeBars from "@/components/ui/StripeWipeBars";
 import { cn } from "@/lib/utils";
 
 const familjen = Familjen_Grotesk({
@@ -57,6 +60,10 @@ function ChevronRightIcon() {
 }
 
 export default function Testimonials() {
+  const reduce = useReducedMotion();
+  const rootRef = useRef<HTMLElement>(null);
+  const stripesRef = useRef<HTMLDivElement>(null);
+  const sheetRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
   const item = FEATURED[active];
 
@@ -64,11 +71,25 @@ export default function Testimonials() {
     setActive((index + FEATURED.length) % FEATURED.length);
   }, []);
 
+  useStripeWipe(rootRef, stripesRef, sheetRef, reduce);
+
   return (
     <section
       id="operational-validation"
-      className="relative w-full bg-[var(--bg-primary)] text-[var(--text-primary)] transition-colors duration-500"
+      ref={rootRef}
+      className="relative z-[5] w-full bg-transparent text-[var(--text-primary)] md:-mt-[100vh]"
     >
+      <div
+        ref={stripesRef}
+        className="pointer-events-none fixed inset-0 z-[6] hidden flex-col md:flex"
+        aria-hidden="true"
+      >
+        <StripeWipeBars />
+      </div>
+      <div
+        ref={sheetRef}
+        className="ov-sheet relative z-[7] w-full overflow-hidden bg-[var(--bg-primary)]"
+      >
       <div className="mx-auto w-full max-w-[1440px] px-9 min-h-[100dvh] py-20 lg:py-[9.375rem]">
         <div className="grid grid-cols-12 gap-6">
           <h2
@@ -210,6 +231,7 @@ export default function Testimonials() {
             </Link>
           </div>
         </div>
+      </div>
       </div>
     </section>
   );

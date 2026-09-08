@@ -17,10 +17,24 @@ export default function PlatformLayout({
   const isSecrets = pathname === "/platform/secrets";
   const isDast = pathname === "/platform/dast";
   const isAgentic = pathname === "/platform/agentic-pentesting";
+  const isAsmLanding = pathname === "/platform/attack-surface-management";
   const isLightPage = isCyberOntology || isSca || isSecrets;
   const isExoCase = isDast || isIac || isAgentic;
 
   useEffect(() => {
+    if (isAsmLanding) {
+      let theme = "light";
+      try {
+        theme = localStorage.getItem("theme") || "light";
+      } catch {
+        theme = "light";
+      }
+      document.documentElement.setAttribute("data-theme", theme);
+      document.documentElement.classList.remove("dark", "light");
+      document.documentElement.classList.add(theme);
+      return;
+    }
+
     if (isLightPage) {
       document.documentElement.setAttribute("data-theme", "light");
       document.documentElement.classList.remove("dark");
@@ -45,7 +59,11 @@ export default function PlatformLayout({
       body.style.removeProperty("overflow-x");
       body.style.removeProperty("overflow-y");
     };
-  }, [isLightPage, isExoCase]);
+  }, [isLightPage, isExoCase, isAsmLanding]);
+
+  if (isAsmLanding) {
+    return <>{children}</>;
+  }
 
   if (isExoCase) {
     return (

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Familjen_Grotesk } from "next/font/google";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { capabilities } from "@/data/differentiators";
+import { platformPillars } from "@/data/platform";
 import { ROUTES } from "@/config/routes";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { cn } from "@/lib/utils";
@@ -16,33 +16,23 @@ const familjen = Familjen_Grotesk({
   display: "swap",
 });
 
+const pillar = platformPillars["attack-surface-management"];
+
 const WORK_IMAGES = [
-  "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1800&q=80",
-  "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1800&q=80",
-  "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1800&q=80",
-  "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1800&q=80",
-  "https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1800&q=80",
-  "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=80",
+  "https://images.unsplash.com/photo-1419242902214-e1111132761c?auto=format&fit=crop&w=1800&q=80",
+  "https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?auto=format&fit=crop&w=1800&q=80",
+  "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1800&q=80",
 ] as const;
 
-const WORK_HREFS = [
-  ROUTES.services.appsec,
-  ROUTES.services.vapt,
-  ROUTES.services.compliance,
-  ROUTES.services.appsec,
-  ROUTES.services.compliance,
-  ROUTES.services.siem,
-] as const;
-
-const WORK = capabilities.map((card, index) => ({
+const WORK = pillar.whatItDoes.map((card, index) => ({
   ...card,
   image: WORK_IMAGES[index],
-  href: WORK_HREFS[index],
+  href: ROUTES.platform.enprobe,
 }));
 
-const PRACTICE_WORDS = ["FIND", "VALIDATE", "REMEDIATE", "VERIFY"] as const;
+const PRACTICE_WORDS = ["MAP", "SCAN", "SCORE", "ALERT"] as const;
 
-export default function Differentiators() {
+export default function AsmGallery() {
   const reduce = useReducedMotion();
   const rootRef = useRef<HTMLElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
@@ -70,8 +60,7 @@ export default function Differentiators() {
 
     const travel = () => Math.max(0, track.scrollWidth - stage.clientWidth);
     const hold = () => Math.round(window.innerHeight * 1.42);
-
-    const nextSec = () => document.querySelector<HTMLElement>("#operational-validation");
+    const nextSec = () => document.querySelector<HTMLElement>("#asm-fits");
 
     const placeStage = (progress: number, covered: boolean) => {
       if (progress <= 0) {
@@ -90,7 +79,6 @@ export default function Differentiators() {
       const holdPx = hold();
       const moveUntil = travelPx / Math.max(1, travelPx + holdPx);
       const p = gsap.utils.clamp(0, 1, raw / moveUntil);
-
       const next = nextSec();
       const nextTop = next ? next.getBoundingClientRect().top : Number.POSITIVE_INFINITY;
       const covered = nextTop <= 0;
@@ -105,7 +93,6 @@ export default function Differentiators() {
           backgroundColor: gsap.utils.interpolate("#2a2a28", "#6a6760", vis * vis),
         });
       }
-
     };
 
     const sizePin = () => {
@@ -167,11 +154,7 @@ export default function Differentiators() {
   }, [reduce]);
 
   return (
-    <section
-      id="capabilities"
-      ref={rootRef}
-      className="relative z-[1] w-full bg-[#eae9e5] text-[#1a1a1a]"
-    >
+    <section id="asm-gallery" ref={rootRef} className="relative z-[1] w-full bg-[#eae9e5] text-[#1a1a1a]">
       <div ref={pinRef} className="relative w-full md:min-h-screen">
         <div
           ref={stageRef}
@@ -198,18 +181,19 @@ export default function Differentiators() {
                   "text-[clamp(2.8rem,6.4vw,5.6rem)] font-semibold leading-[0.9] tracking-[-0.055em] text-[#1a1a1a]"
                 )}
               >
-                <span className="block">Customer</span>
-                <span className="block">outcomes</span>
+                <span className="block">What</span>
+                <span className="block">visibility</span>
+                <span className="block">delivers</span>
               </h2>
-              <Link href="/#services" className="outcomes-cta mt-8">
-                <span>View all outcomes</span>
+              <Link href={ROUTES.platform.enprobe} className="outcomes-cta mt-8">
+                <span>View EnProbe</span>
                 <span aria-hidden="true">→</span>
               </Link>
             </header>
 
             <div className="flex w-full flex-col gap-14 px-6 pb-16 md:h-full md:w-max md:flex-row md:items-center md:gap-[4.5vw] md:px-0 md:pb-0 md:pr-[3vw]">
               {WORK.map((item) => (
-                <article key={item.id} className="w-full shrink-0 md:w-[min(42vw,580px)]">
+                <article key={item.title} className="w-full shrink-0 md:w-[min(42vw,580px)]">
                   <Link href={item.href} className="group block">
                     <div className="overflow-hidden rounded-[28px]">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -229,10 +213,10 @@ export default function Differentiators() {
                     </h3>
                     <div className="mt-3 flex items-end justify-between gap-6">
                       <p className="max-w-[28ch] text-[13.5px] leading-[1.45] text-[#5c5c5c] md:text-[14.5px]">
-                        {item.body}
+                        {item.description}
                       </p>
                       <span className="outcomes-cta shrink-0">
-                        <span>Explore project</span>
+                        <span>Explore</span>
                         <span aria-hidden="true">→</span>
                       </span>
                     </div>
@@ -248,10 +232,10 @@ export default function Differentiators() {
                   "max-w-[18ch] text-[clamp(1.6rem,2.6vw,2.35rem)] font-semibold leading-[1.2] tracking-[-0.04em] text-[#1a1a1a]"
                 )}
               >
-                Discover how these outcomes appear across live enterprise programmes.
+                Discover how this map feeds live Entersoft practices across the perimeter.
               </p>
-              <Link href="/#services" className="outcomes-cta mt-8">
-                <span>View all outcomes</span>
+              <Link href={ROUTES.platform.enprobe} className="outcomes-cta mt-8">
+                <span>View EnProbe</span>
                 <span aria-hidden="true">→</span>
               </Link>
             </aside>
@@ -264,23 +248,25 @@ export default function Differentiators() {
                 className="pointer-events-none absolute inset-y-0 left-0 hidden w-px bg-white/15 md:block"
                 aria-hidden="true"
               />
-              <p className="outcomes-label mb-5">Our practice</p>
+              <p className="outcomes-label mb-5">How it operates</p>
               <div
                 className={cn(
                   familjen.className,
                   "text-center text-[clamp(3.4rem,11.2vw,9.4rem)] font-semibold uppercase leading-[0.78] tracking-[-0.07em] text-[#cfcac2]"
                 )}
               >
-                {PRACTICE_WORDS.map((word) => (
-                  <span key={word} className="block">
+                {PRACTICE_WORDS.map((word, i) => (
+                  <span key={word} className="block" title={pillar.howItWorks[i]?.title}>
                     {word}
                   </span>
                 ))}
               </div>
               <div className="mt-10 flex w-full max-w-[1100px] items-end justify-between gap-6 px-2">
-                <p className="outcomes-label">Application-first. Enterprise-wide.</p>
-                <Link href="/#services" className="outcomes-cta outcomes-cta-on-dark">
-                  <span>View services</span>
+                <p className="outcomes-label max-w-[36ch] text-left">
+                  {pillar.howItWorks.map((step) => step.title).join(" · ")}
+                </p>
+                <Link href="#asm-fits" className="outcomes-cta outcomes-cta-on-dark">
+                  <span>Where it fits</span>
                   <span aria-hidden="true">→</span>
                 </Link>
               </div>

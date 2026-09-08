@@ -10,7 +10,6 @@ import Testimonials from "@/components/sections/Testimonials";
 import DesignInMotion from "@/components/sections/DesignInMotion";
 import InsightsBlog from "@/components/sections/InsightsBlog";
 import CertificationsMarquee from "@/components/sections/CertificationsMarquee";
-import FinalCTA from "@/components/sections/FinalCTA";
 import AnimatedDivider from "@/components/ui/AnimatedDivider";
 
 const TITLE = "Application Security & Penetration Testing | Entersoft";
@@ -50,21 +49,17 @@ export default function Home() {
       />
       <main className="flex flex-col w-full relative z-10">
         <Hero />
-        <AnimatedDivider />
         <StatsCounter />
         <AnimatedDivider />
         <ServicesShowcase />
         <AnimatedDivider />
         <Differentiators />
-        <AnimatedDivider />
         <Testimonials />
         <DesignInMotion />
         <AnimatedDivider />
         <InsightsBlog />
         <AnimatedDivider />
         <CertificationsMarquee />
-        <AnimatedDivider />
-        <FinalCTA />
       </main>
     </>
   );

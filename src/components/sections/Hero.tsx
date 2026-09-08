@@ -60,7 +60,8 @@ export default function Hero() {
         scrollTrigger: {
           trigger: container,
           start: "top top",
-          end: "+=300",
+          end: () =>
+            `+=${300 + (window.matchMedia("(min-width: 768px)").matches ? window.innerHeight : 0)}`,
           pin: true,
           pinSpacing: true,
           scrub: 0.4,

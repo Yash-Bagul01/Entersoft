@@ -43,7 +43,13 @@ export default function Navbar() {
   const isPlatformSubpage = isSastPage || isSbomPage;
   const isLightPage = isCyberOntologyPage || isScaPage || isSecretsPage;
   const isExoCase = pathname === "/platform/dast" || pathname === "/platform/iac" || pathname === "/platform/agentic-pentesting";
-  const isServicePage = (pathname?.startsWith("/services") || pathname?.startsWith("/platform")) && !isLightPage && !isPlatformSubpage && !isExoCase;
+  const isAsmLanding = pathname === ROUTES.platform.attackSurfaceManagement;
+  const isServicePage =
+    (pathname?.startsWith("/services") || pathname?.startsWith("/platform")) &&
+    !isLightPage &&
+    !isPlatformSubpage &&
+    !isExoCase &&
+    !isAsmLanding;
   const isAppSecPage = pathname === ROUTES.services.appsec;
   const isVaptPage = pathname === ROUTES.services.vapt;
   const isCompliancePage = pathname === ROUTES.services.compliance;
@@ -280,12 +286,12 @@ export default function Navbar() {
             className={cn(
               "w-full transition-all duration-500 ease-in-out flex items-center justify-between mx-auto relative",
               isLightFloatingPill
-                ? "max-w-[1320px] px-6 py-3 rounded-full border border-slate-200/90 backdrop-blur-xl bg-white/95 text-slate-900 shadow-xl nav-floating-pill nav-floating-pill-light"
+                ? "max-w-[1320px] px-6 py-3 rounded-full border border-slate-200/40 backdrop-blur-xl bg-white/30 text-slate-900 shadow-sm nav-floating-pill nav-floating-pill-light"
                 : (isScrolled
-                    ? "max-w-[1320px] px-6 py-3 rounded-full border backdrop-blur-xl shadow-2xl nav-floating-pill " +
+                    ? "max-w-[1320px] px-6 py-3 rounded-full border backdrop-blur-xl shadow-sm nav-floating-pill " +
                       (isServicePage
-                        ? "bg-[#060606]/90 border-white/12 text-white service-nav-header shadow-[0_16px_40px_rgba(0,0,0,0.6)]"
-                        : "bg-[var(--bg-elevated)]/95 border-[var(--border-glass)] text-[var(--text-primary)] shadow-[0_12px_36px_rgba(0,0,0,0.12)]")
+                        ? "bg-[#060606]/30 border-white/12 text-white service-nav-header"
+                        : "bg-[var(--bg-elevated)]/30 border-[var(--border-glass)] text-[var(--text-primary)]")
                     : (isLightNavHeader
                         ? "max-w-full px-6 md:px-12 py-5 rounded-none border-none bg-transparent text-slate-900 nav-transparent-header"
                         : "max-w-full px-6 md:px-12 py-5 rounded-none border-none bg-transparent text-white nav-transparent-header"))
