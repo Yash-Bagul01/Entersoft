@@ -9,8 +9,15 @@ import { cn } from "@/lib/utils";
 import ThemeToggle from "../ui/ThemeToggle";
 import Link from "next/link";
 import Image from "next/image";
+import { Familjen_Grotesk } from "next/font/google";
 import { ROUTES } from "@/config/routes";
 import ExoMenuOverlay from "./ExoMenuOverlay";
+
+const familjen = Familjen_Grotesk({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  display: "swap",
+});
 
 interface MegaItem {
   name: string;
@@ -280,15 +287,15 @@ export default function Navbar() {
       <header className="fixed top-0 left-0 right-0 z-50 w-full pointer-events-none">
         <div className={cn(
           "w-full transition-all duration-500 ease-in-out pointer-events-auto",
-          isScrolled ? "pt-4 px-4 md:px-8" : "pt-0 px-0"
+          isScrolled ? "pt-3 px-3 md:px-4" : "pt-0 px-0"
         )}>
           <div
             className={cn(
               "w-full transition-all duration-500 ease-in-out flex items-center justify-between mx-auto relative",
               isLightFloatingPill
-                ? "max-w-[1320px] px-6 py-3 rounded-full border border-slate-200/40 backdrop-blur-xl bg-white/30 text-slate-900 shadow-sm nav-floating-pill nav-floating-pill-light"
+                ? "max-w-none px-6 py-3 rounded-[16px] border border-slate-200/40 backdrop-blur-xl bg-white/30 text-slate-900 shadow-sm nav-floating-pill nav-floating-pill-light"
                 : (isScrolled
-                    ? "max-w-[1320px] px-6 py-3 rounded-full border backdrop-blur-xl shadow-sm nav-floating-pill " +
+                    ? "max-w-none px-6 py-3 rounded-[16px] border backdrop-blur-xl shadow-sm nav-floating-pill " +
                       (isServicePage
                         ? "bg-[#060606]/30 border-white/12 text-white service-nav-header"
                         : "bg-[var(--bg-elevated)]/30 border-[var(--border-glass)] text-[var(--text-primary)]")
@@ -328,7 +335,8 @@ export default function Navbar() {
                       setActiveMega(activeMega === idx ? null : idx);
                     }}
                     className={cn(
-                      "flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold uppercase tracking-wider transition-all duration-300 cursor-pointer",
+                      familjen.className,
+                      "flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-normal uppercase tracking-wider transition-all duration-300 cursor-pointer",
                       isLightNavHeader
                         ? "text-slate-800 hover:text-slate-950 hover:bg-slate-200/70 font-bold"
                         : "text-slate-200 hover:text-white hover:bg-white/10",
@@ -466,7 +474,8 @@ export default function Navbar() {
               <button
                 onClick={() => setExoMenuOpen(true)}
                 className={cn(
-                  "flex items-center gap-3 py-1.5 px-3 rounded-full transition-all duration-300 font-sans text-xs uppercase tracking-widest cursor-pointer group",
+                  familjen.className,
+                  "flex items-center gap-3 py-1.5 px-3 rounded-full transition-all duration-300 text-xs font-normal uppercase tracking-widest cursor-pointer group",
                   isLightNavHeader
                     ? "text-slate-900 hover:text-black font-bold"
                     : "text-slate-300 hover:text-white font-semibold"
@@ -488,7 +497,8 @@ export default function Navbar() {
                 asLink
                 href="/#contact"
                 className={cn(
-                  "transition-all duration-300 rounded-full px-4 py-1.5",
+                  familjen.className,
+                  "transition-all duration-300 rounded-full px-4 py-1.5 font-normal",
                   isLightFloatingPill &&
                     "!border-[#060606] hover:!border-[#007AFF]",
                   isLightPage && !isLightFloatingPill
@@ -506,7 +516,8 @@ export default function Navbar() {
               <button
                 onClick={() => setExoMenuOpen(true)}
                 className={cn(
-                  "focus:outline-none p-2 min-h-[44px] min-w-[44px] flex items-center justify-center gap-3 font-sans text-xs uppercase tracking-widest font-medium transition-colors",
+                  familjen.className,
+                  "focus:outline-none p-2 min-h-[44px] min-w-[44px] flex items-center justify-center gap-3 text-xs font-normal uppercase tracking-widest transition-colors",
                   isLightNavHeader
                     ? "text-slate-900 hover:text-black font-bold"
                     : "text-slate-300 hover:text-white"
@@ -567,7 +578,7 @@ export default function Navbar() {
                       <a
                         href={item.href}
                         onClick={toggleMobileMenu}
-                        className="font-display font-bold text-2xl uppercase tracking-wider text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors"
+                        className={cn(familjen.className, "text-2xl font-normal uppercase tracking-wider text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors")}
                       >
                         {item.label}
                       </a>

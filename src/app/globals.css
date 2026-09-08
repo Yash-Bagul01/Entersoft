@@ -542,8 +542,9 @@ html.lenis, html.lenis body {
   color: #2563eb !important;
 }
 
-/* Scrolled Floating Pill Navbar */
+/* Scrolled navbar — Palantir-style inset rounded rectangle */
 .nav-floating-pill {
+  border-radius: 16px !important;
   backdrop-filter: saturate(180%) blur(16px) !important;
   -webkit-backdrop-filter: saturate(180%) blur(16px) !important;
 }
@@ -780,14 +781,18 @@ html:has([data-page="ai-ast"]) footer,
 }
 
 /* Track Record section light theme overrides */
+#track-record,
 [data-theme="light"] #track-record {
-  background-color: transparent !important;
+  background-color: #F6F5F0 !important;
+}
+
+[data-theme="light"] #track-record {
   border-top-color: var(--border-subtle) !important;
   --accent-dim: rgba(235, 220, 195, 0.45) !important;
 }
 
-[data-theme="light"] #track-record .ov-sheet {
-  background-color: var(--bg-primary) !important;
+[data-theme="dark"] #track-record {
+  background-color: #060608 !important;
 }
 
 [data-theme="light"] #track-record h2 {
@@ -1489,6 +1494,30 @@ html:has([data-page="ai-ast"]) footer,
 [data-theme="dark"] #certifications {
   background-color: #111111 !important;
   color: #f3f2ee !important;
+}
+
+#exo-menu,
+#exo-menu a,
+#exo-menu button,
+#exo-menu p,
+#exo-menu span,
+[data-theme="light"] #exo-menu,
+[data-theme="light"] #exo-menu a,
+[data-theme="light"] #exo-menu button,
+[data-theme="light"] #exo-menu p,
+[data-theme="light"] #exo-menu span,
+[data-theme="light"] #exo-menu .text-white {
+  color: #f4f4f4 !important;
+}
+
+#exo-menu .menu-link-dim,
+[data-theme="light"] #exo-menu .menu-link-dim {
+  color: rgba(244, 244, 244, 0.62) !important;
+}
+
+#exo-menu .menu-link-on,
+[data-theme="light"] #exo-menu .menu-link-on {
+  color: #ffffff !important;
 }
 
 #certifications .ov-stripe,

@@ -9,8 +9,6 @@ import SectionLabel from "../ui/SectionLabel";
 import { Button } from "../ui/Button";
 import { fadeInUpVariants } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
-import { useStripeWipe } from "@/hooks/useStripeWipe";
-import StripeWipeBars from "@/components/ui/StripeWipeBars";
 
 interface PhilosophyToken {
   text: string;
@@ -694,8 +692,6 @@ function createCardCanvasTexture(
 
 export default function TrackRecord3DCylinder() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const stripesRef = useRef<HTMLDivElement>(null);
-  const sheetRef = useRef<HTMLDivElement>(null);
   const canvasContainerRef = useRef<HTMLDivElement>(null);
   const philosophyRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLElement>(null);
@@ -757,7 +753,6 @@ export default function TrackRecord3DCylinder() {
   }, []);
 
   const isLight = theme === "light";
-  useStripeWipe(sectionRef, stripesRef, sheetRef, isReduced);
 
   // Navigation handlers for next / prev cards
   const handleNextCard = useCallback((e?: React.MouseEvent) => {
@@ -1276,30 +1271,14 @@ export default function TrackRecord3DCylinder() {
   };
 
   return (
-    <>
-    <div
-      ref={stripesRef}
-      className="pointer-events-none fixed inset-0 z-[15] hidden flex-col md:flex"
-      aria-hidden="true"
-    >
-      <StripeWipeBars />
-    </div>
     <section
       ref={sectionRef}
       id="track-record"
-      className="relative z-20 w-full h-screen overflow-hidden bg-transparent select-none isolate transition-colors duration-500"
-      style={{
-        contain: "paint",
-      }}
+      className={`relative z-[5] w-full h-screen overflow-hidden select-none transition-colors duration-500 ${
+        isLight ? "bg-[#F6F5F0] text-[#060606]" : "bg-[#060608] text-[#F6F5F0]"
+      }`}
     >
-      <div
-        ref={sheetRef}
-        className={`ov-sheet absolute inset-0 flex flex-col justify-between ${
-          isLight
-            ? "bg-[#F6F5F0] text-[#060606]"
-            : "bg-[#060608] text-[#F6F5F0]"
-        }`}
-      >
+      <div className="absolute inset-0 z-[1] flex flex-col justify-between">
       {/* Ambient Atmospheric Lighting Gradients */}
       <div
         className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[950px] h-[550px] rounded-full blur-[150px] pointer-events-none transition-opacity duration-500 ${
@@ -1449,6 +1428,5 @@ export default function TrackRecord3DCylinder() {
       />
       </div>
     </section>
-    </>
   );
 }

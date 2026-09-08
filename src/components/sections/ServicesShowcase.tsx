@@ -6,7 +6,15 @@ import Link from "next/link";
 import { services, Service } from "@/data/services";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Familjen_Grotesk } from "next/font/google";
 import ServiceHoverCard from "../ui/ServiceHoverCard";
+import { cn } from "@/lib/utils";
+
+const familjen = Familjen_Grotesk({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  display: "swap",
+});
 
 // useTextScramble character-scramble hook
 function useTextScramble(text: string, trigger: boolean) {
@@ -143,7 +151,7 @@ function ServiceRow({ service, index, isActive, isFinePointer, onHover }: Servic
 
       <div className="flex items-center gap-6 md:gap-12 w-full sm:w-auto">
         {/* Index number */}
-        <span className={`index-number font-mono text-[13px] w-[40px] transition-colors duration-200 shrink-0 ${
+        <span className={`index-number text-[13px] w-[40px] transition-colors duration-200 shrink-0 ${
           isActive ? "text-[var(--accent)]" : "text-[var(--text-tertiary)]"
         }`}>
           {service.index}
@@ -151,19 +159,19 @@ function ServiceRow({ service, index, isActive, isFinePointer, onHover }: Servic
         
         <div className="flex flex-col gap-1 py-1">
           {/* Eyebrow: Plain-Language Category */}
-          <span className={`font-mono text-[9px] sm:text-[10px] uppercase font-bold tracking-[0.12em] transition-colors duration-200 ${
+          <span className={`text-[9px] sm:text-[10px] uppercase font-bold tracking-[0.12em] transition-colors duration-200 ${
             isActive ? "text-[var(--accent)]" : "text-[var(--text-secondary)]"
           }`}>
             {service.category}
           </span>
           
           {/* Primary Branded Title */}
-          <h3 className="display-name font-display font-medium text-[clamp(1.3rem,2.2vw,2.2rem)] tracking-tight text-[var(--text-primary)] leading-none transition-colors duration-200">
+          <h3 className="display-name font-normal text-[clamp(1.3rem,2.2vw,2.2rem)] tracking-tight text-[var(--text-primary)] leading-none transition-colors duration-200">
             {scrambledName}
           </h3>
           
           {/* Tablet Descriptor: shown below name on 640px - 1024px */}
-          <span className={`descriptor-tablet font-mono text-[10px] uppercase tracking-[0.1em] transition-colors duration-200 hidden sm:inline-block lg:hidden mt-1 ${
+          <span className={`descriptor-tablet text-[10px] uppercase tracking-[0.1em] transition-colors duration-200 hidden sm:inline-block lg:hidden mt-1 ${
             isActive ? "text-[var(--text-secondary)]" : "text-[var(--text-tertiary)]"
           }`}>
             {service.descriptor}
@@ -174,14 +182,14 @@ function ServiceRow({ service, index, isActive, isFinePointer, onHover }: Servic
       {/* Descriptor & Arrow for desktop */}
       <div className="flex items-center gap-8 shrink-0 mt-3 sm:mt-0 justify-between sm:justify-end w-full sm:w-auto">
         {/* Desktop Descriptor */}
-        <span className={`descriptor-desktop font-mono text-[11px] uppercase tracking-[0.1em] transition-colors duration-200 hidden lg:inline-block ${
+        <span className={`descriptor-desktop text-[11px] uppercase tracking-[0.1em] transition-colors duration-200 hidden lg:inline-block ${
           isActive ? "text-[var(--text-secondary)]" : "text-[var(--text-tertiary)]"
         }`}>
           {service.descriptor}
         </span>
 
         {/* Arrow icon */}
-        <span className={`arrow font-mono text-[14px] transition-all duration-200 ${
+        <span className={`arrow text-[14px] transition-all duration-200 ${
           isActive ? "text-[var(--accent)] translate-x-[6px] opacity-100" : "text-[var(--text-tertiary)] opacity-50"
         }`}>
           →
@@ -189,7 +197,7 @@ function ServiceRow({ service, index, isActive, isFinePointer, onHover }: Servic
       </div>
 
       {/* Mobile-only Descriptor under display name */}
-      <div className={`w-full sm:hidden mt-2 font-mono text-[9px] uppercase tracking-wider ${
+      <div className={`w-full sm:hidden mt-2 text-[9px] uppercase tracking-wider ${
         isActive ? "text-[var(--text-secondary)]" : "text-[var(--text-tertiary)]"
       }`}>
         {service.descriptor}
@@ -420,7 +428,10 @@ export default function ServicesShowcase() {
     <div 
       id="services" 
       ref={containerRef} 
-      className="relative bg-[#060606] w-full border-t border-[var(--border-subtle)] pb-24"
+      className={cn(
+        familjen.className,
+        "relative bg-[#060606] w-full border-t border-[var(--border-subtle)] pb-24"
+      )}
     >
       <style dangerouslySetInnerHTML={{ __html: `
         :root {
@@ -444,25 +455,35 @@ export default function ServicesShowcase() {
           transform-style: preserve-3d;
           perspective: 1000px;
         }
+
+        #services .card-index,
+        #services .card-eyebrow,
+        #services .card-name,
+        #services .card-heading,
+        #services .card-body,
+        #services .card-descriptor,
+        #services .card-cta {
+          font-family: inherit !important;
+        }
       `}} />
       
       {/* Header (Uniform for all viewports) */}
       <div className="max-w-[1400px] w-full mx-auto px-6 lg:px-12 pt-14 pb-3">
         <div className="header-block flex flex-col gap-3">
           <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 w-full">
-            <span className="font-mono text-[12px] text-[var(--accent-neon)] tracking-[0.18em]">
+            <span className="text-[12px] text-[var(--accent-neon)] tracking-[0.18em]">
               Enterprise Services & Managed Solutions
                     </span>
-            <span className="right-instruction font-mono text-[12px] text-[var(--text-tertiary)] uppercase tracking-[0.14em] transition-colors duration-200 shrink-0">
+            <span className="right-instruction text-[12px] text-[var(--text-tertiary)] uppercase tracking-[0.14em] transition-colors duration-200 shrink-0">
               {isFinePointer ? "HOVER TO EXPLORE" : "TAP TO EXPLORE"}
                       </span>
           </div>
           
-          <h2 className="text-display font-display font-semibold text-[clamp(1.8rem,3.8vw,3.2rem)] text-[var(--text-primary)] tracking-[-0.03em] leading-tight max-w-[850px]">
+          <h2 className="font-normal text-[clamp(1.8rem,3.8vw,3.2rem)] text-[var(--text-primary)] tracking-[-0.03em] leading-tight max-w-[850px]">
             Security starts at the application layer, but it does not stop there.
           </h2>
           
-          <p className="supporting-statement font-sans text-[clamp(14px,1.6vw,17px)] text-[var(--text-secondary)] leading-[1.5] mt-2.5 max-w-[750px]">
+          <p className="supporting-statement font-normal text-[clamp(14px,1.6vw,17px)] text-[var(--text-secondary)] leading-[1.5] mt-2.5 max-w-[750px]">
             {"Applications concentrate business logic, customer data, identities, APIs and cloud services. Entersoft starts with the software that runs the business, then connects application risk to the infrastructure, identities, controls and operations around it."
               .split(" ")
               .map((word, i, arr) => (

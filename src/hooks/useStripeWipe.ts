@@ -6,6 +6,8 @@ import gsap from "gsap";
 type StripeWipeOptions = {
   /** When false, stripes wipe and the incoming sheet is already in place. */
   slideSheet?: boolean;
+  /** Pin the incoming sheet to the viewport during the second half of the wipe. */
+  coverIncoming?: boolean;
 };
 
 export function useStripeWipe(
@@ -16,6 +18,7 @@ export function useStripeWipe(
   options?: StripeWipeOptions
 ) {
   const slideSheet = options?.slideSheet !== false;
+  const coverIncoming = options?.coverIncoming === true;
 
   useLayoutEffect(() => {
     const root = rootRef.current;
@@ -73,10 +76,10 @@ export function useStripeWipe(
       wipe.progress(holdT);
 
       if (!slideSheet) {
-        // Bars finish around 0.66. Pin the incoming sheet behind them
-        // before they lift, then drop the bars only after it is covering.
-        if (holdT >= 0.62 && holdT < 1) coverSheet();
-        else releaseSheet();
+        if (coverIncoming) {
+          if (holdT >= 0.62 && holdT < 1) coverSheet();
+          else releaseSheet();
+        }
         gsap.set(stripes, { autoAlpha: holdT > 0 && holdT < 1 ? 1 : 0 });
       } else {
         gsap.set(stripes, { autoAlpha: holdT > 0 && holdT < 0.98 ? 1 : 0 });
@@ -96,5 +99,5 @@ export function useStripeWipe(
       gsap.set(sheet, { clearProps: "transform,position,top,left,right,width,zIndex,y" });
       gsap.set(stripes, { clearProps: "opacity,visibility" });
     };
-  }, [rootRef, stripesRef, sheetRef, reduce, slideSheet]);
+  }, [rootRef, stripesRef, sheetRef, reduce, slideSheet, coverIncoming]);
 }
