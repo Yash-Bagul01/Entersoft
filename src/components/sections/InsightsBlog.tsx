@@ -97,16 +97,19 @@ export default function InsightsBlog() {
       });
       gsap.set(explores, { opacity: 0 });
 
+      const hold = () => Math.round(window.innerHeight * 1.42);
+      const nextSec = () => document.querySelector<HTMLElement>("#certifications");
+
       const sizePin = () => {
-        pin.style.height = `${Math.round(window.innerHeight * 2.8)}px`;
+        pin.style.height = `${Math.round(window.innerHeight * 2.8 + hold())}px`;
       };
       sizePin();
 
-      const placeStage = (progress: number) => {
+      const placeStage = (progress: number, covered: boolean) => {
         pin.dataset.deskProgress = progress.toFixed(3);
         if (progress <= 0) {
           gsap.set(stage, { position: "absolute", top: 0, bottom: "auto", left: 0, right: 0 });
-        } else if (progress >= 1) {
+        } else if (covered) {
           gsap.set(stage, { position: "absolute", top: "auto", bottom: 0, left: 0, right: 0 });
         } else {
           gsap.set(stage, { position: "fixed", top: 0, bottom: "auto", left: 0, right: 0 });
@@ -151,9 +154,14 @@ export default function InsightsBlog() {
       const drive = () => {
         const rect = pin.getBoundingClientRect();
         const range = Math.max(1, pin.offsetHeight - window.innerHeight);
-        const p = gsap.utils.clamp(0, 1, -rect.top / range);
-        placeStage(p);
-        tl.progress(p);
+        const raw = gsap.utils.clamp(0, 1, -rect.top / range);
+        const holdPx = hold();
+        const moveUntil = Math.max(0.001, (range - holdPx) / range);
+        const animP = gsap.utils.clamp(0, 1, raw / moveUntil);
+        const next = nextSec();
+        const covered = next ? next.getBoundingClientRect().top <= 0 : raw >= 1;
+        placeStage(raw, covered);
+        tl.progress(animP);
       };
 
       ScrollTrigger.create({
@@ -191,13 +199,13 @@ export default function InsightsBlog() {
     <section
       id="insights"
       ref={rootRef}
-      className="relative w-full bg-[#f3f2ee] text-[#1b1b1c]"
+      className="relative z-[1] w-full bg-[#f3f2ee] text-[#1b1b1c]"
     >
       <div ref={pinRef} data-desk-progress className="relative w-full md:h-[280vh]">
       <div
         ref={stageRef}
         data-desk-stage
-        className="relative flex w-full flex-col md:absolute md:inset-x-0 md:top-0 md:h-screen md:overflow-hidden"
+        className="relative flex w-full flex-col bg-[#f3f2ee] md:absolute md:inset-x-0 md:top-0 md:h-screen md:overflow-hidden"
       >
         <div
           ref={titleRef}

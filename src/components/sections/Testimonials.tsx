@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Familjen_Grotesk } from "next/font/google";
 import { testimonials } from "@/data/testimonials";
@@ -70,6 +70,59 @@ export default function Testimonials() {
   const go = useCallback((index: number) => {
     setActive((index + FEATURED.length) % FEATURED.length);
   }, []);
+
+  useEffect(() => {
+    if (reduce) return;
+    const root = rootRef.current;
+    let visible = true;
+    let hovering = false;
+    let timer: number | null = null;
+
+    const clear = () => {
+      if (timer !== null) {
+        window.clearInterval(timer);
+        timer = null;
+      }
+    };
+
+    const start = () => {
+      clear();
+      if (!visible || hovering) return;
+      timer = window.setInterval(() => {
+        setActive((index) => (index + 1) % FEATURED.length);
+      }, 5000);
+    };
+
+    const observer = root
+      ? new IntersectionObserver(
+          ([entry]) => {
+            visible = entry.isIntersecting && entry.intersectionRatio > 0.35;
+            start();
+          },
+          { threshold: [0, 0.35, 0.6] }
+        )
+      : null;
+    if (root && observer) observer.observe(root);
+
+    const onEnter = () => {
+      hovering = true;
+      start();
+    };
+    const onLeave = () => {
+      hovering = false;
+      start();
+    };
+    root?.addEventListener("mouseenter", onEnter);
+    root?.addEventListener("mouseleave", onLeave);
+    start();
+
+    return () => {
+      clear();
+      observer?.disconnect();
+      root?.removeEventListener("mouseenter", onEnter);
+      root?.removeEventListener("mouseleave", onLeave);
+    };
+  }, [reduce, active]);
 
   useStripeWipe(rootRef, stripesRef, sheetRef, reduce);
 

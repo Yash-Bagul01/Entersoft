@@ -43,10 +43,11 @@ export default function DesignInMotion() {
   const topWordRef = useRef<HTMLHeadingElement>(null);
   const botWordRef = useRef<HTMLHeadingElement>(null);
   const captionRef = useRef<HTMLParagraphElement>(null);
-  const footerRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLAnchorElement | null)[]>([]);
   const [svgArcPath, setSvgArcPath] = useState("");
   const [svgInnerArcPath, setSvgInnerArcPath] = useState("");
+  const lastArcRef = useRef("");
+  const lastInnerArcRef = useRef("");
 
   useLayoutEffect(() => {
     const root = rootRef.current;
@@ -55,7 +56,6 @@ export default function DesignInMotion() {
     const topWord = topWordRef.current;
     const botWord = botWordRef.current;
     const caption = captionRef.current;
-    const footer = footerRef.current;
     const cards = cardsRef.current.filter(Boolean) as HTMLAnchorElement[];
     if (!root || !pin || !stage || !topWord || !botWord || cards.length === 0) return;
 
@@ -75,12 +75,20 @@ export default function DesignInMotion() {
       const y1 = cy - R * Math.cos(startAngle);
       const x2 = cx + R * Math.sin(endAngle);
       const y2 = cy - R * Math.cos(endAngle);
-      setSvgArcPath(`M ${x1} ${y1} A ${R} ${R} 0 0 1 ${x2} ${y2}`);
+      const arc = `M ${x1} ${y1} A ${R} ${R} 0 0 1 ${x2} ${y2}`;
       const ix1 = cx + Rinner * Math.sin(startAngle);
       const iy1 = cy - Rinner * Math.cos(startAngle);
       const ix2 = cx + Rinner * Math.sin(endAngle);
       const iy2 = cy - Rinner * Math.cos(endAngle);
-      setSvgInnerArcPath(`M ${ix1} ${iy1} A ${Rinner} ${Rinner} 0 0 1 ${ix2} ${iy2}`);
+      const inner = `M ${ix1} ${iy1} A ${Rinner} ${Rinner} 0 0 1 ${ix2} ${iy2}`;
+      if (lastArcRef.current !== arc) {
+        lastArcRef.current = arc;
+        setSvgArcPath(arc);
+      }
+      if (lastInnerArcRef.current !== inner) {
+        lastInnerArcRef.current = inner;
+        setSvgInnerArcPath(inner);
+      }
       return { vw, vh, isMobile, cx, cy, R };
     };
 
@@ -108,10 +116,11 @@ export default function DesignInMotion() {
           scale: 1,
           borderRadius: GRID_RADIUS,
         });
+        const copy = card.querySelector<HTMLElement>("[data-motion-copy]");
+        if (copy) gsap.set(copy, { autoAlpha: 1 });
       });
       gsap.set([topWord, botWord], { x: 0, opacity: 1 });
       if (caption) gsap.set(caption, { opacity: 1 });
-      if (footer) gsap.set(footer, { opacity: 1 });
       return;
     }
 
@@ -154,7 +163,6 @@ export default function DesignInMotion() {
           force3D: true,
         });
         if (caption) gsap.set(caption, { opacity: 1 - eased * 0.75 });
-        if (footer) gsap.set(footer, { opacity: 1 });
 
         const cardWWheel = Math.min(vw * 0.22, 320);
         const cardHWheel = cardWWheel * 0.64;
@@ -191,6 +199,11 @@ export default function DesignInMotion() {
             force3D: true,
             transformOrigin: "50% 50%",
           });
+          const copy = card.querySelector<HTMLElement>("[data-motion-copy]");
+          if (copy) {
+            const landed = u >= 0.96;
+            gsap.set(copy, { autoAlpha: landed ? 1 : 0 });
+          }
         });
       };
 
@@ -262,7 +275,7 @@ export default function DesignInMotion() {
                   "whitespace-nowrap text-[clamp(3.5rem,13.5vw,12rem)] font-normal uppercase leading-[0.82] tracking-[-0.07em] text-[#272727]"
                 )}
               >
-                Design in
+                Work in
               </h2>
             </div>
             <p
@@ -301,39 +314,27 @@ export default function DesignInMotion() {
                   alt={shot.displayName}
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent opacity-80 group-hover:opacity-90" />
-                <div className="absolute inset-x-0 bottom-0 flex flex-col justify-end p-3.5 text-white md:p-4">
-                  <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/70 md:text-[10px]">
-                    {shot.index} • {shot.category?.split(" ")[0] || "SECURITY"}
-                  </span>
-                  <h3
-                    className={cn(
-                      familjen.className,
-                      "mt-0.5 text-base font-semibold leading-tight tracking-tight text-white transition-colors group-hover:text-[#96CBFF] md:text-lg"
-                    )}
-                  >
-                    {shot.displayName}
-                  </h3>
+                <div
+                  data-motion-copy
+                  className="motion-card-copy pointer-events-none absolute inset-0 opacity-0"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 flex flex-col justify-end p-3.5 md:p-4">
+                    <span className="motion-card-kicker font-mono text-[9px] uppercase tracking-[0.2em] md:text-[10px]">
+                      {shot.index} • {shot.category?.split(" ")[0] || "SECURITY"}
+                    </span>
+                    <h3
+                      className={cn(
+                        familjen.className,
+                        "motion-card-title mt-0.5 text-base font-semibold leading-tight tracking-tight md:text-lg"
+                      )}
+                    >
+                      {shot.displayName}
+                    </h3>
+                  </div>
                 </div>
               </Link>
             ))}
-          </div>
-
-          <div
-            ref={footerRef}
-            className="absolute inset-x-0 bottom-5 z-30 flex flex-col items-start justify-between gap-4 px-6 md:bottom-7 md:flex-row md:items-center md:px-12"
-          >
-            <div className="absolute inset-x-6 top-0 h-px bg-[#272727]/20 md:inset-x-12" />
-            <p className="max-w-[420px] pt-4 font-sans text-xs leading-relaxed text-[#272727]/80 md:text-sm">
-              Concepts, explorations, and interface experiments shared openly as part of our creative process.
-            </p>
-            <Link
-              href="/#services"
-              className="group flex items-center gap-2 pt-4 font-mono text-xs font-bold uppercase tracking-[0.18em] text-[#272727] hover:text-black"
-            >
-              <span>View our work</span>
-              <span className="transition-transform group-hover:translate-x-1">→</span>
-            </Link>
           </div>
         </div>
       </div>

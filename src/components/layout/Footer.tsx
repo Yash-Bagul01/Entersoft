@@ -116,6 +116,7 @@ export default function Footer() {
 
     gsap.registerPlugin(ScrollTrigger);
     const prev =
+      document.querySelector<HTMLElement>("#certifications .ov-sheet") ||
       document.querySelector<HTMLElement>("#certifications") ||
       document.querySelector<HTMLElement>("main > section:last-of-type");
 

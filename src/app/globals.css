@@ -1217,6 +1217,10 @@ html:has([data-page="ai-ast"]) footer,
   color: rgba(216, 214, 208, 0.5);
 }
 
+#capabilities .outcomes-card-media {
+  border-radius: clamp(1.75rem, 2.5vw, 3rem);
+}
+
 [data-theme="light"] #capabilities,
 [data-theme="light"] #asm-gallery {
   background-color: #eae9e5 !important;
@@ -1355,6 +1359,24 @@ html:has([data-page="ai-ast"]) footer,
   backface-visibility: hidden;
 }
 
+#design-in-motion .motion-card-copy,
+#design-in-motion .motion-card-copy .motion-card-title,
+#design-in-motion .motion-card-copy .motion-card-kicker,
+[data-theme="light"] #design-in-motion .motion-card-copy,
+[data-theme="light"] #design-in-motion .motion-card-copy h3,
+[data-theme="light"] #design-in-motion .motion-card-copy span,
+[data-theme="light"] #design-in-motion .motion-card-copy .text-white {
+  color: #ffffff !important;
+}
+
+#design-in-motion .motion-card-kicker {
+  color: rgba(255, 255, 255, 0.72) !important;
+}
+
+#design-in-motion .group:hover .motion-card-title {
+  color: #96cbff !important;
+}
+
 #design-in-motion .motion-card-arrow {
   position: absolute;
   width: 10px;
@@ -1406,6 +1428,102 @@ html:has([data-page="ai-ast"]) footer,
 [data-theme="dark"] #design-in-motion .motion-cta:hover {
   color: var(--accent);
   border-bottom-color: var(--accent);
+}
+
+[data-theme="dark"] #insights,
+[data-theme="dark"] #insights [data-desk-progress],
+[data-theme="dark"] #insights [data-desk-stage] {
+  background-color: #121212 !important;
+  color: #f6f5f0 !important;
+}
+
+[data-theme="dark"] #insights [data-title-line] {
+  color: #f6f5f0 !important;
+}
+
+[data-theme="dark"] #insights [data-desk-stage] > div:first-child > p,
+[data-theme="dark"] #insights [data-title-line] sup,
+[data-theme="dark"] #insights > .flex > p {
+  color: rgba(246, 245, 240, 0.48) !important;
+}
+
+[data-theme="dark"] #insights [data-card-inner],
+[data-theme="dark"] #insights > .flex a {
+  background-color: #1a1a1a !important;
+  color: #f6f5f0 !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  box-shadow: none !important;
+}
+
+[data-theme="dark"] #insights [data-card-inner]:hover {
+  background-color: #222222 !important;
+}
+
+[data-theme="dark"] #insights [data-card-inner] h3,
+[data-theme="dark"] #insights [data-card-inner] span,
+[data-theme="dark"] #insights > .flex a h3,
+[data-theme="dark"] #insights > .flex a span {
+  color: #f6f5f0 !important;
+}
+
+[data-theme="dark"] #insights [data-card-inner] p,
+[data-theme="dark"] #insights > .flex a p {
+  color: rgba(246, 245, 240, 0.55) !important;
+}
+
+#certifications,
+[data-theme="light"] #certifications,
+[data-theme="dark"] #certifications {
+  background-color: #111111 !important;
+  color: #f3f2ee !important;
+}
+
+#certifications .ov-stripe,
+[data-theme="light"] #certifications .ov-stripe,
+[data-theme="dark"] #certifications .ov-stripe {
+  background-color: #111111 !important;
+}
+
+#certifications .ov-sheet,
+[data-theme="light"] #certifications .ov-sheet,
+[data-theme="dark"] #certifications .ov-sheet {
+  background-color: #111111 !important;
+}
+
+#certifications h2,
+#certifications h3,
+[data-theme="light"] #certifications h2,
+[data-theme="light"] #certifications h3,
+[data-theme="dark"] #certifications h2,
+[data-theme="dark"] #certifications h3 {
+  color: #ffffff !important;
+}
+
+#certifications .cert-mark,
+[data-theme="light"] #certifications .cert-mark,
+[data-theme="dark"] #certifications .cert-mark {
+  color: #111111 !important;
+}
+
+#certifications .cert-copy,
+[data-theme="light"] #certifications .cert-copy,
+[data-theme="dark"] #certifications .cert-copy {
+  color: rgba(243, 242, 238, 0.5) !important;
+}
+
+#certifications .cert-meta,
+#certifications a,
+[data-theme="light"] #certifications .cert-meta,
+[data-theme="light"] #certifications a,
+[data-theme="dark"] #certifications .cert-meta,
+[data-theme="dark"] #certifications a {
+  color: rgba(243, 242, 238, 0.38) !important;
+}
+
+[data-theme="light"] #certifications a:hover,
+[data-theme="dark"] #certifications a:hover,
+#certifications a:hover {
+  color: #ffffff !important;
 }
 
 /* Managed Cloud Security V2 Specific Styles */

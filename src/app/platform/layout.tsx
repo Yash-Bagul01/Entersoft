@@ -59,7 +59,7 @@ export default function PlatformLayout({
       body.style.removeProperty("overflow-x");
       body.style.removeProperty("overflow-y");
     };
-  }, [isLightPage, isExoCase, isAsmLanding]);
+  }, [pathname, isLightPage, isExoCase, isAsmLanding]);
 
   if (isAsmLanding) {
     return <>{children}</>;

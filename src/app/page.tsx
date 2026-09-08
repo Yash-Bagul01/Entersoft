@@ -1,5 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
+import Script from "next/script";
 import { getCanonicalUrl, ROUTES } from "@/config/routes";
 import { organizationNode, webPageNode, websiteNode } from "@/config/seo";
 import Hero from "@/components/sections/Hero";
@@ -43,7 +44,8 @@ const jsonLd = {
 export default function Home() {
   return (
     <>
-      <script
+      <Script
+        id="home-jsonld"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
@@ -58,7 +60,6 @@ export default function Home() {
         <DesignInMotion />
         <AnimatedDivider />
         <InsightsBlog />
-        <AnimatedDivider />
         <CertificationsMarquee />
       </main>
     </>

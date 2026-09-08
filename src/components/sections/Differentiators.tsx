@@ -17,12 +17,12 @@ const familjen = Familjen_Grotesk({
 });
 
 const WORK_IMAGES = [
-  "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1800&q=80",
-  "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1800&q=80",
-  "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1800&q=80",
-  "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1800&q=80",
-  "https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1800&q=80",
-  "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=80",
+  "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=2400&q=90",
+  "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=2400&q=90",
+  "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=2400&q=90",
+  "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=2400&q=90",
+  "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=2400&q=90",
+  "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=2400&q=90",
 ] as const;
 
 const WORK_HREFS = [
@@ -64,12 +64,14 @@ export default function Differentiators() {
     if (!desktop || reduce) {
       gsap.set(track, { x: 0, clearProps: "transform" });
       gsap.set(stage, { clearProps: "position,top,bottom,left,right" });
+      gsap.set(track.querySelectorAll("[data-outcome-card]"), { y: 0, clearProps: "transform" });
       if (practice) gsap.set(practice, { clearProps: "backgroundColor" });
       return;
     }
 
     const travel = () => Math.max(0, track.scrollWidth - stage.clientWidth);
     const hold = () => Math.round(window.innerHeight * 1.42);
+    const cards = Array.from(track.querySelectorAll<HTMLElement>("[data-outcome-card]"));
 
     const nextSec = () => document.querySelector<HTMLElement>("#operational-validation");
 
@@ -97,6 +99,17 @@ export default function Differentiators() {
 
       placeStage(raw, covered);
       gsap.set(track, { x: -travelPx * p, force3D: true });
+
+      const vw = window.innerWidth;
+      const rise = Math.round(Math.min(240, vw * 0.14));
+      const restX = vw * 0.3;
+      const enterX = vw * 1.02;
+      cards.forEach((el) => {
+        const left = el.getBoundingClientRect().left;
+        const t = gsap.utils.clamp(0, 1, (enterX - left) / Math.max(1, enterX - restX));
+        const eased = t * t * (3 - 2 * t);
+        gsap.set(el, { y: (1 - eased) * rise, force3D: true });
+      });
 
       if (practice) {
         const r = practice.getBoundingClientRect();
@@ -175,7 +188,7 @@ export default function Differentiators() {
       <div ref={pinRef} className="relative w-full md:min-h-screen">
         <div
           ref={stageRef}
-          className="relative w-full overflow-hidden md:absolute md:inset-x-0 md:top-0 md:h-screen"
+          className="relative w-full overflow-visible md:absolute md:inset-x-0 md:top-0 md:h-screen"
         >
           <div className="pointer-events-none absolute inset-0 hidden md:block" aria-hidden="true">
             {[20, 40, 60, 80].map((left) => (
@@ -198,8 +211,10 @@ export default function Differentiators() {
                   "text-[clamp(2.8rem,6.4vw,5.6rem)] font-semibold leading-[0.9] tracking-[-0.055em] text-[#1a1a1a]"
                 )}
               >
-                <span className="block">Customer</span>
-                <span className="block">outcomes</span>
+                <span className="block">Why</span>
+                <span className="block">Enterprises</span>
+                <span className="block">chose</span>
+                <span className="block">Entersoft</span>
               </h2>
               <Link href="/#services" className="outcomes-cta mt-8">
                 <span>View all outcomes</span>
@@ -207,16 +222,20 @@ export default function Differentiators() {
               </Link>
             </header>
 
-            <div className="flex w-full flex-col gap-14 px-6 pb-16 md:h-full md:w-max md:flex-row md:items-center md:gap-[4.5vw] md:px-0 md:pb-0 md:pr-[3vw]">
+            <div className="flex w-full flex-col gap-14 px-6 pb-16 md:h-full md:w-max md:flex-row md:items-center md:gap-[3.2vw] md:px-0 md:pb-0 md:pr-[3vw]">
               {WORK.map((item) => (
-                <article key={item.id} className="w-full shrink-0 md:w-[min(42vw,580px)]">
+                <article
+                  key={item.id}
+                  data-outcome-card
+                  className="w-full shrink-0 will-change-transform md:w-[36.25vw] md:min-w-[520px] md:max-w-[700px]"
+                >
                   <Link href={item.href} className="group block">
-                    <div className="overflow-hidden rounded-[28px]">
+                    <div className="outcomes-card-media overflow-hidden">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={item.image}
                         alt=""
-                        className="aspect-[16/10.2] h-auto w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                        className="aspect-[154/100] h-auto w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                       />
                     </div>
                     <h3
