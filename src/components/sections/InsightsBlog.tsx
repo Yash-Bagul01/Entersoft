@@ -248,7 +248,7 @@ export default function InsightsBlog() {
               data-card-inner
               data-cursor="link"
               style={{ zIndex: idx + 1 }}
-              className="absolute left-1/2 top-1/2 flex aspect-[1/1.065] w-[min(42vw,720px)] flex-col justify-between overflow-hidden rounded-[0.4rem] border border-[#cfcfc8] bg-white px-[1.6rem] py-[1.4rem] text-[#1b1b1c] shadow-[0_18px_50px_rgba(20,20,22,0.08)] transition-colors duration-300 will-change-transform hover:bg-[#f4f4f4] md:px-10 md:py-8"
+              className="absolute left-1/2 top-1/2 flex aspect-[1/1.065] w-[min(36vw,600px)] flex-col justify-between overflow-hidden rounded-[0.4rem] border border-[#cfcfc8] bg-white px-[1.6rem] py-[1.4rem] text-[#1b1b1c] shadow-[0_18px_50px_rgba(20,20,22,0.08)] transition-colors duration-300 will-change-transform hover:bg-[#f4f4f4] md:px-10 md:py-8"
             >
               <span className="font-display text-[clamp(2.8rem,6.8vw,5.8rem)] font-bold leading-none tracking-[-0.04em]">
                 {idx + 1}

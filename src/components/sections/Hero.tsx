@@ -207,7 +207,7 @@ export default function Hero() {
           </div>
           <div ref={buttonsRef} className="flex flex-wrap items-center gap-4">
             <MagneticButton>
-              <Button variant="primary" size="lg" asLink href="/contact" className="gap-2 w-full sm:w-auto text-center justify-center shadow-lg shadow-black/40">
+              <Button variant="primary" size="lg" asLink href="/contact" className="gap-2 w-full sm:w-auto text-center justify-center shadow-lg shadow-black/40 hover:shadow-[0_0_28px_rgba(0,122,255,0.45)]">
                 Book a Security Briefing <ArrowRight className="w-3.5 h-3.5" />
               </Button>
             </MagneticButton>

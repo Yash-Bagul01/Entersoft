@@ -489,8 +489,10 @@ export default function Navbar() {
                 href="/#contact"
                 className={cn(
                   "transition-all duration-300 rounded-full px-4 py-1.5",
-                  (isLightFloatingPill || isLightPage)
-                    ? "!bg-[#08428C] !text-white hover:!bg-[#06336e] !border-[#08428C] font-semibold shadow-md"
+                  isLightFloatingPill &&
+                    "!border-[#060606] hover:!border-[#007AFF]",
+                  isLightPage && !isLightFloatingPill
+                    ? "!bg-[#08428C] !text-white hover:!bg-[#007AFF] hover:!border-[#007AFF] !border-[#08428C] font-semibold shadow-md"
                     : ""
                 )}
               >

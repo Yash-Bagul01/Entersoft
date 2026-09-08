@@ -41,6 +41,7 @@ export const ROUTES = {
   home: "/",
   solutions: "/solutions",
   contact: "/contact",
+  booking: "/booking",
   company: {
     accreditations: "/company/accreditations",
   },

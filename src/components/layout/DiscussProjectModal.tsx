@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { Familjen_Grotesk } from "next/font/google";
 import gsap from "gsap";
 import { services } from "@/data/services";
+import { ROUTES } from "@/config/routes";
 import { useSmoothScroll } from "@/components/layout/SmoothScrollProvider";
 import { cn } from "@/lib/utils";
 
@@ -28,7 +29,6 @@ const BUDGETS = [
   "Not sure yet",
 ];
 
-const CALL_HREF = "https://calendar.app.google/VZXgQpSpvyiG4P296";
 
 type Props = {
   open: boolean;
@@ -169,7 +169,7 @@ export default function DiscussProjectModal({ open, onClose }: Props) {
               <p className="mt-5 max-w-[34ch] text-[15px] leading-relaxed text-[#c8c6c0]">
                 Tell us about your programme. We usually reply within one business day.
               </p>
-              <a href={CALL_HREF} target="_blank" rel="noopener noreferrer" className="discuss-line-link mt-8">
+              <a href={ROUTES.booking} className="discuss-line-link mt-8">
                 Book a 30-minute call →
               </a>
             </div>

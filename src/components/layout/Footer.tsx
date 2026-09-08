@@ -74,7 +74,6 @@ const COLUMNS = [
   },
 ] as const;
 
-const CALL_HREF = "https://calendar.app.google/VZXgQpSpvyiG4P296";
 
 function useIstClock() {
   const [label, setLabel] = useState("");
@@ -172,7 +171,7 @@ export default function Footer() {
 
             <div className="flex w-full flex-col justify-center lg:col-span-5 lg:pl-4">
               <FooterLineLink label="Discuss your project" onClick={() => setDiscussOpen(true)} />
-              <FooterLineLink label="Book a 30-minute call" href={CALL_HREF} external />
+              <FooterLineLink label="Book a 30-minute call" href={ROUTES.booking} />
             </div>
           </div>
 

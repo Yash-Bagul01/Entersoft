@@ -234,7 +234,7 @@ html.lenis, html.lenis body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: var(--accent);
+  background-color: #007AFF;
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -243,7 +243,7 @@ html.lenis, html.lenis body {
 
 .btn-sweep-primary:hover {
   color: #060606 !important;
-  border-color: var(--accent) !important;
+  border-color: #007AFF !important;
 }
 
 .btn-sweep-primary:hover::before {
@@ -444,7 +444,7 @@ html.lenis, html.lenis body {
 }
 
 [data-theme="light"] #hero .btn-sweep-primary:hover {
-  border-color: var(--accent) !important;
+  border-color: #007AFF !important;
   color: #060606 !important;
 }
 
@@ -546,6 +546,16 @@ html.lenis, html.lenis body {
 .nav-floating-pill {
   backdrop-filter: saturate(180%) blur(16px) !important;
   -webkit-backdrop-filter: saturate(180%) blur(16px) !important;
+}
+
+:root[data-theme="light"] .nav-floating-pill .btn-sweep-primary,
+.nav-floating-pill-light .btn-sweep-primary {
+  border-color: #060606 !important;
+}
+
+:root[data-theme="light"] .nav-floating-pill .btn-sweep-primary:hover,
+.nav-floating-pill-light .btn-sweep-primary:hover {
+  border-color: #007AFF !important;
 }
 
 :root[data-theme="light"] .nav-floating-pill,
@@ -1157,16 +1167,19 @@ html:has([data-page="ai-ast"]) footer,
 [data-theme="light"] .discuss-modal h2,
 [data-theme="light"] .discuss-modal p,
 [data-theme="light"] .discuss-modal span,
-[data-theme="light"] .discuss-modal button,
+[data-theme="light"] .discuss-modal button:not(.discuss-submit),
 [data-theme="light"] .discuss-modal a,
 [data-theme="light"] .discuss-modal input,
 [data-theme="light"] .discuss-modal textarea {
   color: #f3f1ec !important;
 }
 
-[data-theme="light"] .discuss-submit {
+.discuss-submit,
+[data-theme="light"] .discuss-modal .discuss-submit,
+[data-theme="dark"] .discuss-modal .discuss-submit {
   background: #f3f1ec !important;
   color: #111110 !important;
+  opacity: 1 !important;
 }
 
 [data-theme="light"] #site-footer h2,
