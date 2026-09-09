@@ -7,6 +7,8 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { SOLUTION_CASE_BY_HREF } from "@/data/solutionCases";
+import { useOptionalSolutionTransition } from "@/components/solutions/SolutionTransitionContext";
 
 interface SolutionItem {
   id: string;
@@ -16,6 +18,7 @@ interface SolutionItem {
   year: string;
   description: string;
   image: string;
+  heroImage: string;
   href: string;
   coverBg: string;
   textColor: string;
@@ -33,6 +36,7 @@ const SOLUTIONS_DATA: SolutionItem[] = [
     year: "2026",
     description: "LLM pipeline testing, RAG safety, agentic red-teaming, prompt injection defense, and shadow AI model discovery.",
     image: "/images/menu/solutions.png",
+    heroImage: SOLUTION_CASE_BY_HREF["/platform/ai-appsec"].hero.src,
     href: "/platform/ai-appsec",
     coverBg: "bg-[#ccff00]",
     textColor: "text-black",
@@ -48,6 +52,7 @@ const SOLUTIONS_DATA: SolutionItem[] = [
     year: "2026",
     description: "AWS, Azure & GCP CSPM, CIEM, Kubernetes cluster hardening, container security, and IaC vulnerability prevention.",
     image: "/images/menu/services.png",
+    heroImage: SOLUTION_CASE_BY_HREF["/platform/cloud-appsec"].hero.src,
     href: "/platform/cloud-appsec",
     coverBg: "bg-[#86e3ce]",
     textColor: "text-black",
@@ -63,6 +68,7 @@ const SOLUTIONS_DATA: SolutionItem[] = [
     year: "2026",
     description: "OWASP API Top 10 automated testing, shadow endpoint discovery, BOLA validation, and real-time schema assurance.",
     image: "/images/menu/platform.png",
+    heroImage: SOLUTION_CASE_BY_HREF["/platform/api-security"].hero.src,
     href: "/platform/api-security",
     coverBg: "bg-[#1a1c4b]",
     textColor: "text-white",
@@ -78,6 +84,7 @@ const SOLUTIONS_DATA: SolutionItem[] = [
     year: "2026",
     description: "Correlate code, container, API, and cloud vulnerability telemetry into prioritized risk and automated developer tickets.",
     image: "/images/menu/solutions.png",
+    heroImage: SOLUTION_CASE_BY_HREF["/platform/aspm"].hero.src,
     href: "/platform/aspm",
     coverBg: "bg-[#05382b]",
     textColor: "text-white",
@@ -93,6 +100,7 @@ const SOLUTIONS_DATA: SolutionItem[] = [
     year: "2026",
     description: "External attack surface monitoring, continuous validation, threat intelligence, and risk-informed decisioning.",
     image: "/images/menu/platform.png",
+    heroImage: SOLUTION_CASE_BY_HREF["/platform/attack-surface-management"].hero.src,
     href: "/platform/attack-surface-management",
     coverBg: "bg-[#ff4081]",
     textColor: "text-white",
@@ -108,6 +116,7 @@ const SOLUTIONS_DATA: SolutionItem[] = [
     year: "2026",
     description: "SAST, SCA, SBOM generation, open-source dependency auditing, secrets detection, and CI/CD security gatekeeper.",
     image: "/images/menu/services.png",
+    heroImage: SOLUTION_CASE_BY_HREF["/platform/sbom-license-risk"].hero.src,
     href: "/platform/sbom-license-risk",
     coverBg: "bg-[#ff9f1c]",
     textColor: "text-black",
@@ -123,6 +132,7 @@ const SOLUTIONS_DATA: SolutionItem[] = [
     year: "2026",
     description: "Zero-trust identity validation, secrets governance, privacy compliance (ISO 27001, SOC 2, DPDP) & audit evidence.",
     image: "/images/menu/solutions.png",
+    heroImage: SOLUTION_CASE_BY_HREF["/platform/secrets"].hero.src,
     href: "/platform/secrets",
     coverBg: "bg-[#1257A6]",
     textColor: "text-white",
@@ -157,10 +167,12 @@ function SolutionCard({
   item,
   onClick,
   cardRef,
+  isPov,
 }: {
   item: SolutionItem;
   onClick: () => void;
   cardRef: (el: HTMLDivElement | null) => void;
+  isPov: boolean;
 }) {
   return (
     <div
@@ -169,17 +181,19 @@ function SolutionCard({
       // Hidden until the reel takes over, so the pre-hydration paint never
       // shows the cards piled up at the centre of the stage.
       style={{ opacity: 0 }}
-      className="absolute overflow-hidden cursor-pointer rounded-none border border-white/10 shadow-2xl w-[320px] sm:w-[360px] aspect-[16/10] group will-change-transform pointer-events-auto"
+      className={`absolute overflow-hidden cursor-pointer rounded-none border border-white/10 shadow-2xl w-[320px] sm:w-[360px] aspect-[16/10] will-change-transform pointer-events-auto ${isPov ? "group" : ""}`}
     >
       {/* Default Cover Visual: Vibrant Color + Emblem Symbol ONLY */}
       <div className={`relative w-full h-full ${item.coverBg} flex flex-col items-center justify-center p-6 overflow-hidden`}>
 
-        {/* Hover Detail Overlay (Reveals Info on Hover) */}
+        {/* Hover Detail Overlay — POV card only (group class is gated above) */}
         <div className="absolute inset-0 z-20 opacity-0 group-hover:opacity-100 transition-all duration-500 ease-out p-6 flex flex-col justify-between bg-black/85 backdrop-blur-md">
           <Image
-            src={item.image}
+            src={item.heroImage}
             alt={item.title}
             fill
+            sizes="360px"
+            unoptimized
             className="object-cover opacity-25 group-hover:scale-105 transition-transform duration-700 ease-out"
           />
           <div className="relative z-10 flex items-center justify-between font-mono text-[11px] font-bold text-white/70">
@@ -221,6 +235,7 @@ function SolutionCard({
 export default function SolutionsShowcase() {
   const router = useRouter();
   const isReduced = useReducedMotion();
+  const transition = useOptionalSolutionTransition();
   const totalItems = SOLUTIONS_DATA.length; // 7
 
   const [viewMode, setViewMode] = useState<"vertical" | "horizontal">("vertical");
@@ -236,7 +251,6 @@ export default function SolutionsShowcase() {
   const touchStartPos = useRef<number | null>(null);
   const rafId = useRef<number | null>(null);
   const snapTimer = useRef<NodeJS.Timeout | null>(null);
-  const isLoadedRef = useRef<boolean>(false);
 
   // Continuous render transforms for cards reel (Produx design card reel layout)
   const renderTransforms = useCallback(() => {
@@ -338,16 +352,18 @@ export default function SolutionsShowcase() {
 
   // Initial load: deal the deck in slowly, fan across arc, collapse into reel, then show details
   useEffect(() => {
+    gsap.killTweensOf(loadProgress.current);
+
     if (isReduced) {
-      gsap.killTweensOf(loadProgress.current);
       loadProgress.current.value = 1;
       setShowDetails(true);
       renderTransforms();
       return;
     }
 
-    if (isLoadedRef.current) return;
-    isLoadedRef.current = true;
+    loadProgress.current.value = 0;
+    setShowDetails(false);
+    renderTransforms();
 
     const tween = gsap.to(loadProgress.current, {
       value: 1,
@@ -462,6 +478,16 @@ export default function SolutionsShowcase() {
   // Card click handler
   const handleCardClick = (index: number, href: string) => {
     if (index === activeDiscreteIndex) {
+      const el = cardElementsRef.current[index];
+      const item = SOLUTIONS_DATA[index];
+      if (el && transition && item?.heroImage && !isReduced) {
+        transition.startFromCard(el, {
+          href,
+          image: item.heroImage,
+          title: item.title,
+        });
+        return;
+      }
       router.push(href);
     } else {
       let stepDiff = index - activeDiscreteIndex;
@@ -472,10 +498,26 @@ export default function SolutionsShowcase() {
     }
   };
 
+  useEffect(() => {
+    SOLUTIONS_DATA.forEach((item) => {
+      router.prefetch(item.href);
+    });
+  }, [router]);
+
+  useEffect(() => {
+    const html = document.documentElement;
+    html.setAttribute("data-theme", "dark");
+    html.classList.remove("light");
+    html.classList.add("dark");
+    return () => {
+      html.removeAttribute("data-theme");
+    };
+  }, []);
+
   const activeItem = SOLUTIONS_DATA[activeDiscreteIndex];
 
   return (
-    <div className="relative w-full h-screen bg-[#0b0b0d] text-white flex flex-col justify-between overflow-hidden select-none isolate font-sans">
+    <div className="dark-panel relative w-full h-screen bg-[#0b0b0d] text-white flex flex-col justify-between overflow-hidden select-none isolate font-sans">
       {/* Header Navbar */}
       <Navbar />
 
@@ -613,6 +655,7 @@ export default function SolutionsShowcase() {
               <SolutionCard
                 key={item.id}
                 item={item}
+                isPov={i === activeDiscreteIndex}
                 cardRef={(el) => {
                   cardElementsRef.current[i] = el;
                 }}
@@ -629,19 +672,19 @@ export default function SolutionsShowcase() {
           onClick={() => setViewMode("vertical")}
           className={`cursor-pointer transition-all duration-300 ${
             viewMode === "vertical"
-              ? "text-[#ccff00] font-bold border-b-2 border-[#ccff00] pb-0.5"
-              : "text-neutral-500 hover:text-white"
+              ? "text-[#8EBEFF] font-bold border-b-2 border-[#8EBEFF] pb-0.5"
+              : "text-[#6F8FB3] hover:text-[#C5DCFF]"
           }`}
         >
           VERTICAL
         </button>
-        <span className="text-neutral-700">|</span>
+        <span className="text-[#3D5570]">|</span>
         <button
           onClick={() => setViewMode("horizontal")}
           className={`cursor-pointer transition-all duration-300 ${
             viewMode === "horizontal"
-              ? "text-[#ccff00] font-bold border-b-2 border-[#ccff00] pb-0.5"
-              : "text-neutral-500 hover:text-white"
+              ? "text-[#8EBEFF] font-bold border-b-2 border-[#8EBEFF] pb-0.5"
+              : "text-[#6F8FB3] hover:text-[#C5DCFF]"
           }`}
         >
           HORIZONTAL

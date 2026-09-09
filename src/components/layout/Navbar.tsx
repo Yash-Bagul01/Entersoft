@@ -45,18 +45,15 @@ export default function Navbar() {
   const isCyberOntologyPage = pathname?.startsWith("/platform/cyber-ontology");
   const isSastPage = pathname?.startsWith("/platform/sast");
   const isScaPage = pathname?.startsWith("/platform/sca");
-  const isSbomPage = pathname?.startsWith("/platform/sbom-license-risk");
-  const isSecretsPage = pathname?.startsWith("/platform/secrets");
-  const isPlatformSubpage = isSastPage || isSbomPage;
-  const isLightPage = isCyberOntologyPage || isScaPage || isSecretsPage;
+  const isPlatformSubpage = isSastPage;
   const isExoCase = pathname === "/platform/dast" || pathname === "/platform/iac" || pathname === "/platform/agentic-pentesting";
-  const isAsmLanding = pathname === ROUTES.platform.attackSurfaceManagement;
+  const isSolutionsPage = pathname === ROUTES.solutions;
+  const isLightPage = isCyberOntologyPage || isScaPage;
   const isServicePage =
     (pathname?.startsWith("/services") || pathname?.startsWith("/platform")) &&
     !isLightPage &&
     !isPlatformSubpage &&
-    !isExoCase &&
-    !isAsmLanding;
+    !isExoCase;
   const isAppSecPage = pathname === ROUTES.services.appsec;
   const isVaptPage = pathname === ROUTES.services.vapt;
   const isCompliancePage = pathname === ROUTES.services.compliance;
@@ -490,7 +487,7 @@ export default function Navbar() {
                 </div>
               </button>
 
-              {!isServicePage && !isLightPage && !isExoCase && <ThemeToggle />}
+              {!isServicePage && !isLightPage && !isExoCase && !isSolutionsPage && <ThemeToggle />}
               <Button
                 variant="primary"
                 size="sm"
@@ -512,7 +509,7 @@ export default function Navbar() {
 
             {/* Mobile Menu Icon & Theme Toggle */}
             <div className="lg:hidden z-50 flex items-center gap-4">
-              {!isServicePage && !isLightPage && !isExoCase && <ThemeToggle />}
+              {!isServicePage && !isLightPage && !isExoCase && !isSolutionsPage && <ThemeToggle />}
               <button
                 onClick={() => setExoMenuOpen(true)}
                 className={cn(

@@ -1,5 +1,5 @@
 import React from "react";
-import SbomLicenseRiskPageRoot from "@/components/platform/roots/SbomLicenseRiskPageRoot";
+import SolutionCasePage from "@/components/solutions/SolutionCasePage";
 
 export const metadata = {
   title: "SBOM & License Risk — EnProbe Platform | Entersoft Security",
@@ -7,5 +7,5 @@ export const metadata = {
 };
 
 export default function SbomLicenseRiskPage() {
-  return <SbomLicenseRiskPageRoot />;
+  return <SolutionCasePage slug="sbom-license-risk" />;
 }

@@ -1,72 +1,113 @@
 "use client";
 
-import React, { useRef } from "react";
-import { motion } from "framer-motion";
-import { Familjen_Grotesk } from "next/font/google";
-import { Button } from "@/components/ui/Button";
-import SectionLabel from "@/components/ui/SectionLabel";
+import React, { useState } from "react";
+import Link from "next/link";
 import { platformPillars } from "@/data/platform";
-import { useReducedMotion } from "@/hooks/useReducedMotion";
-import { useStripeWipe } from "@/hooks/useStripeWipe";
-import StripeWipeBars from "@/components/ui/StripeWipeBars";
-import { cn } from "@/lib/utils";
-
-const familjen = Familjen_Grotesk({
-  subsets: ["latin"],
-  weight: ["400", "600", "700"],
-  display: "swap",
-});
+import { ROUTES } from "@/config/routes";
 
 const pillar = platformPillars["attack-surface-management"];
 
+const STEPS = [
+  {
+    id: "seed",
+    kicker: "Step 1",
+    title: pillar.howItWorks[0].title,
+    subtitle: "A known starting map",
+    body: pillar.howItWorks[0].description,
+    rows: ["entersoftsecurity.com", "ASN · 14,208", "CIDR · 203.0.113.0/24"],
+    chart: false,
+  },
+  {
+    id: "map",
+    kicker: "Step 2",
+    title: "OSINT, DNS & fingerprint",
+    subtitle: "EnProbe handles the sweep",
+    body: `${pillar.howItWorks[1].description} ${pillar.howItWorks[2].description}`,
+    rows: ["api.shadow.acme.dev", "s3://backup-open", "vpn.legacy.corp:443"],
+    chart: false,
+  },
+  {
+    id: "alert",
+    kicker: "Step 3",
+    title: pillar.howItWorks[3].title,
+    subtitle: "The SOC stays powered",
+    body: pillar.howItWorks[3].description,
+    rows: ["CRIT · auth gateway", "HIGH · customer API", "MED · marketing CMS"],
+    chart: true,
+  },
+];
+
+function PhoneFace({ step }: { step: (typeof STEPS)[number] }) {
+  return (
+    <div className="asm-phone" data-step={step.id}>
+      <div className="asm-phone-notch" aria-hidden="true" />
+      <div className="asm-phone-bar">
+        <span>9:41</span>
+        <strong>EnProbe</strong>
+        <span>Live</span>
+      </div>
+      <p className="asm-phone-title">Power on</p>
+      <p className="asm-phone-kicker">{step.subtitle}</p>
+      <ul>
+        {step.rows.map((row) => (
+          <li key={row}>{row}</li>
+        ))}
+      </ul>
+      {step.chart && (
+        <div className="asm-phone-chart" aria-hidden="true">
+          <p className="asm-mono">Exposure curve</p>
+          <svg viewBox="0 0 220 72" fill="none">
+            <path d="M0 58 C 20 56, 32 40, 52 42 S 88 18, 110 24 S 150 8, 176 14 S 204 6, 220 10" />
+          </svg>
+          <div className="asm-phone-days">
+            {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+              <span key={day}>{day}</span>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function AsmManifesto() {
-  const reduce = useReducedMotion();
-  const rootRef = useRef<HTMLElement>(null);
-  const stripesRef = useRef<HTMLDivElement>(null);
-  const sheetRef = useRef<HTMLDivElement>(null);
-  useStripeWipe(rootRef, stripesRef, sheetRef, reduce);
+  const [active, setActive] = useState(0);
+  const step = STEPS[active];
 
   return (
-    <section id="asm-manifesto" ref={rootRef} className="relative z-[5] w-full bg-transparent">
-      <div
-        ref={stripesRef}
-        className="pointer-events-none fixed inset-0 z-[15] hidden flex-col md:flex"
-        aria-hidden="true"
-      >
-        <StripeWipeBars />
-      </div>
-      <div
-        ref={sheetRef}
-        className="ov-sheet relative z-[7] flex min-h-[100dvh] w-full flex-col items-center justify-center bg-[var(--bg-primary)] px-6 py-24 text-center md:px-12"
-      >
-        <div className="flex max-w-[1150px] flex-col items-center gap-6 text-center md:gap-8">
-          <SectionLabel color="secondary">Exposure discipline</SectionLabel>
-          <h2
-            className={cn(
-              familjen.className,
-              "max-w-[16ch] text-[clamp(2.6rem,7vw,6.4rem)] font-semibold leading-[0.88] tracking-[-0.055em] text-[var(--text-primary)]"
-            )}
-          >
-            {pillar.coreCapability}.
-          </h2>
-          <p className="max-w-[42ch] text-[16px] leading-relaxed text-[var(--text-secondary)]">{pillar.summary}</p>
-          <motion.div
-            initial={reduce ? false : { opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-2 flex flex-col items-center gap-4"
-          >
-            <Button variant="secondary" size="md" asLink href="#asm-gallery" className="gap-2">
-              Explore the map <span className="font-sans">↓</span>
-            </Button>
-            <span
-              className="text-[10px] tracking-[0.3em] text-[#5c5c5c]/70 uppercase"
-              style={{ fontFamily: "var(--font-ibm-plex-mono), ui-monospace, monospace" }}
-            >
-              Scroll to map exposure
-            </span>
-          </motion.div>
+    <section id="asm-manifesto" className="asm-works">
+      <p className="asm-mono">How EnProbe works</p>
+      <h2 className="asm-display">
+        A new way to map
+        <br />
+        <em>your perimeter</em>
+      </h2>
+      <p className="asm-lede">
+        {pillar.coreCapability}. Seed the domains you know. EnProbe finds the rest — subdomains, cloud leaks, open
+        ports — and hands the SOC a live inventory.
+      </p>
+      <Link href={ROUTES.contact} className="asm-btn asm-btn-orange">
+        See if you qualify
+      </Link>
+
+      <div className="asm-works-split">
+        <ol className="asm-steps">
+          {STEPS.map((item, index) => (
+            <li key={item.id}>
+              <button
+                type="button"
+                className={index === active ? "is-active" : undefined}
+                onClick={() => setActive(index)}
+              >
+                <span className="asm-mono">{item.kicker}</span>
+                <strong>{item.title}</strong>
+                <p>{item.body}</p>
+              </button>
+            </li>
+          ))}
+        </ol>
+        <div className="asm-phone-wrap">
+          <PhoneFace key={step.id} step={step} />
         </div>
       </div>
     </section>

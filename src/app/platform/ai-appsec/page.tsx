@@ -1,6 +1,5 @@
 import React from "react";
-import PlatformSubpageTemplate from "@/components/platform/PlatformSubpageTemplate";
-import { platformPillars } from "@/data/platform";
+import SolutionCasePage from "@/components/solutions/SolutionCasePage";
 
 export const metadata = {
   title: "AI AppSec — EnProbe Platform | Entersoft Security",
@@ -8,6 +7,5 @@ export const metadata = {
 };
 
 export default function AiAppsecPage() {
-  const pillar = platformPillars["ai-appsec"];
-  return <PlatformSubpageTemplate pillar={pillar} />;
+  return <SolutionCasePage slug="ai-appsec" />;
 }

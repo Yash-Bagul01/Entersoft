@@ -2,6 +2,7 @@
 
 import React, { useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { isSolutionCasePath } from "@/data/solutionCases";
 
 export default function PlatformLayout({
   children,
@@ -17,22 +18,18 @@ export default function PlatformLayout({
   const isSecrets = pathname === "/platform/secrets";
   const isDast = pathname === "/platform/dast";
   const isAgentic = pathname === "/platform/agentic-pentesting";
-  const isAsmLanding = pathname === "/platform/attack-surface-management";
-  const isLightPage = isCyberOntology || isSca || isSecrets;
+  const isSolutionCase = isSolutionCasePath(pathname);
+  const isLightPage = isCyberOntology || isSca;
   const isExoCase = isDast || isIac || isAgentic;
 
   useEffect(() => {
-    if (isAsmLanding) {
-      let theme = "light";
-      try {
-        theme = localStorage.getItem("theme") || "light";
-      } catch {
-        theme = "light";
-      }
-      document.documentElement.setAttribute("data-theme", theme);
-      document.documentElement.classList.remove("dark", "light");
-      document.documentElement.classList.add(theme);
-      return;
+    if (isSolutionCase) {
+      document.documentElement.setAttribute("data-theme", "dark");
+      document.documentElement.classList.remove("light");
+      document.documentElement.classList.add("dark");
+      return () => {
+        document.documentElement.removeAttribute("data-theme");
+      };
     }
 
     if (isLightPage) {
@@ -59,10 +56,14 @@ export default function PlatformLayout({
       body.style.removeProperty("overflow-x");
       body.style.removeProperty("overflow-y");
     };
-  }, [pathname, isLightPage, isExoCase, isAsmLanding]);
+  }, [pathname, isLightPage, isExoCase, isSolutionCase]);
 
-  if (isAsmLanding) {
-    return <>{children}</>;
+  if (isSolutionCase) {
+    return (
+      <div data-page="solution-case" className="min-h-screen bg-[#0b0b0d] text-white">
+        {children}
+      </div>
+    );
   }
 
   if (isExoCase) {

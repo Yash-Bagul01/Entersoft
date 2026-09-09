@@ -1,6 +1,5 @@
 import React from "react";
-import PlatformSubpageTemplate from "@/components/platform/PlatformSubpageTemplate";
-import { platformPillars } from "@/data/platform";
+import SolutionCasePage from "@/components/solutions/SolutionCasePage";
 
 export const metadata = {
   title: "Cloud AppSec — EnProbe Platform | Entersoft Security",
@@ -8,6 +7,5 @@ export const metadata = {
 };
 
 export default function CloudAppsecPage() {
-  const pillar = platformPillars["cloud-appsec"];
-  return <PlatformSubpageTemplate pillar={pillar} />;
+  return <SolutionCasePage slug="cloud-appsec" />;
 }
