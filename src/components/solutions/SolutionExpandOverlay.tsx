@@ -50,7 +50,7 @@ export default function SolutionExpandOverlay({
         left: 0,
         width: () => window.innerWidth,
         height: () => window.innerHeight,
-        duration: 0.92,
+        duration: 1.08,
         ease: "power3.inOut",
         onComplete: () => {
           if (expandedRef.current) return;
@@ -80,9 +80,9 @@ export default function SolutionExpandOverlay({
     fadingRef.current = true;
     const tween = gsap.to(layer, {
       autoAlpha: 0,
-      duration: 0.38,
-      delay: 0.06,
-      ease: "power2.out",
+      duration: 0.88,
+      delay: 0.36,
+      ease: "power2.inOut",
       onComplete: onFinished,
     });
     return () => {

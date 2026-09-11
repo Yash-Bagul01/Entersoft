@@ -97,6 +97,19 @@
   max-width: 16ch;
 }
 
+.sc-hero__word-wrap {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.06em;
+  margin-right: 0.28em;
+}
+
+.sc-hero__word {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
 .sc-wrap {
   width: min(1280px, calc(100% - 12vw));
   margin: 0 auto;

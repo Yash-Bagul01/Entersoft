@@ -1,8 +1,10 @@
 "use client";
 
-import React, { useLayoutEffect, useMemo } from "react";
+import React, { useLayoutEffect, useMemo, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { platformPillars } from "@/data/platform";
 import { certifications } from "@/data/certifications";
 import {
@@ -12,18 +14,85 @@ import {
   type SolutionCaseSlug,
 } from "@/data/solutionCases";
 import { useOptionalSolutionTransition } from "@/components/solutions/SolutionTransitionContext";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 import "@/components/solutions/solution-case.css";
 
 export default function SolutionCasePage({ slug }: { slug: SolutionCaseSlug }) {
   const visual = SOLUTION_CASES[slug];
   const pillar = platformPillars[slug];
   const transition = useOptionalSolutionTransition();
+  const reduce = useReducedMotion();
+  const kickerRef = useRef<HTMLParagraphElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const articleRef = useRef<HTMLElement>(null);
   const more = useMemo(() => otherSolutionCases(slug), [slug]);
   const tags = useMemo(() => (pillar ? tagsForCase(visual, pillar) : visual.tags), [pillar, visual]);
+  const titleWords = useMemo(() => visual.showcaseTitle.split(" "), [visual.showcaseTitle]);
 
   useLayoutEffect(() => {
+    const kicker = kickerRef.current;
+    const title = titleRef.current;
+    if (!kicker || !title) return;
+
+    const words = title.querySelectorAll<HTMLElement>(".sc-hero__word");
+    const incoming = transition?.phase === "covering" || transition?.phase === "expanding";
+
+    if (reduce) {
+      gsap.set([kicker, words], { autoAlpha: 1, y: 0 });
+      transition?.markArrived(visual.href);
+      return;
+    }
+
+    gsap.set(kicker, { autoAlpha: 0, y: 16 });
+    gsap.set(words, { autoAlpha: 0, y: "108%" });
     transition?.markArrived(visual.href);
-  }, [transition, visual.href]);
+
+    const tl = gsap.timeline({ delay: incoming ? 0.24 : 0.06 });
+    tl.to(kicker, {
+      autoAlpha: 1,
+      y: 0,
+      duration: 0.85,
+      ease: "power3.out",
+    }, 0).to(words, {
+      autoAlpha: 1,
+      y: "0%",
+      duration: 1.15,
+      stagger: 0.1,
+      ease: "power3.out",
+    }, 0.14);
+
+    return () => {
+      tl.kill();
+    };
+  }, [reduce, transition, visual.href]);
+
+  useLayoutEffect(() => {
+    if (reduce || !articleRef.current) return;
+    gsap.registerPlugin(ScrollTrigger);
+    const headings = articleRef.current.querySelectorAll<HTMLElement>(
+      ".sc-section__label, .sc-section__title"
+    );
+    const tweens: gsap.core.Tween[] = [];
+    headings.forEach((el) => {
+      gsap.set(el, { autoAlpha: 0, y: 28 });
+      tweens.push(
+        gsap.to(el, {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.95,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: el,
+            start: "top 88%",
+            once: true,
+          },
+        })
+      );
+    });
+    return () => {
+      tweens.forEach((tween) => tween.kill());
+    };
+  }, [reduce, slug]);
 
   if (!pillar) return null;
 
@@ -31,7 +100,7 @@ export default function SolutionCasePage({ slug }: { slug: SolutionCaseSlug }) {
   const support = pillar.whatItDoes.slice(1);
 
   return (
-    <article id="solution-case" className="dark-panel">
+    <article id="solution-case" ref={articleRef} className="dark-panel">
       <header className="sc-hero">
         <div className="sc-hero__media">
           <Image
@@ -47,8 +116,14 @@ export default function SolutionCasePage({ slug }: { slug: SolutionCaseSlug }) {
         </div>
         <div className="sc-hero__shade" />
         <div className="sc-hero__copy">
-          <p className="sc-kicker">View</p>
-          <h1 className="sc-hero__title">{visual.showcaseTitle}</h1>
+          <p ref={kickerRef} className="sc-kicker">View</p>
+          <h1 ref={titleRef} className="sc-hero__title">
+            {titleWords.map((word, i) => (
+              <span key={`${word}-${i}`} className="sc-hero__word-wrap">
+                <span className="sc-hero__word">{word}</span>
+              </span>
+            ))}
+          </h1>
         </div>
       </header>
 

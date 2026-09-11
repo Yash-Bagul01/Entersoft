@@ -1,3 +1,5 @@
+import { SERVICE_SLUGS, getServiceRoute } from "@/config/routes";
+
 export type Service = {
   index: string
   plainLanguageTitle: string
@@ -26,7 +28,7 @@ export const services: Service[] = [
     descriptor: 'APPSEC • DEVSECOPS • SECURE SDLC',
     hoverCardHeading: 'Application Security Transformation',
     hoverCardBody: 'Embed expert-led testing, secure engineering and continuous assurance across applications, APIs, code and release workflows.',
-    route: '/services/appsec',
+    route: getServiceRoute("appsec"),
     slug: 'appsec',
     legacyName: 'APPSEC INTEGRATION',
     image: 'https://images.unsplash.com/photo-1585123607190-72ec2979a269?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
@@ -40,7 +42,7 @@ export const services: Service[] = [
     descriptor: 'PEN TESTING • RED TEAMING • ATTACK PATHS',
     hoverCardHeading: 'Adversarial Security Validation',
     hoverCardBody: 'Recreate real attacker behavior to expose attack paths, validate exploitability and prioritize what must be fixed.',
-    route: '/services/vapt',
+    route: getServiceRoute("vapt"),
     slug: 'vapt',
     legacyName: 'VAPT AUDIT SERVICES',
     image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop',
@@ -54,7 +56,7 @@ export const services: Service[] = [
     descriptor: 'ASSESSMENT • PEN TESTING • CSPM • MDR',
     hoverCardHeading: 'Modular Cloud Security Practice',
     hoverCardBody: 'Structurally separated cloud security: Assessment, Penetration Testing, Posture Management (EnProbe), Managed Detection, and Container/IaC Security.',
-    route: '/services/cloud-resilience',
+    route: getServiceRoute("cloud-resilience"),
     slug: 'cloud-resilience',
     legacyName: 'MANAGED CLOUD SECURITY',
     image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop',
@@ -68,7 +70,7 @@ export const services: Service[] = [
     descriptor: 'GRC • PRIVACY • AUDIT READINESS',
     hoverCardHeading: 'Cyber Risk & Regulatory Assurance',
     hoverCardBody: 'Translate controls into board-ready risk decisions, audit-ready evidence and sustained compliance.',
-    route: '/services/compliance-management',
+    route: getServiceRoute("compliance-management"),
     slug: 'compliance-management',
     legacyName: 'COMPLIANCE MANAGEMENT',
     image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=800&auto=format&fit=crop',
@@ -82,7 +84,7 @@ export const services: Service[] = [
     descriptor: 'MDR • DETECTION ENGINEERING • MANAGED STACK',
     hoverCardHeading: 'Cyber Defense Operations',
     hoverCardBody: 'MDR and Detection Engineering, delivered through your existing security stack or an Entersoft-managed architecture.',
-    route: '/services/siem',
+    route: getServiceRoute("siem"),
     slug: 'siem',
     legacyName: 'MANAGED SIEM & MONITORING',
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop',
@@ -96,7 +98,7 @@ export const services: Service[] = [
     descriptor: 'SMART CONTRACTS • DEFI • BLOCKCHAIN',
     hoverCardHeading: 'Digital Asset & Protocol Security',
     hoverCardBody: 'Secure smart contracts, wallets, bridges and protocols before code moves value.',
-    route: '/services/smart-contract-audits',
+    route: getServiceRoute("smart-contract-audits"),
     slug: 'smart-contract-audits',
     legacyName: 'SMART CONTRACT AUDITS',
     image: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=800&auto=format&fit=crop',
@@ -110,7 +112,7 @@ export const services: Service[] = [
     descriptor: 'LLM • RAG • AGENTS • MODEL APIS',
     hoverCardHeading: 'AI Security & Model Assurance',
     hoverCardBody: 'Assess AI applications, models, agents, data flows and autonomous actions before production.',
-    route: '/services/ai-ast',
+    route: getServiceRoute("ai-ast"),
     slug: 'ai-ast',
     legacyName: 'AI AST SECURITY',
     image: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=800&auto=format&fit=crop',
@@ -143,8 +145,6 @@ export type ServicePageData = {
   col2Description?: string;
   col3Metadata?: string;
 };
-
-import { SERVICE_SLUGS } from "@/config/routes";
 
 export const servicePagesData: Record<string, ServicePageData> = {
   appsec: {

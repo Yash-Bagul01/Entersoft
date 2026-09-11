@@ -3,15 +3,16 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { getServiceRoute } from "@/config/routes";
 
 const OTHER_SERVICES = [
-  { name: "APPLICATION ASSURANCE", href: "/services/appsec" },
-  { name: "ADVERSARIAL VALIDATION", href: "/services/vapt" },
-  { name: "CLOUD RESILIENCE", href: "/services/cloud-resilience" },
-  { name: "DIGITAL TRUST", href: "/services/compliance-management" },
-  { name: "CYBER DEFENSE OPERATIONS", href: "/services/siem" },
-  { name: "PROTOCOL ASSURANCE", href: "/services/smart-contract-audits" },
-  { name: "AI SYSTEMS ASSURANCE", href: "/services/ai-ast" },
+  { name: "APPLICATION ASSURANCE", href: getServiceRoute("appsec") },
+  { name: "ADVERSARIAL VALIDATION", href: getServiceRoute("vapt") },
+  { name: "CLOUD RESILIENCE", href: getServiceRoute("cloud-resilience") },
+  { name: "DIGITAL TRUST", href: getServiceRoute("compliance-management") },
+  { name: "CYBER DEFENSE OPERATIONS", href: getServiceRoute("siem") },
+  { name: "PROTOCOL ASSURANCE", href: getServiceRoute("smart-contract-audits") },
+  { name: "AI SYSTEMS ASSURANCE", href: getServiceRoute("ai-ast") },
 ];
 
 export default function InterServiceNav() {

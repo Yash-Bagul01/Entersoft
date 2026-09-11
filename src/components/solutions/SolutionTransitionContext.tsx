@@ -127,7 +127,7 @@ export function SolutionTransitionProvider({
     clearTimeoutSafe();
     timeoutRef.current = window.setTimeout(() => {
       finish();
-    }, 2400);
+    }, 3200);
   }, [finish, router]);
 
   const markArrived = useCallback((href: string) => {

@@ -23,11 +23,29 @@ export default function ServicesLayout({
   const pathname = usePathname();
   const pathSegments = pathname.split("/").filter(Boolean);
   const currentSlug = pathSegments[pathSegments.length - 1] || "";
-  const isCloud = pathname.startsWith("/services/cloud-resilience") || currentSlug === "cloud-resilience" || currentSlug === "managed-cloud-security";
+  const isCloud =
+    pathname.startsWith("/services/cloud-resilience") ||
+    pathname.startsWith("/services/cloud-security") ||
+    currentSlug === "cloud-resilience" ||
+    currentSlug === "cloud-security" ||
+    currentSlug === "managed-cloud-security";
   const currentKey = isCloud ? "cloud-resilience" : getServiceKeyFromSlug(currentSlug);
 
-  const noPadding = currentSlug === "vapt" || currentSlug === "appsec" || isCloud || currentSlug === "compliance-management" || currentSlug === "smart-contract-audits" || currentSlug === "ai-ast";
-  const isAiAst = currentSlug === "ai-ast";
+  const noPadding =
+    currentSlug === "vapt" ||
+    currentSlug === "penetration-testing" ||
+    currentSlug === "appsec" ||
+    currentSlug === "application-security-testing" ||
+    isCloud ||
+    currentSlug === "compliance-management" ||
+    currentSlug === "grc-compliance-privacy" ||
+    currentSlug === "smart-contract-audits" ||
+    currentSlug === "smart-contract-security" ||
+    currentSlug === "siem" ||
+    currentSlug === "managed-detection-response" ||
+    currentSlug === "ai-ast" ||
+    currentSlug === "ai-security-testing";
+  const isAiAst = currentSlug === "ai-ast" || currentSlug === "ai-security-testing";
 
   // Get the other six services
   const otherServices = services.filter(

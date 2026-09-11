@@ -103,6 +103,7 @@ interface CardSpec {
   description: string;
   badge: string;
   metricDetail: string;
+  image: string;
   lightColors: {
     bgStart: string;
     bgMid: string;
@@ -199,6 +200,7 @@ const CARDS_DATA: CardSpec[] = [
     description: "CREST-accredited penetration testing delivering internationally validated security assessments.",
     badge: "CREST ACCREDITED",
     metricDetail: "Penetration Testing",
+    image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1600&q=80",
     lightColors: {
       bgStart: "#FFF9FD",
       bgMid: "#F5E4F3",
@@ -237,6 +239,7 @@ const CARDS_DATA: CardSpec[] = [
     description: "CERT-In empanelled auditing organisation authorized for corporate and government security assessments.",
     badge: "CERT-IN EMPANELLED",
     metricDetail: "Auditing Organisation",
+    image: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=1600&q=80",
     lightColors: {
       bgStart: "#F5FAFE",
       bgMid: "#D8ECFA",
@@ -275,6 +278,7 @@ const CARDS_DATA: CardSpec[] = [
     description: "ISO/IEC 27001-certified ISMS adhering to international standards for information security management.",
     badge: "ISO 27001 CERTIFIED",
     metricDetail: "ISMS Certified",
+    image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=1600&q=80",
     lightColors: {
       bgStart: "#FCFAF6",
       bgMid: "#F7EEE0",
@@ -313,6 +317,7 @@ const CARDS_DATA: CardSpec[] = [
     description: "Founded in 2013 with over a decade of continuous cybersecurity and offensive testing expertise.",
     badge: "FOUNDED 2013",
     metricDetail: "Established Track Record",
+    image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1600&q=80",
     lightColors: {
       bgStart: "#F4FDF8",
       bgMid: "#DFF8EA",
@@ -351,6 +356,7 @@ const CARDS_DATA: CardSpec[] = [
     description: "Verified enterprise delivery across banking, fintech, cloud, healthcare, and digital assets.",
     badge: "VERIFIED DELIVERY",
     metricDetail: "Enterprise Proven",
+    image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1600&q=80",
     lightColors: {
       bgStart: "#F8F7FF",
       bgMid: "#E8E5FF",
@@ -382,7 +388,17 @@ const CARDS_DATA: CardSpec[] = [
   }
 ];
 
-// Helper to draw the high-resolution front canvas texture with rounded corners and dynamic real-time glare
+function loadCardPhoto(src: string): Promise<HTMLImageElement | null> {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => resolve(img);
+    img.onerror = () => resolve(null);
+    img.src = src;
+  });
+}
+
+// Photo plate + centered title + crystal glare (Aikawa card face; geometry/animation unchanged)
 function drawCardFrontCanvas(
   canvas: HTMLCanvasElement,
   spec: CardSpec,
@@ -390,7 +406,8 @@ function drawCardFrontCanvas(
   isLight: boolean,
   glareX: number,
   glareY: number,
-  glareIntensity: number
+  glareIntensity: number,
+  photo: HTMLImageElement | null = null
 ) {
   const W = 2800;
   const H = 1200;
@@ -400,55 +417,80 @@ function drawCardFrontCanvas(
   ctx.imageSmoothingQuality = "high";
 
   const colors = isLight ? spec.lightColors : spec.darkColors;
-  const r = 0; // Pointed card corners (sharp 90-degree edges)
+  const hover = Math.max(0, Math.min(1, (glareIntensity - 1) / 0.45));
 
-  // 1. Path of the Pointed Card
   ctx.beginPath();
   ctx.rect(0, 0, W, H);
   ctx.closePath();
-
-  // Save clip so nothing leaks out
   ctx.save();
   ctx.clip();
 
-  // 2. Base Multi-stop Atmospheric Gradient Fill
   const bgGrad = ctx.createLinearGradient(0, 0, W, H);
   bgGrad.addColorStop(0, colors.bgStart);
-  bgGrad.addColorStop(0.50, colors.bgMid);
+  bgGrad.addColorStop(0.5, colors.bgMid);
   bgGrad.addColorStop(1, colors.bgEnd);
   ctx.fillStyle = bgGrad;
   ctx.fill();
 
-  // 3. Dynamic Specular Cylindrical Glass Lighting Highlight (Tracks mouse hover)
-  const glareGrad = ctx.createRadialGradient(glareX, glareY, 10, glareX, glareY, W * 0.65);
-  const alphaHigh = isLight ? 0.85 * glareIntensity : 0.45 * glareIntensity;
-  const alphaMid = isLight ? 0.24 * glareIntensity : 0.10 * glareIntensity;
+  if (photo && photo.complete && photo.naturalWidth > 0) {
+    const scale = Math.max(W / photo.naturalWidth, H / photo.naturalHeight);
+    const dw = photo.naturalWidth * scale;
+    const dh = photo.naturalHeight * scale;
+    ctx.globalAlpha = 0.94 + hover * 0.06;
+    ctx.drawImage(photo, (W - dw) / 2, (H - dh) / 2, dw, dh);
+    ctx.globalAlpha = 1;
+  }
+
+  // Keep the photo clear in the middle; fade only behind copy
+  const ink = isLight ? "246, 245, 240" : "6, 6, 8";
+  const leftFade = ctx.createLinearGradient(0, 0, W * 0.5, 0);
+  leftFade.addColorStop(0, `rgba(${ink}, 0.78)`);
+  leftFade.addColorStop(0.55, `rgba(${ink}, 0.32)`);
+  leftFade.addColorStop(1, `rgba(${ink}, 0)`);
+  ctx.fillStyle = leftFade;
+  ctx.fill();
+
+  const rightFade = ctx.createLinearGradient(W, 0, W * 0.5, 0);
+  rightFade.addColorStop(0, `rgba(${ink}, 0.74)`);
+  rightFade.addColorStop(0.5, `rgba(${ink}, 0.26)`);
+  rightFade.addColorStop(1, `rgba(${ink}, 0)`);
+  ctx.fillStyle = rightFade;
+  ctx.fill();
+
+  const botFade = ctx.createLinearGradient(0, H, 0, H * 0.64);
+  botFade.addColorStop(0, `rgba(${ink}, 0.58)`);
+  botFade.addColorStop(1, `rgba(${ink}, 0)`);
+  ctx.fillStyle = botFade;
+  ctx.fill();
+
+  const glareGrad = ctx.createRadialGradient(glareX, glareY, 8, glareX, glareY, W * 0.55);
+  const alphaHigh = (isLight ? 0.32 : 0.24) * glareIntensity;
+  const alphaMid = (isLight ? 0.1 : 0.06) * glareIntensity;
   glareGrad.addColorStop(0, `rgba(255, 255, 255, ${alphaHigh})`);
-  glareGrad.addColorStop(0.35, `rgba(255, 255, 255, ${alphaMid})`);
-  glareGrad.addColorStop(0.70, `rgba(255, 255, 255, ${0.03 * glareIntensity})`);
+  glareGrad.addColorStop(0.28, `rgba(210, 236, 255, ${alphaMid})`);
+  glareGrad.addColorStop(0.55, `rgba(255, 255, 255, ${0.04 * glareIntensity})`);
   glareGrad.addColorStop(1, "transparent");
   ctx.fillStyle = glareGrad;
   ctx.fill();
 
-  // 4. Clean Palantir-Style Watermark Typography
-  ctx.save();
-  ctx.font = "600 280px 'Inter Tight', 'Inter', -apple-system, sans-serif";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillStyle = colors.watermark;
-  ctx.fillText(spec.watermark, W / 2, H / 2 + 10);
-  ctx.restore();
+  if (hover > 0.02) {
+    const prism = ctx.createLinearGradient(0, 0, W, H);
+    prism.addColorStop(0, `rgba(180, 230, 255, ${0.1 * hover})`);
+    prism.addColorStop(0.45, `rgba(255, 255, 255, ${0.04 * hover})`);
+    prism.addColorStop(1, `rgba(255, 210, 230, ${0.1 * hover})`);
+    ctx.fillStyle = prism;
+    ctx.fill();
+  }
 
-  // 5. Top Row: Index Capsule, Category Badge, Security Glyph
-  // (Remaining elements retain exact original structure inside pointed card boundary)
+  ctx.shadowColor = isLight ? "rgba(255, 255, 255, 0.7)" : "rgba(0, 0, 0, 0.72)";
+  ctx.shadowBlur = 16;
 
   const leftX = 160;
   const rightX = 2640;
   const topY = 155;
 
-  // Index Capsule [01 / 04]
   ctx.save();
-  const indexText = `0${index + 1} / 04`;
+  const indexText = `0${index + 1} / 0${CARDS_DATA.length}`;
   ctx.font = "500 30px 'IBM Plex Mono', 'JetBrains Mono', monospace";
   ctx.textAlign = "left";
   const indexMetrics = ctx.measureText(indexText);
@@ -465,19 +507,21 @@ function drawCardFrontCanvas(
   ctx.fill();
   ctx.stroke();
 
+  ctx.shadowBlur = 0;
   ctx.fillStyle = colors.chipText;
   ctx.textBaseline = "middle";
   ctx.fillText(indexText, pillX + 22, pillY + pillH / 2);
 
-  // Category Badge Text with tracked mono styling
+  ctx.shadowColor = isLight ? "rgba(255, 255, 255, 0.7)" : "rgba(0, 0, 0, 0.72)";
+  ctx.shadowBlur = 14;
   ctx.font = "500 28px 'IBM Plex Mono', 'JetBrains Mono', monospace";
   ctx.fillStyle = colors.chipText;
   ctx.fillText(spec.badge, pillX + pillW + 30, pillY + pillH / 2);
 
-  // Top Right Icon Pill
   const iconR = 34;
   const iconX = rightX - iconR;
   const iconY = topY - 8;
+  ctx.shadowBlur = 0;
   ctx.beginPath();
   ctx.arc(iconX, iconY, iconR, 0, Math.PI * 2);
   ctx.fillStyle = isLight ? "rgba(255, 255, 255, 0.95)" : "rgba(0, 0, 0, 0.65)";
@@ -486,7 +530,6 @@ function drawCardFrontCanvas(
   ctx.fill();
   ctx.stroke();
 
-  // Geometric shield glyph
   ctx.strokeStyle = colors.accent;
   ctx.lineWidth = 3.5;
   ctx.beginPath();
@@ -494,36 +537,35 @@ function drawCardFrontCanvas(
   ctx.stroke();
   ctx.restore();
 
-  // 6. Center Row: Bold Metric Number & Editorial Paragraph
   const centerY = H / 2 + 10;
 
-  // Primary Metric Number (Clean Neo-Grotesk)
   ctx.save();
+  ctx.shadowColor = isLight ? "rgba(255, 255, 255, 0.78)" : "rgba(0, 0, 0, 0.78)";
+  ctx.shadowBlur = 22;
   ctx.font = "600 120px 'Inter Tight', 'Inter', -apple-system, sans-serif";
   ctx.fillStyle = colors.textColor;
   ctx.textAlign = "left";
   ctx.textBaseline = "middle";
   ctx.fillText(spec.value, leftX, centerY - 24);
 
-  // Stat Label (IBM Plex Mono)
   ctx.font = "500 24px 'IBM Plex Mono', 'JetBrains Mono', monospace";
   ctx.fillStyle = colors.chipText;
-  ctx.textAlign = "left";
   ctx.fillText(spec.label, leftX, centerY + 70);
   ctx.restore();
 
-  // Right Side Description (Inter Tight - Clean Technical Paragraph)
   ctx.save();
-  ctx.font = "400 28px 'Inter Tight', 'Inter', sans-serif";
-  ctx.fillStyle = colors.descColor;
+  ctx.shadowColor = isLight ? "rgba(255, 255, 255, 0.88)" : "rgba(0, 0, 0, 0.88)";
+  ctx.shadowBlur = 22;
+  ctx.font = "500 42px 'Inter Tight', 'Inter', sans-serif";
+  ctx.fillStyle = isLight ? "#060606" : "#FFFFFF";
   ctx.textAlign = "right";
   ctx.textBaseline = "top";
 
-  const maxDescW = 440;
+  const maxDescW = 640;
   const words = spec.description.split(" ");
   let line = "";
-  let lineY = centerY - 56;
-  const lineHeight = 40;
+  let lineY = centerY - 72;
+  const lineHeight = 56;
 
   for (let n = 0; n < words.length; n++) {
     const testLine = line + words[n] + " ";
@@ -539,9 +581,9 @@ function drawCardFrontCanvas(
   ctx.fillText(line, rightX, lineY);
   ctx.restore();
 
-  // 7. Bottom Row: Verified Status & Protocol Stamp
   const botY = H - 130;
   ctx.save();
+  ctx.shadowBlur = 0;
   ctx.strokeStyle = isLight ? "rgba(0, 0, 0, 0.12)" : "rgba(255, 255, 255, 0.15)";
   ctx.lineWidth = 2;
   ctx.beginPath();
@@ -549,7 +591,6 @@ function drawCardFrontCanvas(
   ctx.lineTo(rightX, botY - 38);
   ctx.stroke();
 
-  // Checkmark circle
   ctx.beginPath();
   ctx.arc(leftX + 18, botY, 18, 0, Math.PI * 2);
   ctx.fillStyle = "#10B981";
@@ -563,20 +604,18 @@ function drawCardFrontCanvas(
   ctx.lineTo(leftX + 24, botY - 4);
   ctx.stroke();
 
-  // Verified Live Metric label
-  ctx.font = "500 28px 'Inter Tight', 'Inter', sans-serif";
-  ctx.fillStyle = colors.textColor;
+  ctx.shadowColor = isLight ? "rgba(255, 255, 255, 0.88)" : "rgba(0, 0, 0, 0.88)";
+  ctx.shadowBlur = 18;
+  ctx.font = "500 36px 'Inter Tight', 'Inter', sans-serif";
+  ctx.fillStyle = isLight ? "#060606" : "#FFFFFF";
   ctx.textAlign = "left";
   ctx.textBaseline = "middle";
   ctx.fillText("Verified Live Metric", leftX + 48, botY);
 
-  // Metric Detail Pill
-  ctx.font = "500 26px 'IBM Plex Mono', 'JetBrains Mono', monospace";
-  ctx.fillStyle = colors.descColor;
-  ctx.textAlign = "left";
-  ctx.fillText(`• ${spec.metricDetail}`, leftX + 370, botY);
+  ctx.font = "500 34px 'IBM Plex Mono', 'JetBrains Mono', monospace";
+  ctx.fillStyle = isLight ? "#060606" : "#FFFFFF";
+  ctx.fillText(`• ${spec.metricDetail}`, leftX + 430, botY);
 
-  // Right pill: EnProbe ASPM
   const aspmText = "EnProbe ASPM ↗";
   ctx.font = "600 26px 'IBM Plex Mono', 'JetBrains Mono', monospace";
   ctx.textAlign = "left";
@@ -586,6 +625,7 @@ function drawCardFrontCanvas(
   const aspmPillX = rightX - aspmW;
   const aspmPillY = botY - aspmH / 2;
 
+  ctx.shadowBlur = 0;
   ctx.fillStyle = colors.chipBg;
   ctx.strokeStyle = colors.border;
   ctx.lineWidth = 2;
@@ -598,25 +638,15 @@ function drawCardFrontCanvas(
   ctx.fillText(aspmText, aspmPillX + 21, aspmPillY + aspmH / 2);
   ctx.restore();
 
-  // Restore clip to draw outer smooth border
   ctx.restore();
 
-  // 8. Outer Pointed Bevel Stroke
   ctx.save();
-  ctx.beginPath();
-  ctx.rect(0, 0, W, H);
-  ctx.closePath();
-
   ctx.lineWidth = 4;
   ctx.strokeStyle = colors.border;
-  ctx.stroke();
-
-  // Inner hairline lighting line
+  ctx.strokeRect(0, 0, W, H);
   ctx.lineWidth = 2;
-  ctx.strokeStyle = isLight ? "rgba(255, 255, 255, 0.85)" : "rgba(255, 255, 255, 0.25)";
-  ctx.beginPath();
-  ctx.rect(14, 14, W - 28, H - 28);
-  ctx.stroke();
+  ctx.strokeStyle = isLight ? "rgba(255, 255, 255, 0.7)" : "rgba(255, 255, 255, 0.22)";
+  ctx.strokeRect(14, 14, W - 28, H - 28);
   ctx.restore();
 }
 
@@ -665,7 +695,7 @@ function createCardCanvasTexture(
   const frontCanvas = document.createElement("canvas");
   frontCanvas.width = W;
   frontCanvas.height = H;
-  drawCardFrontCanvas(frontCanvas, spec, index, isLight, W * 0.50, H * 0.15, 1.0);
+  drawCardFrontCanvas(frontCanvas, spec, index, isLight, W * 0.50, H * 0.15, 1.0, null);
 
   const frontTexture = new THREE.CanvasTexture(frontCanvas);
   frontTexture.colorSpace = THREE.SRGBColorSpace;
@@ -716,8 +746,10 @@ export default function TrackRecord3DCylinder() {
       frontCanvas: HTMLCanvasElement;
       spec: CardSpec;
       index: number;
+      photo: HTMLImageElement | null;
     }>
   >([]);
+  const glassMatsRef = useRef<THREE.MeshPhysicalMaterial[]>([]);
 
   // Animation & Interaction state
   const rotationAngle = useRef(0);
@@ -788,7 +820,7 @@ export default function TrackRecord3DCylinder() {
     sceneRef.current = scene;
 
     const camera = new THREE.PerspectiveCamera(36, width / height, 0.1, 100);
-    camera.position.set(0, 0.04, 7.85);
+    camera.position.set(0, 0.04, 8.15);
     camera.lookAt(0, 0, 0);
     cameraRef.current = camera;
 
@@ -808,8 +840,8 @@ export default function TrackRecord3DCylinder() {
     container.style.transition = "opacity 0.2s ease-out";
 
     // 3. Cylinder Dimensions: Wafer-Thin Paper-Sleek Depth
-    const radius = 3.85;
-    const cardHeight = 2.16;
+    const radius = 4.08;
+    const cardHeight = 2.42;
     const slabDepth = 0.016; // Paper-thin crystal glass depth
     const gap = 0.038; // Clean, razor-sharp seam between cards
     const sectorAngle = Math.PI / 2 - gap; // 90 deg arc per card
@@ -852,6 +884,7 @@ export default function TrackRecord3DCylinder() {
 
     // 6. Build 4 Volumetric Curved Slabs with Pure Curved Rounded Silhouettes & 3D Glass Front Structures
     cardTexturesRef.current = [];
+    glassMatsRef.current = [];
 
     CARDS_DATA.forEach((spec, idx) => {
       const centerAngle = (idx * Math.PI) / 2;
@@ -870,7 +903,7 @@ export default function TrackRecord3DCylinder() {
       );
 
       const { frontTexture, frontCanvas, backTexture } = createCardCanvasTexture(spec, idx, isLight, maxAniso);
-      cardTexturesRef.current.push({ frontTexture, frontCanvas, spec, index: idx });
+      cardTexturesRef.current.push({ frontTexture, frontCanvas, spec, index: idx, photo: null });
 
       // Front Material with alpha test for 100% clean rounded corner clipping
       const frontMat = new THREE.MeshBasicMaterial({
@@ -904,6 +937,8 @@ export default function TrackRecord3DCylinder() {
         ior: 1.50,
         clearcoat: 1.0,
         clearcoatRoughness: 0.03,
+        iridescence: 0.12,
+        iridescenceIOR: 1.3,
         transparent: true,
         opacity: isLight ? 0.68 : 0.80,
         reflectivity: 0.95,
@@ -913,6 +948,7 @@ export default function TrackRecord3DCylinder() {
 
       const glassShieldMesh = new THREE.Mesh(glassFrontGeom, glassFrontMat);
       cylinderGroup.add(glassShieldMesh);
+      glassMatsRef.current.push(glassFrontMat);
 
       // Back shell with matching frosted crystal tone and identical rounded clipping
       const backGeom = new THREE.CylinderGeometry(
@@ -945,6 +981,25 @@ export default function TrackRecord3DCylinder() {
       });
       const reflMesh = new THREE.Mesh(frontGeom.clone(), reflMat);
       reflectionGroup.add(reflMesh);
+    });
+
+    let cancelled = false;
+    void Promise.all(CARDS_DATA.map((spec) => loadCardPhoto(spec.image))).then((photos) => {
+      if (cancelled) return;
+      cardTexturesRef.current.forEach((obj, i) => {
+        obj.photo = photos[i] ?? null;
+        drawCardFrontCanvas(
+          obj.frontCanvas,
+          obj.spec,
+          obj.index,
+          isLight,
+          1400,
+          200,
+          1.0,
+          obj.photo
+        );
+        obj.frontTexture.needsUpdate = true;
+      });
     });
 
     let frameCount = 0;
@@ -988,6 +1043,12 @@ export default function TrackRecord3DCylinder() {
 
       // Smooth dynamic scale (Hover zoom + scroll breathing)
       const hoverScaleBoost = mouseCoords.current.isOver && currentTiltX.current > -0.2 ? 0.018 : 0;
+      const crystalHover = mouseCoords.current.isOver && currentTiltX.current > -0.2 ? 1 : 0;
+      glassMatsRef.current.forEach((mat) => {
+        const targetIridescence = 0.12 + crystalHover * 0.55;
+        mat.iridescence += (targetIridescence - mat.iridescence) * 0.12;
+        mat.clearcoatRoughness += ((crystalHover ? 0.01 : 0.03) - mat.clearcoatRoughness) * 0.12;
+      });
       const effectiveTargetScale = targetScale.current + hoverScaleBoost;
       dynamicScale.current += (effectiveTargetScale - dynamicScale.current) * 0.14;
       cylinderGroup.scale.setScalar(dynamicScale.current);
@@ -1026,7 +1087,8 @@ export default function TrackRecord3DCylinder() {
             isLight,
             glareCoords.current.x,
             glareCoords.current.y,
-            glareCoords.current.intensity
+            glareCoords.current.intensity,
+            activeCardObj.photo
           );
           activeCardObj.frontTexture.needsUpdate = true;
         }
@@ -1048,6 +1110,7 @@ export default function TrackRecord3DCylinder() {
     window.addEventListener("resize", handleResize);
 
     return () => {
+      cancelled = true;
       window.removeEventListener("resize", handleResize);
       visibilityObserver.disconnect();
       if (reqAnimFrameId.current) cancelAnimationFrame(reqAnimFrameId.current);
