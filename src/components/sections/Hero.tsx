@@ -160,7 +160,7 @@ export default function Hero() {
         ) : (
           <video
             ref={videoRef}
-            src="/videos/hero-background-optimized.mp4"
+            src="https://new-entersoft-website2026.s3.ap-south-1.amazonaws.com/entersoft-command-plane.mp4"
             autoPlay
             muted
             loop
