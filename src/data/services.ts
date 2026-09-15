@@ -31,7 +31,7 @@ export const services: Service[] = [
     route: getServiceRoute("appsec"),
     slug: 'appsec',
     legacyName: 'APPSEC INTEGRATION',
-    image: 'https://images.unsplash.com/photo-1585123607190-72ec2979a269?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1400&auto=format&fit=crop',
   },
   {
     index: '02',
@@ -45,7 +45,7 @@ export const services: Service[] = [
     route: getServiceRoute("vapt"),
     slug: 'vapt',
     legacyName: 'VAPT AUDIT SERVICES',
-    image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=1400&auto=format&fit=crop',
   },
   {
     index: '03',
@@ -59,7 +59,7 @@ export const services: Service[] = [
     route: getServiceRoute("cloud-resilience"),
     slug: 'cloud-resilience',
     legacyName: 'MANAGED CLOUD SECURITY',
-    image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1597852074816-d933c7d2b988?q=80&w=1400&auto=format&fit=crop',
   },
   {
     index: '04',
@@ -73,7 +73,7 @@ export const services: Service[] = [
     route: getServiceRoute("compliance-management"),
     slug: 'compliance-management',
     legacyName: 'COMPLIANCE MANAGEMENT',
-    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=800&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=1400&auto=format&fit=crop',
   },
   {
     index: '05',
@@ -87,7 +87,7 @@ export const services: Service[] = [
     route: getServiceRoute("siem"),
     slug: 'siem',
     legacyName: 'MANAGED SIEM & MONITORING',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1400&auto=format&fit=crop',
   },
   {
     index: '06',
@@ -101,7 +101,7 @@ export const services: Service[] = [
     route: getServiceRoute("smart-contract-audits"),
     slug: 'smart-contract-audits',
     legacyName: 'SMART CONTRACT AUDITS',
-    image: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=800&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1518546305927-5a555bb7020d?q=80&w=1400&auto=format&fit=crop',
   },
   {
     index: '07',
@@ -115,7 +115,7 @@ export const services: Service[] = [
     route: getServiceRoute("ai-ast"),
     slug: 'ai-ast',
     legacyName: 'AI AST SECURITY',
-    image: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=800&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1400&auto=format&fit=crop',
   },
 ];
 

@@ -1,5 +1,5 @@
 import React from "react";
-import SolutionCasePage from "@/components/solutions/SolutionCasePage";
+import ExpertGovernedAiRoot from "@/components/platform/roots/ExpertGovernedAiRoot";
 
 export const metadata = {
   title: "AI AppSec — EnProbe Platform | Entersoft Security",
@@ -7,5 +7,5 @@ export const metadata = {
 };
 
 export default function AiAppsecPage() {
-  return <SolutionCasePage slug="ai-appsec" />;
+  return <ExpertGovernedAiRoot />;
 }

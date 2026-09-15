@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { ROUTES, getCanonicalUrl } from "@/config/routes";
+import { SOLUTION_LANDING_PATHS } from "@/data/solutionLandings";
 
 /**
  * Generated from the canonical route config so the sitemap can never drift from
@@ -52,6 +53,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 1,
     },
+    {
+      url: getCanonicalUrl(ROUTES.servicesHub),
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.95,
+    },
+    {
+      url: getCanonicalUrl(ROUTES.solutions),
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    ...SOLUTION_LANDING_PATHS.map((path) => ({
+      url: getCanonicalUrl(path),
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.85,
+    })),
     ...SERVICE_PAGES.map((path) => ({
       url: getCanonicalUrl(path),
       lastModified,

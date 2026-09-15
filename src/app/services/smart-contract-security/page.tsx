@@ -1,7 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
-import SmartContractPageRoot from "@/components/services/smart-contract-v2/SmartContractPageRoot";
-import ServiceCTA from "@/components/services/ServiceCTA";
+import ServiceCasePage from "@/components/services/ServiceCasePage";
 import { getCanonicalUrl, ROUTES } from "@/config/routes";
 
 const TITLE = "Smart Contract Audit & Web3 Security Services | Entersoft";
@@ -45,29 +44,24 @@ export default function SmartContractSecurityPage() {
         "@type": "ListItem",
         "position": 2,
         "name": "Services",
-        "item": "https://www.entersoftsecurity.com/#services"
+        "item": "https://www.entersoftsecurity.com/services"
       },
       {
         "@type": "ListItem",
         "position": 3,
-        "name": "Smart Contract Security",
+        "name": "Protocol Assurance",
         "item": CANONICAL
       }
     ]
   };
 
   return (
-    <main className="w-full min-h-screen bg-[#07080a] text-white">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <SmartContractPageRoot />
-      <ServiceCTA
-        headline="Ready to scope a smart contract audit?"
-        buttonText="REQUEST AN AUDIT SCOPE"
-        buttonHref="/contact"
-      />
-    </main>
+      <ServiceCasePage slug="smart-contract-audits" />
+    </>
   );
 }

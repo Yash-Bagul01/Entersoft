@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown, Shield, Code, Cloud, CheckSquare, Server, Cpu, HelpCircle, Layers, FileText, Database, Target, Zap, Activity, Eye, Compass, Workflow, Key, Terminal, Box, Award } from "lucide-react";
+import { Menu, X, ChevronDown, Shield, Code, Cloud, CheckSquare, Server, Cpu, HelpCircle, Layers, FileText, Database, Target, Zap, Activity, Eye, Compass, Workflow, Key, Terminal, Box, Award, Search, BarChart3, Package } from "lucide-react";
 import { Button } from "../ui/Button";
 import { cn } from "@/lib/utils";
 import ThemeToggle from "../ui/ThemeToggle";
@@ -11,7 +11,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { Familjen_Grotesk } from "next/font/google";
 import { ROUTES } from "@/config/routes";
+import { services } from "@/data/services";
 import ExoMenuOverlay from "./ExoMenuOverlay";
+
+const serviceName = (slug: string) =>
+  services.find((item) => item.slug === slug)?.displayName ?? slug;
 
 const familjen = Familjen_Grotesk({
   subsets: ["latin"],
@@ -48,12 +52,15 @@ export default function Navbar() {
   const isPlatformSubpage = isSastPage;
   const isExoCase = pathname === "/platform/dast" || pathname === "/platform/iac" || pathname === "/platform/agentic-pentesting";
   const isSolutionsPage = pathname === ROUTES.solutions;
-  const isLightPage = isCyberOntologyPage || isScaPage;
+  const isSolutionLanding = !!pathname?.startsWith("/solutions/");
+  const isServicesHub = pathname === ROUTES.servicesHub;
+  const isLightPage = isCyberOntologyPage || isScaPage || isSolutionLanding;
   const isServicePage =
     (pathname?.startsWith("/services") || pathname?.startsWith("/platform")) &&
     !isLightPage &&
     !isPlatformSubpage &&
-    !isExoCase;
+    !isExoCase &&
+    !isServicesHub;
   const isAppSecPage = pathname === ROUTES.services.appsec;
   const isVaptPage = pathname === ROUTES.services.vapt;
   const isCompliancePage = pathname === ROUTES.services.compliance;
@@ -64,11 +71,17 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [exoMenuOpen, setExoMenuOpen] = useState(false);
   const [currentTheme, setCurrentTheme] = useState<string>("dark");
+  const [chromeTheme, setChromeTheme] = useState<string>("light");
 
   useEffect(() => {
     const checkTheme = () => {
       const theme = document.documentElement.getAttribute("data-theme") || "dark";
       setCurrentTheme(theme);
+      try {
+        setChromeTheme(localStorage.getItem("theme") || "light");
+      } catch {
+        setChromeTheme("light");
+      }
     };
     checkTheme();
     window.addEventListener("themeChange", checkTheme);
@@ -134,26 +147,27 @@ export default function Navbar() {
     },
     {
       label: "Services",
-      href: "/#services",
+      href: ROUTES.servicesHub,
       megaMenu: {
         blurb: "Enterprise security engineering: Application security, penetration testing, cloud, GRC, MDR, smart contracts, and AI security.",
         ctaText: "Explore Expert Services →",
+        ctaHref: ROUTES.servicesHub,
         sections: [
           {
             title: "Core Practices",
             items: [
-              { name: "Application Security", href: ROUTES.services.appsec, desc: "Web, API & Mobile AST", icon: <Code className="w-4 h-4" /> },
-              { name: "Penetration Testing", href: ROUTES.services.vapt, desc: "CREST-Accredited Pen Testing", icon: <Shield className="w-4 h-4" /> },
-              { name: "Cloud Security", href: ROUTES.services.cloud, desc: "AWS, Azure, GCP & Identity", icon: <Cloud className="w-4 h-4" /> },
-              { name: "GRC, Privacy & Compliance", href: ROUTES.services.compliance, desc: "ISO 27001, SOC 2, DPDP", icon: <CheckSquare className="w-4 h-4" /> }
+              { name: serviceName("appsec"), href: ROUTES.services.appsec, desc: "Web, API & Mobile AST", icon: <Code className="w-4 h-4" /> },
+              { name: serviceName("vapt"), href: ROUTES.services.vapt, desc: "CREST-Accredited Pen Testing", icon: <Shield className="w-4 h-4" /> },
+              { name: serviceName("cloud-resilience"), href: ROUTES.services.cloud, desc: "AWS, Azure, GCP & Identity", icon: <Cloud className="w-4 h-4" /> },
+              { name: serviceName("compliance-management"), href: ROUTES.services.compliance, desc: "ISO 27001, SOC 2, DPDP", icon: <CheckSquare className="w-4 h-4" /> }
             ]
           },
           {
             title: "Specialized Practices",
             items: [
-              { name: "Managed Detection & Response", href: ROUTES.services.siem, desc: "Continuous 24/7 MDR Operations", icon: <Server className="w-4 h-4" /> },
-              { name: "Smart Contract Security", href: ROUTES.services.smartContract, desc: "Web3 & Protocol Audits", icon: <Cpu className="w-4 h-4" /> },
-              { name: "AI Security Testing", href: ROUTES.services.aiAst, desc: "LLM, RAG & Agentic Red-Teaming", icon: <Zap className="w-4 h-4" /> }
+              { name: serviceName("siem"), href: ROUTES.services.siem, desc: "Continuous 24/7 MDR Operations", icon: <Server className="w-4 h-4" /> },
+              { name: serviceName("smart-contract-audits"), href: ROUTES.services.smartContract, desc: "Web3 & Protocol Audits", icon: <Cpu className="w-4 h-4" /> },
+              { name: serviceName("ai-ast"), href: ROUTES.services.aiAst, desc: "LLM, RAG & Agentic Red-Teaming", icon: <Zap className="w-4 h-4" /> }
             ]
           }
         ]
@@ -163,20 +177,19 @@ export default function Navbar() {
       label: "Solutions",
       href: ROUTES.solutions,
       megaMenu: {
-        blurb: "Outcome-aligned solutions connecting technology, specialist expertise, and enterprise security programmes.",
+        blurb: "Outcome-aligned solutions for API inventory, AI component visibility, vulnerability management, workflows, KPIs and open-source risk.",
         ctaText: "View All Solutions →",
         ctaHref: ROUTES.solutions,
         sections: [
           {
             title: "Enterprise Solutions",
             items: [
-              { name: "AppSec Transformation", href: ROUTES.services.appsec, desc: "Embed security into release cycles", icon: <Code className="w-4 h-4" /> },
-              { name: "Continuous Exposure Management", href: ROUTES.platform.enprobe, desc: "Visibility, prioritisation & evidence", icon: <Eye className="w-4 h-4" /> },
-              { name: "Cloud Security Transformation", href: ROUTES.services.cloud, desc: "Posture, containers & IAM controls", icon: <Cloud className="w-4 h-4" /> },
-              { name: "Managed Cyber Defense", href: ROUTES.services.siem, desc: "Continuous threat monitoring", icon: <Server className="w-4 h-4" /> },
-              { name: "Regulatory Readiness", href: ROUTES.services.compliance, desc: "Turn compliance into evidence", icon: <CheckSquare className="w-4 h-4" /> },
-              { name: "Digital Asset Launch Assurance", href: ROUTES.services.smartContract, desc: "Pre-launch smart contract audits", icon: <Cpu className="w-4 h-4" /> },
-              { name: "AI Security Readiness", href: ROUTES.services.aiAst, desc: "Secure AI deployments", icon: <Zap className="w-4 h-4" /> }
+              { name: "API Discovery", href: ROUTES.solutionsPages.apiDiscovery, desc: "Find and test the APIs you expose", icon: <Search className="w-4 h-4" /> },
+              { name: "AI-BOM", href: ROUTES.solutionsPages.aiBom, desc: "Inventory AI components in software", icon: <Cpu className="w-4 h-4" /> },
+              { name: "Manage Vulnerabilities", href: ROUTES.solutionsPages.manageVulnerabilities, desc: "Correlate AppSec findings into one queue", icon: <Shield className="w-4 h-4" /> },
+              { name: "Automate Security Workflows", href: ROUTES.solutionsPages.automateWorkflows, desc: "Move findings into developer tools", icon: <Workflow className="w-4 h-4" /> },
+              { name: "Track AppSec KPIs", href: ROUTES.solutionsPages.trackKpis, desc: "Board-ready risk and fix metrics", icon: <BarChart3 className="w-4 h-4" /> },
+              { name: "Manage Open Source Risk", href: ROUTES.solutionsPages.openSourceRisk, desc: "Dependencies, licenses and SBOMs", icon: <Package className="w-4 h-4" /> }
             ]
           }
         ]
@@ -278,6 +291,7 @@ export default function Navbar() {
   const isLightNavbar = isLightThemeActive || (isPlatformSubpage && isScrolled) || (isExoCase && isScrolled);
   const isLightFloatingPill = (isLightThemeActive && isScrolled) || (isExoCase && isScrolled);
   const isLightNavHeader = isLightFloatingPill || isLightPage;
+  const isLightDropdown = chromeTheme === "light";
 
   return (
     <>
@@ -354,8 +368,8 @@ export default function Navbar() {
                         transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
                         className={cn(
                           "absolute top-full border p-6 lg:p-8 mt-3 rounded-[20px] shadow-2xl flex gap-6 lg:gap-7 nav-dropdown-box z-50 transition-colors duration-300 max-w-[calc(100vw-2rem)] pointer-events-auto",
-                          isLightNavHeader
-                            ? "bg-white/98 border-slate-200 text-slate-900 shadow-xl"
+                          isLightDropdown
+                            ? "nav-dropdown-chrome-light bg-white/98 border-slate-200 text-slate-900 shadow-xl"
                             : "bg-[#090F1E]/95 border-white/20 text-white shadow-2xl shadow-cyan-950/80 backdrop-blur-2xl",
                           getDropdownStyle(item.label)
                         )}
@@ -363,18 +377,18 @@ export default function Navbar() {
                         {/* Left Info Blurb */}
                         <div className={cn(
                           "w-[230px] shrink-0 flex flex-col justify-between border-r pr-6",
-                          isLightNavHeader ? "border-slate-200" : "border-white/10"
+                          isLightDropdown ? "border-slate-200" : "border-white/10"
                         )}>
                           <div>
                             <span className={cn(
                               "font-mono text-[11.5px] font-bold uppercase tracking-widest block mb-2.5",
-                              isLightNavHeader ? "text-[#08428C]" : "text-cyan-400"
+                              isLightDropdown ? "text-[#08428C]" : "text-cyan-400"
                             )}>
                               Overview
                             </span>
                             <p className={cn(
                               "text-[13px] leading-relaxed font-sans",
-                              isLightNavHeader ? "text-slate-600" : "text-slate-200"
+                              isLightDropdown ? "text-slate-600" : "text-slate-200"
                             )}>
                               {item.megaMenu.blurb}
                             </p>
@@ -387,7 +401,7 @@ export default function Navbar() {
                                 rel={item.megaMenu.ctaHref.startsWith("http") ? "noopener noreferrer" : undefined}
                                 className={cn(
                                   "text-[12px] font-mono underline transition-colors",
-                                  isLightNavHeader ? "text-slate-900 hover:text-[#08428C]" : "text-white hover:text-cyan-400"
+                                  isLightDropdown ? "text-slate-900 hover:text-[#08428C]" : "text-white hover:text-cyan-400"
                                 )}
                                 data-cursor="link"
                               >
@@ -398,7 +412,7 @@ export default function Navbar() {
                                 href={item.href}
                                 className={cn(
                                   "text-[12px] font-mono underline transition-colors",
-                                  isLightNavHeader ? "text-slate-900 hover:text-[#08428C]" : "text-white hover:text-cyan-400"
+                                  isLightDropdown ? "text-slate-900 hover:text-[#08428C]" : "text-white hover:text-cyan-400"
                                 )}
                                 data-cursor="link"
                               >
@@ -417,7 +431,7 @@ export default function Navbar() {
                             <div key={sec.title} className="space-y-3">
                               <span className={cn(
                                 "font-mono text-[11px] font-bold uppercase tracking-wider block",
-                                isLightNavHeader ? "text-slate-500" : "text-slate-400"
+                                isLightDropdown ? "text-slate-500" : "text-slate-400"
                               )}>
                                 {sec.title}
                               </span>
@@ -428,26 +442,26 @@ export default function Navbar() {
                                     href={subItem.href}
                                     className={cn(
                                       "flex items-start gap-3 group p-2.5 rounded-[8px] transition-all",
-                                      isLightNavHeader ? "hover:bg-slate-100" : "hover:bg-white/10"
+                                      isLightDropdown ? "hover:bg-slate-100" : "hover:bg-white/10"
                                     )}
                                     data-cursor="link"
                                   >
                                     <div className={cn(
                                       "mt-0.5 transition-colors shrink-0",
-                                      isLightNavHeader ? "text-[#08428C]" : "text-cyan-400"
+                                      isLightDropdown ? "text-[#08428C]" : "text-cyan-400"
                                     )}>
                                       {subItem.icon}
                                     </div>
                                     <div className="flex flex-col gap-0.5">
                                       <span className={cn(
                                         "text-[12.5px] font-bold transition-colors leading-tight",
-                                        isLightNavHeader ? "text-slate-900 group-hover:text-[#08428C]" : "text-white group-hover:text-cyan-300 font-bold"
+                                        isLightDropdown ? "text-slate-900 group-hover:text-[#08428C]" : "text-white group-hover:text-cyan-300 font-bold"
                                       )}>
                                         {subItem.name}
                                       </span>
                                       <span className={cn(
                                         "text-[10.5px] font-sans leading-snug transition-colors",
-                                        isLightNavHeader ? "text-slate-500 group-hover:text-slate-800" : "text-slate-300 group-hover:text-white"
+                                        isLightDropdown ? "text-slate-500 group-hover:text-slate-800" : "text-slate-300 group-hover:text-white"
                                       )}>
                                         {subItem.desc}
                                       </span>
@@ -487,7 +501,7 @@ export default function Navbar() {
                 </div>
               </button>
 
-              {!isServicePage && !isLightPage && !isExoCase && !isSolutionsPage && <ThemeToggle />}
+              {!isServicePage && !isLightPage && !isExoCase && !isSolutionsPage && !isServicesHub && <ThemeToggle />}
               <Button
                 variant="primary"
                 size="sm"
@@ -509,7 +523,7 @@ export default function Navbar() {
 
             {/* Mobile Menu Icon & Theme Toggle */}
             <div className="lg:hidden z-50 flex items-center gap-4">
-              {!isServicePage && !isLightPage && !isExoCase && !isSolutionsPage && <ThemeToggle />}
+              {!isServicePage && !isLightPage && !isExoCase && !isSolutionsPage && !isServicesHub && <ThemeToggle />}
               <button
                 onClick={() => setExoMenuOpen(true)}
                 className={cn(

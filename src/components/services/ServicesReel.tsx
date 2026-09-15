@@ -7,10 +7,13 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
-import { SOLUTION_LANDINGS } from "@/data/solutionLandings";
+import {
+  SERVICE_CASES,
+  SERVICE_CASE_ORDER,
+} from "@/data/serviceCases";
 import { useOptionalSolutionTransition } from "@/components/solutions/SolutionTransitionContext";
 
-interface SolutionItem {
+interface ServiceReelItem {
   id: string;
   number: string;
   title: string;
@@ -27,22 +30,25 @@ interface SolutionItem {
   symbolSub: string;
 }
 
-const SOLUTIONS_DATA: SolutionItem[] = SOLUTION_LANDINGS.map((item) => ({
-  id: item.slug,
-  number: item.reel.number,
-  title: item.navName,
-  category: item.reel.category,
-  year: "2026",
-  description: item.navDesc,
-  image: "/images/menu/solutions.png",
-  heroImage: item.reel.image,
-  href: item.href,
-  coverBg: item.reel.coverBg,
-  textColor: item.reel.textColor,
-  accentColor: item.reel.accentColor,
-  symbol: item.reel.symbol,
-  symbolSub: item.reel.symbolSub,
-}));
+const SERVICES_REEL: ServiceReelItem[] = SERVICE_CASE_ORDER.map((slug, index) => {
+  const visual = SERVICE_CASES[slug];
+  return {
+    id: visual.slug,
+    number: String(index + 1).padStart(3, "0"),
+    title: visual.title,
+    category: visual.category,
+    year: "2026",
+    description: visual.description,
+    image: visual.menuImage,
+    heroImage: visual.hero.src,
+    href: visual.href,
+    coverBg: visual.coverBg,
+    textColor: visual.textColor,
+    accentColor: visual.accentColor,
+    symbol: visual.emblem,
+    symbolSub: visual.emblemSub,
+  };
+});
 
 /* Reel geometry */
 const SPACING_Y = 190; // vertical stack pitch
@@ -65,13 +71,13 @@ const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
 const easeInOutCubic = (t: number) =>
   t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
-function SolutionCard({
+function ServiceReelCard({
   item,
   onClick,
   cardRef,
   isPov,
 }: {
-  item: SolutionItem;
+  item: ServiceReelItem;
   onClick: () => void;
   cardRef: (el: HTMLDivElement | null) => void;
   isPov: boolean;
@@ -114,7 +120,7 @@ function SolutionCard({
             </p>
           </div>
           <div className="relative z-10 flex items-center justify-between text-[10px] font-mono text-cyan-400 font-bold uppercase tracking-wider">
-            <span>Explore Solution →</span>
+            <span>Explore Service →</span>
             <span>{item.year}</span>
           </div>
         </div>
@@ -134,11 +140,11 @@ function SolutionCard({
   );
 }
 
-export default function SolutionsShowcase() {
+export default function ServicesReel() {
   const router = useRouter();
   const isReduced = useReducedMotion();
   const transition = useOptionalSolutionTransition();
-  const totalItems = SOLUTIONS_DATA.length; // 7
+  const totalItems = SERVICES_REEL.length; // 7
 
   const [viewMode, setViewMode] = useState<"vertical" | "horizontal">("vertical");
   const [activeDiscreteIndex, setActiveDiscreteIndex] = useState<number>(0);
@@ -333,7 +339,7 @@ export default function SolutionsShowcase() {
   );
 
   useEffect(() => {
-    const stageContainer = document.getElementById("solutions-stage");
+    const stageContainer = document.getElementById("services-stage");
     if (stageContainer) {
       stageContainer.addEventListener("wheel", handleWheel, { passive: false });
       return () => stageContainer.removeEventListener("wheel", handleWheel);
@@ -381,7 +387,7 @@ export default function SolutionsShowcase() {
   const handleCardClick = (index: number, href: string) => {
     if (index === activeDiscreteIndex) {
       const el = cardElementsRef.current[index];
-      const item = SOLUTIONS_DATA[index];
+      const item = SERVICES_REEL[index];
       if (el && transition && item?.heroImage && !isReduced) {
         transition.startFromCard(el, {
           href,
@@ -401,7 +407,7 @@ export default function SolutionsShowcase() {
   };
 
   useEffect(() => {
-    SOLUTIONS_DATA.forEach((item) => {
+    SERVICES_REEL.forEach((item) => {
       router.prefetch(item.href);
     });
   }, [router]);
@@ -416,7 +422,7 @@ export default function SolutionsShowcase() {
     };
   }, []);
 
-  const activeItem = SOLUTIONS_DATA[activeDiscreteIndex];
+  const activeItem = SERVICES_REEL[activeDiscreteIndex];
 
   return (
     <div className="dark-panel relative w-full h-screen bg-[#0b0b0d] text-white flex flex-col justify-between overflow-hidden select-none isolate font-sans">
@@ -425,7 +431,7 @@ export default function SolutionsShowcase() {
 
       {/* Main Showcase Stage */}
       <div
-        id="solutions-stage"
+        id="services-stage"
         className="relative flex-1 w-full h-full flex items-center justify-center pt-20 pb-12 px-6 md:px-16 overflow-hidden touch-none"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
@@ -482,7 +488,7 @@ export default function SolutionsShowcase() {
                       transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: 0.08 }}
                       className="flex items-center gap-10 font-mono text-xs text-neutral-400 tracking-widest uppercase select-none"
                     >
-                      <span>Full case</span>
+                      <span>Full service</span>
                       <span className="text-neutral-300 font-bold">{activeItem.year}</span>
                     </motion.div>
                   )}
@@ -538,7 +544,7 @@ export default function SolutionsShowcase() {
                     transition={{ duration: 0.22 }}
                     className="flex items-center gap-10 font-mono text-xs text-neutral-400 tracking-widest uppercase select-none"
                   >
-                    <span>Full case</span>
+                    <span>Full service</span>
                     <span className="text-neutral-300 font-bold">{activeItem.year}</span>
                   </motion.div>
                 </AnimatePresence>
@@ -553,8 +559,8 @@ export default function SolutionsShowcase() {
         /* ============================================================ */}
         <div className="absolute inset-0 z-10 flex items-center justify-center pt-20 pb-12 px-6 md:px-16 pointer-events-none">
           <div className="relative w-full max-w-[1440px] h-full flex items-center justify-center">
-            {SOLUTIONS_DATA.map((item, i) => (
-              <SolutionCard
+            {SERVICES_REEL.map((item, i) => (
+              <ServiceReelCard
                 key={item.id}
                 item={item}
                 isPov={i === activeDiscreteIndex}

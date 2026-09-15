@@ -1,7 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
-import CDPageRoot from "@/components/services/cyber-defense/CDPageRoot";
-import ServiceCTA from "@/components/services/ServiceCTA";
+import ServiceCasePage from "@/components/services/ServiceCasePage";
 import { getCanonicalUrl, ROUTES } from "@/config/routes";
 
 const TITLE = "Managed Detection & Response (MDR) Services | Entersoft";
@@ -45,29 +44,24 @@ export default function ManagedDetectionResponsePage() {
         "@type": "ListItem",
         "position": 2,
         "name": "Services",
-        "item": "https://www.entersoftsecurity.com/#services"
+        "item": "https://www.entersoftsecurity.com/services"
       },
       {
         "@type": "ListItem",
         "position": 3,
-        "name": "Managed Detection & Response",
+        "name": "Cyber Defense Operations",
         "item": CANONICAL
       }
     ]
   };
 
   return (
-    <main className="w-full min-h-screen bg-[#07090E] text-white">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <CDPageRoot />
-      <ServiceCTA
-        headline="Ready to discuss your monitoring environment?"
-        buttonText="DISCUSS YOUR MONITORING ENVIRONMENT"
-        buttonHref="/contact"
-      />
-    </main>
+      <ServiceCasePage slug="siem" />
+    </>
   );
 }

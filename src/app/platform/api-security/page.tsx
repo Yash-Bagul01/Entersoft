@@ -1,6 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
-import SolutionCasePage from "@/components/solutions/SolutionCasePage";
+import ApiPageRoot from "@/components/platform/api/ApiPageRoot";
 import { getCanonicalUrl, ROUTES } from "@/config/routes";
 
 const TITLE = "API Security Testing — EnProbe Platform | Entersoft Security";
@@ -23,5 +23,5 @@ export const metadata: Metadata = {
 };
 
 export default function ApiSecurityPage() {
-  return <SolutionCasePage slug="api-security" />;
+  return <ApiPageRoot />;
 }

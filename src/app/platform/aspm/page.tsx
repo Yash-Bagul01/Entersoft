@@ -1,5 +1,5 @@
 import React from "react";
-import SolutionCasePage from "@/components/solutions/SolutionCasePage";
+import ExposureDecisioningRoot from "@/components/platform/roots/ExposureDecisioningRoot";
 
 export const metadata = {
   title: "Vulnerability Management (ASPM) — EnProbe Platform | Entersoft Security",
@@ -7,5 +7,5 @@ export const metadata = {
 };
 
 export default function AspmPage() {
-  return <SolutionCasePage slug="aspm" />;
+  return <ExposureDecisioningRoot />;
 }

@@ -9,6 +9,13 @@ import SectionLabel from "../ui/SectionLabel";
 import { Button } from "../ui/Button";
 import { fadeInUpVariants } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { Familjen_Grotesk } from "next/font/google";
+
+const familjen = Familjen_Grotesk({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  display: "swap",
+});
 
 interface PhilosophyToken {
   text: string;
@@ -1132,14 +1139,24 @@ export default function TrackRecord3DCylinder() {
       const st = ScrollTrigger.create({
         trigger: sectionEl,
         start: "top top",
-        end: "+=1900",
+        end: () => {
+          const extra = window.matchMedia("(min-width: 768px)").matches
+            ? window.innerHeight
+            : 0;
+          return `+=${1200 + extra}`;
+        },
         pin: true,
         pinSpacing: true,
         anticipatePin: 1,
         scrub: 0.6,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
-          const p = self.progress;
+          const animDistance = 1200;
+          const extra = window.matchMedia("(min-width: 768px)").matches
+            ? window.innerHeight
+            : 0;
+          const total = animDistance + extra;
+          const p = extra === 0 ? self.progress : Math.min(1, (self.progress * total) / animDistance);
 
           // Update pinned text reveal progress for Jitter word reveal animation (0.0 -> 0.22)
           if (p <= 0.22) {
@@ -1418,21 +1435,9 @@ export default function TrackRecord3DCylinder() {
         ref={headerRef}
         className="relative z-30 pt-10 sm:pt-12 md:pt-14 px-6 md:px-12 max-w-[1440px] mx-auto w-full flex flex-col md:flex-row md:items-end justify-between gap-4 shrink-0 transition-all duration-300 opacity-0"
       >
-        <div className="flex flex-col items-start max-w-xl">
-          <div className="flex items-center gap-3">
-            <SectionLabel color="secondary">VALIDATED TRACK RECORD</SectionLabel>
-            <span
-              className={`hidden sm:inline-block px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold tracking-wider uppercase border transition-colors ${
-                isLight
-                  ? "bg-black/5 border-black/10 text-zinc-800"
-                  : "bg-white/5 border-white/10 text-zinc-300"
-              }`}
-            >
-              3D Curvature Slab
-            </span>
-          </div>
+        <div className="flex flex-col items-start max-w-3xl">
           <h1
-            className={`text-2xl sm:text-3xl md:text-[34px] lg:text-[38px] font-display font-semibold uppercase tracking-[-0.025em] mt-2 leading-[1.08] transition-colors ${
+            className={`${familjen.className} font-normal text-[clamp(2.5rem,5.4vw,4.85rem)] leading-[0.95] tracking-[-0.06em] translate-y-3 transition-colors ${
               isLight ? "text-[#060606]" : "text-[#F6F5F0]"
             }`}
           >

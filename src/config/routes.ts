@@ -40,6 +40,15 @@ export const SERVICE_SLUGS = {
 export const ROUTES = {
   home: "/",
   solutions: "/solutions",
+  solutionsPages: {
+    apiDiscovery: "/solutions/api-discovery",
+    aiBom: "/solutions/ai-bom",
+    manageVulnerabilities: "/solutions/manage-vulnerabilities",
+    automateWorkflows: "/solutions/automate-security-workflows",
+    trackKpis: "/solutions/track-appsec-kpis",
+    openSourceRisk: "/solutions/manage-open-source-risk",
+  },
+  servicesHub: "/services",
   contact: "/contact",
   booking: "/booking",
   company: {

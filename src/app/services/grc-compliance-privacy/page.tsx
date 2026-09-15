@@ -1,6 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
-import CompliancePageRoot from "@/components/services/compliance-v2/CompliancePageRoot";
+import ServiceCasePage from "@/components/services/ServiceCasePage";
 import { getCanonicalUrl, ROUTES } from "@/config/routes";
 
 const TITLE = "GRC, Privacy & Audit Readiness Services | ISO 27001, SOC 2 | Entersoft";
@@ -44,24 +44,24 @@ export default function GrcCompliancePrivacyPage() {
         "@type": "ListItem",
         "position": 2,
         "name": "Services",
-        "item": "https://www.entersoftsecurity.com/#services"
+        "item": "https://www.entersoftsecurity.com/services"
       },
       {
         "@type": "ListItem",
         "position": 3,
-        "name": "GRC, Privacy & Compliance",
+        "name": "Digital Trust",
         "item": CANONICAL
       }
     ]
   };
 
   return (
-    <main className="w-full min-h-screen bg-[#05070F] text-white">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <CompliancePageRoot />
-    </main>
+      <ServiceCasePage slug="compliance-management" />
+    </>
   );
 }

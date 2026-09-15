@@ -1,12 +1,12 @@
 import React from "react";
 import type { Metadata } from "next";
 import { getCanonicalUrl, ROUTES } from "@/config/routes";
-import SolutionsShowcase from "@/components/solutions/SolutionsShowcase";
+import ServicesReel from "@/components/services/ServicesReel";
 
-const TITLE = "Cybersecurity Solutions | Entersoft Security";
+const TITLE = "Enterprise Security Services | Entersoft Security";
 const DESCRIPTION =
-  "Entersoft solutions for API discovery, AI-BOM, vulnerability management, security workflows, AppSec KPIs and open-source risk.";
-const CANONICAL = getCanonicalUrl(ROUTES.solutions);
+  "Entersoft expert-led security services across application security, penetration testing, cloud, GRC, managed detection, smart-contract review and AI security testing.";
+const CANONICAL = getCanonicalUrl(ROUTES.servicesHub);
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -22,10 +22,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function SolutionsPage() {
+export default function ServicesIndexPage() {
   return (
     <main className="w-full h-screen overflow-hidden relative z-10 bg-[#0b0b0d]">
-      <SolutionsShowcase />
+      <ServicesReel />
     </main>
   );
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import SolutionCasePage from "@/components/solutions/SolutionCasePage";
+import SecretsPageRoot from "@/components/platform/roots/SecretsPageRoot";
 
 export const metadata = {
   title: "Secrets Detection & Credential Defense — EnProbe Platform | Entersoft Security",
@@ -7,5 +7,5 @@ export const metadata = {
 };
 
 export default function SecretsPage() {
-  return <SolutionCasePage slug="secrets" />;
+  return <SecretsPageRoot />;
 }

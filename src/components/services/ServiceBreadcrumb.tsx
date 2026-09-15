@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { servicePagesData } from "@/data/services";
-import { getServiceKeyFromSlug } from "@/config/routes";
+import { getServiceKeyFromSlug, ROUTES } from "@/config/routes";
 
 export default function ServiceBreadcrumb() {
   const pathname = usePathname();
@@ -18,7 +18,7 @@ export default function ServiceBreadcrumb() {
         Home
       </Link>
       <span className="opacity-45">→</span>
-      <Link href="/#services" className="hover:text-[var(--accent)] transition-colors duration-200">
+      <Link href={ROUTES.servicesHub} className="hover:text-[var(--accent)] transition-colors duration-200">
         Services
       </Link>
       {pageData && (

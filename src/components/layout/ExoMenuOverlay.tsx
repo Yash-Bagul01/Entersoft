@@ -25,7 +25,7 @@ const CELL_COUNT = COLS * ROWS;
 
 const PRIMARY_ITEMS = [
   { label: "Platform", href: ROUTES.platform.enprobe },
-  { label: "Services", href: "/#services" },
+  { label: "Services", href: ROUTES.servicesHub },
   { label: "Solutions", href: ROUTES.solutions },
 ];
 

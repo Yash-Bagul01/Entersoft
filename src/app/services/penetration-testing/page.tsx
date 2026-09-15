@@ -1,6 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
-import VAPTPage from "@/app/services/vapt/page";
+import ServiceCasePage from "@/components/services/ServiceCasePage";
 import { getCanonicalUrl, ROUTES } from "@/config/routes";
 
 const TITLE = "Penetration Testing Services | CREST-Accredited | Entersoft";
@@ -44,12 +44,12 @@ export default function PenetrationTestingPage() {
         "@type": "ListItem",
         "position": 2,
         "name": "Services",
-        "item": "https://www.entersoftsecurity.com/#services"
+        "item": "https://www.entersoftsecurity.com/services"
       },
       {
         "@type": "ListItem",
         "position": 3,
-        "name": "Penetration Testing",
+        "name": "Adversarial Validation",
         "item": CANONICAL
       }
     ]
@@ -61,7 +61,7 @@ export default function PenetrationTestingPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <VAPTPage />
+      <ServiceCasePage slug="vapt" />
     </>
   );
 }

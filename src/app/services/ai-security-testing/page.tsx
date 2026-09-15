@@ -1,7 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
-import AZPageRoot from "@/components/services/ai-zkpass/AZPageRoot";
-import ServiceCTA from "@/components/services/ServiceCTA";
+import ServiceCasePage from "@/components/services/ServiceCasePage";
 import { getCanonicalUrl, ROUTES } from "@/config/routes";
 
 const TITLE = "AI Security Testing & LLM Red-Teaming | Entersoft";
@@ -45,29 +44,24 @@ export default function AiSecurityTestingPage() {
         "@type": "ListItem",
         "position": 2,
         "name": "Services",
-        "item": "https://www.entersoftsecurity.com/#services"
+        "item": "https://www.entersoftsecurity.com/services"
       },
       {
         "@type": "ListItem",
         "position": 3,
-        "name": "AI Security Testing",
+        "name": "AI Systems Assurance",
         "item": CANONICAL
       }
     ]
   };
 
   return (
-    <main className="w-full min-h-screen bg-[#05070F] text-white">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <AZPageRoot />
-      <ServiceCTA
-        headline="Ready to scope an AI red-team assessment?"
-        buttonText="SCOPE AN AI RED-TEAM ASSESSMENT"
-        buttonHref="/contact"
-      />
-    </main>
+      <ServiceCasePage slug="ai-ast" />
+    </>
   );
 }

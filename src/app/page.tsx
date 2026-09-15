@@ -52,7 +52,6 @@ export default function Home() {
       <main className="flex flex-col w-full relative z-10">
         <Hero />
         <StatsCounter />
-        <AnimatedDivider />
         <ServicesShowcase />
         <AnimatedDivider />
         <Differentiators />

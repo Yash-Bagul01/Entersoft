@@ -7,11 +7,15 @@ import { Familjen_Grotesk } from "next/font/google";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ROUTES } from "@/config/routes";
+import { services } from "@/data/services";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { cn } from "@/lib/utils";
 import LinedWordmark from "./LinedWordmark";
 import FooterLineLink from "./FooterLineLink";
 import DiscussProjectModal from "./DiscussProjectModal";
+
+const serviceName = (slug: string) =>
+  services.find((item) => item.slug === slug)?.displayName ?? slug;
 
 const familjen = Familjen_Grotesk({
   subsets: ["latin"],
@@ -23,13 +27,13 @@ const COLUMNS = [
   {
     title: "Services",
     links: [
-      { name: "Application Security", href: ROUTES.services.appsec },
-      { name: "Penetration Testing", href: ROUTES.services.vapt },
-      { name: "Cloud Security", href: ROUTES.services.cloud },
-      { name: "GRC & Compliance", href: ROUTES.services.compliance },
-      { name: "Managed Detection", href: ROUTES.services.siem },
-      { name: "Smart Contract Security", href: ROUTES.services.smartContract },
-      { name: "AI Security Testing", href: ROUTES.services.aiAst },
+      { name: serviceName("appsec"), href: ROUTES.services.appsec },
+      { name: serviceName("vapt"), href: ROUTES.services.vapt },
+      { name: serviceName("cloud-resilience"), href: ROUTES.services.cloud },
+      { name: serviceName("compliance-management"), href: ROUTES.services.compliance },
+      { name: serviceName("siem"), href: ROUTES.services.siem },
+      { name: serviceName("smart-contract-audits"), href: ROUTES.services.smartContract },
+      { name: serviceName("ai-ast"), href: ROUTES.services.aiAst },
     ],
   },
   {
@@ -47,13 +51,12 @@ const COLUMNS = [
   {
     title: "Solutions",
     links: [
-      { name: "AppSec Transformation", href: ROUTES.services.appsec },
-      { name: "Exposure Management", href: ROUTES.platform.enprobe },
-      { name: "Cloud Transformation", href: ROUTES.services.cloud },
-      { name: "Managed Cyber Defense", href: ROUTES.services.siem },
-      { name: "Regulatory Readiness", href: ROUTES.services.compliance },
-      { name: "Digital Asset Assurance", href: ROUTES.services.smartContract },
-      { name: "AI Security Readiness", href: ROUTES.services.aiAst },
+      { name: "API Discovery", href: ROUTES.solutionsPages.apiDiscovery },
+      { name: "AI-BOM", href: ROUTES.solutionsPages.aiBom },
+      { name: "Manage Vulnerabilities", href: ROUTES.solutionsPages.manageVulnerabilities },
+      { name: "Automate Security Workflows", href: ROUTES.solutionsPages.automateWorkflows },
+      { name: "Track AppSec KPIs", href: ROUTES.solutionsPages.trackKpis },
+      { name: "Manage Open Source Risk", href: ROUTES.solutionsPages.openSourceRisk },
     ],
   },
   {
@@ -106,7 +109,8 @@ export default function Footer() {
     pathname === "/platform/sast" ||
     pathname === "/platform/sbom-license-risk" ||
     pathname === "/platform/secrets" ||
-    pathname === "/solutions";
+    pathname === "/solutions" ||
+    pathname === "/services";
 
   useLayoutEffect(() => {
     const root = rootRef.current;

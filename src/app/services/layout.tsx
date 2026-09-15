@@ -1,19 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { services } from "@/data/services";
 import { getServiceKeyFromSlug, getServiceRoute } from "@/config/routes";
-
-const formatNavLabel = (name: string) => {
-  const title = name
-    .toLowerCase()
-    .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-  return title.replace(/\bAi\b/g, "AI");
-};
+import { isServiceCasePath } from "@/data/serviceCases";
 
 export default function ServicesLayout({
   children,
@@ -21,6 +13,26 @@ export default function ServicesLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const isCase = pathname === "/services" || isServiceCasePath(pathname);
+
+  useEffect(() => {
+    if (!isCase) return;
+    document.documentElement.setAttribute("data-theme", "dark");
+    document.documentElement.classList.remove("light");
+    document.documentElement.classList.add("dark");
+    return () => {
+      document.documentElement.removeAttribute("data-theme");
+    };
+  }, [isCase]);
+
+  if (isCase) {
+    return (
+      <div data-page="solution-case" className="min-h-screen bg-[#0b0b0d] text-white">
+        {children}
+      </div>
+    );
+  }
+
   const pathSegments = pathname.split("/").filter(Boolean);
   const currentSlug = pathSegments[pathSegments.length - 1] || "";
   const isCloud =
@@ -47,19 +59,16 @@ export default function ServicesLayout({
     currentSlug === "ai-security-testing";
   const isAiAst = currentSlug === "ai-ast" || currentSlug === "ai-security-testing";
 
-  // Get the other six services
   const otherServices = services.filter(
     (item) => item.slug !== currentKey
   );
 
   return (
     <div className={`w-full ${isAiAst ? "bg-[#05070F] text-[#F0F4FF] service-page-container" : "bg-[var(--bg-primary)]"} min-h-[80vh] flex flex-col justify-between ${noPadding ? "" : "pt-16 md:pt-20"}`}>
-      {/* Spacer to push content down under the fixed header */}
       <div className={`flex-1 flex flex-col ${noPadding ? "" : "pt-12"}`}>
         {children}
       </div>
 
-      {/* Inter-service navigation strip at the bottom (above footer) */}
       {!isAiAst && (
         <nav className="w-full border-t border-[var(--border-subtle)] bg-[var(--bg-elevated)]/30 backdrop-blur-sm py-8 relative z-20 mt-16 md:mt-24">
           <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex flex-col gap-4">
@@ -74,7 +83,7 @@ export default function ServicesLayout({
                     href={getServiceRoute(service.slug)}
                     className="text-[var(--text-tertiary)] hover:text-[var(--accent)] transition-colors duration-300"
                   >
-                    {service.plainLanguageTitle || service.displayName}
+                    {service.displayName}
                   </Link>
                 </React.Fragment>
               ))}

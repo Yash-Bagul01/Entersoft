@@ -1,6 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
-import SolutionCasePage from "@/components/solutions/SolutionCasePage";
+import AsmPageRoot from "@/components/platform/asm/AsmPageRoot";
 import { getCanonicalUrl, ROUTES } from "@/config/routes";
 
 const TITLE = "Attack Surface Visibility — EnProbe Platform | Entersoft Security";
@@ -23,5 +23,5 @@ export const metadata: Metadata = {
 };
 
 export default function AttackSurfaceManagementPage() {
-  return <SolutionCasePage slug="attack-surface-management" />;
+  return <AsmPageRoot />;
 }

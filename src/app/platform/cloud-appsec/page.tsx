@@ -1,5 +1,5 @@
 import React from "react";
-import SolutionCasePage from "@/components/solutions/SolutionCasePage";
+import CommandViewRoot from "@/components/platform/roots/CommandViewRoot";
 
 export const metadata = {
   title: "Cloud AppSec — EnProbe Platform | Entersoft Security",
@@ -7,5 +7,5 @@ export const metadata = {
 };
 
 export default function CloudAppsecPage() {
-  return <SolutionCasePage slug="cloud-appsec" />;
+  return <CommandViewRoot />;
 }

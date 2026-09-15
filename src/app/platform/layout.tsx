@@ -2,7 +2,6 @@
 
 import React, { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { isSolutionCasePath } from "@/data/solutionCases";
 
 export default function PlatformLayout({
   children,
@@ -18,20 +17,10 @@ export default function PlatformLayout({
   const isSecrets = pathname === "/platform/secrets";
   const isDast = pathname === "/platform/dast";
   const isAgentic = pathname === "/platform/agentic-pentesting";
-  const isSolutionCase = isSolutionCasePath(pathname);
   const isLightPage = isCyberOntology || isSca;
   const isExoCase = isDast || isIac || isAgentic;
 
   useEffect(() => {
-    if (isSolutionCase) {
-      document.documentElement.setAttribute("data-theme", "dark");
-      document.documentElement.classList.remove("light");
-      document.documentElement.classList.add("dark");
-      return () => {
-        document.documentElement.removeAttribute("data-theme");
-      };
-    }
-
     if (isLightPage) {
       document.documentElement.setAttribute("data-theme", "light");
       document.documentElement.classList.remove("dark");
@@ -56,15 +45,7 @@ export default function PlatformLayout({
       body.style.removeProperty("overflow-x");
       body.style.removeProperty("overflow-y");
     };
-  }, [pathname, isLightPage, isExoCase, isSolutionCase]);
-
-  if (isSolutionCase) {
-    return (
-      <div data-page="solution-case" className="min-h-screen bg-[#0b0b0d] text-white">
-        {children}
-      </div>
-    );
-  }
+  }, [pathname, isLightPage, isExoCase]);
 
   if (isExoCase) {
     return (
