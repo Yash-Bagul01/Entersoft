@@ -106,6 +106,7 @@ export default function Footer() {
   const [discussOpen, setDiscussOpen] = useState(false);
 
   const hideOn =
+    pathname === "/platform" ||
     pathname === "/platform/sast" ||
     pathname === "/platform/sbom-license-risk" ||
     pathname === "/platform/secrets" ||

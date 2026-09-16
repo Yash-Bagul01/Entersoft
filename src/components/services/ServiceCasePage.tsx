@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useLayoutEffect, useMemo, useRef } from "react";
+import React, { useLayoutEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
@@ -27,6 +27,7 @@ export default function ServiceCasePage({ slug }: { slug: ServiceCaseSlug }) {
   const articleRef = useRef<HTMLElement>(null);
   const more = useMemo(() => otherServiceCases(slug), [slug]);
   const titleWords = useMemo(() => visual.title.split(" "), [visual.title]);
+  const [openFaqs, setOpenFaqs] = useState<string[]>([]);
 
   useLayoutEffect(() => {
     const kicker = kickerRef.current;
@@ -219,16 +220,45 @@ export default function ServiceCasePage({ slug }: { slug: ServiceCaseSlug }) {
           <h2 className="sc-section__title">{copy.fitsTitle}</h2>
           <div className="sc-fits">
             {copy.fits.map((fit) => {
-              const inner = (
-                <>
-                  <h3 className="sc-fits__name">{fit.name}</h3>
-                  <p>{fit.description}</p>
-                </>
-              );
-              return fit.href ? (
-                <Link key={fit.name} href={fit.href}>{inner}</Link>
-              ) : (
-                <div key={fit.name} className="sc-fits__item">{inner}</div>
+              if (fit.href) {
+                return (
+                  <Link key={fit.name} href={fit.href}>
+                    <h3 className="sc-fits__name">{fit.name}</h3>
+                    <p>{fit.description}</p>
+                  </Link>
+                );
+              }
+
+              const open = openFaqs.includes(fit.name);
+
+              return (
+                <div
+                  key={fit.name}
+                  className={`sc-fits__item${open ? " is-open" : ""}`}
+                >
+                  <button
+                    type="button"
+                    className="sc-fits__q"
+                    aria-expanded={open}
+                    onClick={() =>
+                      setOpenFaqs((current) =>
+                        current.includes(fit.name)
+                          ? current.filter((name) => name !== fit.name)
+                          : [...current, fit.name],
+                      )
+                    }
+                  >
+                    <h3 className="sc-fits__name">{fit.name}</h3>
+                    <span className="sc-fits__icon" aria-hidden>
+                      +
+                    </span>
+                  </button>
+                  <div className="sc-fits__a">
+                    <div className="sc-fits__a-inner">
+                      <p>{fit.description}</p>
+                    </div>
+                  </div>
+                </div>
               );
             })}
           </div>

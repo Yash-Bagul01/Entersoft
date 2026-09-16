@@ -3,6 +3,7 @@ import ApiHero, { ApiTrusted } from "./ApiHero";
 import ApiStory from "./ApiStory";
 import ApiShowcase from "./ApiShowcase";
 import ApiProof from "./ApiProof";
+import "@/app/platform/api-security/api-security.css";
 
 export default function ApiPageRoot() {
   return (

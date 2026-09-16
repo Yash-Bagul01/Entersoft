@@ -6,6 +6,7 @@ import GrainOverlay from "@/components/layout/GrainOverlay";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { SolutionTransitionProvider } from "@/components/solutions/SolutionTransitionContext";
+import { PlatformTransitionProvider } from "@/components/layout/PlatformPageTransition";
 import { IS_PRODUCTION_HOST, METADATA_BASE } from "@/config/routes";
 
 const interTight = Inter_Tight({
@@ -94,12 +95,14 @@ export default function RootLayout({
       <body className="min-h-full bg-[var(--bg-primary)] text-[var(--text-primary)] flex flex-col font-sans">
         <SmoothScrollProvider>
           <SolutionTransitionProvider>
-            <GrainOverlay />
-            <Navbar />
-            <div className="flex flex-col flex-1 relative z-10">
-              {children}
-            </div>
-            <Footer />
+            <PlatformTransitionProvider>
+              <GrainOverlay />
+              <Navbar />
+              <div className="flex flex-col flex-1 relative z-10">
+                {children}
+              </div>
+              <Footer />
+            </PlatformTransitionProvider>
           </SolutionTransitionProvider>
         </SmoothScrollProvider>
       </body>

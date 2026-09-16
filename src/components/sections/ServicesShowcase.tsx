@@ -8,6 +8,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Familjen_Grotesk } from "next/font/google";
 import { services, type Service } from "@/data/services";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { usePlatformTransition } from "@/components/layout/PlatformPageTransition";
 import { cn } from "@/lib/utils";
 
 const familjen = Familjen_Grotesk({
@@ -20,6 +21,7 @@ const captionEase = [0.22, 1, 0.36, 1] as const;
 
 export default function ServicesShowcase() {
   const router = useRouter();
+  const transition = usePlatformTransition();
   const reduce = useReducedMotion();
   const [isFinePointer, setIsFinePointer] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -45,12 +47,20 @@ export default function ServicesShowcase() {
     setActive(index);
   };
 
+  const goToService = (service: Service) => {
+    if (transition) {
+      transition.to(service.route, service.displayName);
+      return;
+    }
+    router.push(service.route);
+  };
+
   const onNameClick = (service: Service, index: number) => {
     if (!isFinePointer && activeIndex !== index) {
       setActive(index);
       return;
     }
-    router.push(service.route);
+    goToService(service);
   };
 
   return (

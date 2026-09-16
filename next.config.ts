@@ -52,11 +52,6 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: "/platform",
-        destination: "/platform/enprobe",
-        permanent: true,
-      },
-      {
         source: "/company",
         destination: "/company/accreditations",
         permanent: true,

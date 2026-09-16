@@ -24,7 +24,7 @@ const ROWS = 8;
 const CELL_COUNT = COLS * ROWS;
 
 const PRIMARY_ITEMS = [
-  { label: "Platform", href: ROUTES.platform.enprobe },
+  { label: "Platform", href: ROUTES.platform.hub },
   { label: "Services", href: ROUTES.servicesHub },
   { label: "Solutions", href: ROUTES.solutions },
 ];

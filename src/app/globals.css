@@ -2711,3 +2711,77 @@ html:has([data-page="ai-ast"]) footer,
   animation: spin-slow 16s linear infinite;
 }
 
+/* Exo Ape-style frosted cursor — homepage hero only */
+.hero-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 45;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 5.972vw;
+  height: 5.972vw;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.hero-cursor__inner {
+  position: absolute;
+  inset: 0;
+  border-radius: 100%;
+  overflow: hidden;
+  opacity: 0;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transform: scale(0.86);
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.35s ease;
+}
+
+.hero-cursor.is-visible .hero-cursor__inner {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.hero-cursor.is-hover .hero-cursor__inner {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.18);
+}
+
+.hero-cursor__label {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+  font-family: var(--font-inter-tight), var(--font-inter), system-ui, sans-serif;
+  font-size: 0.972vw;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  opacity: 0;
+  transform: translateY(4px);
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero-cursor.is-visible .hero-cursor__label {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (hover: none), (pointer: coarse) {
+  .hero-cursor {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-cursor {
+    display: none;
+  }
+}
+

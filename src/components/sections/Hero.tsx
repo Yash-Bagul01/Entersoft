@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { ChevronDown, ArrowRight } from "lucide-react";
 import { Button } from "../ui/Button";
 import MagneticButton from "../ui/MagneticButton";
+import HeroCursor from "./HeroCursor";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useSmoothScroll } from "@/components/layout/SmoothScrollProvider";
 import { gsap } from "gsap";
@@ -177,6 +178,8 @@ export default function Hero() {
           className="absolute inset-0 z-10 pointer-events-none transition-all duration-300 hero-gradient-overlay"
         />
       </div>
+
+      <HeroCursor containerRef={containerRef} />
 
       {/* Scroll-in statement — positioned lower in middle area */}
       <div

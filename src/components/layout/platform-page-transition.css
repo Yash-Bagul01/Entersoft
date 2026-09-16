@@ -1,0 +1,57 @@
+.exo-pt {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.exo-pt.is-on {
+  pointer-events: auto;
+}
+
+html:has(.exo-pt.is-on) [data-scroll-progress] {
+  opacity: 0 !important;
+  visibility: hidden;
+}
+
+.exo-pt__cols {
+  display: flex;
+  width: calc(100% + 10px);
+  height: 100%;
+  margin-left: -5px;
+  gap: 0;
+}
+
+.exo-pt__col {
+  position: relative;
+  flex: 1 0 0;
+  height: 100%;
+  margin-right: -2px;
+  background: #0a0a0a;
+  box-shadow: 0 0 0 2px #0a0a0a;
+  transform: scaleY(0);
+  transform-origin: 50% 100%;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.exo-pt__label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0 1.5rem;
+  color: #f3efe6;
+  font-family: var(--font-inter-tight), ui-sans-serif, sans-serif;
+  font-size: clamp(2rem, 6.4vw, 5.4rem);
+  font-weight: 600;
+  letter-spacing: -0.055em;
+  line-height: 0.9;
+  text-align: center;
+  text-transform: uppercase;
+  opacity: 0;
+  pointer-events: none;
+}

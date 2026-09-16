@@ -9,6 +9,7 @@ export default function PlatformLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const isHub = pathname === "/platform";
   const isCyberOntology = pathname === "/platform/cyber-ontology";
   const isSast = pathname === "/platform/sast";
   const isSca = pathname === "/platform/sca";
@@ -17,7 +18,11 @@ export default function PlatformLayout({
   const isSecrets = pathname === "/platform/secrets";
   const isDast = pathname === "/platform/dast";
   const isAgentic = pathname === "/platform/agentic-pentesting";
-  const isLightPage = isCyberOntology || isSca;
+  const isApi = pathname === "/platform/api-security";
+  const isAsm = pathname === "/platform/attack-surface-management";
+  const isCloud = pathname === "/platform/cloud-appsec";
+  const isAi = pathname === "/platform/ai-appsec";
+  const isLightPage = isHub || isCyberOntology || isSca || isApi || isAsm;
   const isExoCase = isDast || isIac || isAgentic;
 
   useEffect(() => {
@@ -46,6 +51,10 @@ export default function PlatformLayout({
       body.style.removeProperty("overflow-y");
     };
   }, [pathname, isLightPage, isExoCase]);
+
+  if (isHub || isApi || isAsm || isCloud || isAi) {
+    return <>{children}</>;
+  }
 
   if (isExoCase) {
     return (

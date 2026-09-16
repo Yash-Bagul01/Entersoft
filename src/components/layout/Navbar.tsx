@@ -54,12 +54,18 @@ export default function Navbar() {
   const isSolutionsPage = pathname === ROUTES.solutions;
   const isSolutionLanding = !!pathname?.startsWith("/solutions/");
   const isServicesHub = pathname === ROUTES.servicesHub;
-  const isLightPage = isCyberOntologyPage || isScaPage || isSolutionLanding;
+  const isHubPage = pathname === "/platform";
+  const isApiPage = pathname === "/platform/api-security";
+  const isAsmPage = pathname === "/platform/attack-surface-management";
+  const isSolutionCasePage =
+    pathname === "/platform/cloud-appsec" || pathname === "/platform/ai-appsec";
+  const isLightPage = isCyberOntologyPage || isScaPage || isSolutionLanding || isHubPage || isApiPage || isAsmPage;
   const isServicePage =
     (pathname?.startsWith("/services") || pathname?.startsWith("/platform")) &&
     !isLightPage &&
     !isPlatformSubpage &&
     !isExoCase &&
+    !isSolutionCasePage &&
     !isServicesHub;
   const isAppSecPage = pathname === ROUTES.services.appsec;
   const isVaptPage = pathname === ROUTES.services.vapt;
@@ -114,11 +120,11 @@ export default function Navbar() {
   const navItems: NavItem[] = [
     {
       label: "Platform",
-      href: ROUTES.platform.enprobe,
+      href: ROUTES.platform.hub,
       megaMenu: {
         blurb: "EnProbe — continuous security visibility, vulnerability lifecycle management, and evidence across your enterprise.",
         ctaText: "Explore EnProbe Platform →",
-        ctaHref: ROUTES.platform.enprobe,
+        ctaHref: ROUTES.platform.hub,
         sections: [
           {
             title: "Core Platform",
@@ -501,7 +507,7 @@ export default function Navbar() {
                 </div>
               </button>
 
-              {!isServicePage && !isLightPage && !isExoCase && !isSolutionsPage && !isServicesHub && <ThemeToggle />}
+              {!isServicePage && !isLightPage && !isExoCase && !isSolutionsPage && !isSolutionCasePage && !isServicesHub && <ThemeToggle />}
               <Button
                 variant="primary"
                 size="sm"
@@ -523,7 +529,7 @@ export default function Navbar() {
 
             {/* Mobile Menu Icon & Theme Toggle */}
             <div className="lg:hidden z-50 flex items-center gap-4">
-              {!isServicePage && !isLightPage && !isExoCase && !isSolutionsPage && !isServicesHub && <ThemeToggle />}
+              {!isServicePage && !isLightPage && !isExoCase && !isSolutionsPage && !isSolutionCasePage && !isServicesHub && <ThemeToggle />}
               <button
                 onClick={() => setExoMenuOpen(true)}
                 className={cn(

@@ -207,7 +207,7 @@ const CARDS_DATA: CardSpec[] = [
     description: "CREST-accredited penetration testing delivering internationally validated security assessments.",
     badge: "CREST ACCREDITED",
     metricDetail: "Penetration Testing",
-    image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1600&q=80",
+    image: "/images/track-record/crest-bg.jpg",
     lightColors: {
       bgStart: "#FFF9FD",
       bgMid: "#F5E4F3",
@@ -246,7 +246,7 @@ const CARDS_DATA: CardSpec[] = [
     description: "CERT-In empanelled auditing organisation authorized for corporate and government security assessments.",
     badge: "CERT-IN EMPANELLED",
     metricDetail: "Auditing Organisation",
-    image: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=1600&q=80",
+    image: "/images/track-record/certin-bg.jpg",
     lightColors: {
       bgStart: "#F5FAFE",
       bgMid: "#D8ECFA",
@@ -285,7 +285,7 @@ const CARDS_DATA: CardSpec[] = [
     description: "ISO/IEC 27001-certified ISMS adhering to international standards for information security management.",
     badge: "ISO 27001 CERTIFIED",
     metricDetail: "ISMS Certified",
-    image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=1600&q=80",
+    image: "/images/track-record/iso-bg.jpg",
     lightColors: {
       bgStart: "#FCFAF6",
       bgMid: "#F7EEE0",
@@ -324,7 +324,7 @@ const CARDS_DATA: CardSpec[] = [
     description: "Founded in 2013 with over a decade of continuous cybersecurity and offensive testing expertise.",
     badge: "FOUNDED 2013",
     metricDetail: "Established Track Record",
-    image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1600&q=80",
+    image: "/images/track-record/founded-bg.jpg",
     lightColors: {
       bgStart: "#F4FDF8",
       bgMid: "#DFF8EA",
@@ -363,7 +363,7 @@ const CARDS_DATA: CardSpec[] = [
     description: "Verified enterprise delivery across banking, fintech, cloud, healthcare, and digital assets.",
     badge: "VERIFIED DELIVERY",
     metricDetail: "Enterprise Proven",
-    image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1600&q=80",
+    image: "/images/track-record/verified-bg.jpg",
     lightColors: {
       bgStart: "#F8F7FF",
       bgMid: "#E8E5FF",
@@ -398,11 +398,59 @@ const CARDS_DATA: CardSpec[] = [
 function loadCardPhoto(src: string): Promise<HTMLImageElement | null> {
   return new Promise((resolve) => {
     const img = new Image();
-    img.crossOrigin = "anonymous";
+    if (/^https?:/i.test(src)) {
+      img.crossOrigin = "anonymous";
+    }
     img.onload = () => resolve(img);
     img.onerror = () => resolve(null);
     img.src = src;
   });
+}
+
+function drawImageCover(
+  ctx: CanvasRenderingContext2D,
+  img: HTMLImageElement,
+  dx: number,
+  dy: number,
+  dw: number,
+  dh: number
+) {
+  const iw = img.naturalWidth;
+  const ih = img.naturalHeight;
+  if (!iw || !ih) return;
+  const ir = iw / ih;
+  const tr = dw / dh;
+  let sx = 0;
+  let sy = 0;
+  let sw = iw;
+  let sh = ih;
+  if (ir > tr) {
+    sw = ih * tr;
+    sx = (iw - sw) / 2;
+  } else {
+    sh = iw / tr;
+    sy = (ih - sh) / 2;
+  }
+  ctx.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh);
+}
+
+function fitCylinderFaceUVs(geometry: THREE.BufferGeometry) {
+  const uv = geometry.getAttribute("uv");
+  if (!uv) return;
+  let minU = Infinity;
+  let maxU = -Infinity;
+  for (let i = 0; i < uv.count; i++) {
+    const u = uv.getX(i);
+    minU = Math.min(minU, u);
+    maxU = Math.max(maxU, u);
+  }
+  const span = maxU - minU;
+  if (span < 0.999 && span > 0.001) {
+    for (let i = 0; i < uv.count; i++) {
+      uv.setX(i, (uv.getX(i) - minU) / span);
+    }
+    uv.needsUpdate = true;
+  }
 }
 
 // Photo plate + centered title + crystal glare (Aikawa card face; geometry/animation unchanged)
@@ -439,36 +487,60 @@ function drawCardFrontCanvas(
   ctx.fillStyle = bgGrad;
   ctx.fill();
 
-  if (photo && photo.complete && photo.naturalWidth > 0) {
-    const scale = Math.max(W / photo.naturalWidth, H / photo.naturalHeight);
-    const dw = photo.naturalWidth * scale;
-    const dh = photo.naturalHeight * scale;
-    ctx.globalAlpha = 0.94 + hover * 0.06;
-    ctx.drawImage(photo, (W - dw) / 2, (H - dh) / 2, dw, dh);
-    ctx.globalAlpha = 1;
+  const hasPhoto = Boolean(photo && photo.complete && photo.naturalWidth > 0);
+  if (hasPhoto && photo) {
+    drawImageCover(ctx, photo, 0, 0, W, H);
+
+    const wash = ctx.createLinearGradient(0, 0, W, H);
+    if (isLight) {
+      wash.addColorStop(0, "rgba(246, 245, 240, 0.12)");
+      wash.addColorStop(0.5, "rgba(246, 245, 240, 0.04)");
+      wash.addColorStop(1, "rgba(246, 245, 240, 0.1)");
+    } else {
+      wash.addColorStop(0, "rgba(6, 6, 8, 0.28)");
+      wash.addColorStop(0.5, "rgba(6, 6, 8, 0.1)");
+      wash.addColorStop(1, "rgba(6, 6, 8, 0.22)");
+    }
+    ctx.fillStyle = wash;
+    ctx.fill();
+
+    const leftFade = ctx.createLinearGradient(0, 0, W * 0.44, 0);
+    leftFade.addColorStop(0, isLight ? "rgba(246, 245, 240, 0.58)" : "rgba(6, 6, 8, 0.48)");
+    leftFade.addColorStop(0.55, isLight ? "rgba(246, 245, 240, 0.16)" : "rgba(6, 6, 8, 0.12)");
+    leftFade.addColorStop(1, "rgba(0, 0, 0, 0)");
+    ctx.fillStyle = leftFade;
+    ctx.fill();
+
+    const botFade = ctx.createLinearGradient(0, H, 0, H * 0.7);
+    botFade.addColorStop(0, isLight ? "rgba(246, 245, 240, 0.48)" : "rgba(6, 6, 8, 0.42)");
+    botFade.addColorStop(1, "rgba(0, 0, 0, 0)");
+    ctx.fillStyle = botFade;
+    ctx.fill();
+  } else {
+    const ink = isLight ? "246, 245, 240" : "6, 6, 8";
+    ctx.fillStyle = isLight ? "rgba(246, 245, 240, 0.38)" : "rgba(6, 6, 8, 0.46)";
+    ctx.fill();
+
+    const leftFade = ctx.createLinearGradient(0, 0, W * 0.58, 0);
+    leftFade.addColorStop(0, `rgba(${ink}, 0.9)`);
+    leftFade.addColorStop(0.48, `rgba(${ink}, 0.52)`);
+    leftFade.addColorStop(1, `rgba(${ink}, 0)`);
+    ctx.fillStyle = leftFade;
+    ctx.fill();
+
+    const rightFade = ctx.createLinearGradient(W, 0, W * 0.52, 0);
+    rightFade.addColorStop(0, `rgba(${ink}, 0.88)`);
+    rightFade.addColorStop(0.46, `rgba(${ink}, 0.46)`);
+    rightFade.addColorStop(1, `rgba(${ink}, 0)`);
+    ctx.fillStyle = rightFade;
+    ctx.fill();
+
+    const botFade = ctx.createLinearGradient(0, H, 0, H * 0.58);
+    botFade.addColorStop(0, `rgba(${ink}, 0.78)`);
+    botFade.addColorStop(1, `rgba(${ink}, 0)`);
+    ctx.fillStyle = botFade;
+    ctx.fill();
   }
-
-  // Keep the photo clear in the middle; fade only behind copy
-  const ink = isLight ? "246, 245, 240" : "6, 6, 8";
-  const leftFade = ctx.createLinearGradient(0, 0, W * 0.5, 0);
-  leftFade.addColorStop(0, `rgba(${ink}, 0.78)`);
-  leftFade.addColorStop(0.55, `rgba(${ink}, 0.32)`);
-  leftFade.addColorStop(1, `rgba(${ink}, 0)`);
-  ctx.fillStyle = leftFade;
-  ctx.fill();
-
-  const rightFade = ctx.createLinearGradient(W, 0, W * 0.5, 0);
-  rightFade.addColorStop(0, `rgba(${ink}, 0.74)`);
-  rightFade.addColorStop(0.5, `rgba(${ink}, 0.26)`);
-  rightFade.addColorStop(1, `rgba(${ink}, 0)`);
-  ctx.fillStyle = rightFade;
-  ctx.fill();
-
-  const botFade = ctx.createLinearGradient(0, H, 0, H * 0.64);
-  botFade.addColorStop(0, `rgba(${ink}, 0.58)`);
-  botFade.addColorStop(1, `rgba(${ink}, 0)`);
-  ctx.fillStyle = botFade;
-  ctx.fill();
 
   const glareGrad = ctx.createRadialGradient(glareX, glareY, 8, glareX, glareY, W * 0.55);
   const alphaHigh = (isLight ? 0.32 : 0.24) * glareIntensity;
@@ -547,8 +619,8 @@ function drawCardFrontCanvas(
   const centerY = H / 2 + 10;
 
   ctx.save();
-  ctx.shadowColor = isLight ? "rgba(255, 255, 255, 0.78)" : "rgba(0, 0, 0, 0.78)";
-  ctx.shadowBlur = 22;
+  ctx.shadowColor = isLight ? "rgba(255, 255, 255, 0.92)" : "rgba(0, 0, 0, 0.92)";
+  ctx.shadowBlur = 28;
   ctx.font = "600 120px 'Inter Tight', 'Inter', -apple-system, sans-serif";
   ctx.fillStyle = colors.textColor;
   ctx.textAlign = "left";
@@ -561,8 +633,8 @@ function drawCardFrontCanvas(
   ctx.restore();
 
   ctx.save();
-  ctx.shadowColor = isLight ? "rgba(255, 255, 255, 0.88)" : "rgba(0, 0, 0, 0.88)";
-  ctx.shadowBlur = 22;
+  ctx.shadowColor = isLight ? "rgba(255, 255, 255, 0.94)" : "rgba(0, 0, 0, 0.94)";
+  ctx.shadowBlur = 28;
   ctx.font = "500 42px 'Inter Tight', 'Inter', sans-serif";
   ctx.fillStyle = isLight ? "#060606" : "#FFFFFF";
   ctx.textAlign = "right";
@@ -706,6 +778,8 @@ function createCardCanvasTexture(
 
   const frontTexture = new THREE.CanvasTexture(frontCanvas);
   frontTexture.colorSpace = THREE.SRGBColorSpace;
+  frontTexture.wrapS = THREE.ClampToEdgeWrapping;
+  frontTexture.wrapT = THREE.ClampToEdgeWrapping;
   frontTexture.generateMipmaps = true;
   frontTexture.minFilter = THREE.LinearMipmapLinearFilter;
   frontTexture.magFilter = THREE.LinearFilter;
@@ -908,6 +982,7 @@ export default function TrackRecord3DCylinder() {
         thetaStart,
         sectorAngle
       );
+      fitCylinderFaceUVs(frontGeom);
 
       const { frontTexture, frontCanvas, backTexture } = createCardCanvasTexture(spec, idx, isLight, maxAniso);
       cardTexturesRef.current.push({ frontTexture, frontCanvas, spec, index: idx, photo: null });
@@ -934,6 +1009,7 @@ export default function TrackRecord3DCylinder() {
         thetaStart + 0.02,
         sectorAngle - 0.04
       );
+      fitCylinderFaceUVs(glassFrontGeom);
 
       const glassFrontMat = new THREE.MeshPhysicalMaterial({
         color: 0xffffff,
@@ -968,6 +1044,7 @@ export default function TrackRecord3DCylinder() {
         thetaStart,
         sectorAngle
       );
+      fitCylinderFaceUVs(backGeom);
       const backMat = new THREE.MeshBasicMaterial({
         map: backTexture,
         transparent: true,

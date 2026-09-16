@@ -72,6 +72,7 @@ export const ROUTES = {
     },
   },
   platform: {
+    hub: "/platform",
     enprobe: "/platform/enprobe",
     sast: "/platform/sast",
     sca: "/platform/sca",

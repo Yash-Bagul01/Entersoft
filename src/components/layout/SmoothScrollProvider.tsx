@@ -97,6 +97,7 @@ export default function SmoothScrollProvider({
       {/* 2px fixed scroll progress bar at the very top of the viewport */}
       <div
         ref={progressBarRef}
+        data-scroll-progress
         className="fixed top-0 left-0 right-0 h-[2px] bg-[var(--accent)] z-[99999] origin-left scale-x-0 pointer-events-none"
         style={{ transformOrigin: "left" }}
       />
