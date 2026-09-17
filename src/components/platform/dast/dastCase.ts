@@ -1,3 +1,4 @@
+import { hubFront } from "@/data/platformHub";
 import type { ExoApeCase } from "@/components/platform/exoape/types";
 
 const u = (id: string, w = 1600) =>
@@ -25,8 +26,8 @@ export const DAST_CASE: ExoApeCase = {
     { label: "Delivery", values: ["CI/CD, Jira, GitHub"] },
   ],
   images: {
-    hero: u("photo-1787165574896-adae5bec834b", 2400),
-    heroAlt: "Glazed tower lit from within at dusk",
+    hero: hubFront("dast"),
+    heroAlt: "Quiet interior standing in for a live application under test",
     wide: u("photo-1770473859769-d5a601e54a63", 2400),
     wideAlt: "Illuminated towers at night",
     beliefs: u("photo-1506606401543-2e73709cebb4", 2400),

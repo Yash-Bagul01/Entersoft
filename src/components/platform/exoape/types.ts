@@ -11,6 +11,7 @@ export type ExoApeCase = {
   images: {
     hero: string;
     heroAlt: string;
+    heroVideo?: string;
     wide: string;
     wideAlt: string;
     beliefs: string;

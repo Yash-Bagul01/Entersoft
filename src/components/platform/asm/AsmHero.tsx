@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { ROUTES } from "@/config/routes";
+import { hubFront } from "@/data/platformHub";
 import { platformPillars } from "@/data/platform";
 
 const pillar = platformPillars["attack-surface-management"];
@@ -69,7 +70,7 @@ export default function AsmHero() {
         <div className="asm-hero-photo">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1800&q=80"
+            src={hubFront("asm")}
             alt=""
           />
           <div className="asm-hero-sun" aria-hidden="true" />

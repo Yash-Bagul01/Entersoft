@@ -11,7 +11,7 @@ import React, {
 import { usePathname, useRouter } from "next/navigation";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { PLATFORM_HUB_ITEMS } from "@/data/platformHub";
+import { PLATFORM_HUB_ITEMS, platformHubItemByHref } from "@/data/platformHub";
 import { services } from "@/data/services";
 import { ROUTES } from "@/config/routes";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
@@ -22,8 +22,14 @@ const COLS = 5;
 const EASE = "power4.inOut";
 gsap.registerPlugin(ScrollTrigger);
 
+export type PlatformExpandOpts = {
+  from?: HTMLElement;
+  image: string;
+  grown?: boolean;
+};
+
 type PlatformTransitionApi = {
-  to: (href: string, label?: string) => void;
+  to: (href: string, label?: string, expand?: PlatformExpandOpts) => void;
 };
 
 const PlatformTransitionContext = createContext<PlatformTransitionApi | null>(null);
@@ -74,28 +80,44 @@ export function PlatformTransitionProvider({
   const colsRef = useRef<HTMLDivElement[]>([]);
   const labelRef = useRef<HTMLParagraphElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
+  const expandRef = useRef<HTMLDivElement>(null);
+  const expandImgRef = useRef<HTMLImageElement>(null);
+  const expandShadeRef = useRef<HTMLDivElement>(null);
+  const sourceElRef = useRef<HTMLElement | null>(null);
   const busy = useRef(false);
   const pending = useRef<string | null>(null);
+  const modeRef = useRef<"wipe" | "expand" | null>(null);
   const apiRef = useRef<PlatformTransitionApi>({ to: () => {} });
 
   const resetChrome = useCallback(() => {
     const cols = colsRef.current.filter(Boolean);
     const overlay = overlayRef.current;
     const labelEl = labelRef.current;
-    gsap.killTweensOf([...cols, labelEl]);
+    const expand = expandRef.current;
+    gsap.killTweensOf([...cols, labelEl, expand, expandShadeRef.current]);
     if (overlay) overlay.classList.remove("is-on");
+    if (expand) {
+      expand.classList.remove("is-on");
+      gsap.set(expand, { autoAlpha: 0, clearProps: "top,left,width,height,transform" });
+    }
+    if (sourceElRef.current) {
+      sourceElRef.current.style.visibility = "";
+      sourceElRef.current = null;
+    }
+    document.documentElement.removeAttribute("data-platform-expand");
     gsap.set(cols, { scaleY: 0, clearProps: "transform" });
     gsap.set(labelEl, { opacity: 0, y: 0, clearProps: "transform" });
     lenis?.start();
     busy.current = false;
     pending.current = null;
+    modeRef.current = null;
     requestAnimationFrame(() => {
       ScrollTrigger.refresh();
     });
   }, [lenis]);
 
   const coverThenPush = useCallback(
-    (href: string, label?: string) => {
+    (href: string, label?: string, expand?: PlatformExpandOpts) => {
       const path = pathOnly(href);
       if (!isCoverRoute(path)) {
         router.push(href);
@@ -105,6 +127,7 @@ export function PlatformTransitionProvider({
       if (busy.current) return;
       busy.current = true;
       pending.current = path;
+      modeRef.current = expand?.image ? "expand" : "wipe";
       router.prefetch(path);
       lenis?.stop();
 
@@ -113,6 +136,71 @@ export function PlatformTransitionProvider({
         window.setTimeout(() => {
           resetChrome();
         }, 40);
+        return;
+      }
+
+      if (modeRef.current === "expand" && expand) {
+        const layer = expandRef.current;
+        const img = expandImgRef.current;
+        const shade = expandShadeRef.current;
+        document.documentElement.setAttribute("data-platform-expand", "1");
+        if (img) img.src = expand.image;
+        const preload = new Image();
+        preload.src = expand.image;
+
+        if (!layer) {
+          router.push(path);
+          return;
+        }
+
+        layer.classList.add("is-on");
+
+        if (expand.grown) {
+          gsap.set(layer, {
+            autoAlpha: 1,
+            top: 0,
+            left: 0,
+            width: window.innerWidth,
+            height: window.innerHeight,
+          });
+          gsap.set(shade, { opacity: 1 });
+          router.push(path);
+          return;
+        }
+
+        const source = expand.from;
+        const rect = source?.getBoundingClientRect();
+        if (source) {
+          sourceElRef.current = source;
+          source.style.visibility = "hidden";
+        }
+        gsap.set(layer, {
+          autoAlpha: 1,
+          top: rect?.top ?? 0,
+          left: rect?.left ?? 0,
+          width: Math.max(rect?.width ?? window.innerWidth, 8),
+          height: Math.max(rect?.height ?? window.innerHeight, 8),
+        });
+        gsap.set(shade, { opacity: 0 });
+        gsap
+          .timeline({
+            onComplete: () => {
+              router.push(path);
+            },
+          })
+          .to(
+            layer,
+            {
+              top: 0,
+              left: 0,
+              width: () => window.innerWidth,
+              height: () => window.innerHeight,
+              duration: 1.12,
+              ease: "power3.inOut",
+            },
+            0,
+          )
+          .to(shade, { opacity: 1, duration: 0.55, ease: "power2.out" }, 0.48);
         return;
       }
 
@@ -147,7 +235,7 @@ export function PlatformTransitionProvider({
 
   const api = useMemo<PlatformTransitionApi>(
     () => ({
-      to: (href, label) => apiRef.current.to(href, label),
+      to: (href, label, expand) => apiRef.current.to(href, label, expand),
     }),
     [],
   );
@@ -173,6 +261,16 @@ export function PlatformTransitionProvider({
       if (!isCoverRoute(path)) return;
       if (pathOnly(path) === pathOnly(pathname || "/")) return;
       event.preventDefault();
+
+      const fromHub = pathOnly(pathname || "/") === "/platform";
+      const hubItem = platformHubItemByHref(path);
+      if (fromHub && hubItem) {
+        window.dispatchEvent(
+          new CustomEvent("platform-hub-zoom", { detail: { href: path } }),
+        );
+        return;
+      }
+
       coverThenPush(path, platformPageLabel(path));
     };
     document.addEventListener("click", onClick, true);
@@ -190,15 +288,24 @@ export function PlatformTransitionProvider({
     const cols = colsRef.current.filter(Boolean);
     const overlay = overlayRef.current;
     const labelEl = labelRef.current;
+    const expand = expandRef.current;
 
     const finish = () => {
       if (overlay) overlay.classList.remove("is-on");
+      if (expand) expand.classList.remove("is-on");
+      if (sourceElRef.current) {
+        sourceElRef.current.style.visibility = "";
+        sourceElRef.current = null;
+      }
+      document.documentElement.removeAttribute("data-platform-expand");
       gsap.set(cols, { scaleY: 0, clearProps: "transform" });
+      gsap.set(expand, { autoAlpha: 0, clearProps: "top,left,width,height" });
       lenis?.start();
       lenis?.scrollTo(0, { immediate: true });
       window.scrollTo(0, 0);
       busy.current = false;
       pending.current = null;
+      modeRef.current = null;
       requestAnimationFrame(() => {
         ScrollTrigger.refresh();
       });
@@ -206,6 +313,24 @@ export function PlatformTransitionProvider({
 
     if (reduce) {
       finish();
+      return;
+    }
+
+    if (modeRef.current === "expand") {
+      gsap.set(expand, {
+        top: 0,
+        left: 0,
+        width: window.innerWidth,
+        height: window.innerHeight,
+        autoAlpha: 1,
+      });
+      gsap.to(expand, {
+        autoAlpha: 0,
+        duration: 0.72,
+        delay: 0.32,
+        ease: "power2.inOut",
+        onComplete: finish,
+      });
       return;
     }
 
@@ -242,6 +367,11 @@ export function PlatformTransitionProvider({
           ))}
         </div>
         <p ref={labelRef} className="exo-pt__label" />
+      </div>
+      <div ref={expandRef} className="exo-pt-expand" aria-hidden="true">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img ref={expandImgRef} alt="" className="exo-pt-expand__image" />
+        <div ref={expandShadeRef} className="exo-pt-expand__shade" />
       </div>
     </PlatformTransitionContext.Provider>
   );

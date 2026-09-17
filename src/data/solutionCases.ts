@@ -1,4 +1,5 @@
 import type { PlatformPillar } from "@/data/platform";
+import { hubFront } from "@/data/platformHub";
 
 const u = (id: string, w = 2400) =>
   `https://images.unsplash.com/${id}?q=80&w=${w}&auto=format&fit=crop`;
@@ -46,8 +47,8 @@ export const SOLUTION_CASES: Record<SolutionCaseSlug, SolutionCaseVisual> = {
     href: "/platform/ai-appsec",
     showcaseTitle: "AI Security & Governance",
     hero: {
-      src: u("photo-1677442136019-21780ecad995", 2400),
-      alt: "Neural network visualization of an AI model",
+      src: hubFront("ai"),
+      alt: "Interior volume used for AI application security posture",
     },
     gallery: [
       {
@@ -78,8 +79,8 @@ export const SOLUTION_CASES: Record<SolutionCaseSlug, SolutionCaseVisual> = {
     href: "/platform/cloud-appsec",
     showcaseTitle: "Cloud Posture & Infra",
     hero: {
-      src: u("photo-1484557052118-f32bd25b45b5", 2400),
-      alt: "Aerial cloud layer over a continental coastline",
+      src: hubFront("cloud"),
+      alt: "Architectural volume used for cloud application security posture",
     },
     gallery: [
       {

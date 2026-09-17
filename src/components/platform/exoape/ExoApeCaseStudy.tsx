@@ -189,7 +189,11 @@ export default function ExoApeCaseStudy({ data }: { data: ExoApeCase }) {
         gsap.set(overlayLines, { yPercent: 110 });
         if (overlayCopy) gsap.set(overlayCopy, { opacity: 0, y: 18 });
 
-        if (!reduce && plate) {
+        const expanding =
+          typeof document !== "undefined" &&
+          document.documentElement.hasAttribute("data-platform-expand");
+
+        if (!reduce && plate && !expanding) {
           gsap.fromTo(plate, { scale: 1.2 }, { scale: 1, duration: 2.2, ease: "power3.out" });
         }
         if (!reduce && titleLine) {
@@ -400,6 +404,7 @@ export default function ExoApeCaseStudy({ data }: { data: ExoApeCase }) {
           >
             <div
               ref={heroMediaRef}
+              data-hero-media
               className="absolute inset-x-0 will-change-transform"
               style={{ top: "-42%", height: "199%" }}
             >
@@ -412,6 +417,19 @@ export default function ExoApeCaseStudy({ data }: { data: ExoApeCase }) {
                   sizes="100vw"
                   className="object-cover"
                 />
+                {data.images.heroVideo ? (
+                  <video
+                    className="absolute inset-0 h-full w-full object-cover"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    poster={data.images.hero}
+                    aria-hidden="true"
+                  >
+                    <source src={data.images.heroVideo} type="video/mp4" />
+                  </video>
+                ) : null}
               </div>
               <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/45 to-black/40" />
             </div>

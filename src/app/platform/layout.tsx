@@ -18,12 +18,13 @@ export default function PlatformLayout({
   const isSecrets = pathname === "/platform/secrets";
   const isDast = pathname === "/platform/dast";
   const isAgentic = pathname === "/platform/agentic-pentesting";
+  const isEnprobe = pathname === "/platform/enprobe";
   const isApi = pathname === "/platform/api-security";
   const isAsm = pathname === "/platform/attack-surface-management";
   const isCloud = pathname === "/platform/cloud-appsec";
   const isAi = pathname === "/platform/ai-appsec";
   const isLightPage = isHub || isCyberOntology || isSca || isApi || isAsm;
-  const isExoCase = isDast || isIac || isAgentic;
+  const isExoCase = isDast || isIac || isAgentic || isEnprobe;
 
   useEffect(() => {
     if (isLightPage) {
@@ -58,7 +59,7 @@ export default function PlatformLayout({
 
   if (isExoCase) {
     return (
-      <div data-page={isAgentic ? "agentic" : isDast ? "dast" : "iac"} className="bg-white min-h-screen">
+      <div data-page={isEnprobe ? "enprobe" : isAgentic ? "agentic" : isDast ? "dast" : "iac"} className="bg-white min-h-screen">
         {children}
       </div>
     );

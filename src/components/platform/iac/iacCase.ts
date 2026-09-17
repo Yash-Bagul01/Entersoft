@@ -1,3 +1,4 @@
+import { hubFront } from "@/data/platformHub";
 import type { ExoApeCase } from "@/components/platform/exoape/types";
 
 const u = (id: string, w = 1600) =>
@@ -18,8 +19,8 @@ export const IAC_CASE: ExoApeCase = {
     { label: "Gate", values: ["CI/CD pull-request fail"] },
   ],
   images: {
-    hero: u("photo-1759604218664-f4f714869555", 2400),
-    heroAlt: "Modern glass building illuminated at night",
+    hero: hubFront("iac"),
+    heroAlt: "Architectural volume standing in for infrastructure before it is provisioned",
     wide: u("photo-1764083292882-fd28776d0022", 2400),
     wideAlt: "Geometric glass skyscraper facade",
     beliefs: u("photo-1672023726187-032edab1c417", 2400),

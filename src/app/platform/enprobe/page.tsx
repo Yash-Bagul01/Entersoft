@@ -1,19 +1,17 @@
 import React from "react";
 import type { Metadata } from "next";
-import AppSecPlatformPage from "@/components/services/AppSecPlatformPage";
+import EnprobeExoapePage from "@/components/platform/enprobe/EnprobeExoapePage";
 import { getCanonicalUrl, ROUTES } from "@/config/routes";
 
-const TITLE = "EnProbe Platform | Continuous Security Visibility & Evidence | Entersoft";
+const TITLE = "EnProbe — Continuous Exposure Assurance | Entersoft Security";
 const DESCRIPTION =
-  "EnProbe consolidates application security, code, cloud, attack surface and compliance signals into a single connected evidence platform for security and engineering teams.";
+  "See the whole exposure. Fix what matters. Prove risk is gone. EnProbe unifies ASPM, CSPM, testing, assets and verified retesting into one prioritized security view.";
 const CANONICAL = getCanonicalUrl(ROUTES.platform.enprobe);
 
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
-  alternates: {
-    canonical: CANONICAL,
-  },
+  alternates: { canonical: CANONICAL },
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,
@@ -29,37 +27,32 @@ export const metadata: Metadata = {
   },
 };
 
-const enprobeFaqs = [
-  {
-    question: "What is the EnProbe platform?",
-    answer: "EnProbe is Entersoft's security platform that unifies application security posture management (ASPM), code analysis, cloud vulnerability management, attack-surface discovery, and compliance evidence into one connected view."
-  },
-  {
-    question: "Does EnProbe replace human security testing?",
-    answer: "No. EnProbe provides continuous automation, visibility, and workflow orchestration, while Entersoft security experts validate complex vulnerabilities, test business logic, and assist with remediation guidance."
-  }
-];
-
 export default function EnProbePlatformPage() {
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Product",
-    "name": "EnProbe Platform",
-    "description": DESCRIPTION,
-    "brand": {
+    "@type": "SoftwareApplication",
+    name: "EnProbe",
+    applicationCategory: "SecurityApplication",
+    description: DESCRIPTION,
+    url: CANONICAL,
+    brand: {
       "@type": "Brand",
-      "name": "Entersoft"
+      name: "Entersoft Security",
     },
-    "url": CANONICAL
+    offers: {
+      "@type": "Offer",
+      url: getCanonicalUrl(ROUTES.contact),
+      availability: "https://schema.org/OnlineOnly",
+    },
   };
 
   return (
-    <main className="w-full min-h-screen bg-[#060606] text-white">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <AppSecPlatformPage faqs={enprobeFaqs} />
-    </main>
+      <EnprobeExoapePage />
+    </>
   );
 }

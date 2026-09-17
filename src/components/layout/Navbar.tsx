@@ -50,7 +50,11 @@ export default function Navbar() {
   const isSastPage = pathname?.startsWith("/platform/sast");
   const isScaPage = pathname?.startsWith("/platform/sca");
   const isPlatformSubpage = isSastPage;
-  const isExoCase = pathname === "/platform/dast" || pathname === "/platform/iac" || pathname === "/platform/agentic-pentesting";
+  const isExoCase =
+    pathname === "/platform/dast" ||
+    pathname === "/platform/iac" ||
+    pathname === "/platform/agentic-pentesting" ||
+    pathname === "/platform/enprobe";
   const isSolutionsPage = pathname === ROUTES.solutions;
   const isSolutionLanding = !!pathname?.startsWith("/solutions/");
   const isServicesHub = pathname === ROUTES.servicesHub;

@@ -7,80 +7,152 @@ import { ArrowRight, CheckCircle2, Shield, Layers, ChevronRight } from "lucide-r
 import { Button } from "@/components/ui/Button";
 import FinalCTA from "@/components/sections/FinalCTA";
 import { PlatformPillar } from "@/data/platform";
+import { PLATFORM_HUB_ITEMS } from "@/data/platformHub";
 
 interface PlatformSubpageTemplateProps {
   pillar: PlatformPillar;
 }
 
 export default function PlatformSubpageTemplate({ pillar }: PlatformSubpageTemplateProps) {
+  const currentIndex = PLATFORM_HUB_ITEMS.findIndex(
+    (item) =>
+      item.id === pillar.slug ||
+      item.name.toLowerCase().includes(pillar.slug.toLowerCase()) ||
+      item.name.toLowerCase() === pillar.title.toLowerCase()
+  );
+  const nextItem =
+    PLATFORM_HUB_ITEMS[(currentIndex + 1) % PLATFORM_HUB_ITEMS.length] || PLATFORM_HUB_ITEMS[0];
+
   return (
     <div className="w-full bg-[#060606] text-white selection:bg-[#08428C] selection:text-white">
       {/* ─────────────────────────────────────────────────────────────
-          SECTION 1: HERO (Black / Near-Black #060606)
+          TOP NAVIGATION BAR MATCHING BELEN JONES REFERENCE
           ───────────────────────────────────────────────────────────── */}
-      <section className="relative w-full min-h-[75vh] flex items-center justify-center pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden bg-[#060606] border-b border-white/10">
-        {/* Subtle Background Radial Glow */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-gradient-to-tr from-[#08428C]/30 to-[#0D518C]/20 rounded-full blur-[120px] pointer-events-none opacity-60" />
+      <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 bg-[#060606]/80 backdrop-blur-md border-b border-white/10">
+        <div className="flex items-center gap-3">
+          <Link
+            href="/platform"
+            className="flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-white/20 bg-white/5 hover:bg-white text-white hover:text-black font-mono text-[11px] font-bold uppercase tracking-wider transition-all"
+          >
+            <span>/RETURN</span>
+          </Link>
+          {nextItem && (
+            <Link
+              href={nextItem.href}
+              className="flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-white/20 bg-white/5 hover:bg-white text-white hover:text-black font-mono text-[11px] font-bold uppercase tracking-wider transition-all"
+            >
+              <span>NEXT</span>
+              <ArrowRight className="w-3 h-3" />
+            </Link>
+          )}
+        </div>
+
+        <div className="flex items-center gap-3">
+          <Link
+            href="/platform"
+            className="font-mono text-[11px] font-bold uppercase tracking-widest text-white/70 hover:text-white transition-colors"
+          >
+            ENTERSOFT PLATFORM
+          </Link>
+          <Link
+            href="/booking"
+            className="px-4 py-1.5 rounded-full bg-[#08428C] hover:bg-[#0D518C] text-white font-mono text-[11px] font-bold uppercase tracking-wider transition-all"
+          >
+            CONTACT
+          </Link>
+        </div>
+      </header>
+
+      {/* ─────────────────────────────────────────────────────────────
+          SECTION 1: HERO (Editorial Minimalist Split View)
+          ───────────────────────────────────────────────────────────── */}
+      <section className="relative w-full min-h-[85vh] flex items-center pt-28 pb-20 md:pt-36 md:pb-24 overflow-hidden bg-[#060606] border-b border-white/10">
+        {/* Subtle Background Glow */}
+        <div className="absolute top-1/4 left-1/3 w-[650px] h-[400px] bg-gradient-to-tr from-[#08428C]/25 to-[#0D518C]/15 rounded-full blur-[130px] pointer-events-none opacity-50" />
         
-        {/* Background Grid Pattern */}
-        <div 
-          className="absolute inset-0 opacity-[0.07] pointer-events-none"
-          style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.4) 1px, transparent 0)`,
-            backgroundSize: "32px 32px",
-          }}
-        />
-
-        <div className="relative z-10 max-w-[1200px] mx-auto px-6 md:px-12 flex flex-col items-start gap-6">
-          {/* Cluster & Descriptor Eyebrow */}
+        <div className="relative z-10 max-w-[1300px] mx-auto px-6 md:px-12 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          {/* Left Column: Visual Artwork / Preview Card */}
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className="flex items-center gap-3 font-mono text-[11px] font-bold uppercase tracking-widest text-[#08428C] dark:text-[#3882E0] bg-[#08428C]/10 border border-[#08428C]/30 px-3.5 py-1.5 rounded-full"
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:col-span-5 relative w-full aspect-[4/3] rounded-[12px] overflow-hidden border border-white/15 bg-white/5 shadow-2xl group"
           >
-            <span>ENPROBE PLATFORM</span>
-            <span className="text-white/30">•</span>
-            <span>{pillar.cluster}</span>
-            <span className="text-white/30">•</span>
-            <span className="text-white/80">{pillar.descriptor}</span>
-          </motion.div>
-
-          {/* Pillar Main Title */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="text-[clamp(2.5rem,5.5vw,4.5rem)] font-display font-bold uppercase tracking-tight leading-[1.05] text-white max-w-[950px]"
-          >
-            {pillar.title}
-          </motion.h1>
-
-          {/* Subtitle / Description */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="text-[16px] md:text-[19px] text-[#A1A1AA] leading-relaxed max-w-[760px] font-sans font-normal"
-          >
-            {pillar.summary}
-          </motion.p>
-
-          {/* CTA Buttons & Capability Tag */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-wrap items-center gap-4 pt-4"
-          >
-            <Button variant="primary" size="lg" asLink href="/#contact" className="gap-2 bg-[#08428C] hover:bg-[#0D518C] text-white border-none shadow-lg">
-              Request Platform Briefing <ArrowRight className="w-4 h-4" />
-            </Button>
-            <div className="flex items-center gap-2 text-[12px] font-mono text-white/60 bg-white/5 border border-white/10 px-4 py-3 rounded-[4px]">
-              <Shield className="w-4 h-4 text-[#08428C]" />
-              <span>Core Capability: {pillar.coreCapability}</span>
+            <img
+              src={nextItem?.faces.front || "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1200"}
+              alt={pillar.title}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+            <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between">
+              <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-white/70 bg-black/60 backdrop-blur-md px-3 py-1 rounded">
+                [ 2026 BESPOKE APPSEC ]
+              </span>
+              <span className="font-mono text-[10px] font-bold text-[#3882E0] bg-black/60 backdrop-blur-md px-3 py-1 rounded">
+                MODULE :: {pillar.slug.toUpperCase()}
+              </span>
             </div>
           </motion.div>
+
+          {/* Right Column: Editorial Details */}
+          <div className="lg:col-span-7 flex flex-col items-start gap-6">
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="font-mono text-[12px] font-bold uppercase tracking-widest text-[#3882E0]"
+            >
+              [ 2026 ] BESPOKE PLATFORM CAPABILITY
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="text-[clamp(2.8rem,5.5vw,5rem)] font-display font-extrabold uppercase tracking-tight leading-[0.95] text-white"
+            >
+              {pillar.title}
+            </motion.h1>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+              className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full py-4 border-y border-white/10 font-mono text-[12px]"
+            >
+              <div>
+                <span className="text-white/40 block mb-1 uppercase tracking-wider">// ROLE</span>
+                <span className="text-white font-semibold uppercase">{pillar.cluster} LEAD ASSURANCE</span>
+              </div>
+              <div>
+                <span className="text-white/40 block mb-1 uppercase tracking-wider">// CORE ENGINE</span>
+                <span className="text-white font-semibold uppercase">{pillar.coreCapability}</span>
+              </div>
+            </motion.div>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="text-[16px] md:text-[18px] text-[#A1A1AA] leading-relaxed font-sans font-normal"
+            >
+              {pillar.summary}
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="flex flex-wrap items-center gap-4 pt-2"
+            >
+              <Button variant="primary" size="lg" asLink href="/booking" className="gap-2 bg-[#08428C] hover:bg-[#0D518C] text-white border-none shadow-lg">
+                Request Briefing <ArrowRight className="w-4 h-4" />
+              </Button>
+              <Link href="/platform" className="inline-flex items-center gap-2 font-mono text-[12px] font-bold uppercase tracking-wider text-white/70 hover:text-white border-b border-white/30 hover:border-white py-1">
+                <span>[ VIEW ALL MODULES ]</span>
+              </Link>
+            </motion.div>
+          </div>
         </div>
       </section>
 
