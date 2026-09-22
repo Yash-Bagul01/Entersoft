@@ -17,15 +17,36 @@ export default function SolutionsLayout({
     document.documentElement.setAttribute("data-theme", "light");
     document.documentElement.classList.remove("dark");
     document.documentElement.classList.add("light");
+    if (pathname === "/solutions/api-discovery") {
+      document.documentElement.setAttribute("data-page", "api-discovery");
+    }
+    if (pathname === "/solutions/ai-bom") {
+      document.documentElement.setAttribute("data-page", "ai-bom");
+    }
     return () => {
       document.documentElement.removeAttribute("data-theme");
+      if (pathname === "/solutions/api-discovery" || pathname === "/solutions/ai-bom") {
+        document.documentElement.removeAttribute("data-page");
+      }
     };
-  }, [isLanding]);
+  }, [isLanding, pathname]);
 
   if (!isLanding) return children;
 
+  const isApiDiscovery = pathname === "/solutions/api-discovery";
+  const isAiBom = pathname === "/solutions/ai-bom";
+
   return (
-    <div data-page="solution-landing" className="min-h-screen bg-[#f6f5f0] text-[#12141a]">
+    <div
+      data-page={isApiDiscovery ? "api-discovery" : isAiBom ? "ai-bom" : "solution-landing"}
+      className={
+        isApiDiscovery
+          ? "min-h-screen bg-[#ffffff] text-[#121212]"
+          : isAiBom
+            ? "min-h-screen bg-[#edf0f2] text-[#1a2b3b]"
+            : "min-h-screen bg-[#f6f5f0] text-[#12141a]"
+      }
+    >
       {children}
     </div>
   );

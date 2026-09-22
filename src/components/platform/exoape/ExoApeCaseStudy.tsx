@@ -414,6 +414,7 @@ export default function ExoApeCaseStudy({ data }: { data: ExoApeCase }) {
                   alt={data.images.heroAlt}
                   fill
                   priority
+                  unoptimized
                   sizes="100vw"
                   className="object-cover"
                 />

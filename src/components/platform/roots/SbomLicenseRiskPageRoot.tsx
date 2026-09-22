@@ -9,6 +9,7 @@ import Footer from "@/components/layout/Footer";
 import { platformPillars } from "@/data/platform";
 import SBOM_Hero from "@/components/platform/sbom/SBOM_Hero";
 import PlatformFAQ from "@/components/platform/common/PlatformFAQ";
+import HubArrivePhoto from "@/components/platform/HubArrivePhoto";
 
 const sbomFaqs = [
   {
@@ -37,6 +38,7 @@ export default function SbomLicenseRiskPageRoot() {
       {/* ─────────────────────────────────────────────────────────────
           SECTION 1: HERO SECTION (System Architecture Slide 1 Theme)
           ───────────────────────────────────────────────────────────── */}
+      <HubArrivePhoto id="sbom" />
       <SBOM_Hero />
 
       {/* ─────────────────────────────────────────────────────────────

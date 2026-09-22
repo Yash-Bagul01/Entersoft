@@ -9,6 +9,7 @@ import Footer from "@/components/layout/Footer";
 import { platformPillars } from "@/data/platform";
 import SAST_Hero from "@/components/platform/sast/SAST_Hero";
 import PlatformFAQ from "@/components/platform/common/PlatformFAQ";
+import HubArrivePhoto from "@/components/platform/HubArrivePhoto";
 
 const sastFaqs = [
   {
@@ -37,6 +38,7 @@ export default function SASTPageRoot() {
       {/* ─────────────────────────────────────────────────────────────
           SECTION 1: HERO SECTION (VoxAura Dark Neon Indigo/Cyan Theme)
           ───────────────────────────────────────────────────────────── */}
+      <HubArrivePhoto id="sast" />
       <SAST_Hero />
 
       {/* ─────────────────────────────────────────────────────────────

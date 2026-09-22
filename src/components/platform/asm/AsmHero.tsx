@@ -3,7 +3,8 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { ROUTES } from "@/config/routes";
-import { hubFront } from "@/data/platformHub";
+import { hubFront, hubVideo } from "@/data/platformHub";
+import HubClip from "@/components/platform/HubClip";
 import { platformPillars } from "@/data/platform";
 
 const pillar = platformPillars["attack-surface-management"];
@@ -52,7 +53,7 @@ function HeroMeters() {
 
 export default function AsmHero() {
   return (
-    <section id="hero" className="asm-hero">
+    <section className="asm-hero">
       <div className="asm-hero-copy">
         <p className="asm-mono">Visibility you control</p>
         <h1 className="asm-display">
@@ -72,6 +73,11 @@ export default function AsmHero() {
           <img
             src={hubFront("asm")}
             alt=""
+          />
+          <HubClip
+            src={hubVideo("asm")}
+            poster={hubFront("asm")}
+            className="absolute inset-0 h-full w-full object-cover"
           />
           <div className="asm-hero-sun" aria-hidden="true" />
         </div>

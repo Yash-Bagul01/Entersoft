@@ -1,4 +1,4 @@
-import { hubFront } from "@/data/platformHub";
+import { hubFront, hubVideo } from "@/data/platformHub";
 import type { ExoApeCase } from "@/components/platform/exoape/types";
 
 const u = (id: string, w = 1600) =>
@@ -27,7 +27,8 @@ export const DAST_CASE: ExoApeCase = {
   ],
   images: {
     hero: hubFront("dast"),
-    heroAlt: "Quiet interior standing in for a live application under test",
+    heroVideo: hubVideo("dast"),
+    heroAlt: "Source code on a monitor during a live application test",
     wide: u("photo-1770473859769-d5a601e54a63", 2400),
     wideAlt: "Illuminated towers at night",
     beliefs: u("photo-1506606401543-2e73709cebb4", 2400),

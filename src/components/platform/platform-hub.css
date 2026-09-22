@@ -93,7 +93,7 @@
   height: 100%;
   padding: 5rem 4vw 3.5rem;
   pointer-events: none;
-  overflow-y: auto;
+  overflow: hidden;
   scrollbar-width: none;
 }
 
@@ -162,6 +162,7 @@
   transform-style: preserve-3d;
   transform-origin: center center;
   will-change: transform;
+  background: transparent;
 }
 
 .platform-hub__cube-pose {
@@ -172,6 +173,7 @@
   transform-origin: center center;
   transform: rotateY(-32deg) rotateX(4deg);
   will-change: transform;
+  background: transparent;
 }
 
 .platform-hub__cube {
@@ -182,23 +184,40 @@
   transform-origin: center center;
   transform: rotateX(0deg);
   will-change: transform;
+  background: transparent;
+}
+
+.platform-hub__core {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: transparent;
+  transform: translateZ(0);
+  pointer-events: none;
 }
 
 .platform-hub__face {
   position: absolute;
   overflow: hidden;
-  background: #111;
+  background-color: transparent;
   backface-visibility: hidden;
-  box-shadow: inset 0 0 60px rgba(0,0,0,0.3);
 }
 
-.platform-hub__face img,
+.platform-hub__face-media {
+  width: 100%;
+  height: 100%;
+  transform-origin: center center;
+}
+
+.platform-hub__core video,
 .platform-hub__face video {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   display: block;
   pointer-events: none;
+  transform-origin: center center;
 }
 
 .platform-hub__face--front,
@@ -210,12 +229,6 @@
 .platform-hub__face--right,
 .platform-hub__face--left {
   height: 100%;
-  filter: blur(8px) brightness(0.78) saturate(0.88);
-}
-
-.platform-hub__face--right img,
-.platform-hub__face--left img {
-  transform: scale(1.14);
 }
 
 .platform-hub__face--top,
@@ -223,7 +236,17 @@
   width: 100%;
 }
 
-.platform-hub__face--bottom img {
+.platform-hub__face--right .platform-hub__face-media,
+.platform-hub__face--left .platform-hub__face-media {
+  filter: blur(8px);
+  transform: scale(1.16);
+}
+
+/* Keep the camera face upright; rotate only the lid so photo-up aims at the navbar. */
+.platform-hub__cube[data-pitch="0"] .platform-hub__face--top .platform-hub__face-media,
+.platform-hub__cube[data-pitch="1"] .platform-hub__face--front .platform-hub__face-media,
+.platform-hub__cube[data-pitch="2"] .platform-hub__face--bottom .platform-hub__face-media,
+.platform-hub__cube[data-pitch="3"] .platform-hub__face--back .platform-hub__face-media {
   transform: rotate(180deg);
 }
 
@@ -250,8 +273,23 @@
   opacity: 1;
 }
 
+.platform-hub.is-expanding {
+  overflow: visible;
+}
+
+html:has(.platform-hub.is-expanding),
+html:has(.platform-hub.is-expanding) body {
+  overflow: hidden;
+}
+
 .platform-hub.is-expanding .platform-hub__cube-wrap {
   z-index: 9999;
+  cursor: none;
+}
+
+.platform-hub.is-expanding .platform-hub__face--front {
+  box-shadow: none;
+  transition: box-shadow 0.9s ease;
 }
 
 .platform-hub.is-expanding .platform-hub__names,

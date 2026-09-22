@@ -8,6 +8,8 @@ import {
   SOLUTION_LANDINGS,
 } from "@/data/solutionLandings";
 import SolutionLandingPage from "@/components/solutions/SolutionLandingPage";
+import ApiDiscoveryPortalPage from "@/components/solutions/api-discovery/ApiDiscoveryPortalPage";
+import AiBomIncreasePage from "@/components/solutions/ai-bom/AiBomIncreasePage";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -42,5 +44,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function SolutionLandingRoute({ params }: PageProps) {
   const { slug } = await params;
   if (!isSolutionLandingSlug(slug)) notFound();
-  return <SolutionLandingPage page={SOLUTION_LANDING_BY_SLUG[slug]} />;
+  const page = SOLUTION_LANDING_BY_SLUG[slug];
+  if (slug === "api-discovery") {
+    return <ApiDiscoveryPortalPage page={page} />;
+  }
+  if (slug === "ai-bom") {
+    return <AiBomIncreasePage page={page} />;
+  }
+  return <SolutionLandingPage page={page} />;
 }

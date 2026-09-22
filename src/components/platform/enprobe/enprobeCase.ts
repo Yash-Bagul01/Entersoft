@@ -1,4 +1,4 @@
-import { hubFront } from "@/data/platformHub";
+import { hubFront, hubVideo } from "@/data/platformHub";
 import type { ExoApeCase } from "@/components/platform/exoape/types";
 
 const u = (id: string, w = 1600) =>
@@ -29,7 +29,8 @@ export const ENPROBE_CASE: ExoApeCase = {
   ],
   images: {
     hero: hubFront("enprobe"),
-    heroAlt: "City at dusk — the full exposure surface in one view",
+    heroVideo: hubVideo("enprobe"),
+    heroAlt: "Server-rack cabling used as the EnProbe exposure surface",
     wide: u("photo-1449824913935-59a10b8d2000", 2400),
     wideAlt: "Aerial city grid representing a living inventory of owned and dependent assets",
     beliefs: u("photo-1479839672679-a46483c0e7c8", 2400),

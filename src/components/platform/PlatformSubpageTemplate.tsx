@@ -7,7 +7,9 @@ import { ArrowRight, CheckCircle2, Shield, Layers, ChevronRight } from "lucide-r
 import { Button } from "@/components/ui/Button";
 import FinalCTA from "@/components/sections/FinalCTA";
 import { PlatformPillar } from "@/data/platform";
-import { PLATFORM_HUB_ITEMS } from "@/data/platformHub";
+import { PLATFORM_HUB_ITEMS, hubFront, hubVideo } from "@/data/platformHub";
+import HubArrivePhoto from "@/components/platform/HubArrivePhoto";
+import HubClip from "@/components/platform/HubClip";
 
 interface PlatformSubpageTemplateProps {
   pillar: PlatformPillar;
@@ -17,14 +19,18 @@ export default function PlatformSubpageTemplate({ pillar }: PlatformSubpageTempl
   const currentIndex = PLATFORM_HUB_ITEMS.findIndex(
     (item) =>
       item.id === pillar.slug ||
-      item.name.toLowerCase().includes(pillar.slug.toLowerCase()) ||
-      item.name.toLowerCase() === pillar.title.toLowerCase()
+      pillar.slug.startsWith(item.id) ||
+      item.id === pillar.slug.split("-")[0],
   );
+  const hubItem =
+    currentIndex >= 0 ? PLATFORM_HUB_ITEMS[currentIndex] : PLATFORM_HUB_ITEMS[0];
   const nextItem =
-    PLATFORM_HUB_ITEMS[(currentIndex + 1) % PLATFORM_HUB_ITEMS.length] || PLATFORM_HUB_ITEMS[0];
+    PLATFORM_HUB_ITEMS[(Math.max(currentIndex, 0) + 1) % PLATFORM_HUB_ITEMS.length] || PLATFORM_HUB_ITEMS[0];
 
   return (
     <div className="w-full bg-[#060606] text-white selection:bg-[#08428C] selection:text-white">
+      <HubArrivePhoto id={hubItem.id} />
+
       {/* ─────────────────────────────────────────────────────────────
           TOP NAVIGATION BAR MATCHING BELEN JONES REFERENCE
           ───────────────────────────────────────────────────────────── */}
@@ -79,9 +85,14 @@ export default function PlatformSubpageTemplate({ pillar }: PlatformSubpageTempl
             className="lg:col-span-5 relative w-full aspect-[4/3] rounded-[12px] overflow-hidden border border-white/15 bg-white/5 shadow-2xl group"
           >
             <img
-              src={nextItem?.faces.front || "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1200"}
+              src={hubFront(hubItem.id, 1600) || nextItem?.image}
               alt={pillar.title}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90"
+              className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 opacity-90"
+            />
+            <HubClip
+              src={hubVideo(hubItem.id)}
+              poster={hubFront(hubItem.id, 1600) || nextItem?.image}
+              className="absolute inset-0 h-full w-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
             <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between">

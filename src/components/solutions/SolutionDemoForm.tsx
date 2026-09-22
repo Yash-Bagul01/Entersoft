@@ -5,9 +5,11 @@ import React, { useState } from "react";
 export default function SolutionDemoForm({
   heading,
   idPrefix,
+  className,
 }: {
   heading: string;
   idPrefix: string;
+  className?: string;
 }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -27,7 +29,7 @@ export default function SolutionDemoForm({
 
   if (done) {
     return (
-      <div className="sl-form">
+      <div className={`sl-form${className ? ` ${className}` : ""}`}>
         <p className="sl-form__ok">
           Thank you. We received your details and will follow up to schedule a briefing.
         </p>
@@ -36,7 +38,7 @@ export default function SolutionDemoForm({
   }
 
   return (
-    <form className="sl-form" onSubmit={onSubmit}>
+    <form className={`sl-form${className ? ` ${className}` : ""}`} onSubmit={onSubmit}>
       <h2>{heading}</h2>
       <label htmlFor={`${idPrefix}-name`}>Name</label>
       <input

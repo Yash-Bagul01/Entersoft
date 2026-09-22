@@ -1,5 +1,5 @@
 import type { PlatformPillar } from "@/data/platform";
-import { hubFront } from "@/data/platformHub";
+import { hubFront, hubVideo } from "@/data/platformHub";
 
 const u = (id: string, w = 2400) =>
   `https://images.unsplash.com/${id}?q=80&w=${w}&auto=format&fit=crop`;
@@ -16,6 +16,7 @@ export type SolutionCaseSlug =
 export type SolutionCaseImage = {
   src: string;
   alt: string;
+  video?: string;
 };
 
 export type SolutionCaseVisual = {
@@ -48,7 +49,8 @@ export const SOLUTION_CASES: Record<SolutionCaseSlug, SolutionCaseVisual> = {
     showcaseTitle: "AI Security & Governance",
     hero: {
       src: hubFront("ai"),
-      alt: "Interior volume used for AI application security posture",
+      video: hubVideo("ai"),
+      alt: "Chrome robot bust used for AI application security posture",
     },
     gallery: [
       {
@@ -80,7 +82,8 @@ export const SOLUTION_CASES: Record<SolutionCaseSlug, SolutionCaseVisual> = {
     showcaseTitle: "Cloud Posture & Infra",
     hero: {
       src: hubFront("cloud"),
-      alt: "Architectural volume used for cloud application security posture",
+      video: hubVideo("cloud"),
+      alt: "Datacenter cabling used for cloud application security posture",
     },
     gallery: [
       {
@@ -111,8 +114,9 @@ export const SOLUTION_CASES: Record<SolutionCaseSlug, SolutionCaseVisual> = {
     href: "/platform/api-security",
     showcaseTitle: "API Security & Ecosystem",
     hero: {
-      src: u("photo-1555949963-aa79dcee981c", 2400),
-      alt: "Close-up of application source on a developer screen",
+      src: hubFront("api"),
+      video: hubVideo("api"),
+      alt: "Application source used for API security review",
     },
     gallery: [
       {
@@ -143,8 +147,9 @@ export const SOLUTION_CASES: Record<SolutionCaseSlug, SolutionCaseVisual> = {
     href: "/platform/aspm",
     showcaseTitle: "AppSec Posture (ASPM)",
     hero: {
-      src: u("photo-1504639725590-34d0984388bd", 2400),
-      alt: "Terminal and editor windows correlating findings",
+      src: hubFront("aspm"),
+      video: hubVideo("aspm"),
+      alt: "Posture dashboard used for application security correlation",
     },
     gallery: [
       {
@@ -175,8 +180,9 @@ export const SOLUTION_CASES: Record<SolutionCaseSlug, SolutionCaseVisual> = {
     href: "/platform/attack-surface-management",
     showcaseTitle: "Continuous Exposure (CTEM)",
     hero: {
-      src: u("photo-1633265486064-086b219458ec", 2400),
-      alt: "Hardened lock over a circuit substrate",
+      src: hubFront("asm"),
+      video: hubVideo("asm"),
+      alt: "City lights used as the exposed attack surface",
     },
     gallery: [
       {
@@ -207,8 +213,9 @@ export const SOLUTION_CASES: Record<SolutionCaseSlug, SolutionCaseVisual> = {
     href: "/platform/sbom-license-risk",
     showcaseTitle: "DevSecOps & Supply Chain",
     hero: {
-      src: u("photo-1667372393119-3d4c48d07fc9", 2400),
-      alt: "Container ship at night representing a software supply chain",
+      src: hubFront("sbom"),
+      video: hubVideo("sbom"),
+      alt: "Inventory work used for software bill of materials",
     },
     gallery: [
       {
@@ -239,8 +246,9 @@ export const SOLUTION_CASES: Record<SolutionCaseSlug, SolutionCaseVisual> = {
     href: "/platform/secrets",
     showcaseTitle: "Data Protection & Identity",
     hero: {
-      src: u("photo-1563013544-824ae1b704d3", 2400),
-      alt: "Physical lock representing credential control",
+      src: hubFront("secrets"),
+      video: hubVideo("secrets"),
+      alt: "Padlock used for credential and secrets control",
     },
     gallery: [
       {

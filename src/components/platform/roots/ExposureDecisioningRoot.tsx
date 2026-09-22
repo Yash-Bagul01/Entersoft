@@ -7,10 +7,12 @@ import { ArrowRight, Layers, ChevronRight, Target, Shield, AlertTriangle, CheckC
 import { Button } from "@/components/ui/Button";
 import FinalCTA from "@/components/sections/FinalCTA";
 import AttackPathVisualizer from "../visuals/AttackPathVisualizer";
+import HubArrivePhoto from "@/components/platform/HubArrivePhoto";
 
 export default function ExposureDecisioningRoot() {
   return (
     <div className="w-full bg-[#060606] text-white selection:bg-[#08428C] selection:text-white">
+      <HubArrivePhoto id="aspm" />
       {/* HERO & INTERACTIVE SIMULATOR */}
       <section className="relative w-full pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden bg-[#060606] border-b border-white/10">
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-gradient-to-tr from-[#08428C]/30 to-[#0D518C]/20 rounded-full blur-[130px] pointer-events-none opacity-50" />

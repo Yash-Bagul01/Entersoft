@@ -2,6 +2,7 @@
 
 import React from "react";
 import ThayonSecrets_Hero from "@/components/platform/secrets/ThayonSecrets_Hero";
+import HubArrivePhoto from "@/components/platform/HubArrivePhoto";
 import ThayonSecrets_Marquee from "@/components/platform/secrets/ThayonSecrets_Marquee";
 import ThayonSecrets_Thesis from "@/components/platform/secrets/ThayonSecrets_Thesis";
 import ThayonSecrets_Engagements from "@/components/platform/secrets/ThayonSecrets_Engagements";
@@ -16,6 +17,7 @@ export default function SecretsPageRoot() {
   return (
     <div className="w-full bg-[#FAFCFF] text-slate-900 selection:bg-blue-600 selection:text-white font-sans min-h-screen">
       {/* 1. HERO SECTION (Atmospheric Luminous Halo + Crosshair Guides + Terminal Preview) */}
+      <HubArrivePhoto id="secrets" />
       <ThayonSecrets_Hero />
 
       {/* 2. INFINITE PROVIDER TICKER (850+ Secret Ecosystems) */}

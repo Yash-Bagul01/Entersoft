@@ -25,6 +25,7 @@ gsap.registerPlugin(ScrollTrigger);
 export type PlatformExpandOpts = {
   from?: HTMLElement;
   image: string;
+  video?: string;
   grown?: boolean;
 };
 
@@ -82,6 +83,7 @@ export function PlatformTransitionProvider({
   const overlayRef = useRef<HTMLDivElement>(null);
   const expandRef = useRef<HTMLDivElement>(null);
   const expandImgRef = useRef<HTMLImageElement>(null);
+  const expandVideoRef = useRef<HTMLVideoElement>(null);
   const expandShadeRef = useRef<HTMLDivElement>(null);
   const sourceElRef = useRef<HTMLElement | null>(null);
   const busy = useRef(false);
@@ -105,6 +107,7 @@ export function PlatformTransitionProvider({
       sourceElRef.current = null;
     }
     document.documentElement.removeAttribute("data-platform-expand");
+    document.documentElement.removeAttribute("data-platform-expand-settle");
     gsap.set(cols, { scaleY: 0, clearProps: "transform" });
     gsap.set(labelEl, { opacity: 0, y: 0, clearProps: "transform" });
     lenis?.start();
@@ -142,9 +145,20 @@ export function PlatformTransitionProvider({
       if (modeRef.current === "expand" && expand) {
         const layer = expandRef.current;
         const img = expandImgRef.current;
+        const clip = expandVideoRef.current;
         const shade = expandShadeRef.current;
         document.documentElement.setAttribute("data-platform-expand", "1");
         if (img) img.src = expand.image;
+        if (clip) {
+          if (expand.video) {
+            clip.src = expand.video;
+            clip.poster = expand.image;
+            void clip.play().catch(() => {});
+          } else {
+            clip.removeAttribute("src");
+            clip.load();
+          }
+        }
         const preload = new Image();
         preload.src = expand.image;
 
@@ -155,33 +169,22 @@ export function PlatformTransitionProvider({
 
         layer.classList.add("is-on");
 
-        if (expand.grown) {
-          gsap.set(layer, {
-            autoAlpha: 1,
-            top: 0,
-            left: 0,
-            width: window.innerWidth,
-            height: window.innerHeight,
-          });
-          gsap.set(shade, { opacity: 1 });
-          router.push(path);
-          return;
-        }
-
         const source = expand.from;
         const rect = source?.getBoundingClientRect();
-        if (source) {
+        const grown = Boolean(expand.grown);
+        if (source && !grown) {
           sourceElRef.current = source;
           source.style.visibility = "hidden";
         }
         gsap.set(layer, {
-          autoAlpha: 1,
+          autoAlpha: grown ? 0 : 1,
           top: rect?.top ?? 0,
           left: rect?.left ?? 0,
           width: Math.max(rect?.width ?? window.innerWidth, 8),
           height: Math.max(rect?.height ?? window.innerHeight, 8),
         });
         gsap.set(shade, { opacity: 0 });
+        const grow = grown ? 1.28 : 1.12;
         gsap
           .timeline({
             onComplete: () => {
@@ -195,12 +198,25 @@ export function PlatformTransitionProvider({
               left: 0,
               width: () => window.innerWidth,
               height: () => window.innerHeight,
-              duration: 1.12,
-              ease: "power3.inOut",
+              duration: grow,
+              ease: "power2.inOut",
             },
             0,
           )
-          .to(shade, { opacity: 1, duration: 0.55, ease: "power2.out" }, 0.48);
+          .to(
+            layer,
+            {
+              autoAlpha: 1,
+              duration: grown ? 0.72 : 0.01,
+              ease: "power1.out",
+            },
+            grown ? 0.42 : 0,
+          )
+          .to(
+            shade,
+            { opacity: 1, duration: grown ? 0.78 : 0.55, ease: "power2.inOut" },
+            grown ? 0.58 : 0.48,
+          );
         return;
       }
 
@@ -298,6 +314,7 @@ export function PlatformTransitionProvider({
         sourceElRef.current = null;
       }
       document.documentElement.removeAttribute("data-platform-expand");
+      document.documentElement.removeAttribute("data-platform-expand-settle");
       gsap.set(cols, { scaleY: 0, clearProps: "transform" });
       gsap.set(expand, { autoAlpha: 0, clearProps: "top,left,width,height" });
       lenis?.start();
@@ -324,13 +341,17 @@ export function PlatformTransitionProvider({
         height: window.innerHeight,
         autoAlpha: 1,
       });
-      gsap.to(expand, {
-        autoAlpha: 0,
-        duration: 0.72,
-        delay: 0.32,
-        ease: "power2.inOut",
-        onComplete: finish,
-      });
+      const reveal = () => {
+        document.documentElement.setAttribute("data-platform-expand-settle", "1");
+        document.documentElement.removeAttribute("data-platform-expand");
+        gsap.to(expand, {
+          autoAlpha: 0,
+          duration: 1.15,
+          ease: "power2.inOut",
+          onComplete: finish,
+        });
+      };
+      requestAnimationFrame(() => requestAnimationFrame(reveal));
       return;
     }
 
@@ -371,6 +392,14 @@ export function PlatformTransitionProvider({
       <div ref={expandRef} className="exo-pt-expand" aria-hidden="true">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img ref={expandImgRef} alt="" className="exo-pt-expand__image" />
+        <video
+          ref={expandVideoRef}
+          className="exo-pt-expand__image exo-pt-expand__video"
+          muted
+          loop
+          playsInline
+          autoPlay
+        />
         <div ref={expandShadeRef} className="exo-pt-expand__shade" />
       </div>
     </PlatformTransitionContext.Provider>

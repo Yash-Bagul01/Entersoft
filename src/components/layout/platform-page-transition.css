@@ -78,15 +78,26 @@ html:has(.exo-pt.is-on) [data-scroll-progress] {
   object-position: center;
 }
 
+.exo-pt-expand__video {
+  position: absolute;
+  inset: 0;
+}
+
 .exo-pt-expand__shade {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(to top, rgba(11, 12, 16, 0.9) 0%, rgba(11, 12, 16, 0.42) 45%, rgba(11, 12, 16, 0.38) 100%);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.45) 45%, rgba(0, 0, 0, 0.4) 100%);
   opacity: 0;
 }
 
 html[data-platform-expand] #hero [data-hero-media] {
   top: 0 !important;
   height: 100% !important;
+}
+
+html[data-platform-expand-settle] #hero [data-hero-media] {
+  transition:
+    top 1.15s cubic-bezier(0.22, 1, 0.36, 1),
+    height 1.15s cubic-bezier(0.22, 1, 0.36, 1);
 }

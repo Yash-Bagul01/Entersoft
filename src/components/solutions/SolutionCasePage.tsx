@@ -101,8 +101,8 @@ export default function SolutionCasePage({ slug }: { slug: SolutionCaseSlug }) {
 
   return (
     <article id="solution-case" ref={articleRef} className="dark-panel">
-      <header className="sc-hero">
-        <div className="sc-hero__media">
+      <header id="hero" className="sc-hero">
+        <div className="sc-hero__media" data-hero-media>
           <Image
             src={visual.hero.src}
             alt={visual.hero.alt}
@@ -113,6 +113,18 @@ export default function SolutionCasePage({ slug }: { slug: SolutionCaseSlug }) {
             sizes="100vw"
             className="object-cover"
           />
+          {visual.hero.video ? (
+            <video
+              className="absolute inset-0 h-full w-full object-cover"
+              src={visual.hero.video}
+              poster={visual.hero.src}
+              autoPlay
+              muted
+              loop
+              playsInline
+              aria-hidden="true"
+            />
+          ) : null}
         </div>
         <div className="sc-hero__shade" />
         <div className="sc-hero__copy">

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import { useRouter } from "next/navigation";
 import { Anybody } from "next/font/google";
 import gsap from "gsap";
@@ -27,6 +28,19 @@ const COUNT = PLATFORM_HUB_ITEMS.length;
 const BELT = ["front", "bottom", "back", "top"] as const;
 type BeltFace = (typeof BELT)[number];
 
+function beltItemIndex(
+  cssFace: BeltFace,
+  steps: number,
+  shown: number,
+  incoming: number | null,
+  dir: 1 | -1 | 0,
+) {
+  const slot = wrap4(BELT.indexOf(cssFace) - wrap4(steps));
+  if (incoming != null && dir === 1 && slot === 1) return incoming;
+  if (incoming != null && dir === -1 && slot === 3) return incoming;
+  return shown;
+}
+
 function lerp(start: number, end: number, amount: number) {
   return start + (end - start) * amount;
 }
@@ -46,21 +60,7 @@ function shortestDir(from: number, to: number): 1 | -1 {
   return forward <= backward ? 1 : -1;
 }
 
-function beltItemIndex(
-  cssFace: BeltFace,
-  steps: number,
-  shown: number,
-  incoming: number | null,
-  dir: 1 | -1 | 0,
-) {
-  const slot = wrap4(BELT.indexOf(cssFace) - wrap4(steps));
-  if (incoming != null && dir === 1 && slot === 1) return incoming;
-  if (incoming != null && dir === -1 && slot === 3) return incoming;
-  const offset = [0, 1, 2, -1][slot];
-  return wrapIndex(shown + offset);
-}
-
-function FaceImage({
+function Face({
   src,
   alt,
   className,
@@ -75,7 +75,18 @@ function FaceImage({
 }) {
   return (
     <div ref={faceRef} className={className} style={style}>
-      <img src={src} alt={alt ?? ""} />
+      <div className="platform-hub__face-media">
+        <video
+          key={src}
+          src={src}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-label={alt ?? ""}
+        />
+      </div>
     </div>
   );
 }
@@ -96,7 +107,10 @@ export default function PlatformHubScene() {
   const stepsRef = useRef(0);
   const pendingRef = useRef<number | null>(null);
   const wheelAcc = useRef(0);
-  const wheelTimer = useRef(0);
+  const wheelAccTimer = useRef(0);
+  const lockTimer = useRef(0);
+  const hoverBlock = useRef(false);
+  const ignoreWheelUntil = useRef(0);
   const touchStart = useRef(0);
   const dragStart = useRef({ x: 0, y: 0, active: false });
   const dragged = useRef(false);
@@ -111,22 +125,24 @@ export default function PlatformHubScene() {
   const [steps, setSteps] = useState(0);
   const [incoming, setIncoming] = useState<number | null>(null);
   const [turnDir, setTurnDir] = useState<1 | -1 | 0>(0);
+  const [orient, setOrient] = useState(0);
   const [size, setSize] = useState({ w: 1100, h: 620 });
   const [tip, setTip] = useState({ on: false, x: 0, y: 0, text: "[ VIEW PROJECT ]" });
 
   const item = PLATFORM_HUB_ITEMS[active];
   const depth = size.h;
-  const src = (face: BeltFace) =>
-    PLATFORM_HUB_ITEMS[beltItemIndex(face, steps, shown, incoming, turnDir)].faces.front;
-  const sideSrc = PLATFORM_HUB_ITEMS[shown].faces.right;
+  const faceItem = (face: BeltFace) =>
+    PLATFORM_HUB_ITEMS[beltItemIndex(face, steps, shown, incoming, turnDir)];
+  const sideItem = PLATFORM_HUB_ITEMS[shown];
+  const coreItem = PLATFORM_HUB_ITEMS[incoming ?? shown];
 
   const startTurn = useCallback(
-    (to: number) => {
+    (to: number, opts?: { queue?: boolean }) => {
       const target = wrapIndex(to);
       if (leaving.current) return;
       if (target === shownRef.current) return;
       if (busy.current) {
-        pendingRef.current = target;
+        if (opts?.queue) pendingRef.current = target;
         return;
       }
 
@@ -134,18 +150,30 @@ export default function PlatformHubScene() {
       const nextSteps = stepsRef.current + dir;
       const pitch = nextSteps * NEXT_PITCH;
       busy.current = true;
-      setActive(target);
-      setIncoming(target);
-      setTurnDir(dir);
+      hoverBlock.current = true;
+      window.clearTimeout(lockTimer.current);
 
       const settle = () => {
-        stepsRef.current = nextSteps;
+        let stored = nextSteps;
+        const cube = cubeRef.current;
+        if (wrap4(stored) === 0 && cube) {
+          gsap.set(cube, { rotateX: 0 });
+          stored = 0;
+        }
+        stepsRef.current = stored;
         shownRef.current = target;
-        setSteps(nextSteps);
+        setSteps(stored);
         setShown(target);
         setIncoming(null);
         setTurnDir(0);
+        setOrient(wrap4(stored));
         busy.current = false;
+        wheelAcc.current = 0;
+        ignoreWheelUntil.current = performance.now() + 220;
+        window.clearTimeout(lockTimer.current);
+        lockTimer.current = window.setTimeout(() => {
+          hoverBlock.current = false;
+        }, 220);
         const zoomHref = pendingZoomHref.current;
         pendingZoomHref.current = null;
         if (zoomHref) {
@@ -156,31 +184,58 @@ export default function PlatformHubScene() {
         const queued = pendingRef.current;
         pendingRef.current = null;
         if (queued != null && queued !== target) {
-          startTurn(queued);
+          startTurn(queued, { queue: true });
         }
       };
 
-      if (reduce) {
+      const spin = () => {
+        flushSync(() => {
+          setActive(target);
+          setIncoming(target);
+          setTurnDir(dir);
+          setOrient(wrap4(nextSteps));
+        });
+
+        if (reduce) {
+          settle();
+          return;
+        }
+
         const cube = cubeRef.current;
-        if (cube) gsap.set(cube, { rotateX: pitch });
-        settle();
-        return;
-      }
+        if (!cube) {
+          settle();
+          return;
+        }
 
-      const cube = cubeRef.current;
-      if (!cube) {
-        settle();
-        return;
-      }
+        const fromPitch = Number(gsap.getProperty(cube, "rotateX"));
+        turnTween.current?.kill();
+        turnTween.current = gsap.fromTo(
+          cube,
+          { rotateX: Number.isFinite(fromPitch) ? fromPitch : stepsRef.current * NEXT_PITCH },
+          {
+            rotateX: pitch,
+            duration: 0.92,
+            ease: "power3.inOut",
+            overwrite: "auto",
+            onComplete: settle,
+          },
+        );
+      };
 
-      turnTween.current?.kill();
-      turnTween.current = gsap.to(cube, {
-        rotateX: pitch,
-        duration: 0.88,
-        ease: "power3.inOut",
-        overwrite: true,
-        onComplete: settle,
-      });
+      const preload = document.createElement("video");
+      let started = false;
+      const begin = () => {
+        if (started) return;
+        started = true;
+        spin();
+      };
+      preload.muted = true;
+      preload.playsInline = true;
+      preload.preload = "auto";
+      preload.oncanplaythrough = begin;
+      preload.onerror = begin;
+      preload.src = PLATFORM_HUB_ITEMS[target].video;
+      window.setTimeout(begin, 1400);
     },
     [reduce],
   );
@@ -231,16 +286,27 @@ export default function PlatformHubScene() {
 
     const onWheel = (event: WheelEvent) => {
       event.preventDefault();
+      event.stopPropagation();
       if (leaving.current) return;
-      wheelAcc.current += event.deltaY;
-      window.clearTimeout(wheelTimer.current);
-      wheelTimer.current = window.setTimeout(() => {
+      if (busy.current || performance.now() < ignoreWheelUntil.current) {
         wheelAcc.current = 0;
-      }, 140);
-      if (wheelAcc.current > 64) {
+        return;
+      }
+      const delta =
+        event.deltaMode === 1
+          ? event.deltaY * 100
+          : event.deltaMode === 2
+            ? event.deltaY * window.innerHeight
+            : event.deltaY;
+      wheelAcc.current += delta;
+      window.clearTimeout(wheelAccTimer.current);
+      wheelAccTimer.current = window.setTimeout(() => {
+        wheelAcc.current = 0;
+      }, 180);
+      if (wheelAcc.current > 48) {
         wheelAcc.current = 0;
         startTurn(shownRef.current + 1);
-      } else if (wheelAcc.current < -64) {
+      } else if (wheelAcc.current < -48) {
         wheelAcc.current = 0;
         startTurn(shownRef.current - 1);
       }
@@ -251,15 +317,18 @@ export default function PlatformHubScene() {
     };
     const onTouchMove = (event: TouchEvent) => {
       event.preventDefault();
+      if (leaving.current || busy.current) return;
       const y = event.touches[0]?.clientY ?? touchStart.current;
       const delta = touchStart.current - y;
-      if (delta > 42) {
+      if (delta > 52) {
         touchStart.current = y;
         dragged.current = true;
+        hoverBlock.current = true;
         startTurn(shownRef.current + 1);
-      } else if (delta < -42) {
+      } else if (delta < -52) {
         touchStart.current = y;
         dragged.current = true;
+        hoverBlock.current = true;
         startTurn(shownRef.current - 1);
       }
     };
@@ -288,10 +357,28 @@ export default function PlatformHubScene() {
       window.removeEventListener("wheel", onWheel, true);
       window.removeEventListener("touchstart", onTouchStart);
       window.removeEventListener("touchmove", onTouchMove);
-      window.clearTimeout(wheelTimer.current);
+      window.clearTimeout(lockTimer.current);
+      window.clearTimeout(wheelAccTimer.current);
       window.cancelAnimationFrame(rafId);
     };
   }, [reduce, startTurn]);
+
+  useEffect(() => {
+    const next = PLATFORM_HUB_ITEMS[wrapIndex(active + 1)]?.video;
+    const prev = PLATFORM_HUB_ITEMS[wrapIndex(active - 1)]?.video;
+    [next, prev].forEach((href) => {
+      if (!href) return;
+      const clip = document.createElement("video");
+      clip.preload = "auto";
+      clip.muted = true;
+      clip.src = href;
+    });
+  }, [active]);
+
+  const onNameEnter = (index: number) => {
+    if (busy.current || hoverBlock.current) return;
+    startTurn(index, { queue: true });
+  };
 
   const onCubeMove = (event: React.MouseEvent) => {
     setTip({
@@ -331,11 +418,17 @@ export default function PlatformHubScene() {
       leaving.current = true;
       wrap?.closest(".platform-hub")?.classList.add("is-expanding");
       setTip((current) => ({ ...current, on: false }));
+      stepsRef.current = 0;
+      setSteps(0);
+      setOrient(0);
+      if (cubeRef.current) gsap.set(cubeRef.current, { rotateX: 0 });
 
-      const finish = () => {
+      const startCover = () => {
         if (platformTransition) {
           platformTransition.to(targetHref, targetName, {
-            image: targetItem.faces.front,
+            image: targetItem.image,
+            video: targetItem.video,
+            from: frontFaceRef.current || wrap || undefined,
             grown: true,
           });
           return;
@@ -344,7 +437,7 @@ export default function PlatformHubScene() {
       };
 
       if (reduce || !wrap || !scaleEl || !poseEl) {
-        finish();
+        startCover();
         return;
       }
 
@@ -353,11 +446,9 @@ export default function PlatformHubScene() {
         window.innerHeight / wrap.offsetHeight,
       );
 
-      const preload = new Image();
-      preload.src = targetItem.faces.front;
-
+      startCover();
       gsap
-        .timeline({ onComplete: finish })
+        .timeline()
         .to(
           poseEl,
           { rotateY: 0, rotateX: 0, duration: 1.28, ease: "power2.inOut", overwrite: true },
@@ -416,9 +507,9 @@ export default function PlatformHubScene() {
               key={entry.id}
               type="button"
               className={`platform-hub__name${index === active ? " is-active" : ""}`}
-              onMouseEnter={() => startTurn(index)}
-              onFocus={() => startTurn(index)}
-              onClick={() => startTurn(index)}
+              onMouseEnter={() => onNameEnter(index)}
+              onFocus={() => onNameEnter(index)}
+              onClick={() => startTurn(index, { queue: true })}
             >
               {entry.name}
             </button>
@@ -442,21 +533,32 @@ export default function PlatformHubScene() {
         >
           <div ref={scaleRef} className="platform-hub__cube-scale">
           <div ref={poseRef} className="platform-hub__cube-pose">
-            <div ref={cubeRef} className="platform-hub__cube">
-              <FaceImage
-                src={src("front")}
+            <div ref={cubeRef} className="platform-hub__cube" data-pitch={orient}>
+              <div className="platform-hub__core" aria-hidden="true">
+                <video
+                  key={coreItem.video}
+                  src={coreItem.video}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
+                />
+              </div>
+              <Face
+                src={faceItem("front").video}
                 alt={item.name}
                 className="platform-hub__face platform-hub__face--front"
                 style={{ transform: `translateZ(${depth / 2}px)` }}
                 faceRef={frontFaceRef}
               />
-              <FaceImage
-                src={src("back")}
+              <Face
+                src={faceItem("back").video}
                 className="platform-hub__face platform-hub__face--back"
                 style={{ transform: `rotateY(180deg) translateZ(${depth / 2}px)` }}
               />
-              <FaceImage
-                src={sideSrc}
+              <Face
+                src={sideItem.video}
                 className="platform-hub__face platform-hub__face--right"
                 style={{
                   width: depth,
@@ -464,8 +566,8 @@ export default function PlatformHubScene() {
                   transform: `rotateY(90deg) translateZ(${size.w / 2}px)`,
                 }}
               />
-              <FaceImage
-                src={sideSrc}
+              <Face
+                src={sideItem.video}
                 className="platform-hub__face platform-hub__face--left"
                 style={{
                   width: depth,
@@ -473,8 +575,8 @@ export default function PlatformHubScene() {
                   transform: `rotateY(-90deg) translateZ(${size.w / 2}px)`,
                 }}
               />
-              <FaceImage
-                src={src("top")}
+              <Face
+                src={faceItem("top").video}
                 className="platform-hub__face platform-hub__face--top"
                 style={{
                   height: depth,
@@ -482,8 +584,8 @@ export default function PlatformHubScene() {
                   transform: `rotateX(90deg) translateZ(${size.h / 2}px)`,
                 }}
               />
-              <FaceImage
-                src={src("bottom")}
+              <Face
+                src={faceItem("bottom").video}
                 className="platform-hub__face platform-hub__face--bottom"
                 style={{
                   height: depth,

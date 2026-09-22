@@ -4,6 +4,8 @@ import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { hero } from "@/data/sast";
+import { hubFront, hubVideo } from "@/data/platformHub";
+import HubClip from "@/components/platform/HubClip";
 
 export default function SH0_Hero() {
   const fadeUp = {
@@ -78,9 +80,14 @@ export default function SH0_Hero() {
           className="w-full max-w-[960px] relative z-10 rounded-lg overflow-hidden border border-[var(--lt-border)] shadow-xl shadow-black/[0.04]"
         >
           <img 
-            src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1600&q=80" 
-            alt="Premium abstract 3D glass shapes representing secure, structured code blocks" 
+            src={hubFront("sast", 1600)} 
+            alt="Source on a monitor used for static analysis" 
             className="w-full h-auto object-cover aspect-[16/9]"
+          />
+          <HubClip
+            src={hubVideo("sast")}
+            poster={hubFront("sast", 1600)}
+            className="absolute inset-0 h-full w-full object-cover"
           />
         </motion.div>
       </div>

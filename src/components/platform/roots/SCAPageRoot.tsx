@@ -9,6 +9,7 @@ import LightFooter from "@/components/layout/LightFooter";
 import PlatformFAQ from "@/components/platform/common/PlatformFAQ";
 import { platformPillars } from "@/data/platform";
 import SCA_Hero from "@/components/platform/sca/SCA_Hero";
+import HubArrivePhoto from "@/components/platform/HubArrivePhoto";
 
 const scaFaqs = [
   {
@@ -37,6 +38,7 @@ export default function SCAPageRoot() {
       {/* ─────────────────────────────────────────────────────────────
           SECTION 1: HERO SECTION
           ───────────────────────────────────────────────────────────── */}
+      <HubArrivePhoto id="sca" />
       <SCA_Hero />
 
       {/* ─────────────────────────────────────────────────────────────
