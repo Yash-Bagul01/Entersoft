@@ -9,7 +9,8 @@ import {
 } from "@/data/solutionLandings";
 import SolutionLandingPage from "@/components/solutions/SolutionLandingPage";
 import ApiDiscoveryPortalPage from "@/components/solutions/api-discovery/ApiDiscoveryPortalPage";
-import AiBomIncreasePage from "@/components/solutions/ai-bom/AiBomIncreasePage";
+import AiBomKryntPage from "@/components/solutions/ai-bom/AiBomKryntPage";
+import ManageVulnPage from "@/components/solutions/manage-vuln/ManageVulnPage";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -49,7 +50,10 @@ export default async function SolutionLandingRoute({ params }: PageProps) {
     return <ApiDiscoveryPortalPage page={page} />;
   }
   if (slug === "ai-bom") {
-    return <AiBomIncreasePage page={page} />;
+    return <AiBomKryntPage page={page} />;
+  }
+  if (slug === "manage-vulnerabilities") {
+    return <ManageVulnPage page={page} />;
   }
   return <SolutionLandingPage page={page} />;
 }
