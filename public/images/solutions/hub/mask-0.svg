@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 700" preserveAspectRatio="xMidYMid meet">
+  <rect x="330" y="0" width="300" height="260" rx="22" fill="white"/>
+  <rect x="0" y="220" width="320" height="260" rx="22" fill="white"/>
+  <rect x="300" y="220" width="360" height="260" rx="22" fill="white"/>
+  <rect x="640" y="220" width="320" height="260" rx="22" fill="white"/>
+  <rect x="330" y="440" width="300" height="260" rx="22" fill="white"/>
+</svg>

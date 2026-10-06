@@ -1,0 +1,10 @@
+:root[data-theme="light"][data-page="automate-flow"] .logo-img,
+:root[data-theme="light"][data-page="automate-flow"] .nav-transparent-header .logo-img,
+:root[data-theme="light"][data-page="automate-flow"] .nav-floating-pill .logo-img,
+:root[data-theme="light"]:has([data-page="automate-flow"]) .logo-img,
+html[data-theme="light"][data-page="automate-flow"] .logo-img,
+html[data-theme="light"]:has([data-page="automate-flow"]) .logo-img {
+  filter: brightness(0) !important;
+  -webkit-filter: brightness(0) !important;
+  opacity: 1 !important;
+}

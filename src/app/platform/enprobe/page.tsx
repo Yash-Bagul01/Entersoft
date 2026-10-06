@@ -1,6 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
-import EnprobeExoapePage from "@/components/platform/enprobe/EnprobeExoapePage";
+import EnprobeOvaPage from "@/components/platform/enprobe/EnprobeOvaPage";
 import { getCanonicalUrl, ROUTES } from "@/config/routes";
 
 const TITLE = "EnProbe — Continuous Exposure Assurance | Entersoft Security";
@@ -52,7 +52,7 @@ export default function EnProbePlatformPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <EnprobeExoapePage />
+      <EnprobeOvaPage />
     </>
   );
 }

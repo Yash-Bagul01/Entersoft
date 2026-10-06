@@ -1,0 +1,546 @@
+[data-page="enprobe"] {
+  background: #000;
+  color: #fff;
+  margin-bottom: 0;
+}
+
+[data-page="enprobe"] + #site-footer,
+[data-page="enprobe"] ~ #site-footer {
+  margin-top: 0;
+}
+
+.ep-ova {
+  --ep-pad: clamp(1.5rem, 4.4vw, 4.8rem);
+  --ep-sans: var(--font-inter-tight), var(--font-inter), system-ui, sans-serif;
+  --ep-mono: var(--font-ibm-plex-mono), ui-monospace, monospace;
+  position: relative;
+  background: #000;
+  color: #fff;
+  font-family: var(--ep-sans);
+  overflow-x: clip;
+  overflow-y: visible;
+}
+
+.ep-ova * {
+  box-sizing: border-box;
+}
+
+.ep-ova-clip {
+  display: block;
+  overflow: hidden;
+}
+
+.ep-ova-clip > * {
+  display: block;
+}
+
+.ep-ova-spacer {
+  height: calc(100svh * var(--ep-gap, 1));
+  pointer-events: none;
+}
+
+/* ========== HERO ========== */
+.ep-ova-hero {
+  position: relative;
+  z-index: 1;
+  min-height: 100svh;
+  padding: calc(7.2rem + env(safe-area-inset-top)) var(--ep-pad) 2.6rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background: #000;
+  overflow: hidden;
+}
+
+.ep-ova-media {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.ep-ova-media img,
+.ep-ova-media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ep-ova-veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.18) 55%, rgba(0, 0, 0, 0.12) 100%);
+  pointer-events: none;
+}
+
+.ep-ova-hero-copy {
+  position: relative;
+  z-index: 2;
+  max-width: 100%;
+  padding-bottom: 8vh;
+}
+
+.ep-ova-display {
+  margin: 0;
+  font-weight: 400;
+  font-size: clamp(2.6rem, 7.2vw, 7.4rem);
+  line-height: 0.94;
+  letter-spacing: -0.045em;
+  word-spacing: 0.04em;
+}
+
+.ep-ova-hero-copy .ep-ova-clip > span {
+  white-space: nowrap;
+}
+
+.ep-ova-cycle {
+  display: inline-flex;
+  height: 0.96em;
+  min-width: 7.6ch;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.ep-ova-cycle-track {
+  display: flex;
+  flex-direction: column;
+}
+
+.ep-ova-cycle-track em {
+  font-style: italic;
+  font-weight: 400;
+  height: 0.96em;
+}
+
+.ep-ova-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.8rem;
+  padding: 0.92rem 1.35rem 0.92rem 1.45rem;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  text-decoration: none;
+  font-family: var(--ep-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  backdrop-filter: blur(10px);
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.ep-ova-cta:hover {
+  background: #fff;
+  color: #000;
+  border-color: #fff;
+}
+
+.ep-ova-cta span {
+  font-size: 0.95em;
+  transform: translateY(-0.04em);
+}
+
+/* ========== PORTFOLIO ========== */
+.ep-ova-port {
+  position: relative;
+  z-index: 2;
+  background: #000;
+  overflow: hidden;
+}
+
+.ep-ova-port-pin {
+  position: relative;
+  height: 100svh;
+  overflow: hidden;
+  background: #000;
+}
+
+.ep-ova-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.7s ease;
+}
+
+.ep-ova-slide .ep-ova-media img {
+  transform: scale(1.08);
+  transition: transform 1.5s ease;
+}
+
+.ep-ova-slide.is-on .ep-ova-media img {
+  transform: scale(1);
+}
+
+.ep-ova-slide.is-on {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.ep-ova-slide-copy {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: calc(7.4rem + env(safe-area-inset-top)) calc(var(--ep-pad) + 3.2rem) 3.4rem var(--ep-pad);
+}
+
+.ep-ova-lead {
+  margin: 0;
+  max-width: 16ch;
+  font-size: clamp(1.85rem, 3.15vw, 2.85rem);
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+  font-weight: 400;
+}
+
+.ep-ova-slide-foot h2 {
+  margin: 0 0 0.7rem;
+  font-size: clamp(0.92rem, 1.15vw, 1.05rem);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ep-ova-slide-foot p {
+  margin: 0;
+  max-width: 38ch;
+  font-size: clamp(0.88rem, 1.05vw, 0.98rem);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.ep-ova-rail {
+  position: absolute;
+  right: clamp(1.1rem, 2.2vw, 2.4rem);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: min(52vh, 420px);
+  padding-right: 1.15rem;
+}
+
+.ep-ova-rail::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.ep-ova-rail-tick {
+  position: absolute;
+  right: -1px;
+  width: 18px;
+  height: 1px;
+  background: #fff;
+  transform: translate(0, -50%);
+  transition: top 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ep-ova-rail button {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.38);
+  font-family: var(--ep-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-align: right;
+  cursor: pointer;
+  transition: color 0.35s ease;
+}
+
+.ep-ova-rail button.is-on {
+  color: #fff;
+}
+
+/* ========== MANIFESTO ========== */
+.ep-ova-about {
+  position: relative;
+  z-index: 3;
+  background: #000;
+  overflow: hidden;
+}
+
+.ep-ova-about-pin {
+  position: relative;
+  height: 100svh;
+  overflow: hidden;
+  background: #000;
+}
+
+.ep-ova-about-copy {
+  --ep-verb: 0;
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  column-gap: clamp(2rem, 5vw, 6rem);
+  align-items: start;
+  align-content: center;
+  padding: 0 var(--ep-pad);
+}
+
+.ep-ova-verb {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.ep-ova-verb b,
+.ep-ova-about-align {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  margin-bottom: 0.4rem;
+}
+
+.ep-ova-verb b {
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.ep-ova-about-align {
+  visibility: hidden;
+}
+
+.ep-ova-verb-cycle {
+  display: block;
+  height: 0.96em;
+  overflow: hidden;
+  font-size: clamp(2.6rem, 5.6vw, 5.2rem);
+  line-height: 0.96;
+}
+
+.ep-ova-verb-track {
+  display: flex;
+  flex-direction: column;
+  transform: translateY(calc(var(--ep-verb) * -0.96em));
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ep-ova-verb-track strong {
+  display: block;
+  height: 0.96em;
+  font-weight: 400;
+  letter-spacing: -0.045em;
+  white-space: nowrap;
+}
+
+.ep-ova-about-side {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  max-width: 36ch;
+}
+
+.ep-ova-about-body-cycle {
+  --ep-body-step: 6.8em;
+  height: var(--ep-body-step);
+  overflow: hidden;
+  font-size: clamp(0.95rem, 1.2vw, 1.08rem);
+  line-height: 1.55;
+}
+
+.ep-ova-about-body-track {
+  transform: translateY(calc(var(--ep-verb) * var(--ep-body-step) * -1));
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ep-ova-about-body {
+  margin: 0;
+  height: var(--ep-body-step);
+  font-size: inherit;
+  line-height: inherit;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.ep-ova-credit {
+  position: relative;
+  margin: 1.6rem 0 0;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.ep-ova-credit span {
+  display: block;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+/* ========== SINCE ========== */
+.ep-ova-since {
+  position: relative;
+  z-index: 4;
+  margin: 0;
+  background: #000;
+  overflow: hidden;
+}
+
+.ep-ova-since-pin {
+  position: relative;
+  height: 100svh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 var(--ep-pad);
+  background: #000;
+}
+
+.ep-ova-since-title,
+.ep-ova-since-copy {
+  position: relative;
+  z-index: 2;
+}
+
+.ep-ova-since-title {
+  margin: 0;
+  font-size: clamp(3.2rem, 7vw, 6.2rem);
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: 0.96;
+}
+
+.ep-ova-since-copy {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(48ch, 88vw);
+  padding: 1.85rem 1.7rem 2rem;
+  opacity: 0;
+  background: rgba(0, 0, 0, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.ep-ova-since-copy p {
+  margin: 0 0 1.15rem;
+  font-size: clamp(0.98rem, 1.25vw, 1.12rem);
+  line-height: 1.55;
+  color: #fff;
+}
+
+.ep-ova-since-copy p:last-of-type {
+  margin-bottom: 0;
+}
+
+.ep-ova-since-copy .ep-ova-cta {
+  margin-top: 1.8rem;
+  background: #fff;
+  color: #000;
+  border-color: #fff;
+}
+
+.ep-ova-since-copy .ep-ova-cta:hover {
+  background: transparent;
+  color: #fff;
+  border-color: #fff;
+}
+
+.ep-ova-since .ep-ova-veil {
+  background:
+    radial-gradient(80% 70% at 50% 50%, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.48) 58%, rgba(0, 0, 0, 0.62) 100%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.32) 40%, rgba(0, 0, 0, 0.58) 100%);
+}
+
+@media (max-width: 900px) {
+  .ep-ova-display {
+    font-size: clamp(2.35rem, 11.2vw, 4.2rem);
+  }
+
+  .ep-ova-lead {
+    max-width: 18ch;
+    font-size: clamp(1.5rem, 6.4vw, 2.1rem);
+  }
+
+  .ep-ova-slide-copy {
+    padding-right: calc(var(--ep-pad) + 2.4rem);
+  }
+
+  .ep-ova-about-copy {
+    grid-template-columns: 1fr;
+    align-content: end;
+    row-gap: 1.1rem;
+    padding-bottom: 3.2rem;
+  }
+
+  .ep-ova-verb-cycle {
+    font-size: clamp(2.4rem, 11vw, 3.8rem);
+  }
+
+  .ep-ova-about-align {
+    display: none;
+  }
+
+  .ep-ova-about-side {
+    max-width: 42ch;
+  }
+
+  .ep-ova-about-body-cycle {
+    --ep-body-step: 7.8em;
+  }
+}
+
+.ep-ova.is-static .ep-ova-slide {
+  position: relative;
+  min-height: 100svh;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.ep-ova.is-static .ep-ova-spacer {
+  display: none;
+}
+
+.ep-ova.is-static .ep-ova-hero,
+.ep-ova.is-static .ep-ova-port,
+.ep-ova.is-static .ep-ova-about,
+.ep-ova.is-static .ep-ova-since {
+  position: relative;
+  z-index: auto;
+  transform: none !important;
+  filter: none !important;
+}
+
+.ep-ova.is-static .ep-ova-port-pin,
+.ep-ova.is-static .ep-ova-about-pin,
+.ep-ova.is-static .ep-ova-since-pin {
+  height: auto;
+}
+
+.ep-ova.is-static .ep-ova-since-copy {
+  position: relative;
+  left: auto;
+  top: auto;
+  transform: none;
+  opacity: 1;
+  margin-top: 2rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ep-ova-slide,
+  .ep-ova-verb-track,
+  .ep-ova-about-body-track,
+  .ep-ova-rail-tick,
+  .ep-ova-cycle-track {
+    transition: none !important;
+  }
+}

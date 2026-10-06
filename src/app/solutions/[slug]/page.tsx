@@ -11,6 +11,7 @@ import SolutionLandingPage from "@/components/solutions/SolutionLandingPage";
 import ApiDiscoveryPortalPage from "@/components/solutions/api-discovery/ApiDiscoveryPortalPage";
 import AiBomKryntPage from "@/components/solutions/ai-bom/AiBomKryntPage";
 import ManageVulnPage from "@/components/solutions/manage-vuln/ManageVulnPage";
+import AutomateWorkflowsPage from "@/components/solutions/automate-workflows/AutomateWorkflowsPage";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -54,6 +55,9 @@ export default async function SolutionLandingRoute({ params }: PageProps) {
   }
   if (slug === "manage-vulnerabilities") {
     return <ManageVulnPage page={page} />;
+  }
+  if (slug === "automate-security-workflows") {
+    return <AutomateWorkflowsPage page={page} />;
   }
   return <SolutionLandingPage page={page} />;
 }

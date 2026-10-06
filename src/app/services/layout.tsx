@@ -27,7 +27,14 @@ export default function ServicesLayout({
 
   if (isCase) {
     return (
-      <div data-page="solution-case" className="min-h-screen bg-[#0b0b0d] text-white">
+      <div
+        data-page="solution-case"
+        className={`min-h-screen text-white ${
+          pathname === "/services/application-security-testing" || pathname === "/services/appsec"
+            ? "bg-[#101820]"
+            : "bg-[#0b0b0d]"
+        }`}
+      >
         {children}
       </div>
     );

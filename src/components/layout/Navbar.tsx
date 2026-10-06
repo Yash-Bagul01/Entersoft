@@ -53,8 +53,7 @@ export default function Navbar() {
   const isExoCase =
     pathname === "/platform/dast" ||
     pathname === "/platform/iac" ||
-    pathname === "/platform/agentic-pentesting" ||
-    pathname === "/platform/enprobe";
+    pathname === "/platform/agentic-pentesting";
   const isSolutionsPage = pathname === ROUTES.solutions;
   const isSolutionLanding = !!pathname?.startsWith("/solutions/");
   const isServicesHub = pathname === ROUTES.servicesHub;

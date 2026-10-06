@@ -26,12 +26,16 @@ export default function SolutionsLayout({
     if (pathname === "/solutions/manage-vulnerabilities") {
       document.documentElement.setAttribute("data-page", "manage-vuln");
     }
+    if (pathname === "/solutions/automate-security-workflows") {
+      document.documentElement.setAttribute("data-page", "automate-flow");
+    }
     return () => {
       document.documentElement.removeAttribute("data-theme");
       if (
         pathname === "/solutions/api-discovery" ||
         pathname === "/solutions/ai-bom" ||
-        pathname === "/solutions/manage-vulnerabilities"
+        pathname === "/solutions/manage-vulnerabilities" ||
+        pathname === "/solutions/automate-security-workflows"
       ) {
         document.documentElement.removeAttribute("data-page");
       }
@@ -43,6 +47,7 @@ export default function SolutionsLayout({
   const isApiDiscovery = pathname === "/solutions/api-discovery";
   const isAiBom = pathname === "/solutions/ai-bom";
   const isManageVuln = pathname === "/solutions/manage-vulnerabilities";
+  const isAutomate = pathname === "/solutions/automate-security-workflows";
 
   return (
     <div
@@ -53,12 +58,14 @@ export default function SolutionsLayout({
             ? "ai-bom"
             : isManageVuln
               ? "manage-vuln"
-              : "solution-landing"
+              : isAutomate
+                ? "automate-flow"
+                : "solution-landing"
       }
       className={
         isApiDiscovery
           ? "min-h-screen bg-[#ffffff] text-[#121212]"
-          : isAiBom || isManageVuln
+          : isAiBom || isManageVuln || isAutomate
             ? "min-h-screen bg-[#ffffff] text-[#111111]"
             : "min-h-screen bg-[#f6f5f0] text-[#12141a]"
       }

@@ -1,0 +1,165 @@
+[data-page="solutions-hub"] {
+  background: #f3f2ee;
+  color: #111;
+}
+
+.sol-work {
+  --sol-pad: clamp(1.2rem, 3.2vw, 3.2rem);
+  position: relative;
+  min-height: 100svh;
+  background: #f3f2ee;
+  color: #111;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(16rem, 0.85fr);
+  font-family: var(--font-inter-tight), var(--font-inter), system-ui, sans-serif;
+}
+
+.sol-work-stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: calc(6.4rem + env(safe-area-inset-top)) var(--sol-pad) 1.6rem;
+}
+
+.sol-work-plus {
+  position: relative;
+  width: min(100%, 780px);
+  aspect-ratio: 960 / 700;
+  height: auto;
+  margin: auto 0;
+}
+
+.sol-work-shot {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: opacity 0.5s ease;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-position: center;
+  mask-position: center;
+  mask-mode: alpha;
+}
+
+.sol-work-shot.is-on {
+  opacity: 1;
+}
+
+.sol-work-shot--0 {
+  -webkit-mask-image: url("/images/solutions/hub/mask-0.svg?v=3");
+  mask-image: url("/images/solutions/hub/mask-0.svg?v=3");
+}
+.sol-work-shot--1 {
+  -webkit-mask-image: url("/images/solutions/hub/mask-1.svg?v=3");
+  mask-image: url("/images/solutions/hub/mask-1.svg?v=3");
+}
+.sol-work-shot--2 {
+  -webkit-mask-image: url("/images/solutions/hub/mask-2.svg?v=3");
+  mask-image: url("/images/solutions/hub/mask-2.svg?v=3");
+}
+.sol-work-shot--3 {
+  -webkit-mask-image: url("/images/solutions/hub/mask-3.svg?v=3");
+  mask-image: url("/images/solutions/hub/mask-3.svg?v=3");
+}
+.sol-work-shot--4 {
+  -webkit-mask-image: url("/images/solutions/hub/mask-4.svg?v=3");
+  mask-image: url("/images/solutions/hub/mask-4.svg?v=3");
+}
+.sol-work-shot--5 {
+  -webkit-mask-image: url("/images/solutions/hub/mask-5.svg?v=3");
+  mask-image: url("/images/solutions/hub/mask-5.svg?v=3");
+}
+
+.sol-work-shot img {
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.sol-work-caption {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1.5rem;
+  min-height: 3.4rem;
+}
+
+.sol-work-caption p {
+  margin: 0;
+  max-width: 28ch;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: #3a3a3a;
+}
+
+.sol-work-caption span {
+  font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: #6a6a6a;
+  white-space: nowrap;
+}
+
+.sol-work-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: calc(6.8rem + env(safe-area-inset-top)) var(--sol-pad) 2.4rem 0.4rem;
+}
+
+.sol-work-row {
+  display: block;
+  margin: 0;
+  padding: 0.38rem 0.72rem 0.42rem;
+  border: 0;
+  background: transparent;
+  color: #111;
+  text-align: left;
+  text-decoration: none;
+  font-size: clamp(1.35rem, 2.05vw, 1.85rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.18;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.sol-work-row.is-on {
+  background: #111;
+  color: #fff;
+}
+
+@media (max-width: 860px) {
+  .sol-work {
+    grid-template-columns: 1fr;
+  }
+
+  .sol-work-stage {
+    position: relative;
+    height: auto;
+    min-height: 62svh;
+    padding-bottom: 1rem;
+  }
+
+  .sol-work-plus {
+    width: 100%;
+    height: auto;
+  }
+
+  .sol-work-list {
+    padding: 0.4rem var(--sol-pad) 3rem;
+    justify-content: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sol-work-shot,
+  .sol-work-row {
+    transition: none !important;
+  }
+}

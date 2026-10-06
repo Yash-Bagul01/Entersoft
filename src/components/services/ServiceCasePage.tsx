@@ -125,6 +125,48 @@ export default function ServiceCasePage({ slug }: { slug: ServiceCaseSlug }) {
         </div>
       </header>
 
+      <div
+        className={
+          slug === "appsec"
+            ? "sc-afterhero sc-afterhero--obscura"
+            : slug === "vapt"
+              ? "sc-afterhero sc-afterhero--godrays"
+              : slug === "cloud-resilience"
+                ? "sc-afterhero sc-afterhero--godrays03"
+                : "sc-afterhero"
+        }
+      >
+        {slug === "appsec" ? (
+          <div className="sc-obscura" aria-hidden="true">
+            <div className="sc-obscura__wash" />
+            <div className="sc-obscura__orb sc-obscura__orb--a" />
+            <div className="sc-obscura__orb sc-obscura__orb--b" />
+            <div className="sc-obscura__orb sc-obscura__orb--c" />
+            <div className="sc-obscura__veil" />
+            <div className="sc-obscura__grain" />
+          </div>
+        ) : null}
+        {slug === "vapt" ? (
+          <div className="sc-godrays" aria-hidden="true">
+            <div className="sc-godrays__field" />
+            <div className="sc-godrays__beam sc-godrays__beam--a" />
+            <div className="sc-godrays__beam sc-godrays__beam--b" />
+            <div className="sc-godrays__beam sc-godrays__beam--c" />
+            <div className="sc-godrays__beam sc-godrays__beam--d" />
+            <div className="sc-godrays__grain" />
+            <div className="sc-godrays__fade" />
+          </div>
+        ) : null}
+        {slug === "cloud-resilience" ? (
+          <div className="sc-godrays03" aria-hidden="true">
+            <div className="sc-godrays03__field" />
+            <div className="sc-godrays03__beam sc-godrays03__beam--a" />
+            <div className="sc-godrays03__beam sc-godrays03__beam--b" />
+            <div className="sc-godrays03__grain" />
+            <div className="sc-godrays03__fade" />
+          </div>
+        ) : null}
+
       <div className="sc-wrap">
         <section className="sc-intro">
           <div className="sc-intro__lede">
@@ -281,7 +323,10 @@ export default function ServiceCasePage({ slug }: { slug: ServiceCaseSlug }) {
             ))}
           </div>
         </section>
+      </div>
+      </div>
 
+      <div className="sc-wrap">
         <div className="sc-close">
           <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
             Back to top
