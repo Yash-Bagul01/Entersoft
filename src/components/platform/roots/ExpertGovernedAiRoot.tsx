@@ -5,7 +5,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Layers, ChevronRight, Zap, Shield, UserCheck, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import FinalCTA from "@/components/sections/FinalCTA";
 import AIGovernanceVisual from "../visuals/AIGovernanceVisual";
 
 export default function ExpertGovernedAiRoot() {
@@ -111,8 +110,6 @@ export default function ExpertGovernedAiRoot() {
           </div>
         </div>
       </section>
-
-      <FinalCTA />
     </div>
   );
 }

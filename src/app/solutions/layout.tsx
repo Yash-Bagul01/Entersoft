@@ -29,13 +29,21 @@ export default function SolutionsLayout({
     if (pathname === "/solutions/automate-security-workflows") {
       document.documentElement.setAttribute("data-page", "automate-flow");
     }
+    if (pathname === "/solutions/track-appsec-kpis") {
+      document.documentElement.setAttribute("data-page", "track-kpis");
+    }
+    if (pathname === "/solutions/manage-open-source-risk") {
+      document.documentElement.setAttribute("data-page", "open-source");
+    }
     return () => {
       document.documentElement.removeAttribute("data-theme");
       if (
         pathname === "/solutions/api-discovery" ||
         pathname === "/solutions/ai-bom" ||
         pathname === "/solutions/manage-vulnerabilities" ||
-        pathname === "/solutions/automate-security-workflows"
+        pathname === "/solutions/automate-security-workflows" ||
+        pathname === "/solutions/track-appsec-kpis" ||
+        pathname === "/solutions/manage-open-source-risk"
       ) {
         document.documentElement.removeAttribute("data-page");
       }
@@ -48,6 +56,8 @@ export default function SolutionsLayout({
   const isAiBom = pathname === "/solutions/ai-bom";
   const isManageVuln = pathname === "/solutions/manage-vulnerabilities";
   const isAutomate = pathname === "/solutions/automate-security-workflows";
+  const isTrackKpis = pathname === "/solutions/track-appsec-kpis";
+  const isOpenSource = pathname === "/solutions/manage-open-source-risk";
 
   return (
     <div
@@ -60,14 +70,20 @@ export default function SolutionsLayout({
               ? "manage-vuln"
               : isAutomate
                 ? "automate-flow"
-                : "solution-landing"
+                : isTrackKpis
+                  ? "track-kpis"
+                  : isOpenSource
+                    ? "open-source"
+                    : "solution-landing"
       }
       className={
-        isApiDiscovery
-          ? "min-h-screen bg-[#ffffff] text-[#121212]"
-          : isAiBom || isManageVuln || isAutomate
-            ? "min-h-screen bg-[#ffffff] text-[#111111]"
-            : "min-h-screen bg-[#f6f5f0] text-[#12141a]"
+        isTrackKpis
+          ? "min-h-screen bg-[#f6f5f0] text-[#111111]"
+          : isApiDiscovery || isOpenSource
+            ? "min-h-screen bg-[#ffffff] text-[#121212]"
+            : isAiBom || isManageVuln || isAutomate
+              ? "min-h-screen bg-[#ffffff] text-[#111111]"
+              : "min-h-screen bg-[#f6f5f0] text-[#12141a]"
       }
     >
       {children}

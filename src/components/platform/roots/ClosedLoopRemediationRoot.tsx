@@ -5,7 +5,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Layers, ChevronRight, Workflow, CheckCircle2, GitBranch } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import FinalCTA from "@/components/sections/FinalCTA";
 import ClosedLoopPRVisual from "../visuals/ClosedLoopPRVisual";
 
 export default function ClosedLoopRemediationRoot() {
@@ -111,8 +110,6 @@ export default function ClosedLoopRemediationRoot() {
           </div>
         </div>
       </section>
-
-      <FinalCTA />
     </div>
   );
 }

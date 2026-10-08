@@ -4,7 +4,6 @@ import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { CheckCircle2, Layers, ChevronRight } from "lucide-react";
-import FinalCTA from "@/components/sections/FinalCTA";
 import Footer from "@/components/layout/Footer";
 import { platformPillars } from "@/data/platform";
 import SAST_Hero from "@/components/platform/sast/SAST_Hero";
@@ -203,10 +202,6 @@ export default function SASTPageRoot() {
         theme="dark"
       />
 
-      {/* ─────────────────────────────────────────────────────────────
-          SECTION 6: FINAL CTA & DARK FOOTER
-          ───────────────────────────────────────────────────────────── */}
-      <FinalCTA theme="dark" />
       <Footer />
     </div>
   );

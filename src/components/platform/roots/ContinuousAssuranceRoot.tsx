@@ -5,7 +5,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Layers, ChevronRight, ShieldCheck, FileCheck, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import FinalCTA from "@/components/sections/FinalCTA";
 import ContinuousAssuranceDial from "../visuals/ContinuousAssuranceDial";
 
 export default function ContinuousAssuranceRoot() {
@@ -111,8 +110,6 @@ export default function ContinuousAssuranceRoot() {
           </div>
         </div>
       </section>
-
-      <FinalCTA />
     </div>
   );
 }

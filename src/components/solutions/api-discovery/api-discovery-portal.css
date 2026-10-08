@@ -1159,19 +1159,24 @@ html[data-theme="light"] .adf-app__search input {
 }
 
 .adf-faq {
-  padding: 4rem 0 8rem;
+  padding: 4.5rem 0 2.75rem;
 }
 
 .adf-faq__item {
   border-top: 1px solid var(--adf-hairline);
 }
 
+.adf-faq__item:last-child {
+  border-bottom: 1px solid var(--adf-hairline);
+}
+
 .adf-faq__item button {
   width: 100%;
   display: flex;
+  align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 1.15rem 0;
+  padding: 1.2rem 0;
   border: 0;
   background: transparent;
   color: var(--adf-ink);
@@ -1179,18 +1184,64 @@ html[data-theme="light"] .adf-app__search input {
   font-weight: 500;
   text-align: left;
   cursor: pointer;
+  transition: color 0.28s ease;
+}
+
+.adf-faq__item button:hover,
+.adf-faq__item.is-on button {
+  color: var(--adf-ink-soft);
 }
 
 .adf-faq__item i {
+  flex: 0 0 auto;
+  width: 1.15em;
   font-style: normal;
   color: var(--adf-muted);
+  text-align: center;
+  line-height: 1;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.adf-faq__item p {
-  padding: 0 0 1.15rem;
+.adf-faq__item.is-on i {
+  transform: rotate(45deg);
+}
+
+.adf-faq__answer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.adf-faq__item.is-on .adf-faq__answer {
+  grid-template-rows: 1fr;
+}
+
+.adf-faq__answer p {
+  min-height: 0;
+  overflow: hidden;
+  margin: 0;
+  padding: 0 2.2rem 0 0;
   font-size: 15px;
   line-height: 1.55;
   color: var(--adf-body);
+  opacity: 0;
+  transform: translateY(-0.45rem);
+  transition:
+    opacity 0.28s ease,
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    padding 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.adf-faq__item.is-on .adf-faq__answer p {
+  padding: 0 2.2rem 1.2rem 0;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+html:has([data-page="api-discovery"]) #site-footer,
+html[data-page="api-discovery"] #site-footer {
+  background: #0b0b0b !important;
+  margin-top: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1202,6 +1253,12 @@ html[data-theme="light"] .adf-app__search input {
 
   .adf-device {
     transform: none;
+    transition: none;
+  }
+
+  .adf-faq__item i,
+  .adf-faq__answer,
+  .adf-faq__answer p {
     transition: none;
   }
 }

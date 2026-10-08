@@ -5,7 +5,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, CheckCircle2, Shield, Layers, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import FinalCTA from "@/components/sections/FinalCTA";
 import { PlatformPillar } from "@/data/platform";
 import { PLATFORM_HUB_ITEMS, hubFront, hubVideo } from "@/data/platformHub";
 import HubArrivePhoto from "@/components/platform/HubArrivePhoto";
@@ -319,10 +318,6 @@ export default function PlatformSubpageTemplate({ pillar }: PlatformSubpageTempl
         </div>
       </section>
 
-      {/* ─────────────────────────────────────────────────────────────
-          SECTION 5: CTA CLOSING (Reuses existing FinalCTA component)
-          ───────────────────────────────────────────────────────────── */}
-      <FinalCTA />
     </div>
   );
 }

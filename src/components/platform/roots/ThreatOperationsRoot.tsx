@@ -5,7 +5,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Layers, ChevronRight, Activity, Shield, Clock, AlertOctagon } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import FinalCTA from "@/components/sections/FinalCTA";
 import SOCRadarVisual from "../visuals/SOCRadarVisual";
 
 export default function ThreatOperationsRoot() {
@@ -111,8 +110,6 @@ export default function ThreatOperationsRoot() {
           </div>
         </div>
       </section>
-
-      <FinalCTA />
     </div>
   );
 }

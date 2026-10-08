@@ -4,7 +4,6 @@ import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { CheckCircle2, Layers, ChevronRight } from "lucide-react";
-import FinalCTA from "@/components/sections/FinalCTA";
 import LightFooter from "@/components/layout/LightFooter";
 import PlatformFAQ from "@/components/platform/common/PlatformFAQ";
 import { platformPillars } from "@/data/platform";
@@ -202,10 +201,6 @@ export default function SCAPageRoot() {
         faqs={scaFaqs}
       />
 
-      {/* ─────────────────────────────────────────────────────────────
-          SECTION 6: FINAL CTA & LIGHT FOOTER
-          ───────────────────────────────────────────────────────────── */}
-      <FinalCTA theme="light" />
       <LightFooter />
     </div>
   );

@@ -157,6 +157,11 @@ export default function ApiDiscoveryPortalPage({ page }: { page: SolutionLanding
     };
   }, [reduceMotion]);
 
+  useEffect(() => {
+    const id = window.setTimeout(() => ScrollTrigger.refresh(), 460);
+    return () => window.clearTimeout(id);
+  }, [openFaq]);
+
   return (
     <article ref={rootRef} className={`adf ${display.variable}`}>
       <SolutionArrivalMarker href={page.href} />
@@ -314,15 +319,28 @@ export default function ApiDiscoveryPortalPage({ page }: { page: SolutionLanding
       <section className="adf-faq" id="detect">
         <div className="adf-wrap adf-wrap--narrow">
           <h2 className="adf-reveal">Frequently asked questions</h2>
-          {faqs.map((item, index) => (
-            <div className={`adf-faq__item${openFaq === index ? " is-on" : ""}`} key={item.q}>
-              <button type="button" onClick={() => setOpenFaq(openFaq === index ? -1 : index)}>
-                <span>{item.q}</span>
-                <i aria-hidden="true">{openFaq === index ? "–" : "+"}</i>
-              </button>
-              {openFaq === index ? <p>{item.a}</p> : null}
-            </div>
-          ))}
+          {faqs.map((item, index) => {
+            const open = openFaq === index;
+            const panelId = `adf-faq-panel-${index}`;
+            const headerId = `adf-faq-header-${index}`;
+            return (
+              <div className={`adf-faq__item${open ? " is-on" : ""}`} key={item.q}>
+                <button
+                  type="button"
+                  id={headerId}
+                  aria-expanded={open}
+                  aria-controls={panelId}
+                  onClick={() => setOpenFaq(open ? -1 : index)}
+                >
+                  <span>{item.q}</span>
+                  <i aria-hidden="true">+</i>
+                </button>
+                <div className="adf-faq__answer" id={panelId} role="region" aria-labelledby={headerId}>
+                  <p>{item.a}</p>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
     </article>

@@ -55,6 +55,7 @@ export default function Navbar() {
     pathname === "/platform/iac" ||
     pathname === "/platform/agentic-pentesting";
   const isSolutionsPage = pathname === ROUTES.solutions;
+  const isTrackKpis = pathname === ROUTES.solutionsPages.trackKpis;
   const isSolutionLanding = !!pathname?.startsWith("/solutions/");
   const isServicesHub = pathname === ROUTES.servicesHub;
   const isHubPage = pathname === "/platform";
@@ -320,7 +321,8 @@ export default function Navbar() {
                         ? "bg-[#060606]/30 border-white/12 text-white service-nav-header"
                         : "bg-[var(--bg-elevated)]/30 border-[var(--border-glass)] text-[var(--text-primary)]")
                     : (isLightNavHeader
-                        ? "max-w-full px-6 md:px-12 py-5 rounded-none border-none bg-transparent text-slate-900 nav-transparent-header"
+                        ? "max-w-full px-6 md:px-12 py-5 rounded-none border-none bg-transparent text-slate-900 nav-transparent-header" +
+                          (isTrackKpis ? " nav-hero-light-header" : "")
                         : "max-w-full px-6 md:px-12 py-5 rounded-none border-none bg-transparent text-white nav-transparent-header"))
             )}
           >
@@ -333,7 +335,9 @@ export default function Navbar() {
                 height={27}
                 className={cn(
                   "h-6 w-auto object-contain transition-all duration-300 logo-img",
-                  isLightNavHeader ? "[filter:brightness(0)] opacity-100" : "brightness-0 invert opacity-90 hover:opacity-100"
+                  isTrackKpis || isLightNavHeader
+                    ? "[filter:brightness(0)] opacity-100"
+                    : "brightness-0 invert opacity-90 hover:opacity-100"
                 )}
                 priority
               />
@@ -510,7 +514,7 @@ export default function Navbar() {
                 </div>
               </button>
 
-              {!isServicePage && !isLightPage && !isExoCase && !isSolutionsPage && !isSolutionCasePage && !isServicesHub && <ThemeToggle />}
+              {!isServicePage && !isLightPage && !isExoCase && !isSolutionsPage && !isSolutionCasePage && !isServicesHub && !isTrackKpis && <ThemeToggle />}
               <Button
                 variant="primary"
                 size="sm"
@@ -519,9 +523,9 @@ export default function Navbar() {
                 className={cn(
                   familjen.className,
                   "transition-all duration-300 rounded-full px-4 py-1.5 font-normal",
-                  isLightFloatingPill &&
+                  isLightFloatingPill && !isTrackKpis &&
                     "!border-[#060606] hover:!border-[#007AFF]",
-                  isLightPage && !isLightFloatingPill
+                  isLightPage && !isLightFloatingPill && !isTrackKpis
                     ? "!bg-[#08428C] !text-white hover:!bg-[#007AFF] hover:!border-[#007AFF] !border-[#08428C] font-semibold shadow-md"
                     : ""
                 )}
@@ -532,7 +536,7 @@ export default function Navbar() {
 
             {/* Mobile Menu Icon & Theme Toggle */}
             <div className="lg:hidden z-50 flex items-center gap-4">
-              {!isServicePage && !isLightPage && !isExoCase && !isSolutionsPage && !isSolutionCasePage && !isServicesHub && <ThemeToggle />}
+              {!isServicePage && !isLightPage && !isExoCase && !isSolutionsPage && !isSolutionCasePage && !isServicesHub && !isTrackKpis && <ThemeToggle />}
               <button
                 onClick={() => setExoMenuOpen(true)}
                 className={cn(

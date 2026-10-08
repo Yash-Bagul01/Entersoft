@@ -112,6 +112,8 @@ export default function Footer() {
     pathname === "/platform/secrets" ||
     pathname === "/solutions" ||
     pathname === "/services";
+  const flushCloser =
+    pathname === "/solutions/api-discovery" || pathname === "/solutions/track-appsec-kpis";
 
   useLayoutEffect(() => {
     const root = rootRef.current;
@@ -128,20 +130,23 @@ export default function Footer() {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: root,
-          start: "top 95%",
-          end: "top 20%",
-          scrub: 0.6,
+          start: flushCloser ? "top 100%" : "top 95%",
+          end: flushCloser ? "top 55%" : "top 20%",
+          scrub: 0.85,
         },
       });
 
-      if (prev && !reduce) {
+      if (prev && !reduce && !flushCloser) {
         gsap.set(prev, { transformOrigin: "50% 100%" });
         tl.fromTo(prev, { scale: 1, borderRadius: 0 }, { scale: 0.9, borderRadius: 40, ease: "none" }, 0);
       }
 
       tl.fromTo(
         sheet,
-        { yPercent: reduce ? 0 : 14, borderRadius: reduce ? "0px" : "56px 56px 0 0" },
+        {
+          yPercent: reduce || flushCloser ? 0 : 14,
+          borderRadius: reduce || flushCloser ? "0px" : "56px 56px 0 0",
+        },
         { yPercent: 0, borderRadius: "0px", ease: "none" },
         0
       );

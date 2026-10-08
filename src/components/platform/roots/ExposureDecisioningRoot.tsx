@@ -5,7 +5,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Layers, ChevronRight, Target, Shield, AlertTriangle, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import FinalCTA from "@/components/sections/FinalCTA";
 import AttackPathVisualizer from "../visuals/AttackPathVisualizer";
 import HubArrivePhoto from "@/components/platform/HubArrivePhoto";
 
@@ -147,8 +146,6 @@ export default function ExposureDecisioningRoot() {
           </div>
         </div>
       </section>
-
-      <FinalCTA />
     </div>
   );
 }

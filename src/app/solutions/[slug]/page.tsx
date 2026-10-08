@@ -12,6 +12,8 @@ import ApiDiscoveryPortalPage from "@/components/solutions/api-discovery/ApiDisc
 import AiBomKryntPage from "@/components/solutions/ai-bom/AiBomKryntPage";
 import ManageVulnPage from "@/components/solutions/manage-vuln/ManageVulnPage";
 import AutomateWorkflowsPage from "@/components/solutions/automate-workflows/AutomateWorkflowsPage";
+import TrackKpisSvzPage from "@/components/solutions/track-kpis/TrackKpisSvzPage";
+import OpenSourceFlowPage from "@/components/solutions/open-source/OpenSourceFlowPage";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -58,6 +60,12 @@ export default async function SolutionLandingRoute({ params }: PageProps) {
   }
   if (slug === "automate-security-workflows") {
     return <AutomateWorkflowsPage page={page} />;
+  }
+  if (slug === "track-appsec-kpis") {
+    return <TrackKpisSvzPage page={page} />;
+  }
+  if (slug === "manage-open-source-risk") {
+    return <OpenSourceFlowPage page={page} />;
   }
   return <SolutionLandingPage page={page} />;
 }

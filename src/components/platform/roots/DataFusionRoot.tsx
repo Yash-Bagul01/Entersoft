@@ -5,7 +5,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Layers, ChevronRight, Database, Sliders, Cpu, Activity, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import FinalCTA from "@/components/sections/FinalCTA";
 import DataFusionStream from "../visuals/DataFusionStream";
 
 export default function DataFusionRoot() {
@@ -137,8 +136,6 @@ export default function DataFusionRoot() {
           </div>
         </div>
       </section>
-
-      <FinalCTA />
     </div>
   );
 }

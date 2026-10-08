@@ -5,7 +5,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Layers, ChevronRight, Eye, Shield } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import FinalCTA from "@/components/sections/FinalCTA";
 import CommandViewDashboard from "../visuals/CommandViewDashboard";
 
 export default function CommandViewRoot() {
@@ -111,8 +110,6 @@ export default function CommandViewRoot() {
           </div>
         </div>
       </section>
-
-      <FinalCTA />
     </div>
   );
 }
