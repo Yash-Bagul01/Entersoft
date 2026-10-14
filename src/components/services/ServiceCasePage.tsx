@@ -98,7 +98,7 @@ export default function ServiceCasePage({ slug }: { slug: ServiceCaseSlug }) {
   const supportProse = copy.directionProse.slice(1);
 
   return (
-    <article id="solution-case" ref={articleRef} className="dark-panel">
+    <article id="solution-case" ref={articleRef} className={slug === "vapt" ? "dark-panel sc-case-vapt" : "dark-panel"}>
       <header className="sc-hero">
         <div className="sc-hero__media">
           <Image

@@ -66,3 +66,4 @@ Desktop.ini
 *.temp
 next-env.d.ts
 *.tsbuildinfo
+.tmp-services-edge/

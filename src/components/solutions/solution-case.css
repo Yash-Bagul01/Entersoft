@@ -71,6 +71,15 @@
   pointer-events: none;
 }
 
+#solution-case.sc-case-vapt .sc-hero__shade {
+  background: linear-gradient(
+    to top,
+    rgba(6, 16, 42, 0.84) 0%,
+    rgba(36, 78, 190, 0.3) 46%,
+    rgba(12, 32, 88, 0.38) 100%
+  );
+}
+
 .sc-hero__copy {
   position: absolute;
   left: 0;
@@ -618,18 +627,18 @@
       90deg,
       #03060c 0%,
       #03060c 12%,
-      rgba(6, 48, 92, 0.55) 18%,
-      rgba(18, 230, 214, 0.7) 22%,
-      rgba(12, 90, 170, 0.28) 26%,
+      rgba(18, 48, 140, 0.55) 18%,
+      rgba(72, 128, 255, 0.72) 22%,
+      rgba(30, 70, 190, 0.32) 26%,
       #03060c 32%,
       #03060c 38%,
-      rgba(10, 80, 170, 0.5) 44%,
-      rgba(48, 245, 230, 0.88) 50%,
-      rgba(24, 160, 230, 0.42) 55%,
+      rgba(24, 64, 190, 0.55) 44%,
+      rgba(130, 170, 255, 0.88) 50%,
+      rgba(50, 100, 230, 0.45) 55%,
       #03060c 62%,
-      rgba(8, 70, 140, 0.4) 70%,
-      rgba(36, 220, 240, 0.62) 75%,
-      rgba(10, 60, 130, 0.22) 79%,
+      rgba(20, 50, 160, 0.42) 70%,
+      rgba(90, 140, 255, 0.65) 75%,
+      rgba(24, 56, 170, 0.28) 79%,
       #03060c 86%,
       #03060c 100%
     );
@@ -651,28 +660,28 @@
 .sc-godrays__beam--a {
   left: 17%;
   width: 7%;
-  background: linear-gradient(180deg, transparent 0%, rgba(70, 255, 240, 0.85) 40%, rgba(24, 140, 220, 0.32) 72%, transparent 100%);
+  background: linear-gradient(180deg, transparent 0%, rgba(110, 160, 255, 0.85) 40%, rgba(40, 80, 210, 0.38) 72%, transparent 100%);
   animation: sc-godrays-beam-a 11s ease-in-out infinite alternate;
 }
 
 .sc-godrays__beam--b {
   left: 46%;
   width: 11%;
-  background: linear-gradient(180deg, transparent 2%, rgba(80, 255, 245, 0.95) 42%, rgba(36, 170, 240, 0.4) 70%, transparent 100%);
+  background: linear-gradient(180deg, transparent 2%, rgba(150, 185, 255, 0.92) 42%, rgba(48, 90, 220, 0.42) 70%, transparent 100%);
   animation: sc-godrays-beam-b 15s ease-in-out infinite alternate;
 }
 
 .sc-godrays__beam--c {
   left: 69%;
   width: 6%;
-  background: linear-gradient(180deg, transparent 6%, rgba(64, 210, 255, 0.7) 46%, rgba(20, 100, 190, 0.28) 74%, transparent 100%);
+  background: linear-gradient(180deg, transparent 6%, rgba(80, 130, 255, 0.72) 46%, rgba(30, 60, 180, 0.32) 74%, transparent 100%);
   animation: sc-godrays-beam-c 13s ease-in-out infinite alternate;
 }
 
 .sc-godrays__beam--d {
   left: 31%;
   width: 4%;
-  background: linear-gradient(180deg, transparent 8%, rgba(110, 255, 250, 0.62) 48%, transparent 100%);
+  background: linear-gradient(180deg, transparent 8%, rgba(170, 200, 255, 0.62) 48%, transparent 100%);
   animation: sc-godrays-beam-d 9s ease-in-out infinite alternate;
 }
 

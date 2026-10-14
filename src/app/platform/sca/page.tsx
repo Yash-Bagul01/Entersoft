@@ -1,5 +1,6 @@
 import React from "react";
-import SCAPageRoot from "@/components/platform/roots/SCAPageRoot";
+import PlatformOvaPage from "@/components/platform/ova/PlatformOvaPage";
+import { SCA_OVA } from "@/components/platform/ova/platformOva";
 
 export const metadata = {
   title: "Open Source (SCA) — EnProbe Platform | Entersoft Security",
@@ -7,9 +8,5 @@ export const metadata = {
 };
 
 export default function SCAPage() {
-  return (
-    <div data-theme="light" data-page="sca">
-      <SCAPageRoot />
-    </div>
-  );
+  return <PlatformOvaPage page={SCA_OVA} />;
 }

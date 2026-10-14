@@ -161,3 +161,27 @@ export function hubVideo(id: string) {
   const item = PLATFORM_HUB_ITEMS.find((entry) => entry.id === id);
   return item?.video ?? "";
 }
+
+/** Still used in that module's hero. Falls back to the hub poster. */
+const HERO_STILLS: Record<string, string> = {
+  enprobe: "/images/platform/enprobe-ova/hero.jpg",
+  sast: "/images/platform/ova/sast/hero.jpg",
+  sca: "/images/platform/ova/sca/hero.jpg",
+  sbom: "/images/platform/ova/sbom/hero.jpg",
+  secrets: "/images/platform/ova/secrets/hero.jpg",
+  iac: "/images/platform/ova/iac/hero.jpg",
+};
+
+/** Opening frame of the Runtime & Exposure hero video. */
+const VIDEO_OPENING: Record<string, string> = {
+  dast: "/images/platform/hub/video-start/dast.jpg",
+  agentic: "/images/platform/hub/video-start/agentic.jpg",
+  api: "/images/platform/hub/video-start/api.jpg",
+  asm: "/images/platform/hub/video-start/asm.jpg",
+  cloud: "/images/platform/hub/video-start/cloud.jpg",
+  ai: "/images/platform/hub/video-start/ai.jpg",
+};
+
+export function hubCubeImage(id: string) {
+  return HERO_STILLS[id] ?? VIDEO_OPENING[id] ?? hubFront(id);
+}

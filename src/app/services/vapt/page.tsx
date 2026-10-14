@@ -405,11 +405,11 @@ function ScrollRevealItem({
         opacity,
         zIndex: 10 + idx,
       }}
-      className="relative lg:sticky lg:top-0 w-full min-h-[100vh] min-h-[100dvh] flex flex-col items-center justify-center bg-[#030712] overflow-hidden select-none border-b border-zinc-950/60 py-12 lg:py-0"
+      className="vapt-bg relative lg:sticky lg:top-0 w-full min-h-[100vh] min-h-[100dvh] flex flex-col items-center justify-center overflow-hidden select-none border-b border-blue-950/70 py-12 lg:py-0"
     >
       {/* Background tech grids */}
       <div className="absolute inset-0 w-full h-full opacity-30 pointer-events-none z-0">
-        <div className="absolute inset-0 bg-radial-gradient bg-[radial-gradient(circle_at_center,rgba(6,182,212,0.015)_0%,transparent_80%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(70,140,230,0.12)_0%,transparent_72%)]" />
         <div className="absolute inset-0 flex justify-between px-12">
           {[...Array(4)].map((_, i) => (
             <div key={i} className="w-[1px] h-full bg-zinc-900/15" />
@@ -585,7 +585,7 @@ export default function VAPTPage() {
   };
 
   return (
-    <main className="w-full flex flex-col relative overflow-hidden bg-[#030712]">
+    <main className="w-full flex flex-col relative overflow-hidden vapt-bg">
       {/* Sui technical grid overlay line structure */}
       <div className="absolute inset-0 w-full h-full pointer-events-none select-none z-0">
         <div className="absolute top-0 bottom-0 left-[20%] w-[1px] bg-zinc-900/30" />
@@ -608,7 +608,7 @@ export default function VAPTPage() {
       />
 
       {/* SECTION 1: Sui DeFi Stats Grid */}
-      <section id="vapt-stats" className="relative w-full bg-[#030712] px-6 md:px-12 py-24 md:py-32 border-b border-zinc-900 overflow-hidden">
+      <section id="vapt-stats" className="relative w-full vapt-bg px-6 md:px-12 py-24 md:py-32 border-b border-zinc-900 overflow-hidden">
         <div className="max-w-[1400px] w-full mx-auto flex flex-col gap-16 relative z-10">
           
           {/* Header block */}
@@ -773,7 +773,7 @@ export default function VAPTPage() {
       </section>
 
       {/* SECTION 2: Pipeline Flow (Detroit.paris styled vertical stack reveal) */}
-      <section id="vapt-pipeline" className="relative w-full bg-[#030712] border-b border-zinc-900 overflow-visible z-30">
+      <section id="vapt-pipeline" className="relative w-full vapt-bg border-b border-zinc-900 overflow-visible z-30">
         <div className="relative w-full flex flex-col">
           {pipelineSteps.map((stepData, idx) => (
             <ScrollRevealItem 
@@ -793,7 +793,7 @@ export default function VAPTPage() {
       </section>
 
       {/* SECTION 3: FAQ Accordions */}
-      <section id="vapt-faq" className="relative w-full bg-[#030712] px-6 md:px-12 py-24 md:py-32 border-b border-zinc-900 overflow-hidden">
+      <section id="vapt-faq" className="relative w-full vapt-bg px-6 md:px-12 py-24 md:py-32 border-b border-zinc-900 overflow-hidden">
         <div className="max-w-[1400px] w-full mx-auto grid grid-cols-1 lg:grid-cols-[1.1fr_1.9fr] gap-12 lg:gap-20 items-start">
           
           {/* Left Column: Accordion sidebar */}
@@ -835,7 +835,7 @@ export default function VAPTPage() {
       <ServiceCTA buttonHref="/contact" />
 
       {/* SECTION 4: Interactive Giant VAPT Footer (detroit.paris styled) */}
-      <footer className="relative w-full bg-[#030712] overflow-hidden select-none pb-0 border-t border-zinc-900/40">
+      <footer className="relative w-full vapt-bg overflow-hidden select-none pb-0 border-t border-zinc-900/40">
         <style dangerouslySetInnerHTML={{ __html: `
           @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
         ` }} />

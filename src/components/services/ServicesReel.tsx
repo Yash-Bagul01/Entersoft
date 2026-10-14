@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useSmoothScroll } from "@/components/layout/SmoothScrollProvider";
 import {
   SERVICE_CASES,
   SERVICE_CASE_ORDER,
@@ -143,6 +144,7 @@ function ServiceReelCard({
 export default function ServicesReel() {
   const router = useRouter();
   const isReduced = useReducedMotion();
+  const lenis = useSmoothScroll();
   const transition = useOptionalSolutionTransition();
   const totalItems = SERVICES_REEL.length; // 7
 
@@ -158,7 +160,9 @@ export default function ServicesReel() {
   const cardElementsRef = useRef<(HTMLDivElement | null)[]>([]);
   const touchStartPos = useRef<number | null>(null);
   const rafId = useRef<number | null>(null);
-  const snapTimer = useRef<NodeJS.Timeout | null>(null);
+  const indexRef = useRef(0);
+  const gestureLock = useRef(0);
+  const wheelAcc = useRef(0);
 
   // Continuous render transforms for cards reel (Produx design card reel layout)
   const renderTransforms = useCallback(() => {
@@ -242,9 +246,9 @@ export default function ServicesReel() {
     const loop = () => {
       if (!active) return;
 
-      // Smooth lerp (0.09 factor) for silky inertial motion
+      // Follow the stepped target without lagging so far that the next card never lands
       const diff = targetProgress.current - progressVal.current;
-      progressVal.current += diff * 0.09;
+      progressVal.current += diff * 0.16;
       renderTransforms();
 
       rafId.current = requestAnimationFrame(loop);
@@ -312,41 +316,68 @@ export default function ServicesReel() {
     };
   }, [viewMode, isReduced, renderTransforms]);
 
-  // Snap to nearest integer card after scroll stops
-  const scheduleSnap = useCallback(() => {
-    if (snapTimer.current) clearTimeout(snapTimer.current);
-    snapTimer.current = setTimeout(() => {
-      const nearest = Math.round(targetProgress.current);
-      gsap.to(targetProgress, {
-        current: nearest,
-        duration: 0.6,
-        ease: "power2.out",
-      });
-    }, 250);
+  const settleIntro = useCallback(() => {
+    if (loadProgress.current.value >= 1) return;
+    gsap.killTweensOf(loadProgress.current);
+    loadProgress.current.value = 1;
+    setShowDetails(true);
   }, []);
 
-  // Smooth Wheel Delta Handler
+  const goToCard = useCallback(
+    (next: number) => {
+      settleIntro();
+      indexRef.current = next;
+      targetProgress.current = next;
+      if (isReduced) {
+        progressVal.current = next;
+        renderTransforms();
+      }
+    },
+    [isReduced, renderTransforms, settleIntro],
+  );
+
+  const nudge = useCallback(
+    (dir: 1 | -1) => {
+      if (performance.now() < gestureLock.current) return;
+      gestureLock.current = performance.now() + 680;
+      goToCard(indexRef.current + dir);
+    },
+    [goToCard],
+  );
+
+  // One wheel gesture advances exactly one card. A tiny delta used to fall
+  // short of the next card and the old snap pulled it back.
   const handleWheel = useCallback(
     (e: WheelEvent) => {
       e.preventDefault();
-      const rawDelta = viewMode === "vertical" ? e.deltaY : e.deltaY || e.deltaX;
-      // Fluid continuous scroll sensitivity factor
-      const sensitivity = 0.0018;
-      targetProgress.current += rawDelta * sensitivity;
-      scheduleSnap();
+      e.stopPropagation();
+      if (performance.now() < gestureLock.current) {
+        wheelAcc.current = 0;
+        return;
+      }
+      const dominant =
+        viewMode === "horizontal" && Math.abs(e.deltaX) > Math.abs(e.deltaY)
+          ? e.deltaX
+          : e.deltaY;
+      const pixels =
+        e.deltaMode === 1 ? dominant * 16 : e.deltaMode === 2 ? dominant * window.innerHeight : dominant;
+      wheelAcc.current += pixels;
+      if (Math.abs(wheelAcc.current) < 36) return;
+      const dir: 1 | -1 = wheelAcc.current > 0 ? 1 : -1;
+      wheelAcc.current = 0;
+      nudge(dir);
     },
-    [viewMode, scheduleSnap]
+    [nudge, viewMode],
   );
 
   useEffect(() => {
-    const stageContainer = document.getElementById("services-stage");
-    if (stageContainer) {
-      stageContainer.addEventListener("wheel", handleWheel, { passive: false });
-      return () => stageContainer.removeEventListener("wheel", handleWheel);
-    }
-    window.addEventListener("wheel", handleWheel, { passive: false });
-    return () => window.removeEventListener("wheel", handleWheel);
-  }, [handleWheel]);
+    lenis?.stop();
+    window.addEventListener("wheel", handleWheel, { passive: false, capture: true });
+    return () => {
+      window.removeEventListener("wheel", handleWheel, true);
+      lenis?.start();
+    };
+  }, [handleWheel, lenis]);
 
   // Touch drag gesture handlers
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -358,30 +389,27 @@ export default function ServicesReel() {
     const currentPos = viewMode === "vertical" ? e.touches[0].clientY : e.touches[0].clientX;
     const diff = touchStartPos.current - currentPos;
 
-    targetProgress.current += diff * 0.004;
-    touchStartPos.current = currentPos;
-    scheduleSnap();
+    if (Math.abs(diff) < 42) return;
+    nudge(diff > 0 ? 1 : -1);
+    touchStartPos.current = null;
   };
 
   const handleTouchEnd = () => {
     touchStartPos.current = null;
-    scheduleSnap();
   };
 
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "ArrowDown" || e.key === "ArrowRight") {
-        targetProgress.current = Math.round(targetProgress.current) + 1;
-        scheduleSnap();
+        nudge(1);
       } else if (e.key === "ArrowUp" || e.key === "ArrowLeft") {
-        targetProgress.current = Math.round(targetProgress.current) - 1;
-        scheduleSnap();
+        nudge(-1);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [scheduleSnap]);
+  }, [nudge]);
 
   // Card click handler
   const handleCardClick = (index: number, href: string) => {
@@ -401,8 +429,8 @@ export default function ServicesReel() {
       let stepDiff = index - activeDiscreteIndex;
       if (stepDiff > totalItems / 2) stepDiff -= totalItems;
       if (stepDiff < -totalItems / 2) stepDiff += totalItems;
-      targetProgress.current += stepDiff;
-      scheduleSnap();
+      gestureLock.current = performance.now() + 680;
+      goToCard(indexRef.current + stepDiff);
     }
   };
 

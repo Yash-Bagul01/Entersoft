@@ -182,11 +182,11 @@ export default function SCA_Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-[28px] sm:text-[34px] md:text-[40px] lg:text-[44px] xl:text-[48px] leading-[1.12] font-medium uppercase tracking-tight text-[#111827] mb-5 font-sans"
+            className="overflow-visible text-[28px] sm:text-[34px] md:text-[40px] lg:text-[44px] xl:text-[48px] leading-[1.2] font-medium uppercase tracking-tight text-[#111827] mb-5 font-sans"
           >
             <span className="block text-[#111827] font-medium">Secure Open Source.</span>
             <span className="block text-[#111827] font-medium">Across Dependencies.</span>
-            <span className="block bg-gradient-to-r from-[#4F46E5] via-[#2563EB] to-[#06B6D4] bg-clip-text text-transparent font-medium">
+            <span className="block overflow-visible bg-gradient-to-r from-[#4F46E5] via-[#2563EB] to-[#06B6D4] bg-clip-text pb-[0.16em] pr-[0.14em] text-transparent font-medium [box-decoration-break:clone] [-webkit-box-decoration-break:clone]">
               Limitless Control.
             </span>
           </motion.h1>
@@ -289,9 +289,9 @@ export default function SCA_Hero() {
             </div>
 
             <div className="space-y-2.5 font-mono text-xs">
-              <div className="flex items-center justify-between bg-white/40 backdrop-blur-md p-2.5 rounded-xl border border-white/50 shadow-2xs">
-                <span className="text-slate-600 font-sans">Transitive Graph</span>
-                <span className="font-bold text-indigo-700">1,420 Modules</span>
+              <div className="flex items-center justify-between gap-3 overflow-visible bg-white/40 backdrop-blur-md p-2.5 rounded-xl border border-white/50 shadow-2xs">
+                <span className="shrink-0 whitespace-nowrap py-0.5 pr-1 leading-normal text-slate-600 font-sans">Transitive Graph</span>
+                <span className="font-bold text-indigo-700 text-right">1,420 Modules</span>
               </div>
               <div className="flex items-center justify-between bg-white/40 backdrop-blur-md p-2.5 rounded-xl border border-white/50 shadow-2xs">
                 <span className="text-slate-600 font-sans">CVE Match Status</span>

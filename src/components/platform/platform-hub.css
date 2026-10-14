@@ -21,67 +21,6 @@
   height: 100dvh;
 }
 
-/* Header bar overlay matching belenjones.com */
-.platform-hub__topbar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 20;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 0.75rem;
-  padding: 1.5rem 3vw;
-  pointer-events: none;
-}
-
-.platform-hub__topbar-btn {
-  pointer-events: auto;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.45rem 1.25rem;
-  border-radius: 9999px;
-  border: 1px solid rgba(26, 28, 26, 0.25);
-  background: rgba(255, 255, 255, 0.35);
-  backdrop-filter: blur(8px);
-  color: var(--ph-ink);
-  font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  text-decoration: none;
-  transition: all 0.25s ease;
-}
-
-.platform-hub__topbar-btn:hover {
-  background: var(--ph-ink);
-  color: #ffffff;
-  border-color: var(--ph-ink);
-}
-
-/* Footer metadata overlay */
-.platform-hub__footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 20;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1.25rem 3vw;
-  pointer-events: none;
-  font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(26, 28, 26, 0.75);
-}
-
 .platform-hub__names {
   position: relative;
   z-index: 8;
@@ -142,7 +81,7 @@
 
 .platform-hub__cube-wrap {
   position: absolute;
-  z-index: 1;
+  z-index: 12;
   top: 50%;
   left: 50%;
   width: min(46vw, 840px);
@@ -209,8 +148,8 @@
   transform-origin: center center;
 }
 
-.platform-hub__core video,
-.platform-hub__face video {
+.platform-hub__core img,
+.platform-hub__face img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -242,11 +181,8 @@
   transform: scale(1.16);
 }
 
-/* Keep the camera face upright; rotate only the lid so photo-up aims at the navbar. */
-.platform-hub__cube[data-pitch="0"] .platform-hub__face--top .platform-hub__face-media,
-.platform-hub__cube[data-pitch="1"] .platform-hub__face--front .platform-hub__face-media,
-.platform-hub__cube[data-pitch="2"] .platform-hub__face--bottom .platform-hub__face-media,
-.platform-hub__cube[data-pitch="3"] .platform-hub__face--back .platform-hub__face-media {
+/* Glued to the face. Back reads upside down once it faces the camera. */
+.platform-hub__face--back .platform-hub__face-media {
   transform: rotate(180deg);
 }
 
@@ -289,33 +225,17 @@ html:has(.platform-hub.is-expanding) body {
 
 .platform-hub.is-expanding .platform-hub__face--front {
   box-shadow: none;
-  transition: box-shadow 0.9s ease;
 }
 
 .platform-hub.is-expanding .platform-hub__names,
-.platform-hub.is-expanding .platform-hub__footer,
 .platform-hub.is-expanding .platform-hub__tip {
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.45s ease, transform 0.55s cubic-bezier(0.45, 0, 0.15, 1);
+  transition: opacity 1.4s cubic-bezier(0.45, 0, 0.2, 1), transform 1.4s cubic-bezier(0.45, 0, 0.2, 1);
 }
 
 .platform-hub.is-expanding .platform-hub__names {
-  transform: translateY(-22vh);
-}
-
-.platform-hub.is-expanding .platform-hub__footer {
-  transform: translateY(24px);
-}
-
-.platform-hub.is-expanding .platform-hub__face--left,
-.platform-hub.is-expanding .platform-hub__face--right,
-.platform-hub.is-expanding .platform-hub__face--top,
-.platform-hub.is-expanding .platform-hub__face--bottom,
-.platform-hub.is-expanding .platform-hub__face--back {
-  filter: blur(14px) brightness(0.62);
-  opacity: 0.42;
-  transition: filter 1.1s ease, opacity 1.1s ease;
+  transform: translateY(-2vh);
 }
 
 @media (max-width: 900px) {

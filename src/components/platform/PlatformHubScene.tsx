@@ -5,7 +5,7 @@ import { flushSync } from "react-dom";
 import { useRouter } from "next/navigation";
 import { Anybody } from "next/font/google";
 import gsap from "gsap";
-import { PLATFORM_HUB_ITEMS } from "@/data/platformHub";
+import { PLATFORM_HUB_ITEMS, hubCubeImage } from "@/data/platformHub";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useSmoothScroll } from "@/components/layout/SmoothScrollProvider";
 import { usePlatformTransition } from "@/components/layout/PlatformPageTransition";
@@ -23,23 +23,14 @@ const LERP = 0.12;
 const POSE_X = 4;
 const POSE_Y = -32;
 /** Scroll down / later name: bottom long face comes to camera, front becomes top. */
-const NEXT_PITCH = -90;
+const NEXT_PITCH = 90;
 const COUNT = PLATFORM_HUB_ITEMS.length;
 const BELT = ["front", "bottom", "back", "top"] as const;
 type BeltFace = (typeof BELT)[number];
-
-function beltItemIndex(
-  cssFace: BeltFace,
-  steps: number,
-  shown: number,
-  incoming: number | null,
-  dir: 1 | -1 | 0,
-) {
-  const slot = wrap4(BELT.indexOf(cssFace) - wrap4(steps));
-  if (incoming != null && dir === 1 && slot === 1) return incoming;
-  if (incoming != null && dir === -1 && slot === 3) return incoming;
-  return shown;
-}
+/** Face sitting on top of the camera after each 90° step. */
+const LID: BeltFace[] = ["top", "front", "bottom", "back"];
+/** Face that rotates into view on the next step. */
+const FORWARD_FACE: BeltFace[] = ["bottom", "back", "top", "front"];
 
 function lerp(start: number, end: number, amount: number) {
   return start + (end - start) * amount;
@@ -76,16 +67,7 @@ function Face({
   return (
     <div ref={faceRef} className={className} style={style}>
       <div className="platform-hub__face-media">
-        <video
-          key={src}
-          src={src}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          aria-label={alt ?? ""}
-        />
+        <img key={src} src={src} alt={alt ?? ""} draggable={false} />
       </div>
     </div>
   );
@@ -122,19 +104,31 @@ export default function PlatformHubScene() {
 
   const [active, setActive] = useState(0);
   const [shown, setShown] = useState(0);
-  const [steps, setSteps] = useState(0);
   const [incoming, setIncoming] = useState<number | null>(null);
   const [turnDir, setTurnDir] = useState<1 | -1 | 0>(0);
   const [orient, setOrient] = useState(0);
+  const [departed, setDeparted] = useState(() => wrapIndex(-1));
   const [size, setSize] = useState({ w: 1100, h: 620 });
   const [tip, setTip] = useState({ on: false, x: 0, y: 0, text: "[ VIEW PROJECT ]" });
 
   const item = PLATFORM_HUB_ITEMS[active];
   const depth = size.h;
-  const faceItem = (face: BeltFace) =>
-    PLATFORM_HUB_ITEMS[beltItemIndex(face, steps, shown, incoming, turnDir)];
   const sideItem = PLATFORM_HUB_ITEMS[shown];
-  const coreItem = PLATFORM_HUB_ITEMS[incoming ?? shown];
+  const coreItem = PLATFORM_HUB_ITEMS[shown];
+  const stillFor = (face: BeltFace) => {
+    const pose = orient;
+    if (incoming != null && turnDir === 1 && face === FORWARD_FACE[pose]) {
+      return hubCubeImage(PLATFORM_HUB_ITEMS[incoming].id);
+    }
+    if (incoming != null && turnDir === -1 && face === LID[pose]) {
+      return hubCubeImage(PLATFORM_HUB_ITEMS[incoming].id);
+    }
+    if (face === LID[pose]) return hubCubeImage(PLATFORM_HUB_ITEMS[departed].id);
+    if (face === FORWARD_FACE[pose]) {
+      return hubCubeImage(PLATFORM_HUB_ITEMS[wrapIndex(shown + 1)].id);
+    }
+    return hubCubeImage(PLATFORM_HUB_ITEMS[shown].id);
+  };
 
   const startTurn = useCallback(
     (to: number, opts?: { queue?: boolean }) => {
@@ -156,16 +150,17 @@ export default function PlatformHubScene() {
       const settle = () => {
         let stored = nextSteps;
         const cube = cubeRef.current;
+        const left = shownRef.current;
         if (wrap4(stored) === 0 && cube) {
           gsap.set(cube, { rotateX: 0 });
           stored = 0;
         }
         stepsRef.current = stored;
         shownRef.current = target;
-        setSteps(stored);
         setShown(target);
         setIncoming(null);
         setTurnDir(0);
+        setDeparted(left);
         setOrient(wrap4(stored));
         busy.current = false;
         wheelAcc.current = 0;
@@ -193,7 +188,6 @@ export default function PlatformHubScene() {
           setActive(target);
           setIncoming(target);
           setTurnDir(dir);
-          setOrient(wrap4(nextSteps));
         });
 
         if (reduce) {
@@ -222,20 +216,18 @@ export default function PlatformHubScene() {
         );
       };
 
-      const preload = document.createElement("video");
+      const preload = new Image();
       let started = false;
       const begin = () => {
         if (started) return;
         started = true;
         spin();
       };
-      preload.muted = true;
-      preload.playsInline = true;
-      preload.preload = "auto";
-      preload.oncanplaythrough = begin;
+      preload.onload = begin;
       preload.onerror = begin;
-      preload.src = PLATFORM_HUB_ITEMS[target].video;
-      window.setTimeout(begin, 1400);
+      preload.src = hubCubeImage(PLATFORM_HUB_ITEMS[target].id);
+      if (preload.complete) begin();
+      else window.setTimeout(begin, 400);
     },
     [reduce],
   );
@@ -364,14 +356,12 @@ export default function PlatformHubScene() {
   }, [reduce, startTurn]);
 
   useEffect(() => {
-    const next = PLATFORM_HUB_ITEMS[wrapIndex(active + 1)]?.video;
-    const prev = PLATFORM_HUB_ITEMS[wrapIndex(active - 1)]?.video;
+    const next = hubCubeImage(PLATFORM_HUB_ITEMS[wrapIndex(active + 1)].id);
+    const prev = hubCubeImage(PLATFORM_HUB_ITEMS[wrapIndex(active - 1)].id);
     [next, prev].forEach((href) => {
       if (!href) return;
-      const clip = document.createElement("video");
-      clip.preload = "auto";
-      clip.muted = true;
-      clip.src = href;
+      const still = new Image();
+      still.src = href;
     });
   }, [active]);
 
@@ -407,8 +397,8 @@ export default function PlatformHubScene() {
     (href?: string, name?: string) => {
       if (busy.current || leaving.current) return;
       const wrap = wrapRef.current;
-      const scaleEl = scaleRef.current;
       const poseEl = poseRef.current;
+      const scaleEl = scaleRef.current;
       const shownItem = PLATFORM_HUB_ITEMS[shownRef.current];
       const targetHref = href || shownItem.href;
       const targetName = name || shownItem.name;
@@ -418,45 +408,41 @@ export default function PlatformHubScene() {
       leaving.current = true;
       wrap?.closest(".platform-hub")?.classList.add("is-expanding");
       setTip((current) => ({ ...current, on: false }));
-      stepsRef.current = 0;
-      setSteps(0);
-      setOrient(0);
-      if (cubeRef.current) gsap.set(cubeRef.current, { rotateX: 0 });
+      turnTween.current?.kill();
 
       const startCover = () => {
         if (platformTransition) {
           platformTransition.to(targetHref, targetName, {
-            image: targetItem.image,
-            video: targetItem.video,
-            from: frontFaceRef.current || wrap || undefined,
+            image: hubCubeImage(targetItem.id),
             grown: true,
+            covered: true,
           });
           return;
         }
         router.push(targetHref);
       };
 
-      if (reduce || !wrap || !scaleEl || !poseEl) {
+      if (reduce || !wrap || !poseEl || !scaleEl) {
         startCover();
         return;
       }
 
-      const cover = Math.max(
-        window.innerWidth / wrap.offsetWidth,
-        window.innerHeight / wrap.offsetHeight,
-      );
+      const cover =
+        Math.max(
+          window.innerWidth / wrap.offsetWidth,
+          window.innerHeight / wrap.offsetHeight,
+        ) * 1.08;
 
-      startCover();
       gsap
-        .timeline()
+        .timeline({ onComplete: startCover })
         .to(
           poseEl,
-          { rotateY: 0, rotateX: 0, duration: 1.28, ease: "power2.inOut", overwrite: true },
+          { rotateY: -4, rotateX: 0, duration: 1.4, ease: "power2.inOut", overwrite: true },
           0,
         )
         .to(
           scaleEl,
-          { scale: cover, duration: 1.28, ease: "power2.inOut", overwrite: true },
+          { scale: cover, duration: 1.4, ease: "power2.inOut", overwrite: true },
           0,
         );
     },
@@ -495,11 +481,6 @@ export default function PlatformHubScene() {
       className={`platform-hub ${display.className}`}
       style={{ backgroundColor: item.bg }}
     >
-      <footer className="platform-hub__footer">
-        <div>[ SCROLL OR DRAG TO SWITCH MODULES ]</div>
-        <div>ENTERSOFT SECURITY • 2026 EDITION</div>
-      </footer>
-
       <div className="platform-hub__stage">
         <nav className="platform-hub__names" aria-label="Platform modules">
           {PLATFORM_HUB_ITEMS.map((entry, index) => (
@@ -535,30 +516,27 @@ export default function PlatformHubScene() {
           <div ref={poseRef} className="platform-hub__cube-pose">
             <div ref={cubeRef} className="platform-hub__cube" data-pitch={orient}>
               <div className="platform-hub__core" aria-hidden="true">
-                <video
-                  key={coreItem.video}
-                  src={coreItem.video}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="auto"
+                <img
+                  key={hubCubeImage(coreItem.id)}
+                  src={hubCubeImage(coreItem.id)}
+                  alt=""
+                  draggable={false}
                 />
               </div>
               <Face
-                src={faceItem("front").video}
+                src={stillFor("front")}
                 alt={item.name}
                 className="platform-hub__face platform-hub__face--front"
                 style={{ transform: `translateZ(${depth / 2}px)` }}
                 faceRef={frontFaceRef}
               />
               <Face
-                src={faceItem("back").video}
+                src={stillFor("back")}
                 className="platform-hub__face platform-hub__face--back"
                 style={{ transform: `rotateY(180deg) translateZ(${depth / 2}px)` }}
               />
               <Face
-                src={sideItem.video}
+                src={hubCubeImage(sideItem.id)}
                 className="platform-hub__face platform-hub__face--right"
                 style={{
                   width: depth,
@@ -567,7 +545,7 @@ export default function PlatformHubScene() {
                 }}
               />
               <Face
-                src={sideItem.video}
+                src={hubCubeImage(sideItem.id)}
                 className="platform-hub__face platform-hub__face--left"
                 style={{
                   width: depth,
@@ -576,7 +554,7 @@ export default function PlatformHubScene() {
                 }}
               />
               <Face
-                src={faceItem("top").video}
+                src={stillFor("top")}
                 className="platform-hub__face platform-hub__face--top"
                 style={{
                   height: depth,
@@ -585,7 +563,7 @@ export default function PlatformHubScene() {
                 }}
               />
               <Face
-                src={faceItem("bottom").video}
+                src={stillFor("bottom")}
                 className="platform-hub__face platform-hub__face--bottom"
                 style={{
                   height: depth,

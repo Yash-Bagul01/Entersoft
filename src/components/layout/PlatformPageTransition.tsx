@@ -27,6 +27,8 @@ export type PlatformExpandOpts = {
   image: string;
   video?: string;
   grown?: boolean;
+  /** The source is already fullscreen. Hold it and open the page. */
+  covered?: boolean;
 };
 
 type PlatformTransitionApi = {
@@ -100,7 +102,13 @@ export function PlatformTransitionProvider({
     if (overlay) overlay.classList.remove("is-on");
     if (expand) {
       expand.classList.remove("is-on");
-      gsap.set(expand, { autoAlpha: 0, clearProps: "top,left,width,height,transform" });
+      gsap.set(expand, {
+        autoAlpha: 0,
+        x: 0,
+        y: 0,
+        scale: 1,
+        clearProps: "top,left,width,height,transform",
+      });
     }
     if (sourceElRef.current) {
       sourceElRef.current.style.visibility = "";
@@ -172,19 +180,99 @@ export function PlatformTransitionProvider({
         const source = expand.from;
         const rect = source?.getBoundingClientRect();
         const grown = Boolean(expand.grown);
+        const covered = Boolean(expand.covered);
         if (source && !grown) {
           sourceElRef.current = source;
           source.style.visibility = "hidden";
         }
-        gsap.set(layer, {
-          autoAlpha: grown ? 0 : 1,
+        const box = {
           top: rect?.top ?? 0,
           left: rect?.left ?? 0,
           width: Math.max(rect?.width ?? window.innerWidth, 8),
           height: Math.max(rect?.height ?? window.innerHeight, 8),
-        });
+        };
         gsap.set(shade, { opacity: 0 });
-        const grow = grown ? 1.28 : 1.12;
+
+        if (covered) {
+          gsap.set(shade, { opacity: 0 });
+          gsap.set(layer, {
+            autoAlpha: 0,
+            top: 0,
+            left: 0,
+            width: window.innerWidth,
+            height: window.innerHeight,
+            x: 0,
+            y: 0,
+            scale: 1,
+            transformOrigin: "50% 50%",
+          });
+          let opened = false;
+          const revealCover = () => {
+            if (opened) return;
+            opened = true;
+            gsap.to(layer, {
+              autoAlpha: 1,
+              duration: 0.62,
+              ease: "power1.inOut",
+              onComplete: () => router.push(path),
+            });
+          };
+          preload.onload = revealCover;
+          preload.onerror = revealCover;
+          if (preload.complete) revealCover();
+          return;
+        }
+
+        if (grown && rect) {
+          const vw = window.innerWidth;
+          const vh = window.innerHeight;
+          const scale = Math.max(vw / box.width, vh / box.height);
+          const cx = box.left + box.width / 2;
+          const cy = box.top + box.height / 2;
+          const duration = scale < 1.2 ? 0.32 : 0.78;
+          gsap.set(layer, {
+            autoAlpha: 1,
+            top: box.top,
+            left: box.left,
+            width: box.width,
+            height: box.height,
+            x: 0,
+            y: 0,
+            scale: 1,
+            transformOrigin: "50% 50%",
+          });
+          gsap
+            .timeline({
+              onComplete: () => {
+                router.push(path);
+              },
+            })
+            .to(
+              layer,
+              {
+                x: vw / 2 - cx,
+                y: vh / 2 - cy,
+                scale,
+                duration,
+                ease: "power3.inOut",
+                force3D: true,
+              },
+              0,
+            )
+            .to(shade, { opacity: 0.55, duration: Math.min(0.4, duration), ease: "power2.inOut" }, Math.max(0, duration - 0.35));
+          return;
+        }
+
+        gsap.set(layer, {
+          autoAlpha: 1,
+          top: box.top,
+          left: box.left,
+          width: box.width,
+          height: box.height,
+          x: 0,
+          y: 0,
+          scale: 1,
+        });
         gsap
           .timeline({
             onComplete: () => {
@@ -198,25 +286,13 @@ export function PlatformTransitionProvider({
               left: 0,
               width: () => window.innerWidth,
               height: () => window.innerHeight,
-              duration: grow,
-              ease: "power2.inOut",
+              duration: 1.12,
+              ease: "power4.inOut",
+              force3D: true,
             },
             0,
           )
-          .to(
-            layer,
-            {
-              autoAlpha: 1,
-              duration: grown ? 0.72 : 0.01,
-              ease: "power1.out",
-            },
-            grown ? 0.42 : 0,
-          )
-          .to(
-            shade,
-            { opacity: 1, duration: grown ? 0.78 : 0.55, ease: "power2.inOut" },
-            grown ? 0.58 : 0.48,
-          );
+          .to(shade, { opacity: 0.82, duration: 0.55, ease: "power2.inOut" }, 0.62);
         return;
       }
 
@@ -316,7 +392,13 @@ export function PlatformTransitionProvider({
       document.documentElement.removeAttribute("data-platform-expand");
       document.documentElement.removeAttribute("data-platform-expand-settle");
       gsap.set(cols, { scaleY: 0, clearProps: "transform" });
-      gsap.set(expand, { autoAlpha: 0, clearProps: "top,left,width,height" });
+      gsap.set(expand, {
+        autoAlpha: 0,
+        x: 0,
+        y: 0,
+        scale: 1,
+        clearProps: "top,left,width,height,transform",
+      });
       lenis?.start();
       lenis?.scrollTo(0, { immediate: true });
       window.scrollTo(0, 0);
@@ -335,6 +417,9 @@ export function PlatformTransitionProvider({
 
     if (modeRef.current === "expand") {
       gsap.set(expand, {
+        x: 0,
+        y: 0,
+        scale: 1,
         top: 0,
         left: 0,
         width: window.innerWidth,
@@ -342,16 +427,14 @@ export function PlatformTransitionProvider({
         autoAlpha: 1,
       });
       const reveal = () => {
-        document.documentElement.setAttribute("data-platform-expand-settle", "1");
-        document.documentElement.removeAttribute("data-platform-expand");
         gsap.to(expand, {
           autoAlpha: 0,
-          duration: 1.15,
-          ease: "power2.inOut",
+          duration: 1.45,
+          ease: "power1.inOut",
           onComplete: finish,
         });
       };
-      requestAnimationFrame(() => requestAnimationFrame(reveal));
+      window.setTimeout(reveal, 280);
       return;
     }
 

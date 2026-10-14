@@ -54,6 +54,14 @@ export const ROUTES = {
   company: {
     accreditations: "/company/accreditations",
   },
+  resources: {
+    blog: "/resources/blog",
+    media: "/resources/media",
+    faq: "/resources/faq",
+    events: "/resources/events",
+    webinars: "/resources/webinars",
+    hackfest: "/resources/hackfest",
+  },
   services: {
     appsec: `/services/${SERVICE_SLUGS.appsec}`,
     vapt: `/services/${SERVICE_SLUGS.vapt}`,

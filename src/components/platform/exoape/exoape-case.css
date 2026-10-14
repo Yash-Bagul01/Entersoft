@@ -28,6 +28,8 @@ html:has(.exoape-case) body {
 .exoape-reveal {
   display: block;
   overflow: hidden;
+  padding-top: 0.08em;
+  padding-bottom: 0.22em;
 }
 
 .exoape-reveal-inner,
@@ -67,4 +69,39 @@ html:has(.exoape-case) body {
 .exoape-case [data-explode-item] a,
 .exoape-case [data-next-project] a {
   pointer-events: auto;
+}
+
+/* Theme globals remapped `.text-white` and inherited body color.
+   Cream pages stay ink; dark bands stay white. */
+.exoape-case {
+  color: #0d0e13;
+}
+
+.exoape-case .text-white,
+.exoape-case .text-white h1,
+.exoape-case .text-white h2,
+.exoape-case .text-white h3,
+.exoape-case .text-white\/90,
+.exoape-case .text-white\/85,
+.exoape-case .text-white\/70,
+.exoape-case .text-white\/60,
+.exoape-case .text-white\/55,
+.exoape-case .text-white\/50,
+[data-theme="light"] .exoape-case .text-white,
+[data-theme="light"] .exoape-case .text-white h1,
+[data-theme="light"] .exoape-case .text-white h2,
+[data-theme="light"] .exoape-case .text-white h3 {
+  color: #ffffff !important;
+}
+
+.hub-arrive-title,
+[data-theme="light"] .hub-arrive-title,
+[data-theme="dark"] .hub-arrive-title {
+  color: #ffffff !important;
+}
+
+.exoape-case #hero h1,
+.exoape-case #hero h1 span {
+  color: #ffffff !important;
+  overflow: visible;
 }

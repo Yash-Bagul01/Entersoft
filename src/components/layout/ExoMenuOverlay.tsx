@@ -6,6 +6,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Familjen_Grotesk } from "next/font/google";
 import { ROUTES } from "@/config/routes";
+import { companyNav } from "@/data/companyPages";
+import { industryNav } from "@/data/industries";
+import { resourceNav } from "@/data/resources";
 import { cn } from "@/lib/utils";
 
 const familjen = Familjen_Grotesk({
@@ -30,12 +33,18 @@ const PRIMARY_ITEMS = [
 ];
 
 const SECONDARY_ITEMS = [
-  { label: "Industries", href: "/#services" },
-  { label: "Resources", href: "/#insights" },
-  { label: "Company", href: ROUTES.company.accreditations },
+  { label: "Industries", href: industryNav[0].href },
+  { label: "Resources", href: ROUTES.resources.blog },
+  { label: "Company", href: companyNav[0].href },
   { label: "Accreditations", href: ROUTES.company.accreditations },
   { label: "Contact Us", href: ROUTES.contact },
 ];
+
+const FLYOUTS: Record<string, readonly { label: string; href: string }[]> = {
+  Industries: industryNav,
+  Resources: resourceNav,
+  Company: [{ label: "Accreditations", href: ROUTES.company.accreditations }, ...companyNav],
+};
 
 const EASE: [number, number, number, number] = [0.76, 0, 0.24, 1];
 
@@ -198,9 +207,12 @@ export default function ExoMenuOverlay({ isOpen, onClose }: ExoMenuOverlayProps)
               <nav className="flex flex-col items-start gap-1 md:items-end">
                 {SECONDARY_ITEMS.map((item, idx) => {
                   const isActive = activeLabel === item.label;
+                  const flyout = FLYOUTS[item.label];
+                  const flyoutId = `menu-flyout-${item.label}`;
                   return (
                     <motion.div
                       key={item.label}
+                      className={cn(flyout && "relative")}
                       variants={{
                         closed: { y: 20, opacity: 0 },
                         open: {
@@ -213,11 +225,27 @@ export default function ExoMenuOverlay({ isOpen, onClose }: ExoMenuOverlayProps)
                           },
                         },
                       }}
+                      onBlur={(event) => {
+                        if (!flyout) return;
+                        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+                          setHovered(null);
+                        }
+                      }}
                     >
                       <Link
                         href={item.href}
-                        onClick={onClose}
+                        aria-expanded={flyout ? hovered === item.label : undefined}
+                        aria-controls={flyout ? flyoutId : undefined}
+                        onClick={(event) => {
+                          if (flyout && window.matchMedia("(max-width: 767px)").matches) {
+                            event.preventDefault();
+                            setHovered((current) => (current === item.label ? null : item.label));
+                            return;
+                          }
+                          onClose();
+                        }}
                         onMouseEnter={() => setHovered(item.label)}
+                        onFocus={() => setHovered(item.label)}
                         className={cn(
                           familjen.className,
                           "block py-1 text-[clamp(1.15rem,2.2vw,1.85rem)] font-normal tracking-[-0.07em] transition-colors duration-300 md:text-right",
@@ -226,6 +254,53 @@ export default function ExoMenuOverlay({ isOpen, onClose }: ExoMenuOverlayProps)
                       >
                         {item.label}
                       </Link>
+
+                      {flyout ? (
+                        <AnimatePresence>
+                          {hovered === item.label ? (
+                            <motion.div
+                              id={flyoutId}
+                              key={flyoutId}
+                              initial={{ opacity: 0, x: 18 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              exit={{ opacity: 0, x: 12 }}
+                              transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                              className="z-20 w-max md:absolute md:right-full md:top-1/2 md:block md:max-h-[70vh] md:-translate-y-1/2 md:overflow-y-auto md:pr-12"
+                            >
+                              <ul className="mt-2 flex w-max flex-col items-start gap-0.5 border-l border-white/15 pl-4 md:mt-0 md:items-end md:border-l-0 md:border-r md:pl-0 md:pr-5">
+                                {flyout.map((sub, subIndex) => {
+                                  const subActive = pathname === sub.href;
+                                  return (
+                                    <motion.li
+                                      key={sub.href}
+                                      initial={{ opacity: 0, x: 10 }}
+                                      animate={{ opacity: 1, x: 0 }}
+                                      transition={{
+                                        duration: 0.28,
+                                        delay: 0.04 + subIndex * 0.035,
+                                        ease: [0.22, 1, 0.36, 1],
+                                      }}
+                                    >
+                                      <Link
+                                        href={sub.href}
+                                        onClick={onClose}
+                                        onFocus={() => setHovered(item.label)}
+                                        className={cn(
+                                          familjen.className,
+                                          "menu-sublink block whitespace-nowrap py-0.5 text-[clamp(1rem,1.5vw,1.35rem)] font-normal tracking-[-0.04em] md:text-right",
+                                          subActive && "menu-link-on"
+                                        )}
+                                      >
+                                        {sub.label}
+                                      </Link>
+                                    </motion.li>
+                                  );
+                                })}
+                              </ul>
+                            </motion.div>
+                          ) : null}
+                        </AnimatePresence>
+                      ) : null}
                     </motion.div>
                   );
                 })}

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown, Shield, Code, Cloud, CheckSquare, Server, Cpu, HelpCircle, Layers, FileText, Database, Target, Zap, Activity, Eye, Compass, Workflow, Key, Terminal, Box, Award, Search, BarChart3, Package } from "lucide-react";
+import { Menu, X, ChevronDown, Shield, Code, Cloud, CheckSquare, Server, Cpu, HelpCircle, Layers, Database, Target, Zap, Activity, Eye, Compass, Workflow, Key, Terminal, Box, Award, Search, BarChart3, Package, BookOpen, Newspaper, CalendarDays, Presentation, Flag } from "lucide-react";
 import { Button } from "../ui/Button";
 import { cn } from "@/lib/utils";
 import ThemeToggle from "../ui/ThemeToggle";
@@ -11,6 +11,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { Familjen_Grotesk } from "next/font/google";
 import { ROUTES } from "@/config/routes";
+import { companyNav } from "@/data/companyPages";
+import { industryNav } from "@/data/industries";
+import { resourceNav } from "@/data/resources";
 import { services } from "@/data/services";
 import ExoMenuOverlay from "./ExoMenuOverlay";
 
@@ -53,23 +56,29 @@ export default function Navbar() {
   const isExoCase =
     pathname === "/platform/dast" ||
     pathname === "/platform/iac" ||
-    pathname === "/platform/agentic-pentesting";
+    pathname === "/platform/agentic-pentesting" ||
+    pathname === "/platform/api-security" ||
+    pathname === "/platform/attack-surface-management" ||
+    pathname === "/platform/cloud-appsec" ||
+    pathname === "/platform/ai-appsec";
   const isSolutionsPage = pathname === ROUTES.solutions;
   const isTrackKpis = pathname === ROUTES.solutionsPages.trackKpis;
   const isSolutionLanding = !!pathname?.startsWith("/solutions/");
   const isServicesHub = pathname === ROUTES.servicesHub;
-  const isHubPage = pathname === "/platform";
+  const isPlatformHub = pathname === "/platform";
   const isApiPage = pathname === "/platform/api-security";
   const isAsmPage = pathname === "/platform/attack-surface-management";
   const isSolutionCasePage =
     pathname === "/platform/cloud-appsec" || pathname === "/platform/ai-appsec";
-  const isLightPage = isCyberOntologyPage || isScaPage || isSolutionLanding || isHubPage || isApiPage || isAsmPage;
+  const isRuntimeBelowAgentic = isApiPage || isAsmPage || isSolutionCasePage;
+  const isLightPage = isCyberOntologyPage || isScaPage || isSolutionLanding;
   const isServicePage =
     (pathname?.startsWith("/services") || pathname?.startsWith("/platform")) &&
     !isLightPage &&
     !isPlatformSubpage &&
     !isExoCase &&
     !isSolutionCasePage &&
+    !isRuntimeBelowAgentic &&
     !isServicesHub;
   const isAppSecPage = pathname === ROUTES.services.appsec;
   const isVaptPage = pathname === ROUTES.services.vapt;
@@ -207,38 +216,41 @@ export default function Navbar() {
     },
     {
       label: "Industries",
-      href: "/#services",
+      href: industryNav[0].href,
       megaMenu: {
-        blurb: "Tailored cybersecurity postures engineered for regulated and high-growth technology sectors.",
-        ctaText: "Explore Industries →",
+        blurb: "Application security for the sectors Entersoft is hired into: fintech, commerce, SaaS, industrial IoT, blockchain and health tech.",
+        ctaText: "Fintech security →",
+        ctaHref: industryNav[0].href,
         sections: [
           {
-            title: "Sectors Served",
-            items: [
-              { name: "BFSI & Fintech", href: ROUTES.contact, desc: "Banking, payments & API compliance", icon: <Shield className="w-4 h-4" /> },
-              { name: "SaaS & Technology", href: ROUTES.contact, desc: "Release assurance & SOC 2 evidence", icon: <Code className="w-4 h-4" /> },
-              { name: "Healthcare & Life Sciences", href: ROUTES.contact, desc: "HIPAA & health data boundaries", icon: <CheckSquare className="w-4 h-4" /> },
-              { name: "Government & Public Sector", href: ROUTES.contact, desc: "CERT-In empanelled auditing", icon: <Award className="w-4 h-4" /> },
-              { name: "Manufacturing & Infrastructure", href: ROUTES.contact, desc: "Critical infrastructure security", icon: <Server className="w-4 h-4" /> },
-              { name: "Web3 & Digital Assets", href: ROUTES.contact, desc: "Protocol & smart contract audits", icon: <Cpu className="w-4 h-4" /> }
-            ]
+            title: "Focus industries",
+            items: industryNav.map((item) => ({
+              name: item.label,
+              href: item.href,
+              desc: item.description,
+              icon: <Shield className="w-4 h-4" />,
+            })),
           }
         ]
       }
     },
     {
       label: "Resources",
-      href: "/#insights",
+      href: ROUTES.resources.blog,
       megaMenu: {
-        blurb: "Practical security research, vulnerability writeups, and security advisories by Entersoft analysts.",
-        ctaText: "Read Research & Advisories →",
+        blurb: "Notes from the practice, public announcements, answers, and the rooms where Entersoft teaches and tests in public.",
+        ctaText: "Open the journal →",
+        ctaHref: ROUTES.resources.blog,
         sections: [
           {
-            title: "Knowledge & Evidence",
+            title: "Library",
             items: [
-              { name: "Research & Insights", href: "/#insights", desc: "Practical guidance for engineering teams", icon: <FileText className="w-4 h-4" /> },
-              { name: "Security Advisories", href: "/#insights", desc: "Technical vulnerability disclosures", icon: <HelpCircle className="w-4 h-4" /> },
-              { name: "Sample Deliverables", href: ROUTES.contact, desc: "Examine report structure & evidence", icon: <Layers className="w-4 h-4" /> }
+              { name: "Blog", href: ROUTES.resources.blog, desc: resourceNav[0].description, icon: <BookOpen className="w-4 h-4" /> },
+              { name: "Media", href: ROUTES.resources.media, desc: resourceNav[1].description, icon: <Newspaper className="w-4 h-4" /> },
+              { name: "FAQ", href: ROUTES.resources.faq, desc: resourceNav[2].description, icon: <HelpCircle className="w-4 h-4" /> },
+              { name: "Events", href: ROUTES.resources.events, desc: resourceNav[3].description, icon: <CalendarDays className="w-4 h-4" /> },
+              { name: "Webinars", href: ROUTES.resources.webinars, desc: resourceNav[4].description, icon: <Presentation className="w-4 h-4" /> },
+              { name: "Hackfest", href: ROUTES.resources.hackfest, desc: resourceNav[5].description, icon: <Flag className="w-4 h-4" /> }
             ]
           }
         ]
@@ -246,18 +258,23 @@ export default function Navbar() {
     },
     {
       label: "Company",
-      href: ROUTES.company.accreditations,
+      href: companyNav[0].href,
       megaMenu: {
-        blurb: "Since 2013 · CREST-accredited penetration testing · CERT-In empanelled auditing organisation.",
-        ctaText: "Verify Accreditations →",
-        ctaHref: ROUTES.company.accreditations,
+        blurb: "Since 2013. CREST-accredited penetration testing. CERT-In empanelled auditing organisation.",
+        ctaText: "About Entersoft →",
+        ctaHref: companyNav[0].href,
         sections: [
           {
-            title: "Corporate",
+            title: "Company",
             items: [
               { name: "Accreditations", href: ROUTES.company.accreditations, desc: "CREST, CERT-In, ISO 27001", icon: <Award className="w-4 h-4" /> },
-              { name: "Contact & Briefing", href: ROUTES.contact, desc: "Book an enterprise security briefing", icon: <Layers className="w-4 h-4" /> }
-            ]
+              ...companyNav.map((item) => ({
+                name: item.label,
+                href: item.href,
+                desc: item.description,
+                icon: <Layers className="w-4 h-4" />,
+              })),
+            ],
           }
         ]
       }
@@ -300,7 +317,8 @@ export default function Navbar() {
   const isLightThemeActive = currentTheme === "light" || isLightPage;
   const isLightNavbar = isLightThemeActive || (isPlatformSubpage && isScrolled) || (isExoCase && isScrolled);
   const isLightFloatingPill = (isLightThemeActive && isScrolled) || (isExoCase && isScrolled);
-  const isLightNavHeader = isLightFloatingPill || isLightPage;
+  const isScaOverDarkHero = isScaPage && !isScrolled;
+  const isLightNavHeader = (isLightFloatingPill || isLightPage) && !isScaOverDarkHero;
   const isLightDropdown = chromeTheme === "light";
 
   return (
@@ -514,7 +532,7 @@ export default function Navbar() {
                 </div>
               </button>
 
-              {!isServicePage && !isLightPage && !isExoCase && !isSolutionsPage && !isSolutionCasePage && !isServicesHub && !isTrackKpis && <ThemeToggle />}
+              {!isServicePage && !isLightPage && !isPlatformHub && !isExoCase && !isRuntimeBelowAgentic && !isSolutionsPage && !isSolutionCasePage && !isServicesHub && !isTrackKpis && <ThemeToggle />}
               <Button
                 variant="primary"
                 size="sm"
@@ -525,7 +543,7 @@ export default function Navbar() {
                   "transition-all duration-300 rounded-full px-4 py-1.5 font-normal",
                   isLightFloatingPill && !isTrackKpis &&
                     "!border-[#060606] hover:!border-[#007AFF]",
-                  isLightPage && !isLightFloatingPill && !isTrackKpis
+                  isLightPage && !isLightFloatingPill && !isTrackKpis && !isScaPage
                     ? "!bg-[#08428C] !text-white hover:!bg-[#007AFF] hover:!border-[#007AFF] !border-[#08428C] font-semibold shadow-md"
                     : ""
                 )}
@@ -536,7 +554,7 @@ export default function Navbar() {
 
             {/* Mobile Menu Icon & Theme Toggle */}
             <div className="lg:hidden z-50 flex items-center gap-4">
-              {!isServicePage && !isLightPage && !isExoCase && !isSolutionsPage && !isSolutionCasePage && !isServicesHub && !isTrackKpis && <ThemeToggle />}
+              {!isServicePage && !isLightPage && !isPlatformHub && !isExoCase && !isRuntimeBelowAgentic && !isSolutionsPage && !isSolutionCasePage && !isServicesHub && !isTrackKpis && <ThemeToggle />}
               <button
                 onClick={() => setExoMenuOpen(true)}
                 className={cn(

@@ -24,7 +24,7 @@ export default function HubArrivePhoto({ id }: { id: string }) {
         <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/45 to-black/40" />
       </div>
       {item ? (
-        <h1 className="absolute inset-x-6 md:inset-x-10 bottom-10 z-10 text-white text-[clamp(2.6rem,8vw,7.5rem)] font-light leading-[0.95] tracking-[-0.04em]">
+        <h1 className="hub-arrive-title absolute inset-x-6 md:inset-x-10 bottom-10 z-10 text-white text-[clamp(2.6rem,8vw,7.5rem)] font-light leading-[0.95] tracking-[-0.04em]">
           {item.name}
         </h1>
       ) : null}

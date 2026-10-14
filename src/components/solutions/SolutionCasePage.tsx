@@ -17,7 +17,7 @@ import { useOptionalSolutionTransition } from "@/components/solutions/SolutionTr
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import "@/components/solutions/solution-case.css";
 
-export default function SolutionCasePage({ slug }: { slug: SolutionCaseSlug }) {
+export default function SolutionCasePage({ slug, heroOnly = false }: { slug: SolutionCaseSlug; heroOnly?: boolean }) {
   const visual = SOLUTION_CASES[slug];
   const pillar = platformPillars[slug];
   const transition = useOptionalSolutionTransition();
@@ -67,7 +67,7 @@ export default function SolutionCasePage({ slug }: { slug: SolutionCaseSlug }) {
   }, [reduce, transition, visual.href]);
 
   useLayoutEffect(() => {
-    if (reduce || !articleRef.current) return;
+    if (heroOnly || reduce || !articleRef.current) return;
     gsap.registerPlugin(ScrollTrigger);
     const headings = articleRef.current.querySelectorAll<HTMLElement>(
       ".sc-section__label, .sc-section__title"
@@ -92,7 +92,7 @@ export default function SolutionCasePage({ slug }: { slug: SolutionCaseSlug }) {
     return () => {
       tweens.forEach((tween) => tween.kill());
     };
-  }, [reduce, slug]);
+  }, [heroOnly, reduce, slug]);
 
   if (!pillar) return null;
 
@@ -139,6 +139,8 @@ export default function SolutionCasePage({ slug }: { slug: SolutionCaseSlug }) {
         </div>
       </header>
 
+      {heroOnly ? null : (
+      <>
       <div className="sc-wrap">
         <section className="sc-intro">
           <div className="sc-intro__lede">
@@ -266,6 +268,8 @@ export default function SolutionCasePage({ slug }: { slug: SolutionCaseSlug }) {
           <span>{certifications.map((item) => item.name).join(" · ")}</span>
         </div>
       </div>
+      </>
+      )}
     </article>
   );
 }

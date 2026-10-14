@@ -19,12 +19,14 @@ export default function PlatformLayout({
   const isDast = pathname === "/platform/dast";
   const isAgentic = pathname === "/platform/agentic-pentesting";
   const isEnprobe = pathname === "/platform/enprobe";
+  const isCoreOva = isSast || isSca || isSbom || isSecrets || isIac;
   const isApi = pathname === "/platform/api-security";
   const isAsm = pathname === "/platform/attack-surface-management";
   const isCloud = pathname === "/platform/cloud-appsec";
   const isAi = pathname === "/platform/ai-appsec";
-  const isLightPage = isHub || isCyberOntology || isSca || isApi || isAsm;
-  const isExoCase = isDast || isIac || isAgentic;
+  const isLightPage = isHub || isCyberOntology;
+  const isRuntimeExo = isApi || isAsm || isCloud || isAi;
+  const isExoCase = isDast || isAgentic || isRuntimeExo;
 
   useEffect(() => {
     if (isLightPage) {
@@ -39,7 +41,7 @@ export default function PlatformLayout({
 
     const html = document.documentElement;
     const body = document.body;
-    if (isExoCase || isEnprobe) {
+    if (isExoCase || isEnprobe || isCoreOva || isRuntimeExo) {
       html.style.setProperty("overflow-x", "clip", "important");
       body.style.setProperty("overflow-x", "clip", "important");
       body.style.setProperty("overflow-y", "visible", "important");
@@ -51,9 +53,9 @@ export default function PlatformLayout({
       body.style.removeProperty("overflow-x");
       body.style.removeProperty("overflow-y");
     };
-  }, [pathname, isLightPage, isExoCase, isEnprobe]);
+  }, [pathname, isLightPage, isExoCase, isEnprobe, isCoreOva, isRuntimeExo]);
 
-  if (isHub || isApi || isAsm || isCloud || isAi) {
+  if (isHub) {
     return <>{children}</>;
   }
 
@@ -65,9 +67,20 @@ export default function PlatformLayout({
     );
   }
 
+  if (isCoreOva) {
+    return (
+      <div data-page="platform-ova" className="bg-black min-h-screen text-white">
+        {children}
+      </div>
+    );
+  }
+
   if (isExoCase) {
     return (
-      <div data-page={isAgentic ? "agentic" : isDast ? "dast" : "iac"} className="bg-white min-h-screen">
+      <div
+        data-page={isAgentic ? "agentic" : isDast ? "dast" : isApi ? "api" : isAsm ? "asm" : isCloud ? "cloud" : isAi ? "ai" : "dast"}
+        className="bg-white min-h-screen"
+      >
         {children}
       </div>
     );

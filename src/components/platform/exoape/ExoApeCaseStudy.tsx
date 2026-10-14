@@ -14,7 +14,7 @@ const INK = "#0d0e13";
 const MUTED = "#6f7076";
 const CREAM = "#f2f0eb";
 
-export default function ExoApeCaseStudy({ data }: { data: ExoApeCase }) {
+export default function ExoApeCaseStudy({ data, omitHero = false }: { data: ExoApeCase; omitHero?: boolean }) {
   const reduce = useReducedMotion();
   const rootRef = useRef<HTMLDivElement>(null);
   const [openFaqIdx, setOpenFaqIdx] = useState<number | null>(0);
@@ -179,7 +179,7 @@ export default function ExoApeCaseStudy({ data }: { data: ExoApeCase }) {
       const intro = heroIntroRef.current;
       const overlay = overlayRef.current;
 
-      if (heroWrapper && hero && media && title && intro && overlay) {
+      if (!omitHero && heroWrapper && hero && media && title && intro && overlay) {
         const plate = media.querySelector<HTMLElement>("[data-hero-plate]");
         const titleLine = title.querySelector<HTMLElement>("[data-hero-line]");
         const overlayLines = overlay.querySelectorAll<HTMLElement>("[data-overlay-line]");
@@ -254,6 +254,43 @@ export default function ExoApeCaseStudy({ data }: { data: ExoApeCase }) {
               scrub: 0.6,
             },
           });
+        }
+      }
+
+      if (omitHero && overlayRef.current) {
+        const overlay = overlayRef.current;
+        const overlayLines = overlay.querySelectorAll<HTMLElement>("[data-overlay-line]");
+        const overlayCopy = overlay.querySelector<HTMLElement>("[data-overlay-copy]");
+        if (reduce) {
+          gsap.set(overlayLines, { yPercent: 0 });
+          if (overlayCopy) gsap.set(overlayCopy, { opacity: 1, y: 0 });
+        } else {
+          gsap.set(overlayLines, { yPercent: 110 });
+          if (overlayCopy) gsap.set(overlayCopy, { opacity: 0, y: 18 });
+          gsap.to(overlayLines, {
+            yPercent: 0,
+            stagger: 0.08,
+            ease: "none",
+            scrollTrigger: {
+              trigger: overlay,
+              start: "top 85%",
+              end: "top 35%",
+              scrub: 0.65,
+            },
+          });
+          if (overlayCopy) {
+            gsap.to(overlayCopy, {
+              opacity: 1,
+              y: 0,
+              ease: "none",
+              scrollTrigger: {
+                trigger: overlay,
+                start: "top 55%",
+                end: "top 18%",
+                scrub: 0.6,
+              },
+            });
+          }
         }
       }
 
@@ -376,7 +413,7 @@ export default function ExoApeCaseStudy({ data }: { data: ExoApeCase }) {
       void fontsReady;
       ctx.revert();
     };
-  }, [reduce, data.id]);
+  }, [reduce, data.id, omitHero]);
 
   const collageSpeed = [22, -18, 26, -20, 18, -14, 16];
   // Exact Fluid Glass rest tiles on a 1440×900 stage (px → %).
@@ -396,6 +433,7 @@ export default function ExoApeCaseStudy({ data }: { data: ExoApeCase }) {
       {/* Hero + next title page share one stacking context so the white
           100vh sibling can cover the sticky photograph from below. */}
       <div className="relative">
+        {!omitHero ? (
         <div id="hero-wrap" ref={heroWrapperRef} className="relative h-[220vh]">
           <section
             id="hero"
@@ -441,7 +479,7 @@ export default function ExoApeCaseStudy({ data }: { data: ExoApeCase }) {
             >
               <div className="mx-auto max-w-[1440px] flex flex-wrap items-end justify-between gap-6">
                 <div>
-                  <h1 className="text-[clamp(3rem,8.4vw,8.5rem)] font-light leading-[0.95] tracking-[-0.04em] [text-shadow:_0_4px_30px_rgba(0,0,0,0.95)]">
+                  <h1 className="text-[clamp(2.6rem,7.2vw,7.2rem)] font-light leading-[1.05] tracking-[-0.04em] text-white [text-shadow:_0_4px_30px_rgba(0,0,0,0.95)]">
                     <span className="exoape-reveal">
                       <span data-hero-line className="exoape-reveal-inner">
                         {data.heroTitle}
@@ -488,6 +526,7 @@ export default function ExoApeCaseStudy({ data }: { data: ExoApeCase }) {
             </div>
           </section>
         </div>
+        ) : null}
 
         {/* Exact 100vh white page: title in the upper ~60%, objective in the lower third. */}
         <section
@@ -496,7 +535,7 @@ export default function ExoApeCaseStudy({ data }: { data: ExoApeCase }) {
         >
 
           <div className="flex-[1.15] flex items-end justify-center pt-[16vh] md:pt-[18vh]">
-            <h2 className="text-[clamp(3.25rem,10vw,9rem)] font-light leading-[0.95] tracking-[-0.05em] text-center">
+            <h2 className="text-[clamp(2.6rem,8vw,7.2rem)] font-light leading-[1.08] tracking-[-0.04em] text-center px-2">
               {data.objective.lines.map((line) => (
                 <span key={line} className="exoape-reveal">
                   <span data-overlay-line className="exoape-reveal-inner">
@@ -760,7 +799,7 @@ export default function ExoApeCaseStudy({ data }: { data: ExoApeCase }) {
                     belief.align === "right" ? "justify-end" : "justify-start md:pl-[8%]"
                   }`}
                 >
-                  <h3 className="text-[clamp(2.6rem,8vw,7rem)] font-light leading-none tracking-[-0.045em]">
+                  <h3 className="text-[clamp(2.4rem,7vw,6.2rem)] font-light leading-[1.08] tracking-[-0.04em]">
                     {belief.word}
                   </h3>
                   <span

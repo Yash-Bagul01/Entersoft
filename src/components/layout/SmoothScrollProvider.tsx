@@ -23,15 +23,17 @@ export default function SmoothScrollProvider({
   useEffect(() => {
     // Register ScrollTrigger with GSAP
     gsap.registerPlugin(ScrollTrigger);
+    ScrollTrigger.config({ ignoreMobileResize: true });
 
+    const compact = window.matchMedia("(max-width: 1023px)").matches;
     const lenis = new Lenis({
-      duration: shouldReduceMotion ? 0 : 1.2,                 // Exo Ape styled smooth momentum duration
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Exo Ape signature bezier easing [0.76, 0, 0.24, 1] equivalent
+      duration: shouldReduceMotion || compact ? 0 : 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
-      smoothWheel: true,
-      wheelMultiplier: shouldReduceMotion ? 1.0 : 1.0,           
-      touchMultiplier: 2.0,           
-      syncTouch: false,               
+      smoothWheel: !compact,
+      wheelMultiplier: shouldReduceMotion ? 1.0 : 1.0,
+      touchMultiplier: compact ? 1 : 2,
+      syncTouch: false,
       infinite: false,
     });
 

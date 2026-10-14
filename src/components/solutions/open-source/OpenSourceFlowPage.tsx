@@ -21,9 +21,13 @@ const display = Inter_Tight({
 
 const OS = (name: string) => `/images/solutions/open-source/${name}.jpg`;
 
-const HERO_SLIDES = [OS("hero-code"), OS("hero-runtime"), OS("hero-cargo")];
+const HERO_SLIDES = [
+  { src: OS("hero-freight"), frame: "port" },
+  { src: OS("hero-editor"), frame: "code" },
+  { src: OS("hero-chip"), frame: "chip" },
+];
 
-const HERO_LINES = ["Know what you", "inherited — and", "whether you can", "still ship it."];
+const HERO_LINES = ["Know What You", "Inherited — And", "Whether You Can", "Still Ship It."];
 
 const MANIFESTO_LINES = [
   "Most of your code did not",
@@ -53,8 +57,8 @@ export default function OpenSourceFlowPage({ page }: { page: SolutionLanding }) 
       number: "1",
       title: "Find the\npackages",
       tags: "Software composition\n/ Transitive risk",
-      thumb: OS("work-packages"),
-      image: OS("work-packages"),
+      thumb: OS("work-react"),
+      image: OS("work-react"),
       view: "SCA",
       href: ROUTES.platform.sca,
     },
@@ -62,8 +66,8 @@ export default function OpenSourceFlowPage({ page }: { page: SolutionLanding }) 
       number: "2",
       title: "Keep a living\nSBOM",
       tags: "CycloneDX · SPDX\n/ License class",
-      thumb: OS("work-review"),
-      image: OS("work-review"),
+      thumb: OS("work-charts"),
+      image: OS("work-charts"),
       view: "SBOM",
       href: ROUTES.platform.sbomLicenseRisk,
     },
@@ -71,8 +75,8 @@ export default function OpenSourceFlowPage({ page }: { page: SolutionLanding }) 
       number: "3",
       title: "Rank the\nlicenses",
       tags: "Copyleft class\n/ Customer SBOM",
-      thumb: OS("work-license"),
-      image: OS("work-license"),
+      thumb: OS("work-gavel"),
+      image: OS("work-gavel"),
       view: "Licenses",
       href: ROUTES.platform.sbomLicenseRisk,
     },
@@ -86,101 +90,100 @@ export default function OpenSourceFlowPage({ page }: { page: SolutionLanding }) 
     gsap.registerPlugin(ScrollTrigger);
     const mm = gsap.matchMedia();
     const ctx = gsap.context(() => {
-      const lines = gsap.utils.toArray<HTMLElement>(".os-hero .os-line");
-      gsap.set(lines, { yPercent: 120 });
-      gsap.to(lines, {
-        yPercent: 0,
-        duration: 1.15,
-        stagger: 0.07,
-        ease: "power4.out",
-        delay: 0.1,
-      });
+      const copyLines = gsap.utils.toArray<HTMLElement>(".os-hero__pair p, .os-hero h1 span");
+      gsap.fromTo(
+        copyLines,
+        { y: 28, autoAlpha: 0 },
+        {
+          y: 0,
+          autoAlpha: 1,
+          duration: 0.95,
+          stagger: 0.07,
+          ease: "power4.out",
+          delay: 0.06,
+        }
+      );
+      gsap.fromTo(
+        ".os-hero__word",
+        { autoAlpha: 0.35 },
+        { autoAlpha: 1, duration: 0.9, ease: "power2.out", delay: 0.15 }
+      );
 
       const slides = gsap.utils.toArray<HTMLElement>(".os-hero__slide");
+      const mediaOf = (slide: HTMLElement) => slide.querySelector<HTMLElement>("img, video");
+
       slides.forEach((slide, index) => {
-        const image = slide.querySelector("img");
+        const media = mediaOf(slide);
         gsap.set(slide, {
           zIndex: index === 0 ? 2 : 1,
-          clipPath: index === 0 ? "inset(100% 0% 0% 0%)" : "inset(100% 0% 0% 0%)",
+          clipPath: index === 0 ? "inset(0% 0% 0% 0%)" : "inset(0% 100% 0% 0%)",
         });
-        if (image) gsap.set(image, { scale: 1.22 });
+        if (media) gsap.set(media, { x: 0, xPercent: 0, scale: index === 0 ? 1.06 : 1 });
       });
 
-      if (slides[0]) {
-        gsap.to(slides[0], {
-          clipPath: "inset(0% 0% 0% 0%)",
-          duration: 1.35,
-          ease: "power3.out",
-          delay: 0.05,
-        });
-        const firstImage = slides[0].querySelector("img");
-        if (firstImage) {
-          gsap.to(firstImage, { scale: 1, duration: 1.55, ease: "power3.out", delay: 0.05 });
-        }
+      const firstMedia = slides[0] ? mediaOf(slides[0]) : null;
+      if (firstMedia) {
+        gsap.to(firstMedia, { scale: 1, duration: 2.4, ease: "power2.out" });
       }
 
       gsap.fromTo(
-        ".os-hero__reel, .os-hero__index",
-        { autoAlpha: 0, y: 10 },
-        { autoAlpha: 1, y: 0, duration: 0.8, delay: 0.9, ease: "power2.out" }
+        ".os-hero__index",
+        { autoAlpha: 0, y: 8 },
+        { autoAlpha: 1, y: 0, duration: 0.7, delay: 0.55, ease: "power2.out" }
       );
 
       if (slides.length > 1) {
-        const reel = gsap.timeline({ repeat: -1, delay: 1.45, defaults: { ease: "power3.inOut" } });
+        const reel = gsap.timeline({ repeat: -1, delay: 1.6, defaults: { ease: "power3.inOut" } });
         slides.forEach((slide, index) => {
           const next = slides[(index + 1) % slides.length];
-          const nextImage = next.querySelector("img");
+          const nextMedia = mediaOf(next);
           reel
-            .set(next, { zIndex: 4, clipPath: "inset(100% 0% 0% 0%)" }, "+=1.55")
+            .set(next, { zIndex: 4, clipPath: "inset(0% 100% 0% 0%)" }, "+=1.8")
             .set(slide, { zIndex: 2 })
-            .to(next, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.05 });
-          if (nextImage) {
-            reel.fromTo(nextImage, { scale: 1.2 }, { scale: 1, duration: 1.05, ease: "power3.inOut" }, "<");
+            .to(next, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.05, ease: "power3.inOut" });
+          if (nextMedia) {
+            reel.fromTo(
+              nextMedia,
+              { x: 0, xPercent: 0, scale: 1.06 },
+              { x: 0, xPercent: 0, scale: 1, duration: 1.05, ease: "power3.inOut" },
+              "<"
+            );
           }
-          reel.set(slide, { zIndex: 1, clipPath: "inset(100% 0% 0% 0%)" });
+          reel.set(slide, { zIndex: 1, clipPath: "inset(0% 100% 0% 0%)" });
         });
       }
 
-      gsap.to(".os-hero__track", {
-        scale: 1.08,
-        ease: "none",
-        scrollTrigger: {
+      mm.add("(min-width: 901px)", () => {
+        ScrollTrigger.create({
           trigger: ".os-hero",
           start: "top top",
-          end: "bottom top",
-          scrub: 0.5,
-        },
+          end: "+=100%",
+          pin: true,
+          pinSpacing: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+        });
+        gsap.set(".os-hero", { zIndex: 1 });
+        gsap.to(".os-hero__track", {
+          scale: 1.1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: ".os-hero",
+            start: "top top",
+            end: "+=100%",
+            scrub: 0.35,
+          },
+        });
       });
 
       gsap.fromTo(
-        ".os-manifesto figure",
-        { clipPath: "inset(100% 0% 0% 0%)" },
-        {
-          clipPath: "inset(0% 0% 0% 0%)",
-          duration: 1.05,
-          ease: "power3.out",
-          scrollTrigger: { trigger: ".os-manifesto", start: "top 82%" },
-        }
-      );
-      gsap.fromTo(
         ".os-manifesto figure img",
-        { scale: 1.22 },
+        { scale: 1.12 },
         {
           scale: 1,
           duration: 1.2,
           ease: "power3.out",
-          scrollTrigger: { trigger: ".os-manifesto", start: "top 82%" },
-        }
-      );
-      gsap.fromTo(
-        ".os-manifesto .os-line",
-        { yPercent: 118 },
-        {
-          yPercent: 0,
-          duration: 0.95,
-          stagger: 0.055,
-          ease: "power3.out",
-          scrollTrigger: { trigger: ".os-manifesto", start: "top 78%" },
+          scrollTrigger: { trigger: ".os-manifesto", start: "top 90%" },
         }
       );
 
@@ -314,24 +317,6 @@ export default function OpenSourceFlowPage({ page }: { page: SolutionLanding }) 
         scrollTrigger: { trigger: ".os-about", start: "top 76%" },
       });
 
-      gsap.fromTo(
-        ".os-close .os-line",
-        { yPercent: 120 },
-        {
-          yPercent: 0,
-          duration: 1,
-          stagger: 0.08,
-          ease: "power4.out",
-          scrollTrigger: { trigger: ".os-close", start: "top 80%" },
-        }
-      );
-      gsap.from(".os-close a", {
-        y: 16,
-        autoAlpha: 0,
-        duration: 0.7,
-        ease: "power3.out",
-        scrollTrigger: { trigger: ".os-close", start: "top 78%" },
-      });
     }, root);
 
     const refresh = () => ScrollTrigger.refresh();
@@ -351,47 +336,48 @@ export default function OpenSourceFlowPage({ page }: { page: SolutionLanding }) 
       <header className="os-hero" id="top">
         <div className="os-hero__media">
           <div className="os-hero__track">
-            {HERO_SLIDES.map((src) => (
-              <figure className="os-hero__slide" key={src}>
-                <img src={src} alt="" />
+            {HERO_SLIDES.map((slide) => (
+              <figure className={`os-hero__slide os-hero__slide--${slide.frame}`} key={slide.src}>
+                <img src={slide.src} alt="" />
               </figure>
             ))}
           </div>
-          <p className="os-hero__reel">
-            Play inventory
-            <span>(00:18)</span>
-          </p>
         </div>
         <div className="os-hero__copy">
           <div className="os-hero__pair">
             <p>
-              <Line>
-                Supply-chain
-                <br />
-                assurance
-              </Line>
+              Supply-chain
+              <br />
+              assurance
             </p>
             <p>
-              <Line>
-                + SCA · SBOM
-                <br />
-                · License review
-              </Line>
+              + SCA · SBOM
+              <br />
+              License review
             </p>
           </div>
           <h1>
             {HERO_LINES.map((line) => (
-              <Line key={line}>{line}</Line>
+              <span key={line}>{line}</span>
             ))}
           </h1>
         </div>
-        <p className="os-hero__index">(01)</p>
+        <div className="os-hero__brand">
+          <p className="os-hero__index">(01)</p>
+        </div>
         <p className="os-hero__word" aria-hidden="true">
-          <Line>OSS</Line>
+          SBOM
         </p>
       </header>
 
       <section className="os-manifesto">
+        <p className="os-manifesto__cap">
+          Inherited graph
+          <br />
+          Declared and transitive
+          <br />
+          License class
+        </p>
         <figure>
           <img src={OS("manifesto")} alt="" />
         </figure>
@@ -495,16 +481,6 @@ export default function OpenSourceFlowPage({ page }: { page: SolutionLanding }) 
             <Link href={ROUTES.contact}>Learn more about a briefing</Link>
           </MagneticButton>
         </div>
-      </section>
-
-      <section className="os-close">
-        <h2>
-          <Line>Ready to ship?</Line>
-          <Line>Book a briefing</Line>
-        </h2>
-        <MagneticButton>
-          <Link href={ROUTES.contact}>Get in touch</Link>
-        </MagneticButton>
       </section>
     </article>
   );

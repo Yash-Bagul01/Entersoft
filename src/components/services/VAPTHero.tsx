@@ -15,7 +15,7 @@ function TechGridBackground() {
   return (
     <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none select-none z-0">
       {/* Radial overlay glow in the center */}
-      <div className="absolute inset-0 bg-radial-gradient bg-[radial-gradient(circle_at_center,rgba(6,182,212,0.08)_0%,transparent_70%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(70,140,230,0.16)_0%,transparent_68%)]" />
 
       {/* Grid lines */}
       <div className="absolute inset-0 flex justify-between px-6 lg:px-12">
@@ -448,7 +448,7 @@ export default function VAPTHero({
   return (
     <section 
       id="vapt-hero"
-      className="relative w-full min-h-[100vh] min-h-[100dvh] lg:h-[100vh] lg:h-[100dvh] overflow-hidden flex flex-col justify-between bg-[#030712] select-none border-b border-zinc-900"
+      className="vapt-bg relative w-full min-h-[100vh] min-h-[100dvh] lg:h-[100vh] lg:h-[100dvh] overflow-hidden flex flex-col justify-between select-none border-b border-blue-950/80"
     >
       {/* Tech grid tracks & laser animations */}
       <TechGridBackground />

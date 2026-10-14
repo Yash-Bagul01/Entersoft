@@ -1,6 +1,7 @@
 import React from "react";
 import type { Metadata } from "next";
-import SolutionCasePage from "@/components/solutions/SolutionCasePage";
+import ExoApeCaseStudy from "@/components/platform/exoape/ExoApeCaseStudy";
+import { CLOUD_APPSEC_CASE } from "@/components/platform/cloud-appsec/cloudCase";
 import { getCanonicalUrl, ROUTES } from "@/config/routes";
 
 const TITLE = "Cloud AppSec — EnProbe Platform | Entersoft Security";
@@ -23,5 +24,5 @@ export const metadata: Metadata = {
 };
 
 export default function CloudAppsecPage() {
-  return <SolutionCasePage slug="cloud-appsec" />;
+  return <ExoApeCaseStudy data={CLOUD_APPSEC_CASE} />;
 }

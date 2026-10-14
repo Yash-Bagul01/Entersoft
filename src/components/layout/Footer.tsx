@@ -7,12 +7,51 @@ import { Familjen_Grotesk } from "next/font/google";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ROUTES } from "@/config/routes";
+import { companyNav } from "@/data/companyPages";
+import { industryNav } from "@/data/industries";
+import { resourceNav } from "@/data/resources";
 import { services } from "@/data/services";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { cn } from "@/lib/utils";
 import LinedWordmark from "./LinedWordmark";
 import FooterLineLink from "./FooterLineLink";
 import DiscussProjectModal from "./DiscussProjectModal";
+
+function SocialIcon({ d }: { d: string }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4" fill="currentColor">
+      <path d={d} />
+    </svg>
+  );
+}
+
+const SOCIALS = [
+  {
+    name: "LinkedIn",
+    href: "https://www.linkedin.com/company/2479962/",
+    d: "M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.73V1.73C24 .77 23.21 0 22.23 0z",
+  },
+  {
+    name: "Twitter",
+    href: "https://twitter.com/EntersoftTeam",
+    d: "M22.46 6c-.77.35-1.6.58-2.46.69a4.27 4.27 0 0 0 1.88-2.38 8.59 8.59 0 0 1-2.72 1.04 4.28 4.28 0 0 0-7.29 3.9A12.16 12.16 0 0 1 1.64 4.15a4.28 4.28 0 0 0 1.32 5.71 4.24 4.24 0 0 1-1.94-.54v.05a4.28 4.28 0 0 0 3.43 4.2 4.27 4.27 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.97A8.59 8.59 0 0 1 1 19.54a12.13 12.13 0 0 0 6.56 1.92c7.88 0 12.2-6.53 12.2-12.2v-.56A8.72 8.72 0 0 0 22.46 6z",
+  },
+  {
+    name: "Instagram",
+    href: "https://www.instagram.com/entersoftteam/",
+    d: "M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07s-3.58-.01-4.85-.07c-3.26-.15-4.77-1.7-4.92-4.92-.06-1.27-.07-1.64-.07-4.85s.01-3.58.07-4.85c.15-3.23 1.66-4.77 4.92-4.92 1.27-.06 1.65-.07 4.85-.07zM12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.69.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95C23.73 2.69 21.31.27 16.95.07 15.67.01 15.26 0 12 0zm0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.41-11.85a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88z",
+  },
+  {
+    name: "Facebook",
+    href: "https://www.facebook.com/EntersoftTeam",
+    d: "M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.09 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.7 4.53-4.7 1.31 0 2.68.24 2.68.24v2.96h-1.51c-1.49 0-1.96.93-1.96 1.89v2.27h3.33l-.53 3.49h-2.8V24C19.61 23.09 24 18.1 24 12.07z",
+  },
+  {
+    name: "YouTube",
+    href: "https://www.youtube.com/channel/UCv3rXFSY1ODaSY_O-02-hCA",
+    d: "M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.19 31.6 31.6 0 0 0 0 12a31.6 31.6 0 0 0 .5 5.81 3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14A31.6 31.6 0 0 0 24 12a31.6 31.6 0 0 0-.5-5.81zM9.75 15.57V8.43L15.84 12l-6.09 3.57z",
+  },
+];
 
 const serviceName = (slug: string) =>
   services.find((item) => item.slug === slug)?.displayName ?? slug;
@@ -23,7 +62,11 @@ const familjen = Familjen_Grotesk({
   display: "swap",
 });
 
-const COLUMNS = [
+const COLUMNS: {
+  title: string;
+  wide?: boolean;
+  links: { name: string; href: string }[];
+}[] = [
   {
     title: "Services",
     links: [
@@ -38,14 +81,20 @@ const COLUMNS = [
   },
   {
     title: "Platform",
+    wide: true,
     links: [
       { name: "EnProbe Overview", href: ROUTES.platform.enprobe },
-      { name: "SAST", href: ROUTES.platform.sast },
-      { name: "SCA", href: ROUTES.platform.sca },
-      { name: "SBOM & License Risk", href: ROUTES.platform.sbomLicenseRisk },
+      { name: "Static Security (SAST)", href: ROUTES.platform.sast },
+      { name: "Open Source Risk (SCA)", href: ROUTES.platform.sca },
+      { name: "SBOM & License Governance", href: ROUTES.platform.sbomLicenseRisk },
       { name: "Secrets Detection", href: ROUTES.platform.secrets },
       { name: "Infrastructure as Code", href: ROUTES.platform.iac },
-      { name: "DAST", href: ROUTES.platform.dast },
+      { name: "DAST & Dynamic Testing", href: ROUTES.platform.dast },
+      { name: "Agentic Pentesting", href: ROUTES.platform.agenticPentesting },
+      { name: "API Security Testing", href: ROUTES.platform.apiSecurity },
+      { name: "Attack Surface Visibility", href: ROUTES.platform.attackSurfaceManagement },
+      { name: "Cloud AppSec", href: ROUTES.platform.cloudAppsec },
+      { name: "AI AppSec", href: ROUTES.platform.aiAppsec },
     ],
   },
   {
@@ -60,22 +109,22 @@ const COLUMNS = [
     ],
   },
   {
+    title: "Industries",
+    links: industryNav.map((item) => ({ name: item.label, href: item.href })),
+  },
+  {
     title: "Resources",
-    links: [
-      { name: "Research & Insights", href: "/#insights" },
-      { name: "Security Advisories", href: "/#insights" },
-      { name: "Sample Deliverables", href: ROUTES.contact },
-    ],
+    links: resourceNav.map((item) => ({ name: item.label, href: item.href })),
   },
   {
     title: "Company",
+    wide: true,
     links: [
-      { name: "About Entersoft", href: ROUTES.home },
       { name: "Accreditations", href: ROUTES.company.accreditations },
-      { name: "Contact", href: ROUTES.contact },
+      ...companyNav.map((item) => ({ name: item.label, href: item.href })),
     ],
   },
-] as const;
+];
 
 
 function useIstClock() {
@@ -107,9 +156,6 @@ export default function Footer() {
 
   const hideOn =
     pathname === "/platform" ||
-    pathname === "/platform/sast" ||
-    pathname === "/platform/sbom-license-risk" ||
-    pathname === "/platform/secrets" ||
     pathname === "/solutions" ||
     pathname === "/services";
   const flushCloser =
@@ -185,27 +231,35 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="mt-20 grid grid-cols-2 gap-x-6 gap-y-10 border-t border-white/10 pt-12 sm:grid-cols-3 lg:grid-cols-6">
-            <div>
-              <p className="site-footer-kicker">About</p>
-              <p className="mt-4 max-w-[28ch] text-[13px] leading-[1.5] text-[#bdbbb5]">
-                EnProbe finds the exposure. Entersoft experts validate it and stay with the fix.
-              </p>
+          <div className="mt-20 border-t border-white/10 pt-12">
+            <p className="max-w-[46ch] text-[13px] leading-[1.55] text-[#bdbbb5]">
+              EnProbe finds the exposure. Entersoft experts validate it and stay with the fix.
+            </p>
+            <div className="site-footer-dir mt-12">
+              {COLUMNS.map((column) => {
+                const groups = column.wide
+                  ? [column.links.slice(0, Math.ceil(column.links.length / 2)), column.links.slice(Math.ceil(column.links.length / 2))]
+                  : [column.links];
+                return (
+                  <div key={column.title} className={`site-footer-dir-${column.title.toLowerCase()} min-w-0`}>
+                    <p className="site-footer-kicker">{column.title}</p>
+                    <div className={column.wide ? "mt-5 grid grid-cols-1 gap-x-10 gap-y-2.5 sm:grid-cols-2" : "mt-5"}>
+                      {groups.map((group) => (
+                        <ul key={group[0]?.href} className="flex flex-col gap-2.5">
+                          {group.map((link) => (
+                            <li key={link.href}>
+                              <Link href={link.href} className="site-footer-link">
+                                {link.name}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-            {COLUMNS.map((column) => (
-              <div key={column.title}>
-                <p className="site-footer-kicker">{column.title}</p>
-                <ul className="mt-4 flex flex-col gap-2">
-                  {column.links.map((link) => (
-                    <li key={link.name}>
-                      <Link href={link.href} className="site-footer-link">
-                        {link.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
           </div>
 
           <div className="mt-16 grid grid-cols-12 items-end gap-x-6 gap-y-8 pb-6">
@@ -226,16 +280,19 @@ export default function Footer() {
             </div>
             <div className="col-span-5 md:col-span-4 md:text-right">
               <p className="site-footer-kicker">Social</p>
-              <div className="mt-3 flex flex-col gap-1.5 md:items-end">
-                <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" className="site-footer-link">
-                  LinkedIn
-                </a>
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="site-footer-link">
-                  GitHub
-                </a>
-                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="site-footer-link">
-                  X
-                </a>
+              <div className="mt-3 flex flex-wrap gap-2 md:justify-end">
+                {SOCIALS.map((item) => (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={item.name}
+                    className="site-footer-social"
+                  >
+                    <SocialIcon d={item.d} />
+                  </a>
+                ))}
               </div>
               {clock ? (
                 <p className="mt-4 text-[11px] tracking-[0.14em] text-[#f3f1ec]/35">{clock}</p>

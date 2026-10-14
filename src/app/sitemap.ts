@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next";
 import { ROUTES, getCanonicalUrl } from "@/config/routes";
+import { companyNav } from "@/data/companyPages";
+import { industryNav } from "@/data/industries";
 import { SOLUTION_LANDING_PATHS } from "@/data/solutionLandings";
 
 /**
@@ -89,5 +91,29 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })),
+    ...Object.values(ROUTES.resources).map((path) => ({
+      url: getCanonicalUrl(path),
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    })),
+    ...industryNav.map((item) => ({
+      url: getCanonicalUrl(item.href),
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
+    ...companyNav.map((item) => ({
+      url: getCanonicalUrl(item.href),
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    })),
+    {
+      url: getCanonicalUrl(ROUTES.company.accreditations),
+      lastModified,
+      changeFrequency: "yearly" as const,
+      priority: 0.6,
+    },
   ];
 }

@@ -1,6 +1,7 @@
 import React from "react";
 import type { Metadata } from "next";
-import IacExoapePage from "@/components/platform/iac/IacExoapePage";
+import PlatformOvaPage from "@/components/platform/ova/PlatformOvaPage";
+import { IAC_OVA } from "@/components/platform/ova/platformOva";
 
 export const metadata: Metadata = {
   title: "Infrastructure as Code (IaC) Security — EnProbe Platform | Entersoft",
@@ -15,5 +16,5 @@ export const metadata: Metadata = {
 };
 
 export default function IacPage() {
-  return <IacExoapePage />;
+  return <PlatformOvaPage page={IAC_OVA} />;
 }

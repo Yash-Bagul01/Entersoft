@@ -42,6 +42,7 @@ export default function Hero() {
   // GSAP ScrollTrigger Pinned Text Crossfade Sequence (Hardware Accelerated Timeline)
   useEffect(() => {
     if (typeof window === "undefined" || shouldReduceMotion) return;
+    if (window.matchMedia("(max-width: 1023px)").matches) return;
 
     gsap.registerPlugin(ScrollTrigger);
 

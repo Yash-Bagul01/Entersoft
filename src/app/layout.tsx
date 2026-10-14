@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter_Tight, Inter, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import SmoothScrollProvider from "@/components/layout/SmoothScrollProvider";
@@ -32,6 +32,12 @@ const ibmPlexMono = IBM_Plex_Mono({
 const SITE_TITLE = "Application Security & Penetration Testing | Entersoft";
 const SITE_DESCRIPTION =
   "Entersoft combines EnProbe automation with expert-led application security, penetration testing, cloud, MDR and AI security services for enterprises.";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
 
 export const metadata: Metadata = {
   title: SITE_TITLE,
