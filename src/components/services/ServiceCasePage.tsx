@@ -133,7 +133,11 @@ export default function ServiceCasePage({ slug }: { slug: ServiceCaseSlug }) {
               ? "sc-afterhero sc-afterhero--godrays"
               : slug === "cloud-resilience"
                 ? "sc-afterhero sc-afterhero--godrays03"
-                : "sc-afterhero"
+                : slug === "compliance-management"
+                  ? "sc-afterhero sc-afterhero--trust"
+                  : slug === "siem"
+                    ? "sc-afterhero sc-afterhero--cdo"
+                    : "sc-afterhero"
         }
       >
         {slug === "appsec" ? (
@@ -164,6 +168,34 @@ export default function ServiceCasePage({ slug }: { slug: ServiceCaseSlug }) {
             <div className="sc-godrays03__beam sc-godrays03__beam--b" />
             <div className="sc-godrays03__grain" />
             <div className="sc-godrays03__fade" />
+          </div>
+        ) : null}
+        {slug === "siem" ? (
+          <div className="sc-cdo" aria-hidden="true">
+            <div className="sc-cdo__wash" />
+            {["a", "b", "c"].map((place) => (
+              <div key={place} className={`sc-cdo__cluster sc-cdo__cluster--${place}`}>
+                <div className="sc-cdo__source" />
+                <div className="sc-cdo__fan">
+                  <span className="sc-cdo__ray sc-cdo__ray--1" />
+                  <span className="sc-cdo__ray sc-cdo__ray--2" />
+                  <span className="sc-cdo__ray sc-cdo__ray--3" />
+                  <span className="sc-cdo__ray sc-cdo__ray--4" />
+                  <span className="sc-cdo__ray sc-cdo__ray--5" />
+                </div>
+              </div>
+            ))}
+            <div className="sc-cdo__grain" />
+          </div>
+        ) : null}
+        {slug === "compliance-management" ? (
+          <div className="sc-trust" aria-hidden="true">
+            <div className="sc-trust__wash" />
+            <div className="sc-trust__orb sc-trust__orb--a" />
+            <div className="sc-trust__orb sc-trust__orb--b" />
+            <div className="sc-trust__orb sc-trust__orb--c" />
+            <div className="sc-trust__orb sc-trust__orb--d" />
+            <div className="sc-trust__veil" />
           </div>
         ) : null}
 

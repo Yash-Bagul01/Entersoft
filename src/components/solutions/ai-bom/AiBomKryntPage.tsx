@@ -104,7 +104,7 @@ export default function AiBomKryntPage({ page }: { page: SolutionLanding }) {
         gsap.set(".kr-hero__content .kr-hero__top, .kr-hero__content .kr-hero__bot", { height: desktop ? "50%" : "auto" });
         gsap.set(".kr-hero__line", { height: "100%" });
         gsap.set(".kr-hero__title, .kr-hero__italic", { y: "0%", opacity: 1 });
-        gsap.set(".kr-hero__cta-box", { height: desktop ? "100%" : "auto" });
+        gsap.set(".kr-hero__cta-box", { height: desktop ? "calc(100% + 8.5rem)" : "auto" });
         gsap.set(".kr-about__fig--1, .kr-about__fig--4", { height: "20vw" });
         gsap.set(".kr-about__fig--2", { height: "25vw" });
         gsap.set(".kr-about__fig--3", { height: "15vw" });
@@ -136,7 +136,7 @@ export default function AiBomKryntPage({ page }: { page: SolutionLanding }) {
           .fromTo(
             ".kr-hero__cta-box",
             { height: 0 },
-            { height: "100%", duration: 0.86, ease: "power3.out" },
+            { height: "calc(100% + 8.5rem)", duration: 0.86, ease: "power3.out" },
             1.67,
           );
       }

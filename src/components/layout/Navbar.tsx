@@ -71,7 +71,7 @@ export default function Navbar() {
   const isSolutionCasePage =
     pathname === "/platform/cloud-appsec" || pathname === "/platform/ai-appsec";
   const isRuntimeBelowAgentic = isApiPage || isAsmPage || isSolutionCasePage;
-  const isLightPage = isCyberOntologyPage || isScaPage || isSolutionLanding;
+  const isLightPage = isCyberOntologyPage || isScaPage || isSolutionLanding || isSolutionsPage;
   const isServicePage =
     (pathname?.startsWith("/services") || pathname?.startsWith("/platform")) &&
     !isLightPage &&
@@ -541,11 +541,13 @@ export default function Navbar() {
                 className={cn(
                   familjen.className,
                   "transition-all duration-300 rounded-full px-4 py-1.5 font-normal",
-                  isLightFloatingPill && !isTrackKpis &&
+                  isLightFloatingPill && !isTrackKpis && !isSolutionsPage && !isSolutionLanding &&
                     "!border-[#060606] hover:!border-[#007AFF]",
-                  isLightPage && !isLightFloatingPill && !isTrackKpis && !isScaPage
-                    ? "!bg-[#08428C] !text-white hover:!bg-[#007AFF] hover:!border-[#007AFF] !border-[#08428C] font-semibold shadow-md"
-                    : ""
+                  (isSolutionsPage || isSolutionLanding) && !isTrackKpis
+                    ? "!bg-[#F6F5F0] !text-[#060606] !border-[#F6F5F0] hover:!border-[#007AFF] hover:!text-[#060606] font-normal"
+                    : isLightPage && !isLightFloatingPill && !isTrackKpis && !isScaPage
+                      ? "!bg-[#08428C] !text-white hover:!bg-[#007AFF] hover:!border-[#007AFF] !border-[#08428C] font-semibold shadow-md"
+                      : ""
                 )}
               >
                 Book a Briefing

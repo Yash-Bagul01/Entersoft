@@ -41,6 +41,37 @@ const SECONDARY_ITEMS = [
 ];
 
 const FLYOUTS: Record<string, readonly { label: string; href: string }[]> = {
+  Platform: [
+    { label: "EnProbe overview", href: ROUTES.platform.enprobe },
+    { label: "Static security", href: ROUTES.platform.sast },
+    { label: "Open source risk", href: ROUTES.platform.sca },
+    { label: "SBOM and license governance", href: ROUTES.platform.sbomLicenseRisk },
+    { label: "Secrets detection", href: ROUTES.platform.secrets },
+    { label: "Infrastructure as code", href: ROUTES.platform.iac },
+    { label: "Dynamic testing", href: ROUTES.platform.dast },
+    { label: "Agentic pentesting", href: ROUTES.platform.agenticPentesting },
+    { label: "API security testing", href: ROUTES.platform.apiSecurity },
+    { label: "Attack surface visibility", href: ROUTES.platform.attackSurfaceManagement },
+    { label: "Cloud application security", href: ROUTES.platform.cloudAppsec },
+    { label: "AI application security", href: ROUTES.platform.aiAppsec },
+  ],
+  Services: [
+    { label: "Application assurance", href: ROUTES.services.appsec },
+    { label: "Adversarial validation", href: ROUTES.services.vapt },
+    { label: "Cloud resilience", href: ROUTES.services.cloud },
+    { label: "Digital trust", href: ROUTES.services.compliance },
+    { label: "Cyber defense operations", href: ROUTES.services.siem },
+    { label: "Protocol assurance", href: ROUTES.services.smartContract },
+    { label: "AI systems assurance", href: ROUTES.services.aiAst },
+  ],
+  Solutions: [
+    { label: "API discovery", href: ROUTES.solutionsPages.apiDiscovery },
+    { label: "AI-BOM", href: ROUTES.solutionsPages.aiBom },
+    { label: "Manage vulnerabilities", href: ROUTES.solutionsPages.manageVulnerabilities },
+    { label: "Automate security workflows", href: ROUTES.solutionsPages.automateWorkflows },
+    { label: "Track AppSec KPIs", href: ROUTES.solutionsPages.trackKpis },
+    { label: "Manage open source risk", href: ROUTES.solutionsPages.openSourceRisk },
+  ],
   Industries: industryNav,
   Resources: resourceNav,
   Company: [{ label: "Accreditations", href: ROUTES.company.accreditations }, ...companyNav],
@@ -164,9 +195,12 @@ export default function ExoMenuOverlay({ isOpen, onClose }: ExoMenuOverlayProps)
               <nav className="flex flex-col">
                 {PRIMARY_ITEMS.map((item, idx) => {
                   const isActive = activeLabel === item.label;
+                  const flyout = FLYOUTS[item.label];
+                  const flyoutId = `menu-flyout-${item.label}`;
                   return (
                     <motion.div
                       key={item.label}
+                      className="relative"
                       variants={{
                         closed: { y: 28, opacity: 0 },
                         open: {
@@ -179,11 +213,26 @@ export default function ExoMenuOverlay({ isOpen, onClose }: ExoMenuOverlayProps)
                           },
                         },
                       }}
+                      onBlur={(event) => {
+                        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+                          setHovered(null);
+                        }
+                      }}
                     >
                       <Link
                         href={item.href}
-                        onClick={onClose}
+                        aria-expanded={hovered === item.label}
+                        aria-controls={flyoutId}
+                        onClick={(event) => {
+                          if (window.matchMedia("(max-width: 767px)").matches) {
+                            event.preventDefault();
+                            setHovered((current) => (current === item.label ? null : item.label));
+                            return;
+                          }
+                          onClose();
+                        }}
                         onMouseEnter={() => setHovered(item.label)}
+                        onFocus={() => setHovered(item.label)}
                         className={cn(
                           familjen.className,
                           "relative flex items-center py-[0.1em] text-[clamp(2.1rem,5vw,4.6rem)] font-normal uppercase leading-[0.82] tracking-[-0.07em] transition-colors duration-300",
@@ -199,6 +248,51 @@ export default function ExoMenuOverlay({ isOpen, onClose }: ExoMenuOverlayProps)
                         />
                         {item.label}
                       </Link>
+
+                      <AnimatePresence>
+                        {hovered === item.label ? (
+                          <motion.div
+                            id={flyoutId}
+                            key={flyoutId}
+                            initial={{ opacity: 0, x: -18 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: -12 }}
+                            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                            className="z-20 w-max md:absolute md:left-full md:top-1/2 md:max-h-[70vh] md:-translate-y-1/2 md:overflow-y-auto md:pl-12"
+                          >
+                            <ul className="mt-2 flex w-max flex-col items-start gap-0.5 border-l border-white/15 pl-4 md:mt-0 md:pl-5">
+                              {flyout.map((sub, subIndex) => {
+                                const subActive = pathname === sub.href;
+                                return (
+                                  <motion.li
+                                    key={sub.href}
+                                    initial={{ opacity: 0, x: -10 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{
+                                      duration: 0.28,
+                                      delay: 0.04 + subIndex * 0.03,
+                                      ease: [0.22, 1, 0.36, 1],
+                                    }}
+                                  >
+                                    <Link
+                                      href={sub.href}
+                                      onClick={onClose}
+                                      onFocus={() => setHovered(item.label)}
+                                      className={cn(
+                                        familjen.className,
+                                        "menu-sublink block whitespace-nowrap py-0.5 text-[clamp(1rem,1.5vw,1.35rem)] font-normal tracking-[-0.04em]",
+                                        subActive && "menu-link-on"
+                                      )}
+                                    >
+                                      {sub.label}
+                                    </Link>
+                                  </motion.li>
+                                );
+                              })}
+                            </ul>
+                          </motion.div>
+                        ) : null}
+                      </AnimatePresence>
                     </motion.div>
                   );
                 })}

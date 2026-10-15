@@ -75,6 +75,7 @@ html[data-theme="light"]:has([data-page="open-source"]) .nav-transparent-header 
 }
 
 .os-hero {
+  --os-turn: 9.5vw;
   position: relative;
   z-index: 1;
   display: grid;
@@ -98,11 +99,11 @@ html[data-theme="light"]:has([data-page="open-source"]) .nav-transparent-header 
   clip-path: polygon(
     0 0,
     100% 0,
-    100% calc(100% - 38svh),
-    84% calc(100% - 38svh),
-    84% calc(100% - 22svh),
-    62% calc(100% - 22svh),
-    62% 100%,
+    100% calc(100% - var(--os-turn) * 2),
+    calc(100% - var(--os-turn)) calc(100% - var(--os-turn) * 2),
+    calc(100% - var(--os-turn)) calc(100% - var(--os-turn)),
+    calc(100% - var(--os-turn) * 2) calc(100% - var(--os-turn)),
+    calc(100% - var(--os-turn) * 2) 100%,
     0 100%
   );
 }
@@ -203,11 +204,11 @@ html[data-theme="light"]:has([data-page="open-source"]) .nav-transparent-header 
 
 .os-hero__brand {
   position: absolute;
-  left: 42%;
+  left: calc(50% - var(--os-turn));
   right: 0;
   bottom: 0;
   z-index: 4;
-  height: 38svh;
+  height: calc(var(--os-turn) * 2);
   overflow: visible;
   background: #ffffff;
   pointer-events: none;

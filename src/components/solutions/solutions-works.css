@@ -1,0 +1,153 @@
+.sw-scene {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #e7f0fb;
+  color: #163056;
+  cursor: grab;
+}
+
+.sw-scene.is-drag {
+  cursor: grabbing;
+}
+
+.sw-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 46%, rgba(255, 255, 255, 0.72), transparent 68%),
+    #e7f0fb;
+}
+
+.sw-waves {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 140%;
+  height: 140%;
+  transform: translate(-50%, -50%);
+  opacity: 0.95;
+  animation: sw-drift 28s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.sw-word {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin: 0;
+  font-family: Georgia, "Iowan Old Style", Palatino, serif;
+  font-style: italic;
+  font-weight: 500;
+  z-index: 1000;
+  font-size: clamp(7.2rem, 17.5vw, 15.5rem);
+  letter-spacing: -0.045em;
+  line-height: 0.8;
+  color: #1a3d78;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  transform: translate(-50%, -50%);
+}
+
+.sw-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  perspective: 1400px;
+  perspective-origin: 50% 50%;
+}
+
+.sw-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(760px, 56vw);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  transform-style: preserve-3d;
+  opacity: 0;
+  cursor: pointer;
+  will-change: transform, opacity;
+}
+
+.sw-shot {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10.2;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow:
+    0 28px 60px rgba(28, 58, 110, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.9);
+}
+
+.sw-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  pointer-events: none;
+  /* The card is laid out at 2x and scaled down, so the photo stays sharp in 3D. */
+  transform: translateZ(0);
+}
+
+.sw-card-name {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1.35rem 0.85rem 0.7rem;
+  background: linear-gradient(transparent, rgba(8, 18, 40, 0.62));
+  color: #fff;
+  font-family: var(--font-inter-tight), var(--font-inter), system-ui, sans-serif;
+  font-size: 0.92rem;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  text-align: left;
+}
+
+.sw-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 1.35rem;
+  z-index: 3;
+  transform: translateX(-50%);
+  margin: 0;
+  font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(22, 48, 86, 0.55);
+  pointer-events: none;
+}
+
+@keyframes sw-drift {
+  from {
+    transform: translate(-50%, -50%) rotate(-8deg) scale(1.05);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(10deg) scale(1.12);
+  }
+}
+
+@media (max-width: 800px) {
+  .sw-card {
+    width: min(480px, 120vw);
+  }
+
+  .sw-word {
+    font-size: clamp(4.2rem, 24vw, 7rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sw-waves {
+    animation: none;
+  }
+}

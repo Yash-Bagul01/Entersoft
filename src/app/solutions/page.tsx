@@ -1,7 +1,7 @@
 import React from "react";
 import type { Metadata } from "next";
 import { getCanonicalUrl, ROUTES } from "@/config/routes";
-import SolutionsShowcase from "@/components/solutions/SolutionsShowcase";
+import SolutionsWorksGallery from "@/components/solutions/SolutionsWorksGallery";
 
 const TITLE = "Cybersecurity Solutions | Entersoft Security";
 const DESCRIPTION =
@@ -24,8 +24,8 @@ export const metadata: Metadata = {
 
 export default function SolutionsPage() {
   return (
-    <main className="w-full h-screen overflow-hidden relative z-10 bg-[#0b0b0d]">
-      <SolutionsShowcase />
+    <main className="w-full h-screen overflow-hidden relative z-10 bg-[#e7f0fb]">
+      <SolutionsWorksGallery />
     </main>
   );
 }

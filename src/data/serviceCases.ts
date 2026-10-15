@@ -158,9 +158,9 @@ export const SERVICE_CASES: Record<ServiceCaseSlug, ServiceCaseVisual> = {
     textColor: "text-white",
     accentColor: "#ff4081",
     menuImage: "/images/menu/platform.png",
-    hero: img("photo-1573496359142-b8d87734a5a2", "Analyst at work during detection and response operations", 2400),
+    hero: img("photo-1561736778-92e52a7769ef", "Operations floor where detection infrastructure is watched", 2400),
     gallery: [
-      img("photo-1573497019940-1c28c88b4f3e", "Operator reviewing detection signals"),
+      img("photo-1518773553398-650c184e0bb3", "Detection rules reviewed on an analyst screen"),
       img("photo-1573164574572-cb89e39749b4", "Analyst workstation used during triage"),
       img("photo-1581092795360-fd1ca04f0952", "Industrial control environment representing monitored surfaces"),
       img("photo-1581092160562-40aa08e78837", "Engineer inspecting systems during an investigation"),
