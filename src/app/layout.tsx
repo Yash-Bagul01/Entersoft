@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { Inter_Tight, Inter, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import SmoothScrollProvider from "@/components/layout/SmoothScrollProvider";
@@ -83,22 +84,10 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${interTight.variable} ${inter.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  var saved = localStorage.getItem('theme');
-                  var theme = saved || 'light';
-                  document.documentElement.setAttribute('data-theme', theme);
-                } catch (e) {}
-              })();
-            `,
-          }}
-        />
-      </head>
       <body className="min-h-full bg-[var(--bg-primary)] text-[var(--text-primary)] flex flex-col font-sans">
+        <Script id="theme-init" strategy="beforeInteractive">
+          {`(function(){try{var saved=localStorage.getItem('theme');var theme=saved||'light';document.documentElement.setAttribute('data-theme',theme);}catch(e){}})();`}
+        </Script>
         <SmoothScrollProvider>
           <SolutionTransitionProvider>
             <PlatformTransitionProvider>

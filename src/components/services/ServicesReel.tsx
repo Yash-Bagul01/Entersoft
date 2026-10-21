@@ -435,9 +435,22 @@ export default function ServicesReel() {
   };
 
   useEffect(() => {
-    SERVICES_REEL.forEach((item) => {
-      router.prefetch(item.href);
-    });
+    if (process.env.NODE_ENV === "development") return;
+    let cancelled = false;
+    const run = async () => {
+      for (const item of SERVICES_REEL) {
+        if (cancelled) return;
+        try {
+          await router.prefetch(item.href);
+        } catch {
+          // A failed prefetch should not surface as an uncaught network error.
+        }
+      }
+    };
+    void run();
+    return () => {
+      cancelled = true;
+    };
   }, [router]);
 
   useEffect(() => {

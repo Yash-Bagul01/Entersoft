@@ -139,7 +139,11 @@ export function PlatformTransitionProvider({
       busy.current = true;
       pending.current = path;
       modeRef.current = expand?.image ? "expand" : "wipe";
-      router.prefetch(path);
+      try {
+        void Promise.resolve(router.prefetch(path)).catch(() => {});
+      } catch {
+        // Prefetch is optional. A dropped connection should not throw.
+      }
       lenis?.stop();
 
       if (reduce) {

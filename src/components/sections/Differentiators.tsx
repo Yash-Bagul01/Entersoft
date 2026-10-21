@@ -17,12 +17,12 @@ const familjen = Familjen_Grotesk({
 });
 
 const WORK_IMAGES = [
-  "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=2400&q=90",
-  "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=2400&q=90",
-  "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=2400&q=90",
-  "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=2400&q=90",
+  "https://images.unsplash.com/photo-1635181951411-882166210167?auto=format&fit=crop&w=2400&q=90",
+  "/images/outcomes/verified-signal.jpg",
+  "/images/outcomes/city-data-platform.jpg",
+  "/images/outcomes/server-cooling.jpg",
   "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=2400&q=90",
-  "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=2400&q=90",
+  "/images/outcomes/code-glasses.jpg",
 ] as const;
 
 const WORK_HREFS = [
@@ -235,7 +235,13 @@ export default function Differentiators() {
                       <img
                         src={item.image}
                         alt=""
-                        className="aspect-[154/100] h-auto w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                        className={
+                          item.image.endsWith("verified-signal.jpg")
+                            ? "h-auto w-full object-contain"
+                            : item.image.includes("1635181951411")
+                              ? "aspect-[154/100] h-auto w-full object-cover object-[center_42%] transition-transform duration-700 group-hover:scale-[1.04]"
+                              : "aspect-[154/100] h-auto w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                        }
                       />
                     </div>
                     <h3

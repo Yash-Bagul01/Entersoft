@@ -611,7 +611,7 @@ export default function ExoApeCaseStudy({ data, omitHero = false }: { data: ExoA
                     src={shot.src}
                     alt={shot.alt}
                     fill
-                    sizes={isCenter ? "100vw" : "40vw"}
+                    sizes={isCenter ? "(max-width: 768px) 90vw, 32vw" : "(max-width: 768px) 70vw, 22vw"}
                     className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                     priority={isCenter}
                   />

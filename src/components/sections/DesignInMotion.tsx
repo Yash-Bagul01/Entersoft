@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useLayoutEffect, useRef, useState } from "react";
-import Link from "next/link";
 import { Familjen_Grotesk } from "next/font/google";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -15,18 +14,24 @@ const familjen = Familjen_Grotesk({
   display: "swap",
 });
 
-const MOTION_IMAGES = [
-  "https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=1600&q=80",
-  "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=1600&q=80",
-  "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80",
-  "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1600&q=80",
-  "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1600&q=80",
-  "https://images.unsplash.com/photo-1448630360428-65456885c650?auto=format&fit=crop&w=1600&q=80",
-] as const;
+const MOTION_IMAGES: Record<string, string> = {
+  appsec:
+    "https://images.unsplash.com/photo-1618477388954-7852f32655ec?auto=format&fit=crop&w=2400&q=90",
+  vapt:
+    "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?auto=format&fit=crop&w=2400&q=90",
+  "cloud-resilience":
+    "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=2400&q=90",
+  "compliance-management":
+    "https://images.unsplash.com/photo-1664575602276-acd073f104c1?auto=format&fit=crop&w=2400&q=90",
+  siem:
+    "https://images.unsplash.com/photo-1551703599-6b3e8379aa8c?auto=format&fit=crop&w=2400&q=90",
+  "smart-contract-audits":
+    "https://images.unsplash.com/photo-1622630998477-20aa696ecb05?auto=format&fit=crop&w=2400&q=90",
+};
 
-const SHOTS = services.slice(0, 6).map((service, index) => ({
+const SHOTS = services.slice(0, 6).map((service) => ({
   ...service,
-  image: MOTION_IMAGES[index],
+  image: MOTION_IMAGES[service.slug] ?? service.image,
 }));
 
 const GRID_RADIUS = 28;
@@ -43,7 +48,8 @@ export default function DesignInMotion() {
   const topWordRef = useRef<HTMLHeadingElement>(null);
   const botWordRef = useRef<HTMLHeadingElement>(null);
   const captionRef = useRef<HTMLParagraphElement>(null);
-  const cardsRef = useRef<(HTMLAnchorElement | null)[]>([]);
+  const cardsRef = useRef<(HTMLButtonElement | null)[]>([]);
+  const [flipped, setFlipped] = useState<Record<string, boolean>>({});
   const [svgArcPath, setSvgArcPath] = useState("");
   const [svgInnerArcPath, setSvgInnerArcPath] = useState("");
   const lastArcRef = useRef("");
@@ -56,7 +62,7 @@ export default function DesignInMotion() {
     const topWord = topWordRef.current;
     const botWord = botWordRef.current;
     const caption = captionRef.current;
-    const cards = cardsRef.current.filter(Boolean) as HTMLAnchorElement[];
+    const cards = cardsRef.current.filter(Boolean) as HTMLButtonElement[];
     if (!root || !pin || !stage || !topWord || !botWord || cards.length === 0) return;
 
     gsap.registerPlugin(ScrollTrigger);
@@ -118,6 +124,7 @@ export default function DesignInMotion() {
         });
         const copy = card.querySelector<HTMLElement>("[data-motion-copy]");
         if (copy) gsap.set(copy, { autoAlpha: 1 });
+        card.dataset.landed = "1";
       });
       gsap.set([topWord, botWord], { x: 0, opacity: 1 });
       if (caption) gsap.set(caption, { opacity: 1 });
@@ -203,6 +210,16 @@ export default function DesignInMotion() {
           if (copy) {
             const landed = u >= 0.96;
             gsap.set(copy, { autoAlpha: landed ? 1 : 0 });
+          }
+          const landed = u >= 0.96 ? "1" : "0";
+          if (card.dataset.landed !== landed) {
+            card.dataset.landed = landed;
+            if (landed === "0") {
+              const slug = card.dataset.slug;
+              if (slug) {
+                setFlipped((prev) => (prev[slug] ? { ...prev, [slug]: false } : prev));
+              }
+            }
           }
         });
       };
@@ -299,41 +316,69 @@ export default function DesignInMotion() {
 
           <div className="absolute inset-0 z-10" style={{ perspective: "1500px" }}>
             {SHOTS.map((shot, idx) => (
-              <Link
+              <button
                 key={shot.slug}
-                href={shot.route}
+                type="button"
+                data-slug={shot.slug}
                 ref={(el) => {
                   cardsRef.current[idx] = el;
                 }}
-                className="group absolute left-0 top-0 overflow-hidden border border-black/10 bg-white shadow-2xl"
+                aria-pressed={Boolean(flipped[shot.slug])}
+                aria-label={shot.displayName}
+                onClick={() => {
+                  const card = cardsRef.current[idx];
+                  if (!card || card.dataset.landed !== "1") return;
+                  setFlipped((prev) => ({ ...prev, [shot.slug]: !prev[shot.slug] }));
+                }}
+                className="motion-shot group absolute left-0 top-0 border-0 bg-transparent p-0 text-left shadow-2xl transform-3d"
                 style={{ borderRadius: GRID_RADIUS }}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={shot.image}
-                  alt={shot.displayName}
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div
-                  data-motion-copy
-                  className="motion-card-copy pointer-events-none absolute inset-0 opacity-0"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-                  <div className="absolute inset-x-0 bottom-0 flex flex-col justify-end p-3.5 md:p-4">
-                    <span className="motion-card-kicker font-mono text-[9px] uppercase tracking-[0.2em] md:text-[10px]">
+                <span className={cn("motion-flip", flipped[shot.slug] && "is-flipped")}>
+                  <span className="motion-face">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={shot.image}
+                      alt=""
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div
+                      data-motion-copy
+                      className="motion-card-copy pointer-events-none absolute inset-0 opacity-0"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                      <div className="absolute inset-x-0 bottom-0 flex flex-col justify-end p-3.5 md:p-4">
+                        <span className="motion-card-kicker font-mono text-[9px] uppercase tracking-[0.2em] md:text-[10px]">
+                          {shot.index} • {shot.category?.split(" ")[0] || "SECURITY"}
+                        </span>
+                        <h3
+                          className={cn(
+                            familjen.className,
+                            "motion-card-title mt-0.5 text-base font-semibold leading-tight tracking-tight md:text-lg"
+                          )}
+                        >
+                          {shot.displayName}
+                        </h3>
+                      </div>
+                    </div>
+                  </span>
+                  <span className="motion-face motion-face-back">
+                    <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/65 md:text-[10px]">
                       {shot.index} • {shot.category?.split(" ")[0] || "SECURITY"}
                     </span>
                     <h3
                       className={cn(
                         familjen.className,
-                        "motion-card-title mt-0.5 text-base font-semibold leading-tight tracking-tight md:text-lg"
+                        "mt-1 text-base font-semibold leading-tight tracking-tight text-white md:text-lg"
                       )}
                     >
                       {shot.displayName}
                     </h3>
-                  </div>
-                </div>
-              </Link>
+                    <p className="mt-2 text-[12.5px] leading-snug text-white/88 md:text-[13.5px]">
+                      {shot.hoverCardBody}
+                    </p>
+                  </span>
+                </span>
+              </button>
             ))}
           </div>
         </div>

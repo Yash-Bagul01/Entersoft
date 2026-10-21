@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=IBM+Plex+Mono:wght@300;400;500;600&family=Instrument+Serif:ital,wght@0,400;1,400&family=Syne:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap');
 
 @import "tailwindcss";
@@ -2320,6 +2320,51 @@ html:has([data-page="ai-ast"]) footer,
   color: #5e5e5a !important;
 }
 
+
+#design-in-motion .motion-shot {
+  perspective: 1100px;
+  transform-style: preserve-3d;
+}
+
+#design-in-motion .motion-flip {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.22, 0.8, 0.3, 1);
+}
+
+#design-in-motion .motion-flip.is-flipped {
+  transform: rotateY(180deg);
+}
+
+#design-in-motion .motion-face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: #fff;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+#design-in-motion .motion-face-back {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: auto;
+  padding: 1rem 1.05rem 1.05rem;
+  background: #12141a;
+  border-color: rgba(255, 255, 255, 0.08);
+  transform: rotateY(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #design-in-motion .motion-flip {
+    transition: none;
+  }
+}
 
 #design-in-motion .motion-curve {
   transform-style: preserve-3d;
