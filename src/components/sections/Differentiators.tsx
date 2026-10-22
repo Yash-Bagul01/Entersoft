@@ -60,8 +60,7 @@ export default function Differentiators() {
 
     gsap.registerPlugin(ScrollTrigger);
 
-    const desktop = window.matchMedia("(min-width: 768px)").matches;
-    if (!desktop || reduce) {
+    if (reduce) {
       gsap.set(track, { x: 0, clearProps: "transform" });
       gsap.set(stage, { clearProps: "position,top,bottom,left,right" });
       gsap.set(track.querySelectorAll("[data-outcome-card]"), { y: 0, clearProps: "transform" });
@@ -188,7 +187,7 @@ export default function Differentiators() {
       <div ref={pinRef} className="relative w-full md:min-h-screen">
         <div
           ref={stageRef}
-          className="relative w-full overflow-visible md:absolute md:inset-x-0 md:top-0 md:h-screen"
+          className="relative h-[100svh] w-full overflow-hidden md:absolute md:inset-x-0 md:top-0 md:h-screen md:overflow-visible"
         >
           <div className="pointer-events-none absolute inset-0 hidden md:block" aria-hidden="true">
             {[20, 40, 60, 80].map((left) => (
@@ -202,9 +201,9 @@ export default function Differentiators() {
 
           <div
             ref={trackRef}
-            className="relative flex w-full flex-col will-change-transform md:h-full md:w-max md:flex-row md:items-stretch"
+            className="relative flex h-[100svh] w-max flex-row items-stretch will-change-transform md:h-full"
           >
-            <header className="flex w-full shrink-0 flex-col justify-center px-6 py-16 md:w-[min(38vw,540px)] md:px-[4.2vw]">
+            <header className="flex w-[82vw] shrink-0 flex-col justify-center px-6 py-16 md:w-[min(38vw,540px)] md:px-[4.2vw]">
               <h2
                 className={cn(
                   familjen.className,
@@ -222,12 +221,12 @@ export default function Differentiators() {
               </Link>
             </header>
 
-            <div className="flex w-full flex-col gap-14 px-6 pb-16 md:h-full md:w-max md:flex-row md:items-center md:gap-[3.2vw] md:px-0 md:pb-0 md:pr-[3vw]">
+            <div className="flex h-full w-max flex-row items-center gap-8 px-6 md:gap-[3.2vw] md:px-0 md:pr-[3vw]">
               {WORK.map((item) => (
                 <article
                   key={item.id}
                   data-outcome-card
-                  className="w-full shrink-0 will-change-transform md:w-[36.25vw] md:min-w-[520px] md:max-w-[700px]"
+                  className="w-[78vw] shrink-0 will-change-transform md:w-[36.25vw] md:min-w-[520px] md:max-w-[700px]"
                 >
                   <Link href={item.href} className="group block">
                     <div className="outcomes-card-media overflow-hidden">
@@ -266,7 +265,7 @@ export default function Differentiators() {
               ))}
             </div>
 
-            <aside className="flex w-full shrink-0 flex-col items-start justify-center bg-[#e4e3df] px-6 py-20 md:h-full md:w-screen md:items-center md:px-16 md:text-center">
+            <aside className="flex w-[82vw] shrink-0 flex-col items-start justify-center bg-[#e4e3df] px-6 py-20 md:h-full md:w-screen md:items-center md:px-16 md:text-center">
               <p
                 className={cn(
                   familjen.className,
@@ -283,7 +282,7 @@ export default function Differentiators() {
 
             <aside
               ref={practiceRef}
-              className="practice-panel relative flex w-full shrink-0 flex-col items-center justify-center overflow-hidden bg-[#2a2a28] px-6 py-24 text-[#d8d6d0] md:h-full md:w-screen"
+              className="practice-panel relative flex w-[100vw] shrink-0 flex-col items-center justify-center overflow-hidden bg-[#2a2a28] px-6 py-24 text-[#d8d6d0] md:h-full md:w-screen"
             >
               <span
                 className="pointer-events-none absolute inset-y-0 left-0 hidden w-px bg-white/15 md:block"

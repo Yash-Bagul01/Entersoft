@@ -42,7 +42,6 @@ export default function Hero() {
   // GSAP ScrollTrigger Pinned Text Crossfade Sequence (Hardware Accelerated Timeline)
   useEffect(() => {
     if (typeof window === "undefined" || shouldReduceMotion) return;
-    if (window.matchMedia("(max-width: 1023px)").matches) return;
 
     gsap.registerPlugin(ScrollTrigger);
 
@@ -52,10 +51,16 @@ export default function Hero() {
 
     if (!container || !h1GroupEl || !p2El) return;
 
+    const compact = window.matchMedia("(max-width: 1023px)").matches;
+
     const ctx = gsap.context(() => {
-      // Set initial states with 3D transform layers
       gsap.set(h1GroupEl, { opacity: 1, y: 0, force3D: true });
-      gsap.set(p2El, { opacity: 0, yPercent: -50, y: 30, force3D: true });
+      gsap.set(
+        p2El,
+        compact
+          ? { opacity: 0, y: 18, yPercent: 0, force3D: true }
+          : { opacity: 0, yPercent: -50, y: 30, force3D: true }
+      );
 
       // Declarative timeline scrubbed smoothly without dynamic CPU filter blur thrashing
       const tl = gsap.timeline({
@@ -133,7 +138,7 @@ export default function Hero() {
   }, [shouldReduceMotion]);
 
   const creds = (
-    <div className="mt-3.5 md:mt-4 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[clamp(13px,1vw,15px)] leading-[1.45] tracking-[0.01em] text-white/75">
+    <div className="hero-creds mt-3.5 md:mt-4 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[clamp(13px,1vw,15px)] leading-[1.45] tracking-[0.01em] text-white/75">
       <span>Since 2013 (13+ Years)</span>
       <span className="text-white/30">·</span>
       <span>CREST-accredited penetration testing</span>
@@ -185,7 +190,7 @@ export default function Hero() {
       {/* Scroll-in statement — positioned lower in middle area */}
       <div
         ref={paragraph2Ref}
-        className="absolute inset-x-0 top-[48%] -translate-y-1/2 z-20 px-6 md:px-10 opacity-0 pointer-events-none"
+        className="hero-statement absolute inset-x-0 top-[48%] -translate-y-1/2 z-20 px-6 md:px-10 opacity-0 pointer-events-none"
       >
         <div className="mx-auto max-w-[1440px] flex flex-col items-start">
           <p className="max-w-[22em] text-[clamp(1.5rem,2.6vw,2.5rem)] font-light leading-[1.32] tracking-[-0.018em] text-white">
@@ -196,7 +201,7 @@ export default function Hero() {
       </div>
 
       {/* Title + CTA — Fitted cleanly inside screen viewport ratio */}
-      <div className="absolute inset-x-0 bottom-16 md:bottom-20 z-20 px-6 md:px-10 pb-0">
+      <div className="hero-copy absolute inset-x-0 bottom-16 md:bottom-20 z-20 px-6 md:px-10 pb-0">
         <div className="mx-auto max-w-[1440px] flex flex-col items-start gap-5 md:gap-6">
           <div ref={h1GroupRef} className="max-w-[1100px]">
             <h1 className="text-[clamp(2.2rem,4.8vw,5.2rem)] font-light leading-[0.98] tracking-[-0.035em] text-white">
@@ -232,7 +237,7 @@ export default function Hero() {
           opacity: { delay: 0.8, duration: 0.6 },
           y: { delay: 0.8, duration: 0.6 },
         }}
-        className="absolute bottom-5 right-6 md:right-12 z-30 flex items-center gap-2 cursor-pointer bg-transparent border-none outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-lg px-3 py-1.5 select-none pointer-events-auto group"
+        className="hero-scroll-cue absolute bottom-5 right-6 md:right-12 z-30 flex items-center gap-2 cursor-pointer bg-transparent border-none outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-lg px-3 py-1.5 select-none pointer-events-auto group"
         aria-label="Scroll to next section"
       >
         <span className="font-mono text-[11px] font-bold tracking-[0.2em] text-white/90 group-hover:text-white uppercase transition-colors">

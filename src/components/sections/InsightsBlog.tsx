@@ -66,14 +66,8 @@ export default function InsightsBlog() {
         });
       }
 
-      const desktop = window.matchMedia("(min-width: 768px)").matches;
       const inners = gsap.utils.toArray<HTMLElement>("[data-card-inner]", stage);
       const explores = gsap.utils.toArray<HTMLElement>("[data-explore]", stage);
-
-      if (!desktop) {
-        gsap.set(explores, { opacity: 1 });
-        return;
-      }
 
       if (reduce) {
         inners.forEach((el, i) => {
@@ -205,7 +199,7 @@ export default function InsightsBlog() {
       <div
         ref={stageRef}
         data-desk-stage
-        className="relative flex w-full flex-col bg-[#f3f2ee] md:absolute md:inset-x-0 md:top-0 md:h-screen md:overflow-hidden"
+        className="insights-stage relative flex w-full flex-col bg-[#f3f2ee] md:absolute md:inset-x-0 md:top-0 md:h-screen md:overflow-hidden"
       >
         <div
           ref={titleRef}
@@ -240,7 +234,7 @@ export default function InsightsBlog() {
           </div>
         </div>
 
-        <div className="absolute inset-0 z-10 hidden md:block">
+        <div className="insights-flyouts absolute inset-0 z-10 hidden md:block">
           {blogPosts.map((post, idx) => (
             <a
               key={post.id}
@@ -281,7 +275,7 @@ export default function InsightsBlog() {
       </div>
       </div>
 
-      <div className="flex flex-col gap-5 px-5 pb-16 md:hidden">
+      <div className="insights-list flex flex-col gap-5 px-5 pb-16 md:hidden">
         <p className="font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-[#1b1b1c]/45">
           Live Briefings
         </p>

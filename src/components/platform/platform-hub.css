@@ -241,23 +241,24 @@ html:has(.platform-hub.is-expanding) body {
 @media (max-width: 900px) {
   .platform-hub__names {
     justify-content: flex-end;
-    padding: 0 1.25rem 3rem;
+    padding: 4.75rem 1.15rem 1.35rem;
   }
 
   .platform-hub__name {
-    font-size: clamp(1.05rem, 4.2vh, 2.1rem);
+    max-width: 42vw;
+    font-size: clamp(0.92rem, 3.1vh, 1.35rem);
     -webkit-text-stroke-width: 1px;
     font-stretch: 125%;
     font-variation-settings: "wdth" 125;
   }
 
   .platform-hub__cube-wrap {
-    top: 42%;
-    left: 50%;
-    width: min(78vw, 420px);
-    height: min(48.75vw, 262px);
-    max-width: 420px;
-    max-height: 262px;
+    top: 34%;
+    left: 58%;
+    width: min(62vw, 320px);
+    height: min(38.75vw, 200px);
+    max-width: 320px;
+    max-height: 200px;
     perspective: 900px;
     transform: translate(-50%, -50%);
   }

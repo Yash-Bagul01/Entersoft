@@ -98,16 +98,24 @@ export default function DesignInMotion() {
       return { vw, vh, isMobile, cx, cy, R };
     };
 
-    const desktop = window.matchMedia("(min-width: 768px)").matches;
-    if (!desktop || shouldReduceMotion) {
+    if (shouldReduceMotion) {
       const { vw, vh, isMobile } = computeLayout();
       const cols = isMobile ? 2 : 3;
       const cardW = isMobile ? Math.min(vw * 0.43, 240) : Math.min((vw - 72 - 32) / 3, 445);
       const cardH = cardW * 0.62;
       const gapX = Math.max(12, vw * 0.02);
       const gapY = Math.max(12, vh * 0.02);
+      const rows = Math.ceil(cards.length / cols);
+      const narrow = window.innerWidth < 1024;
+      const topPad = narrow ? (isMobile ? 96 : 128) : vh * 0.2;
+      const bottomPad = isMobile ? 88 : 28;
       const startX = (vw - (cardW * cols + gapX * (cols - 1))) / 2;
-      const startY = vh * 0.2;
+      const startY = topPad;
+      if (narrow && stage) {
+        const needed = topPad + rows * cardH + Math.max(0, rows - 1) * gapY + bottomPad;
+        stage.style.height = `${needed}px`;
+        stage.style.minHeight = `${needed}px`;
+      }
       cards.forEach((card, idx) => {
         const col = idx % cols;
         const row = Math.floor(idx / cols);
@@ -135,6 +143,9 @@ export default function DesignInMotion() {
     const ctx = gsap.context(() => {
       const sizePin = () => {
         pin.style.height = `${Math.round(window.innerHeight * 3.4)}px`;
+        if (window.innerWidth < 1024) {
+          stage.style.height = `${window.innerHeight}px`;
+        }
       };
       sizePin();
 
@@ -161,25 +172,28 @@ export default function DesignInMotion() {
 
         gsap.set(topWord, {
           x: gsap.utils.interpolate(vw * 0.06, -vw * 0.42, rise),
-          opacity: 1 - eased * 0.85,
+          opacity: vw < 1024 ? 1 - eased : 1 - eased * 0.85,
           force3D: true,
         });
         gsap.set(botWord, {
           x: gsap.utils.interpolate(-vw * 0.04, vw * 0.4, rise),
-          opacity: 1 - eased * 0.85,
+          opacity: vw < 1024 ? 1 - eased : 1 - eased * 0.85,
           force3D: true,
         });
         if (caption) gsap.set(caption, { opacity: 1 - eased * 0.75 });
 
-        const cardWWheel = Math.min(vw * 0.22, 320);
+        const compactLayout = vw < 1024;
+        const cardWWheel = compactLayout ? Math.min(vw * 0.36, 210) : Math.min(vw * 0.22, 320);
         const cardHWheel = cardWWheel * 0.64;
-        const cols = 3;
-        const cardWGrid = Math.min((vw - 72 - 32) / 3, 445);
+        const cols = compactLayout ? 2 : 3;
+        const cardWGrid = compactLayout
+          ? Math.min(vw * 0.42, 260)
+          : Math.min((vw - 72 - 32) / 3, 445);
         const cardHGrid = cardWGrid * 0.62;
         const gapX = Math.max(14, vw * 0.014);
         const gapY = Math.max(14, vh * 0.02);
         const startX = (vw - (cardWGrid * cols + gapX * (cols - 1))) / 2;
-        const startY = vh * 0.2;
+        const startY = compactLayout ? 112 : vh * 0.2;
         const wheelRotation = gsap.utils.interpolate(1.28, -0.18, rise);
         const spacing = isMobile ? 0.34 : 0.3;
 
@@ -262,10 +276,10 @@ export default function DesignInMotion() {
       ref={rootRef}
       className="landing-design-motion relative w-full bg-[#d6d6d4] text-[#272727] select-none isolate"
     >
-      <div ref={pinRef} className="relative w-full md:h-[340vh]">
+      <div ref={pinRef} className="relative w-full lg:h-[340vh]">
         <div
           ref={stageRef}
-          className="relative h-auto w-full overflow-hidden px-6 py-10 md:absolute md:inset-x-0 md:top-0 md:h-screen md:px-12"
+          className="relative h-auto w-full overflow-hidden px-6 py-10 lg:absolute lg:inset-x-0 lg:top-0 lg:h-screen lg:px-12"
         >
           <svg className="pointer-events-none absolute inset-0 z-0 h-full w-full opacity-40" aria-hidden="true">
             {svgArcPath && (
@@ -289,7 +303,7 @@ export default function DesignInMotion() {
                 ref={topWordRef}
                 className={cn(
                   familjen.className,
-                  "whitespace-nowrap text-[clamp(3.5rem,13.5vw,12rem)] font-normal uppercase leading-[0.82] tracking-[-0.07em] text-[#272727]"
+                  "motion-edge-word whitespace-nowrap text-[clamp(3.5rem,13.5vw,12rem)] font-normal uppercase leading-[0.82] tracking-[-0.07em] text-[#272727]"
                 )}
               >
                 Work in
@@ -297,7 +311,7 @@ export default function DesignInMotion() {
             </div>
             <p
               ref={captionRef}
-              className="absolute left-1/2 top-1/2 z-0 max-w-xs -translate-x-1/2 -translate-y-1/2 text-center font-mono text-[10px] uppercase tracking-[0.28em] text-[#272727]/60 md:max-w-md md:text-[12px]"
+              className="motion-caption absolute left-1/2 top-1/2 z-0 max-w-xs -translate-x-1/2 -translate-y-1/2 text-center font-mono text-[10px] uppercase tracking-[0.28em] text-[#272727]/60 md:max-w-md md:text-[12px]"
             >
               EXPLORING IDEAS THROUGH DAILY DESIGN PRACTICE.
             </p>
@@ -306,7 +320,7 @@ export default function DesignInMotion() {
                 ref={botWordRef}
                 className={cn(
                   familjen.className,
-                  "whitespace-nowrap text-[clamp(3.5rem,13.5vw,12rem)] font-normal uppercase leading-[0.82] tracking-[-0.07em] text-[#272727]"
+                  "motion-edge-word whitespace-nowrap text-[clamp(3.5rem,13.5vw,12rem)] font-normal uppercase leading-[0.82] tracking-[-0.07em] text-[#272727]"
                 )}
               >
                 Motion

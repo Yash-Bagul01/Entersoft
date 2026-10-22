@@ -26,8 +26,7 @@ export function useStripeWipe(
     const sheet = sheetRef.current;
     if (!root || !stripes || !sheet) return;
 
-    const desktop = window.matchMedia("(min-width: 768px)").matches;
-    if (!desktop || reduce) {
+    if (reduce) {
       gsap.set(sheet, { clearProps: "transform" });
       gsap.set(stripes, { autoAlpha: 0 });
       return;

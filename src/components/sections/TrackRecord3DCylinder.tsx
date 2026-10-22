@@ -900,9 +900,26 @@ export default function TrackRecord3DCylinder() {
     const scene = new THREE.Scene();
     sceneRef.current = scene;
 
+    const compactFrame = () => window.matchMedia("(max-width: 1023px)").matches;
+    const frameScale = (upright: boolean) => {
+      if (!compactFrame()) return upright ? 0.82 : 0.58;
+      return upright ? 0.55 : 0.38;
+    };
+
     const camera = new THREE.PerspectiveCamera(36, width / height, 0.1, 100);
-    camera.position.set(0, 0.04, 8.15);
-    camera.lookAt(0, 0, 0);
+    const placeCamera = () => {
+      if (compactFrame()) {
+        camera.fov = 32;
+        camera.position.set(0, -0.18, 11.2);
+        camera.lookAt(0, -0.22, 0);
+      } else {
+        camera.fov = 36;
+        camera.position.set(0, 0.04, 8.15);
+        camera.lookAt(0, 0, 0);
+      }
+      camera.updateProjectionMatrix();
+    };
+    placeCamera();
     cameraRef.current = camera;
 
     // 2. WebGL Renderer with retina supersampling and alpha
@@ -929,9 +946,11 @@ export default function TrackRecord3DCylinder() {
 
     // 4. Main 3D Cylinder Group
     const cylinderGroup = new THREE.Group();
+    const uprightScale = frameScale(true);
+    const closedScale = frameScale(false);
     cylinderGroup.position.set(0, 0, 0);
     cylinderGroup.rotation.x = isReduced ? -0.015 : -Math.PI / 2;
-    cylinderGroup.scale.setScalar(isReduced ? 0.82 : 0.58);
+    cylinderGroup.scale.setScalar(isReduced ? uprightScale : closedScale);
     scene.add(cylinderGroup);
     cylinderGroupRef.current = cylinderGroup;
 
@@ -939,7 +958,11 @@ export default function TrackRecord3DCylinder() {
     const reflectionGroup = new THREE.Group();
     reflectionGroup.position.set(0, -cardHeight - 0.16, 0);
     reflectionGroup.rotation.x = isReduced ? -0.015 : -Math.PI / 2;
-    reflectionGroup.scale.set(isReduced ? 0.82 : 0.58, isReduced ? -0.82 : -0.58, isReduced ? 0.82 : 0.58);
+    reflectionGroup.scale.set(
+      isReduced ? uprightScale : closedScale,
+      isReduced ? -uprightScale : -closedScale,
+      isReduced ? uprightScale : closedScale
+    );
     reflectionGroup.visible = isReduced;
     scene.add(reflectionGroup);
     reflectionGroupRef.current = reflectionGroup;
@@ -947,9 +970,9 @@ export default function TrackRecord3DCylinder() {
     // Set initial state
     currentTiltX.current = isReduced ? -0.015 : -Math.PI / 2;
     targetTiltX.current = isReduced ? -0.015 : -Math.PI / 2;
-    baseScale.current = isReduced ? 0.82 : 0.58;
-    dynamicScale.current = isReduced ? 0.82 : 0.58;
-    targetScale.current = isReduced ? 0.82 : 0.58;
+    baseScale.current = isReduced ? uprightScale : closedScale;
+    dynamicScale.current = isReduced ? uprightScale : closedScale;
+    targetScale.current = isReduced ? uprightScale : closedScale;
 
     // Add Ambient, Directional, and Dynamic Interactive Mouse Point Lights
     const ambientLight = new THREE.AmbientLight(0xffffff, isLight ? 1.6 : 1.1);
@@ -1188,7 +1211,7 @@ export default function TrackRecord3DCylinder() {
       const w = container.clientWidth || window.innerWidth;
       const h = container.clientHeight || window.innerHeight;
       camera.aspect = w / h;
-      camera.updateProjectionMatrix();
+      placeCamera();
       renderer.setSize(w, h);
     };
     window.addEventListener("resize", handleResize);
@@ -1217,9 +1240,7 @@ export default function TrackRecord3DCylinder() {
         trigger: sectionEl,
         start: "top top",
         end: () => {
-          const extra = window.matchMedia("(min-width: 768px)").matches
-            ? window.innerHeight
-            : 0;
+          const extra = window.innerHeight;
           return `+=${1200 + extra}`;
         },
         pin: true,
@@ -1229,11 +1250,14 @@ export default function TrackRecord3DCylinder() {
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           const animDistance = 1200;
-          const extra = window.matchMedia("(min-width: 768px)").matches
-            ? window.innerHeight
-            : 0;
+          const extra = window.innerHeight;
           const total = animDistance + extra;
           const p = extra === 0 ? self.progress : Math.min(1, (self.progress * total) / animDistance);
+
+          const compact = window.matchMedia("(max-width: 1023px)").matches;
+          const scaleClosed = compact ? 0.38 : 0.58;
+          const scaleOpen = compact ? 0.55 : 0.82;
+          const scaleCap = compact ? 0.58 : 0.85;
 
           // Update pinned text reveal progress for Jitter word reveal animation (0.0 -> 0.22)
           if (p <= 0.22) {
@@ -1266,7 +1290,7 @@ export default function TrackRecord3DCylinder() {
             }
 
             targetTiltX.current = -Math.PI / 2;
-            baseScale.current = 0.58;
+            baseScale.current = scaleClosed;
           } else if (p > 0.16 && p <= 0.45) {
             // PHASE 2: Instant Unrolling on user's natural scroll (p: 0.16 -> 0.45)
             const t = (p - 0.16) / 0.29; // Normalized 0 -> 1
@@ -1286,8 +1310,8 @@ export default function TrackRecord3DCylinder() {
             // Unroll Rotation X: from -Math.PI / 2 to -0.015 rad
             targetTiltX.current = -Math.PI / 2 + easeT * (Math.PI / 2 - 0.015);
 
-            // Expand Base Scale: from 0.58 to 0.82
-            baseScale.current = 0.58 + easeT * 0.24;
+            // Expand Base Scale: from the closed disc to the upright card
+            baseScale.current = scaleClosed + easeT * (scaleOpen - scaleClosed);
 
             // Rotation Y progresses smoothly without resetting
             targetRotationY.current = manualOffset.current - easeT * 0.15;
@@ -1338,7 +1362,7 @@ export default function TrackRecord3DCylinder() {
             }
 
             targetTiltX.current = -0.015;
-            baseScale.current = 0.82;
+            baseScale.current = scaleOpen;
 
             // 0 -> 1 in Phase 3 rotates continuously through cards
             const baseScrollAngle = -0.15 - t * (Math.PI * 1.5);
@@ -1347,7 +1371,7 @@ export default function TrackRecord3DCylinder() {
 
           // Dynamic scale-on-scroll breathing expansion effect
           const velocity = Math.abs(self.getVelocity());
-          targetScale.current = Math.min(0.85, baseScale.current + velocity * 0.000015);
+          targetScale.current = Math.min(scaleCap, baseScale.current + velocity * 0.000015);
         },
       });
 
@@ -1455,7 +1479,7 @@ export default function TrackRecord3DCylinder() {
       {/* Background Monumental Editorial Typography: "ENTERSOFT" (Aikawa Style - Faded Luxury Watermark) */}
       <div
         ref={brandBgRef}
-        className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none select-none overflow-hidden transition-all duration-300 opacity-0"
+        className="track-record-mark absolute inset-0 z-10 flex items-center justify-center pointer-events-none select-none overflow-hidden transition-all duration-300 opacity-0"
         style={{
           transform: "translateY(-3%)",
         }}
@@ -1476,7 +1500,7 @@ export default function TrackRecord3DCylinder() {
       {/* DEFENSIVE PHILOSOPHY Statement Layer */}
       <div
         ref={philosophyRef}
-        className="absolute inset-0 z-30 flex flex-col items-center justify-center px-6 md:px-12 text-center transition-all duration-300 pointer-events-none"
+        className="track-record-philosophy absolute inset-0 z-30 flex flex-col items-center justify-center px-6 md:px-12 text-center transition-all duration-300 pointer-events-none"
       >
         <div className="max-w-[1150px] flex flex-col items-center gap-6 md:gap-8 text-center pointer-events-auto">
           <SectionLabel color="secondary">DEFENSIVE PHILOSOPHY</SectionLabel>
@@ -1561,7 +1585,7 @@ export default function TrackRecord3DCylinder() {
       {/* Main 3D WebGL Canvas Arena (Full-bleed height without bottom bar obstruction) */}
       <div
         ref={canvasContainerRef}
-        className="relative z-20 flex-1 w-full h-full flex items-center justify-center cursor-grab active:cursor-grabbing my-auto"
+        className="track-record-stage relative z-20 flex-1 w-full h-full flex items-center justify-center cursor-grab active:cursor-grabbing my-auto"
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseEnter={handleMouseEnter}
