@@ -76,27 +76,36 @@ function JitterWordSpan({
 }
 
 function JitterScrollText({
-  tokens,
+  lines,
   isLight,
   pinnedProgress,
 }: {
-  tokens: PhilosophyToken[];
+  lines: PhilosophyToken[][];
   isLight: boolean;
   pinnedProgress: MotionValue<number>;
 }) {
+  const total = lines.reduce((count, line) => count + line.length, 0);
+  let index = 0;
+
   return (
-    <h2 className="text-[clamp(1.5rem,3.4vw,2.8rem)] font-display font-medium leading-[1.2] tracking-[-0.02em] uppercase text-center flex flex-wrap justify-center gap-x-[0.28em] gap-y-[0.2em]">
-      {tokens.map((token, index) => (
-        <React.Fragment key={index}>
-          <JitterWordSpan
-            token={token}
-            index={index}
-            total={tokens.length}
-            progress={pinnedProgress}
-            isLight={isLight}
-          />
-          {index < tokens.length - 1 ? " " : ""}
-        </React.Fragment>
+    <h2 className="flex flex-col items-center gap-y-[0.06em] text-center font-display font-medium uppercase leading-[1.02] tracking-[-0.03em] text-[clamp(1.7rem,4.4vw,3.55rem)]">
+      {lines.map((line, lineIndex) => (
+        <span key={lineIndex} className="flex max-w-full flex-wrap justify-center gap-x-[0.22em]">
+          {line.map((token) => {
+            const wordIndex = index;
+            index += 1;
+            return (
+              <JitterWordSpan
+                key={wordIndex}
+                token={token}
+                index={wordIndex}
+                total={total}
+                progress={pinnedProgress}
+                isLight={isLight}
+              />
+            );
+          })}
+        </span>
       ))}
     </h2>
   );
@@ -141,38 +150,20 @@ interface CardSpec {
   };
 }
 
-const PHILOSOPHY_TOKENS = [
-  { text: "Built", highlight: false },
-  { text: "on", highlight: false },
-  { text: "14", highlight: true },
-  { text: "years", highlight: true },
-  { text: "of", highlight: false },
-  { text: "offensive", highlight: true },
-  { text: "security", highlight: true },
-  { text: "expertise,", highlight: true },
-  { text: "Entersoft", highlight: false },
-  { text: "combines", highlight: false },
-  { text: "AI-native", highlight: true },
-  { text: "analysis", highlight: true },
-  { text: "with", highlight: false },
-  { text: "human", highlight: true },
-  { text: "validation", highlight: true },
-  { text: "to", highlight: false },
-  { text: "help", highlight: false },
-  { text: "enterprises", highlight: false },
-  { text: "map,", highlight: true },
-  { text: "test,", highlight: true },
-  { text: "prioritize", highlight: true },
-  { text: "and", highlight: false },
-  { text: "remediate", highlight: true },
-  { text: "risk", highlight: true },
-  { text: "across", highlight: false },
-  { text: "applications,", highlight: true },
-  { text: "APIs,", highlight: true },
-  { text: "code,", highlight: true },
-  { text: "cloud", highlight: true },
-  { text: "and", highlight: true },
-  { text: "identity.", highlight: true }
+const PHILOSOPHY_LINES: PhilosophyToken[][] = [
+  [
+    { text: "14", highlight: true },
+    { text: "YEARS", highlight: true },
+    { text: "OF", highlight: false },
+  ],
+  [
+    { text: "OFFENSIVE", highlight: false },
+    { text: "INTELLIGENCE.", highlight: false },
+  ],
+  [
+    { text: "AI-NATIVE.", highlight: true },
+    { text: "HUMAN-GOVERNED.", highlight: false },
+  ],
 ];
 
 const containerVariants = {
@@ -493,26 +484,36 @@ function drawCardFrontCanvas(
 
     const wash = ctx.createLinearGradient(0, 0, W, H);
     if (isLight) {
-      wash.addColorStop(0, "rgba(246, 245, 240, 0.12)");
-      wash.addColorStop(0.5, "rgba(246, 245, 240, 0.04)");
-      wash.addColorStop(1, "rgba(246, 245, 240, 0.1)");
+      wash.addColorStop(0, "rgba(246, 245, 240, 0.08)");
+      wash.addColorStop(0.5, "rgba(246, 245, 240, 0.02)");
+      wash.addColorStop(1, "rgba(246, 245, 240, 0.06)");
     } else {
-      wash.addColorStop(0, "rgba(6, 6, 8, 0.28)");
-      wash.addColorStop(0.5, "rgba(6, 6, 8, 0.1)");
-      wash.addColorStop(1, "rgba(6, 6, 8, 0.22)");
+      wash.addColorStop(0, "rgba(6, 6, 8, 0.34)");
+      wash.addColorStop(0.5, "rgba(6, 6, 8, 0.14)");
+      wash.addColorStop(1, "rgba(6, 6, 8, 0.28)");
     }
     ctx.fillStyle = wash;
     ctx.fill();
 
-    const leftFade = ctx.createLinearGradient(0, 0, W * 0.44, 0);
-    leftFade.addColorStop(0, isLight ? "rgba(246, 245, 240, 0.58)" : "rgba(6, 6, 8, 0.48)");
-    leftFade.addColorStop(0.55, isLight ? "rgba(246, 245, 240, 0.16)" : "rgba(6, 6, 8, 0.12)");
+    const edge = isLight ? "246, 245, 240" : "6, 6, 8";
+    const edgeStart = isLight ? 0.58 : 0.92;
+    const edgeMid = isLight ? 0.22 : 0.5;
+    const leftFade = ctx.createLinearGradient(0, 0, W * 0.46, 0);
+    leftFade.addColorStop(0, `rgba(${edge}, ${edgeStart})`);
+    leftFade.addColorStop(0.58, `rgba(${edge}, ${edgeMid})`);
     leftFade.addColorStop(1, "rgba(0, 0, 0, 0)");
     ctx.fillStyle = leftFade;
     ctx.fill();
 
-    const botFade = ctx.createLinearGradient(0, H, 0, H * 0.7);
-    botFade.addColorStop(0, isLight ? "rgba(246, 245, 240, 0.48)" : "rgba(6, 6, 8, 0.42)");
+    const rightFade = ctx.createLinearGradient(W, 0, W * 0.58, 0);
+    rightFade.addColorStop(0, `rgba(${edge}, ${isLight ? 0.55 : 0.92})`);
+    rightFade.addColorStop(0.55, `rgba(${edge}, ${isLight ? 0.2 : 0.48})`);
+    rightFade.addColorStop(1, "rgba(0, 0, 0, 0)");
+    ctx.fillStyle = rightFade;
+    ctx.fill();
+
+    const botFade = ctx.createLinearGradient(0, H, 0, H * 0.62);
+    botFade.addColorStop(0, `rgba(${edge}, ${isLight ? 0.5 : 0.86})`);
     botFade.addColorStop(1, "rgba(0, 0, 0, 0)");
     ctx.fillStyle = botFade;
     ctx.fill();
@@ -1507,10 +1508,18 @@ export default function TrackRecord3DCylinder() {
 
           {/* Main Statement Jitter Scroll Text Reveal Animation */}
           <JitterScrollText
-            tokens={PHILOSOPHY_TOKENS}
+            lines={PHILOSOPHY_LINES}
             isLight={isLight}
             pinnedProgress={pinnedTextProgress}
           />
+
+          <p
+            className={`max-w-[40rem] text-[clamp(0.95rem,1.15vw,1.125rem)] font-normal leading-[1.45] tracking-[-0.011em] ${
+              isLight ? "text-[#4A4A46]" : "text-[#A8A8A2]"
+            }`}
+          >
+            We combine proven security expertise with AI to identify, validate and reduce risk across the enterprise.
+          </p>
 
           {/* Action Button & Scroll Prompt */}
           <motion.div
@@ -1585,7 +1594,7 @@ export default function TrackRecord3DCylinder() {
       {/* Main 3D WebGL Canvas Arena (Full-bleed height without bottom bar obstruction) */}
       <div
         ref={canvasContainerRef}
-        className="track-record-stage relative z-20 flex-1 w-full h-full flex items-center justify-center cursor-grab active:cursor-grabbing my-auto"
+        className="track-record-stage relative z-20 flex-1 w-full h-full flex items-center justify-center cursor-grab active:cursor-grabbing my-auto opacity-[0.82]"
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseEnter={handleMouseEnter}

@@ -3196,9 +3196,9 @@ html:has([data-page="ai-ast"]) footer,
   }
 
   #track-record .track-record-philosophy h2 {
-    max-width: 22rem;
-    font-size: clamp(1.05rem, 4.5vw, 1.4rem) !important;
-    line-height: 1.28;
+    max-width: 100%;
+    font-size: clamp(1.05rem, 4.6vw, 1.7rem) !important;
+    line-height: 1.08;
   }
 
   #track-record header {

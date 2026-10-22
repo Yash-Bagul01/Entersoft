@@ -353,7 +353,7 @@ export const IAC_OVA: PlatformOvaPageData = {
   ctaLabel: "Book a briefing",
   ctaHref: ROUTES.booking,
   sinceTitle: ["Since", "the first apply,"],
-  hero: img("iac", "hero"),
+  hero: "/images/platform/ova/iac/hero-provision.jpg",
   manifesto: img("iac", "manifesto"),
   manifestoPosition: "center 24%",
   since: img("iac", "since"),
