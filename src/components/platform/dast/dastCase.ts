@@ -41,8 +41,8 @@ export const DAST_CASE: ExoApeCase = {
     nextAlt: "Abstract dark form curving through light",
     collage: [
       {
-        src: u("photo-1787165574896-adae5bec834b", 3200),
-        alt: "Glazed tower lit from within at dusk",
+        src: "https://images.unsplash.com/photo-1753715613373-90b1ea010731?q=90&w=3200&auto=format&fit=crop",
+        alt: "Application code across monitors in a live testing workspace",
         tag: "01 / PROOF-BASED DAST ENGINE",
         headline: "Zero-False-Positive Dynamic Auditing",
         metric: "100% Verified Exploits",

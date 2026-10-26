@@ -40,8 +40,8 @@ export const API_SECURITY_CASE: ExoApeCase = {
     nextAlt: "Illuminated workstation used for the next platform chapter",
     collage: [
       {
-        src: img("c01"),
-        alt: "Dark equipment corridor used for API discovery",
+        src: "/images/platform/runtime/api/center-fiber.jpg",
+        alt: "Fiber ports in a live patch panel",
         tag: "01 / SHADOW DISCOVERY",
         headline: "Find the APIs the spec never named",
         metric: "Gateway + traffic inventory",

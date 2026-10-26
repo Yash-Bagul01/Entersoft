@@ -40,8 +40,8 @@ export const CLOUD_APPSEC_CASE: ExoApeCase = {
     nextAlt: "Soft horizon used for the next platform chapter",
     collage: [
       {
-        src: img("c01"),
-        alt: "Cloud bank used for telemetry ingestion",
+        src: "/images/platform/runtime/cloud/center.jpg",
+        alt: "Server racks in a bright cloud data hall",
         tag: "01 / CLOUD TELEMETRY",
         headline: "Provider APIs, registries and AppSec in one ingest",
         metric: "AWS · Azure · GCP",

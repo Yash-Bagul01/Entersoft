@@ -572,19 +572,19 @@ export default function ExoApeCaseStudy({ data, omitHero = false }: { data: ExoA
           {data.images.collage.map((shot, i) => {
             const clusterSlots = [
               // Item 0: Center Image (ONLY image that enlarges to 100% screen proportion)
-              { left: "30%", top: "25%", width: "40vw", height: "50vh", zIndex: 10, scaleDest: 2.5, xOut: 0, yOut: 0 },
+              { left: "30%", top: "25%", width: "40%", height: "50%", zIndex: 10, scaleDest: 2.5, xOut: 0, yOut: 0 },
               // Item 1: Top Left (fades & moves up-left)
-              { left: "6%", top: "6%", width: "22vw", height: "32vh", zIndex: 2, scaleDest: 1.35, xOut: -140, yOut: -120 },
-              // Item 2: Top Right (fades & moves up-right)
-              { left: "70%", top: "4%", width: "24vw", height: "30vh", zIndex: 2, scaleDest: 1.35, xOut: 140, yOut: -120 },
+              { left: "6%", top: "6%", width: "22%", height: "32%", zIndex: 2, scaleDest: 1.35, xOut: -140, yOut: -120 },
+              // Item 2: Top Right — mirrored gap from the center
+              { left: "72%", top: "6%", width: "22%", height: "32%", zIndex: 2, scaleDest: 1.35, xOut: 140, yOut: -120 },
               // Item 3: Middle Left (fades & moves left)
-              { left: "4%", top: "48%", width: "22vw", height: "36vh", zIndex: 2, scaleDest: 1.35, xOut: -160, yOut: 20 },
-              // Item 4: Middle Right (fades & moves right)
-              { left: "72%", top: "44%", width: "22vw", height: "38vh", zIndex: 2, scaleDest: 1.35, xOut: 160, yOut: 20 },
+              { left: "4%", top: "48%", width: "22%", height: "36%", zIndex: 2, scaleDest: 1.35, xOut: -160, yOut: 20 },
+              // Item 4: Middle Right — mirrored gap from the center
+              { left: "74%", top: "48%", width: "22%", height: "36%", zIndex: 2, scaleDest: 1.35, xOut: 160, yOut: 20 },
               // Item 5: Bottom Left (fades & moves down-left)
-              { left: "12%", top: "80%", width: "26vw", height: "30vh", zIndex: 2, scaleDest: 1.35, xOut: -100, yOut: 140 },
-              // Item 6: Bottom Right (fades & moves down-right)
-              { left: "62%", top: "78%", width: "28vw", height: "32vh", zIndex: 2, scaleDest: 1.35, xOut: 120, yOut: 140 },
+              { left: "12%", top: "80%", width: "26%", height: "30%", zIndex: 2, scaleDest: 1.35, xOut: -100, yOut: 140 },
+              // Item 6: Bottom Right — mirrored gap from the center
+              { left: "62%", top: "80%", width: "26%", height: "30%", zIndex: 2, scaleDest: 1.35, xOut: 120, yOut: 140 },
             ];
 
             const slot = clusterSlots[i] ?? clusterSlots[0];

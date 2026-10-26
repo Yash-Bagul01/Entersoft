@@ -40,8 +40,8 @@ export const ASM_CASE: ExoApeCase = {
     nextAlt: "Wide aerial used for the next platform chapter",
     collage: [
       {
-        src: img("c01"),
-        alt: "Tower cluster used for perimeter discovery",
+        src: "/images/platform/runtime/asm/center-surface.jpg",
+        alt: "Earth from orbit, the external attack surface",
         tag: "01 / PERIMETER SEED",
         headline: "Domains, ranges and ASNs become the map",
         metric: "Corporate seed input",

@@ -730,31 +730,15 @@ function drawCardFrontCanvas(
   ctx.restore();
 }
 
-// Helper to draw the matching frosted back canvas texture with pointed corners
-function drawCardBackCanvas(
-  canvas: HTMLCanvasElement,
-  spec: CardSpec,
-  isLight: boolean
-) {
+// Neutral back plate. The top-down ring shows this inner face, so it stays one quiet tone.
+function drawCardBackCanvas(canvas: HTMLCanvasElement, isLight: boolean) {
   const W = 2800;
   const H = 1200;
   const ctx = canvas.getContext("2d")!;
   ctx.clearRect(0, 0, W, H);
-  ctx.imageSmoothingEnabled = true;
 
-  const colors = isLight ? spec.lightColors : spec.darkColors;
-  const r = 0;
-
-  ctx.beginPath();
-  ctx.rect(0, 0, W, H);
-  ctx.closePath();
-
-  ctx.fillStyle = colors.backHex;
-  ctx.fill();
-
-  ctx.lineWidth = 3;
-  ctx.strokeStyle = colors.border;
-  ctx.stroke();
+  ctx.fillStyle = isLight ? "#E4E2DC" : "#14161A";
+  ctx.fillRect(0, 0, W, H);
 }
 
 function createCardCanvasTexture(
@@ -790,7 +774,7 @@ function createCardCanvasTexture(
   const backCanvas = document.createElement("canvas");
   backCanvas.width = W;
   backCanvas.height = H;
-  drawCardBackCanvas(backCanvas, spec, isLight);
+  drawCardBackCanvas(backCanvas, isLight);
 
   const backTexture = new THREE.CanvasTexture(backCanvas);
   backTexture.colorSpace = THREE.SRGBColorSpace;

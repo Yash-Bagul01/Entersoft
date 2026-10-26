@@ -40,8 +40,8 @@ export const AI_APPSEC_CASE: ExoApeCase = {
     nextAlt: "Soft field used for the next platform chapter",
     collage: [
       {
-        src: img("c01"),
-        alt: "Light volume used for telemetry and model ingest",
+        src: "/images/platform/runtime/ai/center-model.jpg",
+        alt: "A sharp model render of an AI system under review",
         tag: "01 / TELEMETRY INGEST",
         headline: "Scans, prompts and snippets in one place",
         metric: "Findings + pipelines",

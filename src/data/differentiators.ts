@@ -15,55 +15,62 @@ export type CapabilityCard = {
   descriptor: string              // top-right label
   body: string                    // exact card copy
   coreCapability: string          // enterprise capability represented (metadata, not shown on card face)
+  services: readonly string[]     // CEO service mapping (metadata, not shown on the card)
 }
 
 export const capabilities: CapabilityCard[] = [
   {
     id: 'find-risk-earlier',
     gridPosition: 'row1-wide-left',
-    title: 'Find exploitable risk earlier',
+    title: 'See Risk Across Your Enterprise',
     descriptor: 'EARLY DISCOVERY',
-    body: 'Identify vulnerabilities and attack paths before they become incidents.',
+    body: 'Connect security exposure across applications, APIs, cloud, identities, digital assets and AI systems.',
     coreCapability: 'Pre-incident vulnerability and attack-path discovery',
+    services: ['Application Assurance', 'Cloud Resilience', 'AI Systems Assurance', 'Protocol Assurance'],
   },
   {
     id: 'reduce-false-positives',
     gridPosition: 'row1-narrow-right',
-    title: 'Reduce false-positive investigation',
+    title: 'Turn Intelligence Into Confident Decisions',
     descriptor: 'NOISE REDUCTION',
-    body: 'Help security teams focus investigation effort on validated and relevant findings.',
+    body: 'Combine AI-assisted analysis with expert judgment to validate threats, understand impact and focus on what matters.',
     coreCapability: 'Expert human-validated findings',
+    services: ['Adversarial Validation', 'Cyber Defense Operations', 'Application Assurance'],
   },
   {
     id: 'prioritise-business-impact',
     gridPosition: 'row2-narrow-left',
-    title: 'Prioritise by business impact',
+    title: 'Protect What Matters Most',
     descriptor: 'CONTEXTUAL RISK',
-    body: 'Rank security issues according to business exposure, criticality and risk.',
+    body: 'Align security priorities with critical systems, business operations, regulatory obligations and enterprise risk.',
     coreCapability: 'Business exposure decisioning and attack-path intelligence',
+    services: ['Digital Trust', 'Cloud Resilience', 'Adversarial Validation'],
   },
   {
     id: 'accelerate-remediation',
     gridPosition: 'row2-wide-right',
-    title: 'Accelerate remediation',
+    title: 'Move From Risk to Action',
     descriptor: 'FIX VERIFICATION',
-    body: 'Give engineering and security teams clear remediation guidance and verification workflows.',
+    body: 'Connect security findings to engineering, cloud and response workflows—so teams can remediate, contain and verify faster.',
     coreCapability: 'Closed-loop fix guidance and verification',
+    services: ['Application Assurance', 'Cloud Resilience', 'Cyber Defense Operations'],
   },
   {
     id: 'maintain-continuous-evidence',
     gridPosition: 'row3-narrow-left',
-    title: 'Maintain continuous evidence',
+    title: 'Make Trust Continuously Verifiable',
     descriptor: 'AUDIT READINESS',
-    body: 'Keep security and compliance evidence available between formal assessment cycles.',
+    body: 'Connect security controls, compliance obligations and technical evidence to maintain assurance beyond periodic audits.',
     coreCapability: 'Continuous control governance and evidence collection',
+    services: ['Digital Trust', 'Application Assurance', 'Cloud Resilience'],
   },
   {
     id: 'improve-detection-response',
     gridPosition: 'row3-wide-right',
-    title: 'Improve detection and response',
+    title: 'Build Resilience Into Every Operation',
     descriptor: 'SECURITY OPERATIONS',
-    body: 'Strengthen detection coverage, investigation and response workflows across the environment.',
+    body: 'Strengthen threat detection, investigation, incident response and recovery across enterprise and AI-driven environments.',
     coreCapability: 'MDR operations and telemetry correlation',
+    services: ['Cyber Defense Operations', 'AI Systems Assurance', 'Cloud Resilience'],
   },
 ]
