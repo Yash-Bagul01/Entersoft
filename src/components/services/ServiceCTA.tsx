@@ -13,7 +13,7 @@ interface ServiceCTAProps {
 export default function ServiceCTA({
   headline = "Ready to discuss your security posture?",
   buttonText = "BOOK A SECURITY BRIEFING",
-  buttonHref = "/#contact"
+  buttonHref = "/contact"
 }: ServiceCTAProps) {
   return (
     <section className="relative w-full bg-[#060606] px-6 md:px-12 py-20 md:py-28 overflow-hidden text-center flex flex-col items-center justify-center border-b border-[var(--border-subtle)]">

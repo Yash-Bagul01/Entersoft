@@ -54,7 +54,7 @@ export default function Secrets_Hero() {
               Zero Hardcoded Secrets Across SDLC, CI/CD & Cloud
             </span>
             <Link
-              href="/#contact"
+              href="/contact"
               className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-sm bg-[#3B82F6] hover:bg-[#60A5FA] text-slate-950 font-sans font-bold text-xs tracking-tight transition-all duration-200 shadow-[0_0_18px_rgba(59,130,246,0.4)] hover:scale-[1.02] cursor-pointer"
               data-cursor="button"
             >
@@ -111,7 +111,7 @@ export default function Secrets_Hero() {
               className="flex flex-col sm:flex-row sm:items-center gap-4 pt-2"
             >
               <Link
-                href="/#contact"
+                href="/contact"
                 className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-md bg-[#3B82F6] hover:bg-[#60A5FA] text-slate-950 font-sans font-bold text-base tracking-tight transition-all duration-300 shadow-[0_0_30px_rgba(59,130,246,0.45)] hover:scale-[1.02] cursor-pointer"
                 data-cursor="button"
               >

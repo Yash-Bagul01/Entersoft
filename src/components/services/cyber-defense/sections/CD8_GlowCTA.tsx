@@ -58,7 +58,7 @@ export default function CD8_GlowCTA() {
           className="mb-8 w-full sm:w-auto"
         >
           <a
-            href="/#contact"
+            href="/contact"
             className="inline-block w-full sm:w-auto font-sans font-semibold text-base sm:text-lg px-9 py-4 rounded-[8px] bg-[#3B82F6] text-[#FFFFFF] shadow-[0_0_30px_rgba(59,130,246,0.4)] hover:bg-[#2563EB] transition-all duration-300 transform hover:-translate-y-0.5"
             data-cursor="button"
           >

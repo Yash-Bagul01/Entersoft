@@ -78,7 +78,7 @@ export default function DT0_Hero() {
             {/* Action Buttons */}
             <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-4 mt-2 pt-2">
               <MagneticButton>
-                <Button variant="primary" size="lg" asLink href="/#contact">
+                <Button variant="primary" size="lg" asLink href="/contact">
                   Request a Readiness Workshop
                 </Button>
               </MagneticButton>

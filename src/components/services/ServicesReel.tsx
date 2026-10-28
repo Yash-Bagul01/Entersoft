@@ -90,7 +90,7 @@ function ServiceReelCard({
       // Hidden until the reel takes over, so the pre-hydration paint never
       // shows the cards piled up at the centre of the stage.
       style={{ opacity: 0 }}
-      className={`absolute overflow-hidden cursor-pointer rounded-none border border-white/10 shadow-2xl w-[320px] sm:w-[360px] aspect-[16/10] will-change-transform pointer-events-auto ${isPov ? "group" : ""}`}
+      className={`absolute overflow-hidden cursor-pointer rounded-none border border-white/10 shadow-2xl w-[min(74vw,320px)] sm:w-[360px] aspect-[16/10] will-change-transform pointer-events-auto ${isPov ? "group" : ""}`}
     >
       {/* Default Cover Visual: Vibrant Color + Emblem Symbol ONLY */}
       <div className={`relative w-full h-full ${item.coverBg} flex flex-col items-center justify-center p-6 overflow-hidden`}>
@@ -196,8 +196,11 @@ export default function ServicesReel() {
       const axisLocal = clamp01(axis * (1 + AXIS_STAGGER) - rank * AXIS_STAGGER);
       const axisEase = easeInOutCubic(axisLocal);
 
-      const reelX = wrappedDiff * SPACING_X * axisEase;
-      const reelY = wrappedDiff * SPACING_Y * (1 - axisEase);
+      const compact = window.innerWidth < 1024;
+      const spacingX = compact ? Math.min(SPACING_X, Math.round(window.innerWidth * 0.78)) : SPACING_X;
+      const spacingY = compact ? Math.min(SPACING_Y, Math.round(window.innerWidth * 0.46)) : SPACING_Y;
+      const reelX = wrappedDiff * spacingX * axisEase;
+      const reelY = wrappedDiff * spacingY * (1 - axisEase);
       const reelRot = Math.sin(axisEase * Math.PI) * (wrappedDiff < 0 ? -AXIS_ROT : AXIS_ROT);
       const reelScale = Math.max(0.65, 1.0 - d * 0.12);
       const reelOpacity = Math.max(0.25, 1.0 - d * 0.3);
@@ -492,7 +495,7 @@ export default function ServicesReel() {
               className="relative w-full max-w-[1440px] mx-auto h-full grid grid-cols-1 lg:grid-cols-12 items-center"
             >
               {/* Left Side: Monospace Number + Title (Fades in AFTER card deal animation finishes) */}
-              <div className="lg:col-span-4 flex items-baseline gap-5 z-20 pointer-events-none pr-4">
+              <div className="lg:col-span-4 flex items-baseline gap-5 z-20 pointer-events-none pr-4 max-lg:absolute max-lg:top-[4.25rem] max-lg:left-0 max-lg:right-0 max-lg:z-30 max-lg:bg-[#0b0b0d] max-lg:px-5 max-lg:py-3">
                 <AnimatePresence mode="wait">
                   {showDetails && (
                     <motion.div
@@ -518,7 +521,7 @@ export default function ServicesReel() {
               <div className="lg:col-span-4 relative h-full min-h-[440px]" aria-hidden="true" />
 
               {/* Right Side: Monospace "Full case" & Year (Fades in AFTER card deal animation finishes) */}
-              <div className="lg:col-span-4 flex justify-end z-20 pointer-events-none">
+              <div className="lg:col-span-4 hidden lg:flex justify-end z-20 pointer-events-none">
                 <AnimatePresence mode="wait">
                   {showDetails && (
                     <motion.div
@@ -598,7 +601,7 @@ export default function ServicesReel() {
         /* Persistent Card Reel: never unmounts, so cards physically     */
         /* travel between the vertical stack and the horizontal strip    */
         /* ============================================================ */}
-        <div className="absolute inset-0 z-10 flex items-center justify-center pt-20 pb-12 px-6 md:px-16 pointer-events-none">
+        <div className="absolute inset-0 z-10 flex items-center justify-center pt-20 pb-12 px-6 md:px-16 pointer-events-none max-lg:pt-36 max-lg:pb-24">
           <div className="relative w-full max-w-[1440px] h-full flex items-center justify-center">
             {SERVICES_REEL.map((item, i) => (
               <ServiceReelCard
@@ -616,7 +619,7 @@ export default function ServicesReel() {
       </div>
 
       {/* Floating Bottom Right View Mode Toggle: VERTICAL | HORIZONTAL */}
-      <div className="fixed bottom-8 right-8 z-50 flex items-center gap-4 bg-[#0d0d10]/90 border border-white/10 backdrop-blur-xl px-5 py-2 rounded-full shadow-2xl font-mono text-xs tracking-widest uppercase select-none">
+      <div className="fixed bottom-4 left-1/2 z-50 flex -translate-x-1/2 items-center gap-4 rounded-full border border-white/10 bg-[#0d0d10]/90 px-5 py-2 font-mono text-xs uppercase tracking-widest shadow-2xl backdrop-blur-xl select-none lg:bottom-8 lg:left-auto lg:right-8 lg:translate-x-0">
         <button
           onClick={() => setViewMode("vertical")}
           className={`cursor-pointer transition-all duration-300 ${

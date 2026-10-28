@@ -138,13 +138,13 @@ export default function Hero() {
   }, [shouldReduceMotion]);
 
   const creds = (
-    <div className="hero-creds mt-3.5 md:mt-4 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[clamp(13px,1vw,15px)] leading-[1.45] tracking-[0.01em] text-white/75">
+    <div className="hero-creds mt-3.5 md:mt-4 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[clamp(14.5px,1.15vw,17px)] font-medium leading-[1.45] tracking-[0.015em] text-white [text-shadow:0_1px_2px_rgba(0,0,0,0.9),0_0_16px_rgba(0,0,0,0.55)]">
       <span>Since 2013 (13+ Years)</span>
-      <span className="text-white/30">·</span>
+      <span className="text-white/80">·</span>
       <span>CREST-accredited penetration testing</span>
-      <span className="text-white/30">·</span>
+      <span className="text-white/80">·</span>
       <span>CERT-In empanelled auditing organisation</span>
-      <span className="text-white/30">·</span>
+      <span className="text-white/80">·</span>
       <span>ISO/IEC 27001-certified ISMS</span>
     </div>
   );

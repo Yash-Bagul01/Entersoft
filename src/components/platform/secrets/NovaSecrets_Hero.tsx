@@ -301,7 +301,7 @@ export default function NovaSecrets_Hero() {
           className="flex flex-col sm:flex-row items-center gap-4 mb-20"
         >
           <Link
-            href="/#contact"
+            href="/contact"
             className="inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full bg-gradient-to-r from-[#38BDF8] via-[#60A5FA] to-[#3B82F6] hover:from-[#7DD3FC] hover:to-[#2563EB] text-[#030712] font-sans font-bold text-sm tracking-tight transition-all duration-300 shadow-[0_0_35px_rgba(56,189,248,0.45)] hover:scale-[1.03] cursor-pointer"
             data-cursor="button"
           >

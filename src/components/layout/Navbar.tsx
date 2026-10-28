@@ -537,7 +537,7 @@ export default function Navbar() {
                 variant="primary"
                 size="sm"
                 asLink
-                href="/#contact"
+                href="/contact"
                 className={cn(
                   familjen.className,
                   "transition-all duration-300 rounded-full px-4 py-1.5 font-normal",
@@ -677,7 +677,7 @@ export default function Navbar() {
                 size="md"
                 className="w-full text-center"
                 asLink
-                href="/#contact"
+                href="/contact"
                 onClick={toggleMobileMenu}
               >
                 Request Briefing

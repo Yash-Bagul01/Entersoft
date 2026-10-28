@@ -1003,6 +1003,18 @@ html[data-theme="light"]:has([data-page="ai-bom"]) .logo-img {
   .kr-hero__content .kr-hero__bot {
     height: auto;
     margin: 0;
+    grid-template-columns: 1fr;
+  }
+
+  .kr-hero__titlebox,
+  .kr-hero__heading {
+    width: 100%;
+    height: auto;
+  }
+
+  .kr-hero__italic {
+    white-space: normal;
+    max-width: 18ch;
   }
 
   .kr-hero__title,
@@ -1084,6 +1096,7 @@ html[data-theme="light"]:has([data-page="ai-bom"]) .logo-img {
 
   .kr-hero__lede {
     width: 100%;
+    padding-bottom: 1rem;
     color: var(--kr-ink);
     text-shadow: none;
   }
@@ -1124,6 +1137,22 @@ html[data-theme="light"]:has([data-page="ai-bom"]) .logo-img {
   .kr-faq h2 {
     text-align: left;
     padding-inline: 0.75rem;
+  }
+}
+
+@media (max-width: 980px) and (max-height: 520px) {
+  .kr-hero,
+  .kr-hero__content {
+    height: auto;
+    min-height: 0;
+  }
+
+  .kr-hero__content {
+    padding-top: 4.5rem;
+  }
+
+  .kr-hero__title {
+    font-size: clamp(2.6rem, 11vw, 4.2rem);
   }
 }
 

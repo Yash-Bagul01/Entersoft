@@ -103,7 +103,7 @@ export default function Secrets_FAQ() {
             <div className="pt-4 border-t border-slate-200 flex flex-col gap-3">
               <span className="text-xs font-mono uppercase text-slate-500">Need specific answers for your architecture?</span>
               <Link
-                href="/#contact"
+                href="/contact"
                 className="inline-flex items-center gap-2 text-sm font-bold text-[#2563EB] hover:text-[#1D4ED8] transition-colors"
                 data-cursor="link"
               >

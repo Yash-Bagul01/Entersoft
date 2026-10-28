@@ -886,6 +886,32 @@
   .sc-hero__copy {
     padding: 0 20px 10vh;
   }
+
+  .sc-hero__title {
+    font-size: clamp(1.85rem, 10.2vw, 5.5rem);
+    max-width: 100%;
+  }
+
+  .sc-kicker {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+}
+
+/* Short landscape: a 640px hero minimum pushes the title below the visible screen. */
+@media (max-width: 1023px) and (max-height: 520px) {
+  .sc-hero {
+    height: 100svh;
+    min-height: 0;
+  }
+
+  .sc-hero__copy {
+    padding: 0 20px 1.1rem;
+  }
+
+  .sc-hero__title {
+    font-size: clamp(1.55rem, 7.4vh, 2.35rem);
+  }
 }
 
 #solution-case:has(.sc-afterhero--trust) {

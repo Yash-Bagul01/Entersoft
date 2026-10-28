@@ -203,7 +203,7 @@ export default function Differentiators() {
             ref={trackRef}
             className="relative flex h-[100svh] w-max flex-row items-stretch will-change-transform md:h-full"
           >
-            <header className="flex w-[82vw] shrink-0 flex-col justify-center px-6 py-16 md:w-[min(38vw,540px)] md:px-[4.2vw]">
+            <header className="flex w-[100vw] shrink-0 flex-col justify-center px-6 py-16 md:w-[min(38vw,540px)] md:px-[4.2vw]">
               <h2
                 className={cn(
                   familjen.className,
@@ -251,8 +251,8 @@ export default function Differentiators() {
                     >
                       {item.title}
                     </h3>
-                    <div className="mt-3 flex items-end justify-between gap-6">
-                      <p className="max-w-[28ch] text-[13.5px] leading-[1.45] text-[#5c5c5c] md:text-[14.5px]">
+                    <div className="mt-3 flex flex-wrap items-end justify-between gap-x-6 gap-y-3 md:flex-nowrap">
+                      <p className="min-w-0 max-w-[28ch] text-[13.5px] leading-[1.45] text-[#5c5c5c] md:text-[14.5px]">
                         {item.body}
                       </p>
                       <span className="outcomes-cta shrink-0">

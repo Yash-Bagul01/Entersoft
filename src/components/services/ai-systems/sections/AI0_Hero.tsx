@@ -75,7 +75,7 @@ export default function AI0_Hero() {
               variant="primary"
               size="lg"
               asLink
-              href="/#contact"
+              href="/contact"
               className="bg-[#00A3FF] text-[#060606] border-[#00A3FF] hover:bg-[#33b5ff]"
             >
               {hero.cta} →

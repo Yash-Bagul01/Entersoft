@@ -484,7 +484,7 @@ export const digitalTrustData: DigitalTrustDataset = {
     subline:
       'Unify cybersecurity engineering, regulatory compliance, data privacy, and third-party risk into a single executive operating model.',
     buttonText: 'Request a Digital Trust Briefing',
-    buttonHref: '/#contact',
+    buttonHref: '/contact',
     guaranteeBadges: ['EXPERT GRC ADVISORY', 'AUTOMATED EVIDENCE TELEMETRY', 'ACCREDITED REGISTRAR ADVOCACY'],
   },
 };

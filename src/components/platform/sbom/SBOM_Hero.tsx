@@ -350,7 +350,7 @@ export default function SBOM_Hero() {
 
               <div className="w-full pt-1">
               <Link
-                href="/#contact"
+                href="/contact"
                   className="group inline-flex items-center gap-3 bg-white hover:bg-slate-100 text-slate-950 pl-5 pr-2 py-2 rounded-md font-semibold text-sm shadow-xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
               >
                   <span className="tracking-tight text-slate-950 font-bold">Request Access</span>

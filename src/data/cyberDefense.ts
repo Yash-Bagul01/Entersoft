@@ -7,7 +7,7 @@ export const hero = {
     after: '',
   },
   sub: 'MDR and Detection Engineering, delivered through your existing security stack or an Entersoft-managed architecture.',
-  ctaPrimary: { label: 'Discuss MDR & Detection Engineering', href: '/#contact' },
+  ctaPrimary: { label: 'Discuss MDR & Detection Engineering', href: '/contact' },
   ctaSecondary: { label: 'See Monitored Surfaces', href: '#coverage' },
   heroStats: [
     { value: 'EXISTING OR MANAGED', label: 'Security Stack Delivery' },

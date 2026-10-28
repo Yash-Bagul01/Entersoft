@@ -70,7 +70,7 @@ export default function Secrets_AboutManifesto() {
               className="flex items-center gap-4 pt-2"
             >
               <Link
-                href="/#contact"
+                href="/contact"
                 className="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-md bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-sans font-bold text-sm tracking-tight transition-all duration-200 shadow-[0_4px_20px_rgba(37,99,235,0.3)] hover:scale-[1.02] cursor-pointer"
                 data-cursor="button"
               >

@@ -209,7 +209,7 @@ export default function SCA_Hero() {
             className="flex flex-wrap items-center gap-3.5 mb-10 z-30 relative"
           >
             <Link
-              href="/#contact"
+              href="/contact"
               className="!bg-[#111827] hover:!bg-black !text-white px-6.5 py-3 rounded-full font-semibold shadow-md hover:shadow-lg flex items-center gap-2 text-xs tracking-wide transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] cursor-pointer relative z-30"
             >
               <span className="!text-white font-semibold">Begin building today</span>
@@ -217,7 +217,7 @@ export default function SCA_Hero() {
             </Link>
 
             <Link
-              href="/#contact"
+              href="/contact"
               className="!bg-white/90 hover:!bg-indigo-50/80 !text-indigo-600 border border-indigo-200/90 px-6.5 py-3 rounded-full font-semibold text-xs shadow-2xs transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] cursor-pointer relative z-30"
             >
               Talk to Sales

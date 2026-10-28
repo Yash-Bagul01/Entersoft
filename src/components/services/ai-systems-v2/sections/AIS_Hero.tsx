@@ -39,7 +39,7 @@ export default function AIS_Hero() {
         {/* CTA Text Link with sweeping underline */}
         <div className="mt-8 md:mt-10">
           <a
-            href="/#contact"
+            href="/contact"
             className="group relative inline-flex items-center gap-2.5 font-sans text-base md:text-lg font-medium text-[var(--fg)] tracking-[0.06em] no-underline pb-1 transition-colors"
             data-cursor="link"
           >

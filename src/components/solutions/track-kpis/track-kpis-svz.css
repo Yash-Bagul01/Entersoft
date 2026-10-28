@@ -815,11 +815,54 @@ html[data-page="track-kpis"] #site-footer {
   .tk-word,
   .tk-shot,
   .tk-manifesto,
-  .tk-stack,
   .tk-pill--abs {
     opacity: 1 !important;
     transform: none !important;
     filter: none !important;
+  }
+
+  .tk-stack {
+    display: none;
+  }
+
+  .tk-pin {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 0;
+    height: auto;
+    overflow: visible;
+    gap: 1.25rem;
+  }
+
+  .tk-shot,
+  .tk-shot--a,
+  .tk-shot--b,
+  .tk-shot--c,
+  .tk-shot--d,
+  .tk-shot--e {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    width: min(100%, 720px);
+    height: 200px;
+    margin: 0;
+  }
+
+  .tk-manifesto {
+    position: relative;
+    z-index: 2;
+    max-width: 68rem;
+    padding-inline: 1rem;
+  }
+
+  .tk-pill--abs {
+    position: relative;
+    left: auto;
+    bottom: auto;
+    pointer-events: auto;
+    margin: 0.5rem 0 1rem;
   }
 }
 

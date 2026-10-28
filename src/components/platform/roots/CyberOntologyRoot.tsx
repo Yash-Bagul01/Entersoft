@@ -119,7 +119,7 @@ export default function CyberOntologyRoot() {
               variant="primary" 
               size="lg" 
               asLink 
-              href="/#contact" 
+              href="/contact" 
               className="gap-2.5 bg-[#08428C] hover:bg-[#0D518C] text-white px-8 py-4 rounded-xl text-[15px] font-semibold shadow-[0_0_25px_rgba(8,66,140,0.5)] transition-all border-none"
             >
               <span>Explore Ontology Model</span>
@@ -392,7 +392,7 @@ export default function CyberOntologyRoot() {
               variant="primary" 
               size="lg" 
               asLink 
-              href="/#contact" 
+              href="/contact" 
               className="gap-2.5 bg-[#08428C] hover:bg-[#0D518C] text-white px-9 py-4.5 rounded-xl text-[15px] font-semibold shadow-lg shadow-blue-600/20 border-none"
             >
               <span>Request Architecture Demo</span>
@@ -639,7 +639,7 @@ export default function CyberOntologyRoot() {
               variant="primary" 
               size="lg" 
               asLink 
-              href="/#contact" 
+              href="/contact" 
               className="gap-2.5 bg-[#08428C] hover:bg-[#0D518C] text-white px-9 py-4.5 rounded-xl text-[15px] font-semibold shadow-[0_0_30px_rgba(8,66,140,0.5)] transition-all border-none"
             >
               <span>Get Free Consultation</span>

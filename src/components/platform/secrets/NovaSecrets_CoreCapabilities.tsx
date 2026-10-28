@@ -157,7 +157,7 @@ export default function NovaSecrets_CoreCapabilities() {
                     STAGE {idx + 1} ARCHITECTURE
                   </span>
                   <Link
-                    href="/#contact"
+                    href="/contact"
                     className="inline-flex items-center gap-1.5 font-sans text-xs font-semibold text-[#60A5FA] hover:text-[#93C5FD] transition-colors group/link"
                     data-cursor="link"
                   >

@@ -12,7 +12,7 @@ export type Service = {
 export const hero = {
   badge: "ENPROBE PLATFORM // STATIC ANALYSIS",
   sub: "Integrate fast, context-aware static analysis across your repositories. Find real, exploitable vulnerabilities on every commit and deliver developer-ready fixes in minutes.",
-  ctaPrimary: { label: "Book a Live Demo", href: "/#contact" },
+  ctaPrimary: { label: "Book a Live Demo", href: "/contact" },
   ctaSecondary: { label: "See how it works", href: "#how-it-works" },
 };
 
@@ -240,6 +240,6 @@ export const closingCta = {
   heading1: "Find it in the code.",
   heading2: "Before it becomes an incident.",
   sub: "Get a comprehensive static analysis scan of your primary repository. Results delivered in 48 hours with zero commitment.",
-  cta: { label: "Request Ephemeral Scan", href: "/#contact" },
+  cta: { label: "Request Ephemeral Scan", href: "/contact" },
   reassurance: "NO COMMITMENT • SENIOR ENGINEER WALKTHROUGH • RESULTS IN 48 HOURS",
 };

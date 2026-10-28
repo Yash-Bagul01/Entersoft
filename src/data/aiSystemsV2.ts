@@ -94,5 +94,5 @@ export const auditNumbers = {
 export const stackedCTA = {
   lines: ['Assess', 'Your AI.', 'Before', 'It Ships.'],
   button: 'Get a Free Consultation',
-  href: '/#contact',
+  href: '/contact',
 }

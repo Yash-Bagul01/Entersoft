@@ -186,7 +186,7 @@ export default function SAST_Hero() {
             className="flex flex-wrap items-center gap-3.5 mb-10 z-30 relative"
           >
             <Link
-              href="/#contact"
+              href="/contact"
               className="!bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 !text-slate-950 px-6.5 py-3 rounded-full font-bold shadow-[0_0_24px_rgba(6,182,212,0.4)] flex items-center gap-2 text-xs tracking-wide transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] cursor-pointer relative z-30"
             >
               <span className="!text-slate-950 font-bold">Begin building today</span>
@@ -194,7 +194,7 @@ export default function SAST_Hero() {
             </Link>
 
             <Link
-              href="/#contact"
+              href="/contact"
               className="!bg-slate-900/80 hover:!bg-slate-800 !text-slate-200 border border-slate-700/80 px-6.5 py-3 rounded-full font-semibold text-xs shadow-md transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] cursor-pointer relative z-30"
             >
               Talk to Sales

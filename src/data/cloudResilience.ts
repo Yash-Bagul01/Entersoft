@@ -181,7 +181,7 @@ export const cloudOfferings: Record<string, CloudResilienceOffering> = {
     ],
     cta: {
       label: 'Request a Cloud Assessment',
-      href: '/#contact',
+      href: '/contact',
     },
   },
 
@@ -250,7 +250,7 @@ export const cloudOfferings: Record<string, CloudResilienceOffering> = {
     ],
     cta: {
       label: 'Request Cloud Pen Testing',
-      href: '/#contact',
+      href: '/contact',
     },
   },
 
@@ -391,7 +391,7 @@ export const cloudOfferings: Record<string, CloudResilienceOffering> = {
     ],
     cta: {
       label: 'Discuss Managed Cloud Detection',
-      href: '/#contact',
+      href: '/contact',
     },
   },
 
@@ -455,7 +455,7 @@ export const cloudOfferings: Record<string, CloudResilienceOffering> = {
     ],
     cta: {
       label: 'Request Container Security Review',
-      href: '/#contact',
+      href: '/contact',
     },
   },
 };

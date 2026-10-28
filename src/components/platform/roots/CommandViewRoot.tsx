@@ -51,7 +51,7 @@ export default function CommandViewRoot() {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="flex flex-wrap items-center gap-4 pt-2"
             >
-              <Button variant="primary" size="lg" asLink href="/#contact" className="gap-2 bg-[#08428C] hover:bg-[#0D518C] text-white border-none shadow-lg">
+              <Button variant="primary" size="lg" asLink href="/contact" className="gap-2 bg-[#08428C] hover:bg-[#0D518C] text-white border-none shadow-lg">
                 Request Command View Demo <ArrowRight className="w-4 h-4" />
               </Button>
             </motion.div>

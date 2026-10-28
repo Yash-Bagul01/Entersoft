@@ -97,10 +97,47 @@ export default function DiscussProjectModal({ open, onClose }: Props) {
     });
   }, [open, lenis]);
 
+  const returnFocus = useRef<HTMLElement | null>(null);
+
   useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      const back = returnFocus.current;
+      returnFocus.current = null;
+      if (back?.isConnected) back.focus();
+      return;
+    }
+    returnFocus.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const root = rootRef.current;
+    const focusable = () =>
+      [...(root?.querySelectorAll<HTMLElement>("button, a[href], input, textarea, select") ?? [])].filter(
+        (el) => !el.hasAttribute("disabled")
+      );
+    const focusTimer = window.setTimeout(() => {
+      root?.querySelector<HTMLElement>(".discuss-modal-close")?.focus();
+    }, 60);
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+      if (e.key !== "Tab" || !root) return;
+      const nodes = focusable();
+      if (!nodes.length) return;
+      const first = nodes[0];
+      const last = nodes[nodes.length - 1];
+      const active = document.activeElement;
+      if (!root.contains(active)) {
+        e.preventDefault();
+        (e.shiftKey ? last : first).focus();
+        return;
+      }
+      if (e.shiftKey && active === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
     const scroller = rootRef.current?.querySelector<HTMLElement>(".discuss-modal-scroll");
     const keepWheel = (e: WheelEvent | TouchEvent) => {
@@ -110,6 +147,7 @@ export default function DiscussProjectModal({ open, onClose }: Props) {
     scroller?.addEventListener("wheel", keepWheel, { passive: true });
     scroller?.addEventListener("touchmove", keepWheel, { passive: true });
     return () => {
+      window.clearTimeout(focusTimer);
       window.removeEventListener("keydown", onKey);
       scroller?.removeEventListener("wheel", keepWheel);
       scroller?.removeEventListener("touchmove", keepWheel);
@@ -177,11 +215,11 @@ export default function DiscussProjectModal({ open, onClose }: Props) {
             <div className="flex flex-col gap-7 md:col-span-7">
               <label className="discuss-field" data-rise>
                 <span>Enter your name</span>
-                <input required value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" />
+                <input required name="name" autoComplete="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" />
               </label>
               <label className="discuss-field" data-rise>
                 <span>Enter a valid email</span>
-                <input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@company.com" />
+                <input required type="email" name="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@company.com" />
               </label>
 
               <div className="discuss-field" data-rise>

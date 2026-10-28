@@ -33,18 +33,18 @@ export default function PlatformSubpageTemplate({ pillar }: PlatformSubpageTempl
       {/* ─────────────────────────────────────────────────────────────
           TOP NAVIGATION BAR MATCHING BELEN JONES REFERENCE
           ───────────────────────────────────────────────────────────── */}
-      <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 bg-[#060606]/80 backdrop-blur-md border-b border-white/10">
+      <header className="fixed top-16 left-0 right-0 z-40 flex items-center justify-between gap-3 px-4 py-2.5 bg-[#060606]/80 backdrop-blur-md border-b border-white/10 lg:top-[4.75rem] lg:px-6 lg:py-3">
         <div className="flex items-center gap-3">
           <Link
             href="/platform"
-            className="flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-white/20 bg-white/5 hover:bg-white text-white hover:text-black font-mono text-[11px] font-bold uppercase tracking-wider transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/20 bg-white/5 hover:bg-white text-white hover:text-black font-mono text-[11px] font-bold uppercase tracking-wider transition-all sm:px-4"
           >
             <span>/RETURN</span>
           </Link>
           {nextItem && (
             <Link
               href={nextItem.href}
-              className="flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-white/20 bg-white/5 hover:bg-white text-white hover:text-black font-mono text-[11px] font-bold uppercase tracking-wider transition-all"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/20 bg-white/5 hover:bg-white text-white hover:text-black font-mono text-[11px] font-bold uppercase tracking-wider transition-all sm:px-4"
             >
               <span>NEXT</span>
               <ArrowRight className="w-3 h-3" />
@@ -55,12 +55,12 @@ export default function PlatformSubpageTemplate({ pillar }: PlatformSubpageTempl
         <div className="flex items-center gap-3">
           <Link
             href="/platform"
-            className="font-mono text-[11px] font-bold uppercase tracking-widest text-white/70 hover:text-white transition-colors"
+            className="hidden font-mono text-[11px] font-bold uppercase tracking-widest text-white/70 hover:text-white transition-colors lg:inline"
           >
             ENTERSOFT PLATFORM
           </Link>
           <Link
-            href="/booking"
+            href="/contact"
             className="px-4 py-1.5 rounded-full bg-[#08428C] hover:bg-[#0D518C] text-white font-mono text-[11px] font-bold uppercase tracking-wider transition-all"
           >
             CONTACT
@@ -155,7 +155,7 @@ export default function PlatformSubpageTemplate({ pillar }: PlatformSubpageTempl
               transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
               className="flex flex-wrap items-center gap-4 pt-2"
             >
-              <Button variant="primary" size="lg" asLink href="/booking" className="gap-2 bg-[#08428C] hover:bg-[#0D518C] text-white border-none shadow-lg">
+              <Button variant="primary" size="lg" asLink href="/contact" className="gap-2 bg-[#08428C] hover:bg-[#0D518C] text-white border-none shadow-lg">
                 Request Briefing <ArrowRight className="w-4 h-4" />
               </Button>
               <Link href="/platform" className="inline-flex items-center gap-2 font-mono text-[12px] font-bold uppercase tracking-wider text-white/70 hover:text-white border-b border-white/30 hover:border-white py-1">

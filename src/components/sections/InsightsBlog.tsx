@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useLayoutEffect, useRef } from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import { blogPosts } from "@/data/blog";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import gsap from "gsap";
@@ -32,6 +32,7 @@ function destFromCenter(inner: HTMLElement, index: number) {
 
 export default function InsightsBlog() {
   const reduce = useReducedMotion();
+  const [wide, setWide] = useState(true);
   const rootRef = useRef<HTMLElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -64,6 +65,12 @@ export default function InsightsBlog() {
             toggleActions: "play none none none",
           },
         });
+      }
+
+      if (!wide) {
+        pin.style.height = "";
+        gsap.set(stage, { clearProps: "position,top,bottom,left,right" });
+        return;
       }
 
       const inners = gsap.utils.toArray<HTMLElement>("[data-card-inner]", stage);
@@ -177,9 +184,14 @@ export default function InsightsBlog() {
     const refresh = () => ScrollTrigger.refresh();
     window.addEventListener("load", refresh);
     const kicks = [300, 900, 1800].map((t) => window.setTimeout(refresh, t));
+    const mq = window.matchMedia("(min-width: 768px)");
+    const onMq = () => setWide(mq.matches);
+    onMq();
+    mq.addEventListener("change", onMq);
 
     return () => {
       window.removeEventListener("load", refresh);
+      mq.removeEventListener("change", onMq);
       kicks.forEach((id) => window.clearTimeout(id));
       if (tickDrive) {
         gsap.ticker.remove(tickDrive);
@@ -187,7 +199,7 @@ export default function InsightsBlog() {
       }
       ctx.revert();
     };
-  }, [reduce]);
+  }, [reduce, wide]);
 
   return (
     <section

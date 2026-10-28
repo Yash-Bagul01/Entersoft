@@ -836,10 +836,11 @@ export default function VAPTPage() {
 
       {/* SECTION 4: Interactive Giant VAPT Footer (detroit.paris styled) */}
       <footer className="relative w-full vapt-bg overflow-hidden select-none pb-0 border-t border-zinc-900/40">
-        <style dangerouslySetInnerHTML={{ __html: `
-          @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
-        ` }} />
-        
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+        />
+
         <div className="max-w-[1400px] w-full mx-auto flex flex-col items-center justify-end relative h-[18vw] min-h-[120px] max-h-[260px] overflow-hidden">
           {/* Giant VAPT text container */}
           <div className="relative w-full flex justify-center overflow-visible top-[2vw]">

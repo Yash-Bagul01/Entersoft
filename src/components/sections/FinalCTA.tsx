@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Calendar, Check, Send, ShieldCheck } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import SectionLabel from "../ui/SectionLabel";
@@ -45,9 +45,9 @@ export default function FinalCTA({ theme = "dark" }: FinalCTAProps) {
     );
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: Event) => {
     e.preventDefault();
-    if (!email || !name) return;
+    if (isSubmitting || !email || !name) return;
 
     setIsSubmitting(true);
     setTimeout(() => {
@@ -55,6 +55,20 @@ export default function FinalCTA({ theme = "dark" }: FinalCTAProps) {
       setSubmitted(true);
     }, 1200);
   };
+  const formRef = useRef<HTMLFormElement>(null);
+  const submitRef = useRef(handleSubmit);
+  submitRef.current = handleSubmit;
+
+  useEffect(() => {
+    const form = formRef.current;
+    if (!form) return;
+    const onSubmit = (event: Event) => {
+      event.preventDefault();
+      submitRef.current(event);
+    };
+    form.addEventListener("submit", onSubmit);
+    return () => form.removeEventListener("submit", onSubmit);
+  }, []);
 
   return (
     <section
@@ -147,6 +161,11 @@ export default function FinalCTA({ theme = "dark" }: FinalCTAProps) {
         [data-theme="light"] .contact-section-theme .contact-footer-info {
           color: #64748b !important;
         }
+
+        [data-theme="light"] .contact-section-theme .contact-success-copy,
+        [data-theme="light"] .contact-section-theme .contact-success-copy strong {
+          color: #1e293b !important;
+        }
       `}</style>
 
       {/* Background Radial Glow */}
@@ -229,13 +248,15 @@ export default function FinalCTA({ theme = "dark" }: FinalCTAProps) {
           <div className="lg:col-span-7 w-full">
             <AnimatePresence mode="wait">
               {!submitted ? (
-                <motion.form
+                <motion.div
                   key="contact-form-right-refined"
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -12 }}
                   transition={{ duration: 0.35 }}
-                  onSubmit={handleSubmit}
+                >
+                <form
+                  ref={formRef}
                   className="flex flex-col gap-6"
                 >
                   {/* Question 1: Name */}
@@ -251,6 +272,8 @@ export default function FinalCTA({ theme = "dark" }: FinalCTAProps) {
                     <input
                       id="contact-name"
                       type="text"
+                      name="name"
+                      autoComplete="name"
                       required
                       value={name}
                       onChange={(e) => setName(e.target.value)}
@@ -276,6 +299,8 @@ export default function FinalCTA({ theme = "dark" }: FinalCTAProps) {
                     <input
                       id="contact-email"
                       type="email"
+                      name="email"
+                      autoComplete="email"
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
@@ -301,6 +326,8 @@ export default function FinalCTA({ theme = "dark" }: FinalCTAProps) {
                     <input
                       id="contact-phone"
                       type="tel"
+                      name="tel"
+                      autoComplete="tel"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="Type your phone number"
@@ -436,10 +463,12 @@ export default function FinalCTA({ theme = "dark" }: FinalCTAProps) {
                       <span>SOC 2 Type II ISMS</span>
                     </div>
                   </div>
-                </motion.form>
+                </form>
+                </motion.div>
               ) : (
                 <motion.div
                   key="contact-success-right-refined"
+                  role="status"
                   initial={{ opacity: 0, scale: 0.96 }}
                   animate={{ opacity: 1, scale: 1 }}
                   className="py-10 px-8 rounded-2xl border border-cyan-500/20 bg-cyan-950/10 flex flex-col items-center justify-center text-center gap-4 max-w-[580px]"
@@ -450,7 +479,7 @@ export default function FinalCTA({ theme = "dark" }: FinalCTAProps) {
                   <h3 className="font-display text-xl font-medium text-white">
                     Request Received
                   </h3>
-                  <p className="text-xs sm:text-sm font-sans text-slate-300 leading-relaxed max-w-[440px]">
+                  <p className="contact-success-copy text-xs sm:text-sm font-sans text-slate-300 leading-relaxed max-w-[440px]">
                     Thank you, <strong>{name}</strong>! An Entersoft security coordinator will contact you at <strong>{email}</strong> within 2 business hours.
                   </p>
                 </motion.div>

@@ -108,7 +108,7 @@ export default function Secrets_ProcessTimeline() {
           </div>
 
           <Link
-            href="/#contact"
+            href="/contact"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-md bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-sans font-bold text-xs uppercase tracking-wider transition-all duration-200 shadow-sm cursor-pointer self-start sm:self-auto"
             data-cursor="button"
           >

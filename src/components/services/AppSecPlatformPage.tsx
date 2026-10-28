@@ -1807,7 +1807,7 @@ export default function AppSecPlatformPage({ faqs }: AppSecPlatformPageProps) {
                 className="mt-8 flex lg:hidden"
               >
                 <MagneticButton>
-                  <Button variant="primary" size="lg" asLink href="/#contact" className="gap-2">
+                  <Button variant="primary" size="lg" asLink href="/contact" className="gap-2">
                     Request Briefing <ArrowRight className="w-3.5 h-3.5" />
                   </Button>
                 </MagneticButton>

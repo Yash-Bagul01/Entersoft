@@ -95,7 +95,7 @@ export default function Secrets_FooterCTA() {
           className="pt-4 flex flex-col sm:flex-row items-center gap-4"
         >
           <Link
-            href="/#contact"
+            href="/contact"
             className="inline-flex items-center justify-center gap-3 px-9 py-4 rounded-md bg-[#3B82F6] hover:bg-[#60A5FA] text-slate-950 font-sans font-bold text-base tracking-tight transition-all duration-300 shadow-[0_0_35px_rgba(59,130,246,0.5)] hover:scale-[1.03] cursor-pointer"
             data-cursor="button"
           >
@@ -112,7 +112,7 @@ export default function Secrets_FooterCTA() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mt-12 pt-8 border-t border-white/10 flex flex-wrap items-center justify-center gap-8 font-mono text-xs text-slate-400"
         >
-          <Link href="/#contact" className="hover:text-[#60A5FA] transition-colors" data-cursor="link">
+          <Link href="/contact" className="hover:text-[#60A5FA] transition-colors" data-cursor="link">
             [01] Live Platform Demo
           </Link>
           <Link href="/platform/sast" className="hover:text-[#60A5FA] transition-colors" data-cursor="link">

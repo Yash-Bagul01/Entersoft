@@ -149,7 +149,7 @@ export default function CloudResilienceHubRoot() {
 
           <div className="mt-4">
             <MagneticButton>
-              <Button variant="primary" size="lg" asLink href="/#contact">
+              <Button variant="primary" size="lg" asLink href="/contact">
                 Request a Cloud Security Assessment
               </Button>
             </MagneticButton>

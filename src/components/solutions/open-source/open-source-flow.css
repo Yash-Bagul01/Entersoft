@@ -604,6 +604,12 @@ html[data-theme="light"]:has([data-page="open-source"]) .nav-transparent-header 
 }
 
 @media (max-width: 900px) {
+  .os-words p {
+    font-size: clamp(2.15rem, 12.5vw, 4.6rem);
+    letter-spacing: -0.05em;
+    padding-inline: 0.6rem;
+  }
+
   .os-hero,
   .os-since,
   .os-work,

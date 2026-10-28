@@ -64,12 +64,12 @@ export default function AIV3_Hero() {
           className="flex flex-wrap items-center justify-center gap-4 mt-9"
         >
           <MagneticButton>
-            <Button variant="primary" size="lg" asLink href="/#contact">
+            <Button variant="primary" size="lg" asLink href="/contact">
               {heroV3.ctaPrimary} <ArrowUpRight className="w-4 h-4 ml-1 inline" />
             </Button>
           </MagneticButton>
 
-          <Button variant="secondary" size="lg" asLink href="/#contact">
+          <Button variant="secondary" size="lg" asLink href="/contact">
             {heroV3.ctaSecondary}
           </Button>
         </motion.div>

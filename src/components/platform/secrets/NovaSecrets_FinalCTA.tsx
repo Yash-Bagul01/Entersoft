@@ -61,7 +61,7 @@ export default function NovaSecrets_FinalCTA() {
           className="flex flex-col sm:flex-row items-center gap-4"
         >
           <Link
-            href="/#contact"
+            href="/contact"
             className="inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full bg-white hover:bg-slate-100 text-[#030303] font-sans font-semibold text-sm tracking-tight transition-all duration-300 shadow-[0_0_35px_rgba(255,255,255,0.35)] hover:scale-[1.03] cursor-pointer"
             data-cursor="button"
           >

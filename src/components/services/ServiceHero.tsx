@@ -231,7 +231,7 @@ contract DeFiBridge {
               className="mt-2 flex flex-wrap items-center gap-4"
             >
               <MagneticButton>
-                <Button variant="primary" size="lg" asLink href="/#contact" className="gap-2">
+                <Button variant="primary" size="lg" asLink href="/contact" className="gap-2">
                   {ctaText} <span className="font-sans">→</span>
                 </Button>
               </MagneticButton>
