@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  allowedDevOrigins:['*.trycloudflare.com'],
   images: {
     qualities: [75, 85, 95],
     remotePatterns: [

@@ -32,7 +32,11 @@ export default function ServicesLayout({
         className={`min-h-screen text-white ${
           pathname === "/services/application-security-testing" || pathname === "/services/appsec"
             ? "bg-[#101820]"
-            : "bg-[#0b0b0d]"
+            : pathname === "/services/smart-contract-security"
+              ? "bg-[#000104]"
+              : pathname === "/services/ai-security-testing"
+                ? "bg-[#05061f]"
+                : "bg-[#0b0b0d]"
         }`}
       >
         {children}

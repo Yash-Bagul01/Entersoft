@@ -235,11 +235,9 @@ export default function Differentiators() {
                         src={item.image}
                         alt=""
                         className={
-                          item.image.endsWith("verified-signal.jpg")
-                            ? "h-auto w-full object-contain"
-                            : item.image.includes("1635181951411")
-                              ? "aspect-[154/100] h-auto w-full object-cover object-[center_42%] transition-transform duration-700 group-hover:scale-[1.04]"
-                              : "aspect-[154/100] h-auto w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                          item.image.includes("1635181951411")
+                            ? "aspect-[154/100] h-auto w-full object-cover object-[center_42%] transition-transform duration-700 group-hover:scale-[1.04]"
+                            : "aspect-[154/100] h-auto w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                         }
                       />
                     </div>

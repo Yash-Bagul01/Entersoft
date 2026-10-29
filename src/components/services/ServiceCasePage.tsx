@@ -137,7 +137,11 @@ export default function ServiceCasePage({ slug }: { slug: ServiceCaseSlug }) {
                   ? "sc-afterhero sc-afterhero--trust"
                   : slug === "siem"
                     ? "sc-afterhero sc-afterhero--cdo"
-                    : "sc-afterhero"
+                    : slug === "smart-contract-audits"
+                      ? "sc-afterhero sc-afterhero--galactic"
+                      : slug === "ai-ast"
+                        ? "sc-afterhero sc-afterhero--prism"
+                        : "sc-afterhero"
         }
       >
         {slug === "appsec" ? (
@@ -186,6 +190,23 @@ export default function ServiceCasePage({ slug }: { slug: ServiceCaseSlug }) {
               </div>
             ))}
             <div className="sc-cdo__grain" />
+          </div>
+        ) : null}
+        {slug === "smart-contract-audits" ? (
+          <div className="sc-galactic" aria-hidden="true">
+            <div className="sc-galactic__wash" />
+            <div className="sc-galactic__streaks" />
+            <div className="sc-galactic__source" />
+            <div className="sc-galactic__veil" />
+            <div className="sc-galactic__grain" />
+          </div>
+        ) : null}
+        {slug === "ai-ast" ? (
+          <div className="sc-prism" aria-hidden="true">
+            <div className="sc-prism__flow" />
+            <div className="sc-prism__veil" />
+            <div className="sc-prism__fade" />
+            <div className="sc-prism__grain" />
           </div>
         ) : null}
         {slug === "compliance-management" ? (

@@ -1512,7 +1512,7 @@ html:has([data-page="ai-ast"]) footer,
 }
 
 #capabilities .outcomes-card-media {
-  border-radius: clamp(1.75rem, 2.5vw, 3rem);
+  border-radius: clamp(1rem, 1.5vw, 1.75rem);
 }
 
 [data-theme="light"] #capabilities {
@@ -3237,7 +3237,7 @@ html:has([data-page="ai-ast"]) footer,
     font-size: clamp(1.85rem, 8vw, 2.7rem) !important;
   }
 
-  #capabilities [data-outcome-card] img:not([src$="verified-signal.jpg"]) {
+  #capabilities [data-outcome-card] img {
     max-height: 32svh;
     object-fit: cover;
   }

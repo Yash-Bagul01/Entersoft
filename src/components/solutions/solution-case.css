@@ -1254,3 +1254,296 @@
     animation: none;
   }
 }
+
+#solution-case:has(.sc-afterhero--galactic) {
+  --sc-bg: #000104;
+  background: #000104;
+}
+
+.sc-afterhero--galactic {
+  isolation: isolate;
+  background: #000104;
+}
+
+.sc-afterhero--galactic > *:not(.sc-galactic) {
+  position: relative;
+  z-index: 1;
+}
+
+.sc-galactic {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: #000104;
+}
+
+.sc-galactic__wash {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(100deg, #000104 0%, #000104 16%, #020814 38%, #061833 62%, #0a2c58 100%);
+}
+
+.sc-galactic__streaks {
+  position: absolute;
+  inset: 0 0 0 8%;
+  overflow: hidden;
+  mix-blend-mode: screen;
+  opacity: 0.9;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 24%, #000 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 24%, #000 100%);
+}
+
+/* Each layer travels exactly one gradient period along its angle so the loop has no seam. */
+.sc-galactic__streaks::before,
+.sc-galactic__streaks::after {
+  content: "";
+  position: absolute;
+  inset: -480px;
+  will-change: transform;
+}
+
+.sc-galactic__streaks::before {
+  background: repeating-linear-gradient(
+    122deg,
+    transparent 0px,
+    transparent 48px,
+    rgba(6, 36, 80, 0.22) 110px,
+    rgba(16, 127, 182, 0.5) 166px,
+    rgba(150, 210, 235, 0.26) 198px,
+    rgba(8, 48, 110, 0.16) 250px,
+    transparent 310px
+  );
+  animation: sc-galactic-flow-a 14s linear infinite;
+}
+
+.sc-galactic__streaks::after {
+  background: repeating-linear-gradient(
+    132deg,
+    transparent 0px,
+    transparent 120px,
+    rgba(10, 70, 140, 0.18) 220px,
+    rgba(60, 160, 215, 0.3) 280px,
+    rgba(8, 40, 90, 0.12) 350px,
+    transparent 460px
+  );
+  opacity: 0.8;
+  animation: sc-galactic-flow-b 26s linear infinite reverse;
+}
+
+.sc-galactic__source {
+  position: absolute;
+  inset: -80px -120px 0 0;
+  background:
+    radial-gradient(ellipse 22% 10% at 100% 0%, rgba(190, 230, 250, 0.75) 0%, rgba(16, 127, 182, 0.4) 26%, transparent 64%),
+    radial-gradient(ellipse 18% 10% at 100% 34%, rgba(16, 127, 182, 0.28) 0%, transparent 70%),
+    radial-gradient(ellipse 16% 9% at 96% 68%, rgba(12, 90, 160, 0.24) 0%, transparent 70%);
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+  animation: sc-galactic-breathe 7s ease-in-out infinite alternate;
+}
+
+.sc-galactic__veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #000104 0%, rgba(0, 1, 4, 0.78) 18%, rgba(0, 1, 4, 0.28) 40%, transparent 62%);
+}
+
+.sc-galactic__grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.42;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
+#solution-case:has(.sc-afterhero--galactic) .sc-hero__shade {
+  background: linear-gradient(
+    to top,
+    #000104 0%,
+    rgba(0, 8, 20, 0.62) 26%,
+    rgba(0, 0, 0, 0.24) 100%
+  );
+}
+
+@keyframes sc-galactic-flow-a {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(263px, 164px, 0);
+  }
+}
+
+@keyframes sc-galactic-flow-b {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(342px, 308px, 0);
+  }
+}
+
+@keyframes sc-galactic-breathe {
+  from {
+    opacity: 0.65;
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(-48px, 24px, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sc-galactic__streaks::before,
+  .sc-galactic__streaks::after,
+  .sc-galactic__source {
+    animation: none;
+  }
+}
+
+#solution-case:has(.sc-afterhero--prism) {
+  --sc-bg: #05061f;
+  background: #05061f;
+}
+
+.sc-afterhero--prism {
+  isolation: isolate;
+  background: #05061f;
+}
+
+.sc-afterhero--prism > *:not(.sc-prism) {
+  position: relative;
+  z-index: 1;
+}
+
+.sc-prism {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: linear-gradient(90deg, #15329a 0%, #2448ad 34%, #1c1a66 64%, #07072c 100%);
+}
+
+.sc-prism__flow {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  animation: sc-prism-breathe 9s ease-in-out infinite alternate;
+}
+
+/* Each layer travels exactly one gradient period along its angle so the loop has no seam. */
+.sc-prism__flow::before,
+.sc-prism__flow::after {
+  content: "";
+  position: absolute;
+  inset: -1100px;
+  will-change: transform;
+}
+
+.sc-prism__flow::before {
+  background: repeating-linear-gradient(
+    150deg,
+    rgba(48, 94, 206, 0.78) 0px,
+    rgba(80, 126, 232, 0.7) 330px,
+    rgba(160, 172, 250, 0.72) 455px,
+    rgba(240, 236, 255, 0.78) 510px,
+    rgba(196, 150, 236, 0.58) 540px,
+    rgba(128, 60, 112, 0.42) 585px,
+    rgba(36, 24, 100, 0.5) 700px,
+    rgba(7, 7, 44, 0.6) 900px,
+    rgba(48, 94, 206, 0.78) 1100px
+  );
+  animation: sc-prism-flow-a 42s linear infinite;
+}
+
+.sc-prism__flow::after {
+  background: repeating-linear-gradient(
+    150deg,
+    transparent 0px,
+    transparent 140px,
+    rgba(170, 160, 250, 0.16) 200px,
+    rgba(235, 228, 255, 0.24) 226px,
+    rgba(150, 120, 230, 0.12) 260px,
+    transparent 340px
+  );
+  mix-blend-mode: screen;
+  animation: sc-prism-flow-b 18s linear infinite reverse;
+}
+
+.sc-prism__veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(4, 6, 32, 0.4) 0%, rgba(4, 6, 32, 0.22) 55%, rgba(4, 6, 32, 0.06) 100%);
+}
+
+.sc-prism__fade {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 30vh;
+  background: linear-gradient(180deg, #05061f 0%, rgba(5, 6, 31, 0) 100%);
+}
+
+.sc-prism__grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.16;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
+#solution-case:has(.sc-afterhero--prism) .sc-hero__shade {
+  background: linear-gradient(
+    to top,
+    #05061f 0%,
+    rgba(8, 10, 48, 0.6) 26%,
+    rgba(0, 0, 0, 0.22) 100%
+  );
+}
+
+#solution-case:has(.sc-afterhero--prism) .sc-prose,
+#solution-case:has(.sc-afterhero--prism) .sc-intro__lede p,
+#solution-case:has(.sc-afterhero--prism) .sc-fits p {
+  text-shadow: 0 1px 18px rgba(4, 6, 32, 0.55);
+}
+
+@keyframes sc-prism-flow-a {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(550px, 953px, 0);
+  }
+}
+
+@keyframes sc-prism-flow-b {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(170px, 294px, 0);
+  }
+}
+
+@keyframes sc-prism-breathe {
+  from {
+    opacity: 0.82;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sc-prism__flow,
+  .sc-prism__flow::before,
+  .sc-prism__flow::after {
+    animation: none;
+  }
+}
