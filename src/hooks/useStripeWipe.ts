@@ -1,7 +1,8 @@
 "use client";
 
-import { useLayoutEffect, type RefObject } from "react";
+import { useLayoutEffect, useState, type RefObject } from "react";
 import gsap from "gsap";
+import { isTouchFirst, viewportHeight } from "@/lib/viewport";
 
 type StripeWipeOptions = {
   /** When false, stripes wipe and the incoming sheet is already in place. */
@@ -19,6 +20,18 @@ export function useStripeWipe(
 ) {
   const slideSheet = options?.slideSheet !== false;
   const coverIncoming = options?.coverIncoming === true;
+  // Phones have no stripes and no section overlap, so sliding the sheet only opens an empty band.
+  const [phone, setPhone] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches
+  );
+
+  useLayoutEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    const sync = () => setPhone(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
   useLayoutEffect(() => {
     const root = rootRef.current;
@@ -26,7 +39,9 @@ export function useStripeWipe(
     const sheet = sheetRef.current;
     if (!root || !stripes || !sheet) return;
 
-    if (reduce) {
+    if (reduce || phone) {
+      // yPercent is zeroed first: GSAP caches it, and the footer's tween on this sheet would re-apply it.
+      gsap.set(sheet, { yPercent: 0 });
       gsap.set(sheet, { clearProps: "transform" });
       gsap.set(stripes, { autoAlpha: 0 });
       return;
@@ -70,8 +85,11 @@ export function useStripeWipe(
       });
     };
 
+    let lastHold = -1;
     const drive = () => {
-      const holdT = gsap.utils.clamp(0, 1, 1 - root.getBoundingClientRect().top / window.innerHeight);
+      const holdT = gsap.utils.clamp(0, 1, 1 - root.getBoundingClientRect().top / viewportHeight());
+      if (holdT === lastHold) return;
+      lastHold = holdT;
       wipe.progress(holdT);
 
       if (!slideSheet) {
@@ -86,7 +104,8 @@ export function useStripeWipe(
     };
 
     gsap.ticker.add(drive);
-    window.addEventListener("scroll", drive, { passive: true });
+    // Native (touch) scrolling is already current when the ticker runs, so one call per frame suffices.
+    if (!isTouchFirst()) window.addEventListener("scroll", drive, { passive: true });
     drive();
 
     return () => {
@@ -98,5 +117,5 @@ export function useStripeWipe(
       gsap.set(sheet, { clearProps: "transform,position,top,left,right,width,zIndex,y" });
       gsap.set(stripes, { clearProps: "opacity,visibility" });
     };
-  }, [rootRef, stripesRef, sheetRef, reduce, slideSheet, coverIncoming]);
+  }, [rootRef, stripesRef, sheetRef, reduce, phone, slideSheet, coverIncoming]);
 }

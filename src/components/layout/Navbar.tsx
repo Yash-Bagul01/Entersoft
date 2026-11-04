@@ -11,6 +11,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Familjen_Grotesk } from "next/font/google";
 import { ROUTES } from "@/config/routes";
+import { APPSEC_SKIP } from "@/data/appsecPage";
 import { companyNav } from "@/data/companyPages";
 import { industryNav } from "@/data/industries";
 import { resourceNav } from "@/data/resources";
@@ -287,7 +288,7 @@ export default function Navbar() {
   useEffect(() => {
     setMobileMenuOpen(false);
     setMobileActiveMega(null);
-    document.body.style.overflow = "auto";
+    document.body.style.overflow = "";
   }, [pathname]);
 
   const toggleMobileMenu = () => {
@@ -296,7 +297,7 @@ export default function Navbar() {
     if (!nextState) {
       setMobileActiveMega(null);
     }
-    document.body.style.overflow = nextState ? "hidden" : "auto";
+    document.body.style.overflow = nextState ? "hidden" : "";
   };
 
   const getDropdownStyle = (label: string) => {
@@ -323,6 +324,21 @@ export default function Navbar() {
 
   return (
     <>
+      {pathname === "/services/application-security-testing" ? (
+        <a
+          href={APPSEC_SKIP.href}
+          className="as-skip"
+          onClickCapture={(event) => {
+            const target = document.getElementById("main");
+            if (!target) return;
+            event.preventDefault();
+            event.stopPropagation();
+            target.focus();
+          }}
+        >
+          {APPSEC_SKIP.label}
+        </a>
+      ) : null}
       <header className="fixed top-0 left-0 right-0 z-50 w-full pointer-events-none">
         <div className={cn(
           "w-full transition-all duration-500 ease-in-out pointer-events-auto",

@@ -13,9 +13,25 @@ import {
   type ServiceCaseSlug,
 } from "@/data/serviceCases";
 import { SERVICE_CASE_COPY } from "@/data/serviceCaseCopy";
+import { APPSEC_CLOSING } from "@/data/appsecPage";
 import { useOptionalSolutionTransition } from "@/components/solutions/SolutionTransitionContext";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import AppsecHero from "@/components/services/appsec/AppsecHero";
+import AppsecPageNav from "@/components/services/appsec/AppsecPageNav";
+import AppsecDifference from "@/components/services/appsec/AppsecDifference";
+import AppsecCoverage from "@/components/services/appsec/AppsecCoverage";
+import AppsecScenarios from "@/components/services/appsec/AppsecScenarios";
+import AppsecMethod from "@/components/services/appsec/AppsecMethod";
+import AppsecExpertAi from "@/components/services/appsec/AppsecExpertAi";
+import AppsecEnprobe from "@/components/services/appsec/AppsecEnprobe";
+import AppsecDeliverables from "@/components/services/appsec/AppsecDeliverables";
+import AppsecStandards from "@/components/services/appsec/AppsecStandards";
+import AppsecEngagement from "@/components/services/appsec/AppsecEngagement";
+import AppsecFaqs from "@/components/services/appsec/AppsecFaqs";
+import AppsecRelated from "@/components/services/appsec/AppsecRelated";
+import AppsecAssessment from "@/components/services/appsec/AppsecAssessment";
 import "@/components/solutions/solution-case.css";
+import "@/components/services/appsec/appsec.css";
 
 export default function ServiceCasePage({ slug }: { slug: ServiceCaseSlug }) {
   const visual = SERVICE_CASES[slug];
@@ -28,6 +44,7 @@ export default function ServiceCasePage({ slug }: { slug: ServiceCaseSlug }) {
   const more = useMemo(() => otherServiceCases(slug), [slug]);
   const titleWords = useMemo(() => visual.title.split(" "), [visual.title]);
   const [openFaqs, setOpenFaqs] = useState<string[]>([]);
+  const isAppsec = slug === "appsec";
 
   useLayoutEffect(() => {
     const kicker = kickerRef.current;
@@ -35,16 +52,20 @@ export default function ServiceCasePage({ slug }: { slug: ServiceCaseSlug }) {
     if (!kicker || !title) return;
 
     const words = title.querySelectorAll<HTMLElement>(".sc-hero__word");
+    const extras = Array.from(
+      articleRef.current?.querySelectorAll<HTMLElement>("[data-hero-rise]") ?? []
+    );
     const incoming = transition?.phase === "covering" || transition?.phase === "expanding";
 
     if (reduce) {
-      gsap.set([kicker, words], { autoAlpha: 1, y: 0 });
+      gsap.set([kicker, words, ...extras], { autoAlpha: 1, y: 0 });
       transition?.markArrived(visual.href);
       return;
     }
 
     gsap.set(kicker, { autoAlpha: 0, y: 16 });
     gsap.set(words, { autoAlpha: 0, y: "108%" });
+    if (extras.length) gsap.set(extras, { autoAlpha: 0, y: 16 });
     transition?.markArrived(visual.href);
 
     const tl = gsap.timeline({ delay: incoming ? 0.24 : 0.06 });
@@ -60,6 +81,15 @@ export default function ServiceCasePage({ slug }: { slug: ServiceCaseSlug }) {
       stagger: 0.1,
       ease: "power3.out",
     }, 0.14);
+    if (extras.length) {
+      tl.to(extras, {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.85,
+        stagger: 0.1,
+        ease: "power3.out",
+      }, 0.14 + words.length * 0.1);
+    }
 
     return () => {
       tl.kill();
@@ -91,39 +121,47 @@ export default function ServiceCasePage({ slug }: { slug: ServiceCaseSlug }) {
     });
     return () => {
       tweens.forEach((tween) => tween.kill());
+      // The reduced-motion preference resolves after the first pass; never leave headings hidden.
+      gsap.set(headings, { clearProps: "opacity,visibility,transform" });
     };
   }, [reduce, slug]);
 
   const leadProse = copy.directionProse[0];
   const supportProse = copy.directionProse.slice(1);
 
-  return (
+  const article = (
     <article id="solution-case" ref={articleRef} className={slug === "vapt" ? "dark-panel sc-case-vapt" : "dark-panel"}>
-      <header className="sc-hero">
-        <div className="sc-hero__media">
-          <Image
-            src={visual.hero.src}
-            alt={visual.hero.alt}
-            fill
-            priority
-            unoptimized
-            loading="eager"
-            sizes="100vw"
-            className="object-cover"
-          />
-        </div>
-        <div className="sc-hero__shade" />
-        <div className="sc-hero__copy">
-          <p ref={kickerRef} className="sc-kicker">{copy.kicker}</p>
-          <h1 ref={titleRef} className="sc-hero__title">
-            {titleWords.map((word, i) => (
-              <span key={`${word}-${i}`} className="sc-hero__word-wrap">
-                <span className="sc-hero__word">{word}</span>
-              </span>
-            ))}
-          </h1>
-        </div>
-      </header>
+      {isAppsec ? null : (
+        <header className="sc-hero">
+          <div className="sc-hero__media">
+            <Image
+              src={visual.hero.src}
+              alt={visual.hero.alt}
+              fill
+              priority
+              unoptimized
+              loading="eager"
+              sizes="100vw"
+              className="object-cover"
+            />
+          </div>
+          <div className="sc-hero__shade" />
+          <div className="sc-hero__copy">
+            <p ref={kickerRef} className="sc-kicker">{copy.kicker}</p>
+            <h1 ref={titleRef} className="sc-hero__title">
+              {titleWords.map((word, i) => (
+                <span key={`${word}-${i}`} className="sc-hero__word-wrap">
+                  {/* The trailing space has no width inside the inline-block but keeps the H1 text readable to crawlers. */}
+                  <span className="sc-hero__word">
+                    {word}
+                    {i < titleWords.length - 1 ? " " : null}
+                  </span>
+                </span>
+              ))}
+            </h1>
+          </div>
+        </header>
+      )}
 
       <div
         className={
@@ -152,6 +190,25 @@ export default function ServiceCasePage({ slug }: { slug: ServiceCaseSlug }) {
             <div className="sc-obscura__orb sc-obscura__orb--c" />
             <div className="sc-obscura__veil" />
             <div className="sc-obscura__grain" />
+          </div>
+        ) : null}
+        {isAppsec ? (
+          <div className="as-stage">
+            <AppsecHero kickerRef={kickerRef} titleRef={titleRef} />
+            <AppsecPageNav />
+            <AppsecDifference />
+            <AppsecCoverage />
+            <AppsecScenarios />
+            <AppsecMethod />
+            <AppsecExpertAi />
+            <AppsecEnprobe />
+            <AppsecDeliverables />
+            <AppsecStandards />
+            <AppsecEngagement />
+            <AppsecFaqs />
+            <AppsecRelated />
+            <AppsecAssessment />
+            <p className="sc-wrap as-close">{APPSEC_CLOSING}</p>
           </div>
         ) : null}
         {slug === "vapt" ? (
@@ -220,27 +277,34 @@ export default function ServiceCasePage({ slug }: { slug: ServiceCaseSlug }) {
           </div>
         ) : null}
 
+      {isAppsec ? null : (
+      <>
       <div className="sc-wrap">
         <section className="sc-intro">
           <div className="sc-intro__lede">
-            <p>{copy.lede}</p>
+            {isAppsec ? null : <p>{copy.lede}</p>}
             <p>{copy.ledeFaded}</p>
           </div>
           <div className="sc-tags">
-            {copy.tags.map((tag) => (
+            {(isAppsec
+              ? copy.tags.filter((tag) => !["Azure DevOps", "GitHub Actions", "Jira", "ServiceNow"].includes(tag))
+              : copy.tags
+            ).map((tag) => (
               <span key={tag}>{tag}</span>
             ))}
           </div>
         </section>
 
-        <section className="sc-section">
-          <p className="sc-section__label">{copy.directionLabel}</p>
-          <h2 className="sc-section__title">{copy.directionTitle}</h2>
-          <p className="sc-prose">{leadProse}</p>
-          {supportProse.map((paragraph) => (
-            <p key={paragraph} className="sc-prose">{paragraph}</p>
-          ))}
-        </section>
+        {isAppsec ? null : (
+          <section className="sc-section">
+            <p className="sc-section__label">{copy.directionLabel}</p>
+            <h2 className="sc-section__title">{copy.directionTitle}</h2>
+            <p className="sc-prose">{leadProse}</p>
+            {supportProse.map((paragraph) => (
+              <p key={paragraph} className="sc-prose">{paragraph}</p>
+            ))}
+          </section>
+        )}
       </div>
 
       <div className="sc-wrap">
@@ -280,22 +344,24 @@ export default function ServiceCasePage({ slug }: { slug: ServiceCaseSlug }) {
         </div>
       </div>
 
-      <div className="sc-wrap">
-        <section className="sc-section">
-          <p className="sc-section__label">{copy.processLabel}</p>
-          <h2 className="sc-section__title">{copy.processTitle}</h2>
-          <p className="sc-prose">{copy.processIntro}</p>
-          <div className="sc-process">
-            {copy.process.map((step) => (
-              <div key={step.step + step.title} className="sc-process__row">
-                <span className="sc-process__step">{step.step}</span>
-                <h3 className="sc-process__name">{step.title}</h3>
-                <p className="sc-prose" style={{ margin: 0 }}>{step.description}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-      </div>
+      {isAppsec ? null : (
+        <div className="sc-wrap">
+          <section className="sc-section">
+            <p className="sc-section__label">{copy.processLabel}</p>
+            <h2 className="sc-section__title">{copy.processTitle}</h2>
+            <p className="sc-prose">{copy.processIntro}</p>
+            <div className="sc-process">
+              {copy.process.map((step) => (
+                <div key={step.step + step.title} className="sc-process__row">
+                  <span className="sc-process__step">{step.step}</span>
+                  <h3 className="sc-process__name">{step.title}</h3>
+                  <p className="sc-prose" style={{ margin: 0 }}>{step.description}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
+      )}
 
       <div className="sc-wrap">
         <figure className="sc-frame sc-frame--wide">
@@ -303,13 +369,16 @@ export default function ServiceCasePage({ slug }: { slug: ServiceCaseSlug }) {
             src={visual.wide.src}
             alt={visual.wide.alt}
             fill
-            sizes="100vw"
-            className="object-cover"
-          />
+          sizes="100vw"
+          className="object-cover"
+        />
         </figure>
       </div>
+      </>
+      )}
 
       <div className="sc-wrap">
+        {isAppsec ? null : (
         <section className="sc-section">
           <p className="sc-section__label">{copy.fitsLabel}</p>
           <h2 className="sc-section__title">{copy.fitsTitle}</h2>
@@ -358,7 +427,9 @@ export default function ServiceCasePage({ slug }: { slug: ServiceCaseSlug }) {
             })}
           </div>
         </section>
+        )}
 
+        {isAppsec ? null : (
         <section className="sc-more">
           <p className="sc-section__label">See more projects</p>
           <div className="sc-more__grid">
@@ -376,6 +447,7 @@ export default function ServiceCasePage({ slug }: { slug: ServiceCaseSlug }) {
             ))}
           </div>
         </section>
+        )}
       </div>
       </div>
 
@@ -385,9 +457,17 @@ export default function ServiceCasePage({ slug }: { slug: ServiceCaseSlug }) {
             Back to top
           </button>
           <Link href={ROUTES.servicesHub}>All services</Link>
-          <span>{certifications.map((item) => item.name).join(" · ")}</span>
+          {isAppsec ? null : <span>{certifications.map((item) => item.name).join(" · ")}</span>}
         </div>
       </div>
     </article>
+  );
+
+  if (!isAppsec) return article;
+
+  return (
+    <main id="main" tabIndex={-1} className="as-main">
+      {article}
+    </main>
   );
 }

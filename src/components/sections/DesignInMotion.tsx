@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { services } from "@/data/services";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { cn } from "@/lib/utils";
+import { canStickyPin, isTouchFirst, refreshWhenIdle, viewportHeight, viewportWidth } from "@/lib/viewport";
 
 const familjen = Familjen_Grotesk({
   subsets: ["latin"],
@@ -68,8 +69,8 @@ export default function DesignInMotion() {
     gsap.registerPlugin(ScrollTrigger);
 
     const computeLayout = () => {
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
+      const vw = viewportWidth();
+      const vh = viewportHeight();
       const isMobile = vw < 768;
       const cx = vw * 0.5;
       const cy = vh * (isMobile ? 1.18 : 1.12);
@@ -140,16 +141,24 @@ export default function DesignInMotion() {
     }
 
     let tickDrive: (() => void) | null = null;
+    const sticky = canStickyPin();
+    // Native (touch) scrolling is already current when the ticker runs, so one call per frame suffices.
+    const nativeScroll = isTouchFirst();
     const ctx = gsap.context(() => {
+      // drive() is called from the ticker, scroll and ScrollTrigger; it only writes when its inputs move.
+      let lastKey = "";
       const sizePin = () => {
-        pin.style.height = `${Math.round(window.innerHeight * 3.4)}px`;
+        const vh = viewportHeight();
+        pin.style.height = `${Math.round(vh * 3.4)}px`;
         if (window.innerWidth < 1024) {
-          stage.style.height = `${window.innerHeight}px`;
+          stage.style.height = `${vh}px`;
         }
+        lastKey = "";
       };
       sizePin();
 
       const placeStage = (progress: number) => {
+        if (sticky) return;
         if (progress <= 0) {
           gsap.set(stage, { position: "absolute", top: 0, bottom: "auto", left: 0, right: 0 });
         } else if (progress >= 1) {
@@ -161,8 +170,11 @@ export default function DesignInMotion() {
 
       const drive = () => {
         const rect = pin.getBoundingClientRect();
-        const range = Math.max(1, pin.offsetHeight - window.innerHeight);
+        const range = Math.max(1, pin.offsetHeight - viewportHeight());
         const p = gsap.utils.clamp(0, 1, -rect.top / range);
+        const key = `${p}|${viewportWidth()}|${viewportHeight()}`;
+        if (key === lastKey) return;
+        lastKey = key;
         placeStage(p);
 
         const { vw, vh, isMobile, cx, cy, R } = computeLayout();
@@ -238,12 +250,17 @@ export default function DesignInMotion() {
         });
       };
 
-      gsap.set(stage, { position: "absolute", top: 0, left: 0, right: 0 });
+      gsap.set(
+        stage,
+        sticky
+          ? { position: "sticky", top: 0, bottom: "auto", left: 0, right: 0 }
+          : { position: "absolute", top: 0, left: 0, right: 0 }
+      );
       ScrollTrigger.create({
         trigger: pin,
         start: "top bottom",
         end: "bottom top",
-        onUpdate: drive,
+        onUpdate: nativeScroll ? undefined : () => drive(),
         onRefresh: () => {
           sizePin();
           drive();
@@ -251,11 +268,11 @@ export default function DesignInMotion() {
       });
       tickDrive = drive;
       gsap.ticker.add(drive);
-      window.addEventListener("scroll", drive, { passive: true });
+      if (!nativeScroll) window.addEventListener("scroll", drive, { passive: true });
       drive();
     }, root);
 
-    const refresh = () => ScrollTrigger.refresh();
+    const refresh = () => refreshWhenIdle();
     window.addEventListener("load", refresh);
     const kicks = [300, 900, 1600].map((t) => window.setTimeout(refresh, t));
 

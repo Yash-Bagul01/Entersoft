@@ -59,6 +59,43 @@ function ChevronRightIcon() {
   );
 }
 
+function StoryBody({ entry }: { entry: (typeof FEATURED)[number] }) {
+  return (
+    <>
+      <blockquote
+        className={cn(
+          familjen.className,
+          "m-0 mb-10 md:mb-20 text-[clamp(1.35rem,2.25vw,2.025rem)] font-normal leading-none tracking-[-0.04em] text-[var(--text-primary)]"
+        )}
+      >
+        {entry.quote}
+      </blockquote>
+
+      <div className="flex items-end justify-between gap-6">
+        <div className="flex items-end min-w-0">
+          <div
+            className={cn(
+              "w-14 h-14 md:w-20 md:h-20 overflow-hidden rounded-sm mr-4 md:mr-6 shrink-0 flex items-center justify-center text-white font-mono text-sm font-semibold bg-gradient-to-br",
+              entry.avatarColor || "from-blue-500 to-indigo-600"
+            )}
+            aria-hidden="true"
+          >
+            {entry.initials}
+          </div>
+          <div className="min-w-0 pb-0.5">
+            <p className="font-sans text-[16.2px] font-normal leading-[20px] text-[var(--text-primary)] md:mb-1">
+              {entry.author}
+            </p>
+            <p className="font-sans text-[16.2px] font-normal leading-[20px] text-[var(--text-primary)] opacity-60">
+              {entry.role} · {entry.company}
+            </p>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
 export default function Testimonials() {
   const reduce = useReducedMotion();
   const rootRef = useRef<HTMLElement>(null);
@@ -143,18 +180,18 @@ export default function Testimonials() {
         ref={sheetRef}
         className="ov-sheet relative z-[7] w-full overflow-hidden bg-[var(--bg-primary)]"
       >
-      <div className="mx-auto w-full max-w-[1440px] px-9 min-h-[100dvh] py-20 lg:py-[9.375rem]">
+      <div className="mx-auto w-full max-w-[1440px] px-9 min-h-[100svh] py-20 lg:py-[9.375rem]">
         <div className="grid grid-cols-12 gap-6">
           <h2
             className={cn(
               familjen.className,
-              "col-span-12 sm:col-span-6 lg:col-span-5 lg:col-start-2",
+              "col-span-12 min-[640px]:col-span-6 lg:col-span-5 lg:col-start-2",
               "text-[clamp(2.75rem,5.94vw,5.344rem)] font-normal leading-[0.95] tracking-[-0.06em] text-[var(--text-primary)]"
             )}
           >
             Operational Validation
           </h2>
-          <div className="col-span-12 sm:col-span-6 lg:col-span-5 flex flex-col justify-end">
+          <div className="col-span-12 min-[640px]:col-span-6 lg:col-span-5 flex flex-col justify-end">
             <p className="font-sans text-[16.2px] font-normal leading-[20px] text-[var(--text-primary)]">
               Great work is built through
               <br />
@@ -242,37 +279,21 @@ export default function Testimonials() {
               {item.company}
             </p>
 
-            <div key={item.id} className="stories-quote-in">
-              <blockquote
-                className={cn(
-                  familjen.className,
-                  "m-0 mb-10 md:mb-20 text-[clamp(1.35rem,2.25vw,2.025rem)] font-normal leading-none tracking-[-0.04em] text-[var(--text-primary)]"
-                )}
+            {/* Phones stack every story invisibly in the same cell so autoplay never changes the section height. */}
+            <div className="grid">
+              <div
+                key={item.id}
+                className="stories-quote-in [grid-area:1/1] max-md:flex max-md:flex-col max-md:justify-between"
               >
-                {item.quote}
-              </blockquote>
-
-              <div className="flex items-end justify-between gap-6">
-                <div className="flex items-end min-w-0">
-                  <div
-                    className={cn(
-                      "w-14 h-14 md:w-20 md:h-20 overflow-hidden rounded-sm mr-4 md:mr-6 shrink-0 flex items-center justify-center text-white font-mono text-sm font-semibold bg-gradient-to-br",
-                      item.avatarColor || "from-blue-500 to-indigo-600"
-                    )}
-                    aria-hidden="true"
-                  >
-                    {item.initials}
-                  </div>
-                  <div className="min-w-0 pb-0.5">
-                    <p className="font-sans text-[16.2px] font-normal leading-[20px] text-[var(--text-primary)] md:mb-1">
-                      {item.author}
-                    </p>
-                    <p className="font-sans text-[16.2px] font-normal leading-[20px] text-[var(--text-primary)] opacity-60">
-                      {item.role} · {item.company}
-                    </p>
-                  </div>
-                </div>
+                <StoryBody entry={item} />
               </div>
+              {FEATURED.map((entry) =>
+                entry.id === item.id ? null : (
+                  <div key={`reserve-${entry.id}`} aria-hidden="true" className="invisible md:hidden [grid-area:1/1]">
+                    <StoryBody entry={entry} />
+                  </div>
+                )
+              )}
             </div>
 
             <Link

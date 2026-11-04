@@ -78,7 +78,10 @@ export default function LinedWordmark({ reduce = false }: Props) {
       runs = next;
     };
 
+    // Without the pointer over it the wordmark is static, so frames are only drawn while it ripples.
+    const animating = () => !reduce && mouse.active;
     const draw = () => {
+      raf = 0;
       time += 0.016;
       ctx.clearRect(0, 0, w, h);
       ctx.lineWidth = 1.05;
@@ -106,7 +109,14 @@ export default function LinedWordmark({ reduce = false }: Props) {
           ctx.stroke();
         }
       }
-      raf = requestAnimationFrame(draw);
+      if (animating()) raf = requestAnimationFrame(draw);
+    };
+    const wake = () => {
+      if (!raf) raf = requestAnimationFrame(draw);
+    };
+    const remeasure = () => {
+      measure();
+      wake();
     };
 
     const onMove = (e: PointerEvent) => {
@@ -114,25 +124,27 @@ export default function LinedWordmark({ reduce = false }: Props) {
       mouse.x = e.clientX - r.left;
       mouse.y = e.clientY - r.top;
       mouse.active = true;
+      wake();
     };
     const onLeave = () => {
       mouse.active = false;
+      wake();
     };
 
     measure();
     draw();
-    const ro = new ResizeObserver(measure);
+    const ro = new ResizeObserver(remeasure);
     ro.observe(wrap);
     canvas.addEventListener("pointermove", onMove);
     canvas.addEventListener("pointerleave", onLeave);
-    window.addEventListener("resize", measure);
+    window.addEventListener("resize", remeasure);
 
     return () => {
       cancelAnimationFrame(raf);
       ro.disconnect();
       canvas.removeEventListener("pointermove", onMove);
       canvas.removeEventListener("pointerleave", onLeave);
-      window.removeEventListener("resize", measure);
+      window.removeEventListener("resize", remeasure);
     };
   }, [reduce]);
 

@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 import LinedWordmark from "./LinedWordmark";
 import FooterLineLink from "./FooterLineLink";
 import DiscussProjectModal from "./DiscussProjectModal";
+import { useSmoothScroll } from "./SmoothScrollProvider";
 
 function SocialIcon({ d }: { d: string }) {
   return (
@@ -152,7 +153,16 @@ export default function Footer() {
   const rootRef = useRef<HTMLElement>(null);
   const sheetRef = useRef<HTMLDivElement>(null);
   const clock = useIstClock();
+  const lenis = useSmoothScroll();
   const [discussOpen, setDiscussOpen] = useState(false);
+
+  const scrollToTop = () => {
+    if (lenis && !reduce) {
+      lenis.scrollTo(0, { duration: 1.6, easing: (t) => 1 - Math.pow(1 - t, 4) });
+    } else {
+      window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+    }
+  };
 
   const hideOn =
     pathname === "/platform" ||
@@ -179,6 +189,9 @@ export default function Footer() {
           start: flushCloser ? "top 100%" : "top 95%",
           end: flushCloser ? "top 55%" : "top 20%",
           scrub: 0.85,
+          // Created before the pins above it (the track-record pin mounts later), so it must be
+          // measured after them or it starts early and shrinks Certifications before it is reached.
+          refreshPriority: -1,
         },
       });
 
@@ -297,6 +310,14 @@ export default function Footer() {
               {clock ? (
                 <p className="mt-4 text-[11px] tracking-[0.14em] text-[#f3f1ec]/35">{clock}</p>
               ) : null}
+              <button type="button" onClick={scrollToTop} className="site-footer-top mt-6">
+                <span>Back to top</span>
+                <span className="site-footer-top-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.6">
+                    <path d="M12 19V5M5.5 11.5 12 5l6.5 6.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </span>
+              </button>
             </div>
           </div>
         </div>

@@ -9,6 +9,7 @@ import SectionLabel from "../ui/SectionLabel";
 import { Button } from "../ui/Button";
 import { fadeInUpVariants } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { viewportHeight } from "@/lib/viewport";
 import { Familjen_Grotesk } from "next/font/google";
 
 const familjen = Familjen_Grotesk({
@@ -1225,7 +1226,7 @@ export default function TrackRecord3DCylinder() {
         trigger: sectionEl,
         start: "top top",
         end: () => {
-          const extra = window.innerHeight;
+          const extra = viewportHeight();
           return `+=${1200 + extra}`;
         },
         pin: true,
@@ -1235,7 +1236,7 @@ export default function TrackRecord3DCylinder() {
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           const animDistance = 1200;
-          const extra = window.innerHeight;
+          const extra = viewportHeight();
           const total = animDistance + extra;
           const p = extra === 0 ? self.progress : Math.min(1, (self.progress * total) / animDistance);
 

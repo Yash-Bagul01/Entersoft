@@ -9,6 +9,14 @@ import { capabilities } from "@/data/differentiators";
 import { ROUTES } from "@/config/routes";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { cn } from "@/lib/utils";
+import {
+  canStickyPin,
+  cancelRefreshTask,
+  isTouchFirst,
+  refreshWhenIdle,
+  viewportHeight,
+  viewportWidth,
+} from "@/lib/viewport";
 
 const familjen = Familjen_Grotesk({
   subsets: ["latin"],
@@ -69,12 +77,17 @@ export default function Differentiators() {
     }
 
     const travel = () => Math.max(0, track.scrollWidth - stage.clientWidth);
-    const hold = () => Math.round(window.innerHeight * 1.42);
+    // Below md the next section does not slide over this one, so a long hold is dead scroll.
+    const hold = () => Math.round(viewportHeight() * (viewportWidth() < 768 ? 0.4 : 1.42));
     const cards = Array.from(track.querySelectorAll<HTMLElement>("[data-outcome-card]"));
+    const sticky = canStickyPin();
+    // Native (touch) scrolling is already current when the ticker runs, so one call per frame suffices.
+    const nativeScroll = isTouchFirst();
 
     const nextSec = () => document.querySelector<HTMLElement>("#operational-validation");
 
     const placeStage = (progress: number, covered: boolean) => {
+      if (sticky) return;
       if (progress <= 0) {
         gsap.set(stage, { position: "absolute", top: 0, bottom: "auto", left: 0, right: 0, zIndex: 1 });
       } else if (covered) {
@@ -84,10 +97,13 @@ export default function Differentiators() {
       }
     };
 
+    // drive() is called from the ticker, scroll and ScrollTrigger; it only writes when its inputs move.
+    let lastKey = "";
+    let travelPx = 0;
     const drive = () => {
-      const range = Math.max(1, pin.offsetHeight - window.innerHeight);
+      const vh = viewportHeight();
+      const range = Math.max(1, pin.offsetHeight - vh);
       const raw = gsap.utils.clamp(0, 1, -pin.getBoundingClientRect().top / range);
-      const travelPx = travel();
       const holdPx = hold();
       const moveUntil = travelPx / Math.max(1, travelPx + holdPx);
       const p = gsap.utils.clamp(0, 1, raw / moveUntil);
@@ -96,62 +112,86 @@ export default function Differentiators() {
       const nextTop = next ? next.getBoundingClientRect().top : Number.POSITIVE_INFINITY;
       const covered = nextTop <= 0;
 
-      placeStage(raw, covered);
-      gsap.set(track, { x: -travelPx * p, force3D: true });
+      const vw = viewportWidth();
+      const key = `${raw}|${covered}|${travelPx}|${holdPx}|${vw}|${vh}`;
+      if (key === lastKey) return;
+      lastKey = key;
 
-      const vw = window.innerWidth;
+      placeStage(raw, covered);
+      const x = -travelPx * p;
+      gsap.set(track, { x, force3D: true });
+
       const rise = Math.round(Math.min(240, vw * 0.14));
       const restX = vw * 0.3;
       const enterX = vw * 1.02;
-      cards.forEach((el) => {
-        const left = el.getBoundingClientRect().left;
+      cards.forEach((el, i) => {
+        const left = cardBase[i] + x;
         const t = gsap.utils.clamp(0, 1, (enterX - left) / Math.max(1, enterX - restX));
         const eased = t * t * (3 - 2 * t);
-        gsap.set(el, { y: (1 - eased) * rise, force3D: true });
+        const y = (1 - eased) * rise;
+        if (cardY[i] === y) return;
+        cardY[i] = y;
+        gsap.set(el, { y, force3D: true });
       });
 
       if (practice) {
-        const r = practice.getBoundingClientRect();
-        const vis = gsap.utils.clamp(0, 1, (window.innerWidth - r.left) / window.innerWidth);
-        gsap.set(practice, {
-          backgroundColor: gsap.utils.interpolate("#2a2a28", "#6a6760", vis * vis),
-        });
+        const vis = gsap.utils.clamp(0, 1, (vw - (practiceBase + x)) / vw);
+        if (vis !== practiceVis) {
+          practiceVis = vis;
+          gsap.set(practice, {
+            backgroundColor: gsap.utils.interpolate("#2a2a28", "#6a6760", vis * vis),
+          });
+        }
       }
 
     };
 
+    // Card positions are their resting offset plus the track's x, so they are measured once here
+    // instead of being read back (forcing a style flush) after every track move.
+    let cardBase: number[] = [];
+    const cardY: Array<number | undefined> = [];
+    let practiceBase = 0;
+    let practiceVis = -1;
+    const measureBases = () => {
+      const x = Number(gsap.getProperty(track, "x")) || 0;
+      cardBase = cards.map((el) => el.getBoundingClientRect().left - x);
+      practiceBase = practice ? practice.getBoundingClientRect().left - x : 0;
+    };
+
     const sizePin = () => {
-      pin.style.height = `${Math.round(window.innerHeight + travel() + hold())}px`;
+      travelPx = travel();
+      pin.style.height = `${Math.round(viewportHeight() + travelPx + hold())}px`;
+      measureBases();
+      cardY.length = 0;
+      practiceVis = -1;
+      lastKey = "";
     };
 
     const imgs = Array.from(track.querySelectorAll("img"));
-    const onImg = () => {
-      sizePin();
-      ScrollTrigger.refresh();
-      drive();
-    };
+    const onImg = () => refreshWhenIdle(sizePin);
     imgs.forEach((img) => {
       if (img.complete) return;
       img.addEventListener("load", onImg);
     });
 
     const kicks = [160, 600, 1400, 2600].map((t) =>
-      window.setTimeout(() => {
-        sizePin();
-        ScrollTrigger.refresh();
-        drive();
-      }, t)
+      window.setTimeout(() => refreshWhenIdle(sizePin), t)
     );
 
     let tickDrive: (() => void) | null = null;
     const ctx = gsap.context(() => {
       sizePin();
-      gsap.set(stage, { position: "absolute", top: 0, left: 0, right: 0 });
+      gsap.set(
+        stage,
+        sticky
+          ? { position: "sticky", top: 0, bottom: "auto", left: 0, right: 0, zIndex: 1 }
+          : { position: "absolute", top: 0, left: 0, right: 0 }
+      );
       ScrollTrigger.create({
         trigger: pin,
         start: "top bottom",
         end: "bottom top",
-        onUpdate: drive,
+        onUpdate: nativeScroll ? undefined : () => drive(),
         onRefresh: () => {
           sizePin();
           drive();
@@ -159,7 +199,7 @@ export default function Differentiators() {
       });
       tickDrive = drive;
       gsap.ticker.add(drive);
-      window.addEventListener("scroll", drive, { passive: true });
+      if (!nativeScroll) window.addEventListener("scroll", drive, { passive: true });
       window.addEventListener("resize", sizePin);
       window.addEventListener("load", sizePin);
       drive();
@@ -167,6 +207,7 @@ export default function Differentiators() {
 
     return () => {
       kicks.forEach((id) => window.clearTimeout(id));
+      cancelRefreshTask(sizePin);
       imgs.forEach((img) => img.removeEventListener("load", onImg));
       window.removeEventListener("resize", sizePin);
       window.removeEventListener("load", sizePin);

@@ -58,7 +58,7 @@ export default function CertificationsMarquee() {
       </div>
       <div
         ref={sheetRef}
-        className="ov-sheet relative z-[7] w-full min-h-[100dvh] overflow-hidden bg-[#111111]"
+        className="ov-sheet relative z-[7] w-full min-h-[100svh] overflow-hidden bg-[#111111]"
       >
       <div className="mx-auto w-full max-w-[1440px] px-6 py-20 md:px-12 md:py-28">
         <div className="max-w-[720px]">

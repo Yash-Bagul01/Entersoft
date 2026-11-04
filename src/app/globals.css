@@ -50,7 +50,6 @@ html, body {
   overflow-x: hidden;
   max-width: 100vw;
 }
-
 * {
   box-sizing: border-box;
 }
@@ -62,6 +61,20 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/*
+ * Touch and compact screens pin homepage stages with position: sticky, which breaks when body
+ * is a scroll container (overflow hidden/auto). clip trims overflow the same way without being
+ * one, so the page length also stays fixed while sheets slide in below the fold.
+ */
+@media (max-width: 1023px), (hover: none) and (pointer: coarse) {
+  html {
+    overflow-x: clip;
+  }
+  body {
+    overflow: clip;
+  }
 }
 
 /* Prevent iOS auto-zoom on form focus by ensuring minimum 16px font size */
@@ -1196,6 +1209,44 @@ html:has([data-page="ai-ast"]) footer,
 #site-footer .site-footer-social:hover {
   color: #ffffff;
   border-color: rgba(236, 234, 230, 0.75);
+}
+
+#site-footer .site-footer-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(236, 234, 230, 0.72);
+  transition: color 0.3s ease;
+}
+
+#site-footer .site-footer-top-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(236, 234, 230, 0.22);
+  transition: border-color 0.3s ease;
+}
+
+#site-footer .site-footer-top-icon svg {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#site-footer .site-footer-top:hover {
+  color: #ffffff;
+}
+
+#site-footer .site-footer-top:hover .site-footer-top-icon {
+  border-color: rgba(236, 234, 230, 0.75);
+}
+
+#site-footer .site-footer-top:hover .site-footer-top-icon svg {
+  transform: translateY(-3px);
 }
 
 #site-footer .site-footer-line-link {
@@ -3327,9 +3378,160 @@ html:has([data-page="ai-ast"]) footer,
     text-align: left;
   }
 
-  #site-footer .site-footer-social {
+  #site-footer .site-footer-social,
+  #site-footer .site-footer-top-icon {
     width: 40px;
     height: 40px;
+  }
+}
+
+/* Landing page moving gradient (Obscura 25). Dark tone by default, pale tone for light surfaces. */
+.landing-gradient {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background: linear-gradient(90deg, #10287e 0%, #1a2f8a 34%, #15134f 64%, #060626 100%);
+}
+
+.landing-gradient__flow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  height: 100lvh;
+  overflow: hidden;
+  transform: translate3d(0, var(--lg-y, 0px), 0);
+  animation: landing-gradient-breathe 12s ease-in-out infinite alternate;
+  animation-delay: var(--lg-t, 0s);
+}
+
+/* Off-screen sections drop their huge animated layers; --lg-t keeps them in phase when they return. */
+.landing-gradient[data-lg-off] .landing-gradient__flow {
+  display: none;
+}
+
+/* Each layer travels exactly one gradient period along its angle so the loop has no seam. */
+.landing-gradient__flow::before,
+.landing-gradient__flow::after {
+  content: "";
+  position: absolute;
+  inset: -1200px;
+  will-change: transform;
+}
+
+.landing-gradient__flow::before {
+  background: repeating-linear-gradient(
+    150deg,
+    rgba(40, 78, 186, 0.55) 0px,
+    rgba(66, 104, 210, 0.45) 360px,
+    rgba(140, 150, 235, 0.42) 500px,
+    rgba(214, 208, 250, 0.45) 560px,
+    rgba(170, 130, 215, 0.32) 590px,
+    rgba(110, 52, 100, 0.26) 640px,
+    rgba(30, 20, 90, 0.36) 760px,
+    rgba(6, 6, 38, 0.5) 980px,
+    rgba(40, 78, 186, 0.55) 1200px
+  );
+  animation: landing-gradient-flow-a 64s linear infinite;
+  animation-delay: var(--lg-t, 0s);
+}
+
+.landing-gradient__flow::after {
+  background: repeating-linear-gradient(
+    150deg,
+    transparent 0px,
+    transparent 170px,
+    rgba(160, 160, 250, 0.1) 240px,
+    rgba(230, 226, 255, 0.16) 268px,
+    rgba(150, 120, 230, 0.08) 300px,
+    transparent 420px
+  );
+  mix-blend-mode: screen;
+  animation: landing-gradient-flow-b 28s linear infinite reverse;
+  animation-delay: var(--lg-t, 0s);
+}
+
+.landing-gradient__veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(5, 6, 28, 0.42) 0%, rgba(5, 6, 28, 0.3) 55%, rgba(5, 6, 28, 0.2) 100%);
+}
+
+.landing-gradient--light,
+[data-theme="light"] .landing-gradient--theme {
+  background: linear-gradient(90deg, #e3e8fb 0%, #eceffc 34%, #efeaf7 64%, #f5f3f4 100%);
+}
+
+.landing-gradient--light .landing-gradient__flow::before,
+[data-theme="light"] .landing-gradient--theme .landing-gradient__flow::before {
+  background: repeating-linear-gradient(
+    150deg,
+    rgba(196, 210, 250, 0.55) 0px,
+    rgba(208, 218, 252, 0.45) 360px,
+    rgba(232, 234, 255, 0.6) 500px,
+    rgba(255, 255, 255, 0.85) 560px,
+    rgba(238, 226, 250, 0.6) 590px,
+    rgba(240, 214, 226, 0.4) 640px,
+    rgba(222, 214, 240, 0.35) 760px,
+    rgba(240, 238, 246, 0.3) 980px,
+    rgba(196, 210, 250, 0.55) 1200px
+  );
+}
+
+.landing-gradient--light .landing-gradient__flow::after,
+[data-theme="light"] .landing-gradient--theme .landing-gradient__flow::after {
+  background: repeating-linear-gradient(
+    150deg,
+    transparent 0px,
+    transparent 170px,
+    rgba(200, 206, 250, 0.16) 240px,
+    rgba(255, 255, 255, 0.36) 268px,
+    rgba(220, 200, 245, 0.14) 300px,
+    transparent 420px
+  );
+  mix-blend-mode: normal;
+}
+
+.landing-gradient--light .landing-gradient__veil,
+[data-theme="light"] .landing-gradient--theme .landing-gradient__veil {
+  background: rgba(250, 250, 252, 0.18);
+}
+
+@keyframes landing-gradient-flow-a {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(600px, 1039px, 0);
+  }
+}
+
+@keyframes landing-gradient-flow-b {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(210px, 364px, 0);
+  }
+}
+
+@keyframes landing-gradient-breathe {
+  from {
+    opacity: 0.85;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-gradient__flow,
+  .landing-gradient__flow::before,
+  .landing-gradient__flow::after {
+    animation: none;
   }
 }
 

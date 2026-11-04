@@ -5,6 +5,7 @@ import Lenis from "lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { TOUCH_FIRST_QUERY } from "@/lib/viewport";
 
 const SmoothScrollContext = createContext<Lenis | null>(null);
 
@@ -19,23 +20,44 @@ export default function SmoothScrollProvider({
   const [lenisState, setLenisState] = useState<Lenis | null>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
   const shouldReduceMotion = useReducedMotion();
+  const [touchFirst, setTouchFirst] = useState(
+    () => typeof window !== "undefined" && window.matchMedia(TOUCH_FIRST_QUERY).matches
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia(TOUCH_FIRST_QUERY);
+    const sync = () => setTouchFirst(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
   useEffect(() => {
     // Register ScrollTrigger with GSAP
     gsap.registerPlugin(ScrollTrigger);
     ScrollTrigger.config({ ignoreMobileResize: true });
 
-    const compact = window.matchMedia("(max-width: 1023px)").matches;
+    // Wheel and trackpad input is smoothed at every window size; finger scrolling stays native.
+    const smooth = !shouldReduceMotion && !touchFirst;
     const lenis = new Lenis({
-      duration: shouldReduceMotion || compact ? 0 : 1.2,
+      duration: smooth ? 1.2 : 0,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
-      smoothWheel: !compact,
-      wheelMultiplier: shouldReduceMotion ? 1.0 : 1.0,
-      touchMultiplier: compact ? 1 : 2,
+      smoothWheel: smooth,
+      wheelMultiplier: 1,
+      touchMultiplier: 1,
       syncTouch: false,
       infinite: false,
     });
+
+    if (!smooth) {
+      // Lenis rewrites <html>'s classes at the start and end of every native gesture, which restyles
+      // the whole page on phones. Without smoothing only lenis-stopped is used by the stylesheet.
+      const root = document.documentElement;
+      (lenis as unknown as { updateClassName: () => void }).updateClassName = () => {
+        root.classList.toggle("lenis-stopped", lenis.isStopped);
+      };
+    }
 
     lenisRef.current = lenis;
     setLenisState(lenis);
@@ -88,11 +110,12 @@ export default function SmoothScrollProvider({
     return () => {
       lenis.destroy();
       gsap.ticker.remove(updateTicker);
+      ScrollTrigger.removeEventListener("refresh", refreshHandler);
       document.removeEventListener("click", handleAnchorClick);
       lenisRef.current = null;
       setLenisState(null);
     };
-  }, [shouldReduceMotion]);
+  }, [shouldReduceMotion, touchFirst]);
 
   return (
     <SmoothScrollContext.Provider value={lenisState}>

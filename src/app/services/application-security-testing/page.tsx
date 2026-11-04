@@ -1,13 +1,22 @@
 import React from "react";
 import type { Metadata } from "next";
 import ServiceCasePage from "@/components/services/ServiceCasePage";
-import { APPSEC_PAGE_FAQS } from "@/data/serviceCaseCopy";
 import { getCanonicalUrl, ROUTES } from "@/config/routes";
+import {
+  ORGANIZATION_ID,
+  breadcrumbNode,
+  organizationNode,
+  webPageNode,
+  websiteNode,
+} from "@/config/seo";
 
-const TITLE = "Web, API & Mobile Application Security Testing | Entersoft";
+const TITLE = "Application Security Testing Services | Entersoft";
 const DESCRIPTION =
-  "Secure web, API and mobile releases with expert-led application security testing, business-logic validation, remediation guidance and retesting.";
+  "Expert-led application security testing for web, APIs, mobile and connected systems. AI-assisted analysis, validated findings and remediation guidance.";
+const OG_TITLE = "Application Assurance | Entersoft";
 const CANONICAL = getCanonicalUrl(ROUTES.services.appsec);
+const SERVICE_NAME = "Application security testing";
+const SERVICE_ID = `${CANONICAL}/#service`;
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -16,7 +25,7 @@ export const metadata: Metadata = {
     canonical: CANONICAL,
   },
   openGraph: {
-    title: TITLE,
+    title: OG_TITLE,
     description: DESCRIPTION,
     url: CANONICAL,
     siteName: "Entersoft Security",
@@ -24,55 +33,38 @@ export const metadata: Metadata = {
     type: "website",
   },
   twitter: {
-    card: "summary_large_image",
-    title: TITLE,
+    card: "summary",
+    title: OG_TITLE,
     description: DESCRIPTION,
   },
 };
 
-const appSecFaqs = APPSEC_PAGE_FAQS;
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    organizationNode,
+    websiteNode,
+    webPageNode({
+      canonicalUrl: CANONICAL,
+      name: TITLE,
+      description: DESCRIPTION,
+      about: SERVICE_ID,
+      breadcrumb: `${CANONICAL}/#breadcrumb`,
+    }),
+    {
+      "@type": "Service",
+      "@id": SERVICE_ID,
+      name: SERVICE_NAME,
+      serviceType: SERVICE_NAME,
+      description: DESCRIPTION,
+      url: CANONICAL,
+      provider: { "@id": ORGANIZATION_ID },
+    },
+    breadcrumbNode(CANONICAL, [{ name: SERVICE_NAME, item: CANONICAL }]),
+  ],
+};
 
 export default function ApplicationSecurityTestingPage() {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "Home",
-            "item": "https://www.entersoftsecurity.com"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "Services",
-            "item": "https://www.entersoftsecurity.com/services"
-          },
-          {
-            "@type": "ListItem",
-            "position": 3,
-            "name": "Application Assurance",
-            "item": CANONICAL
-          }
-        ]
-      },
-      {
-        "@type": "FAQPage",
-        "mainEntity": appSecFaqs.map((faq) => ({
-          "@type": "Question",
-          "name": faq.question,
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": faq.answer
-          }
-        }))
-      }
-    ]
-  };
-
   return (
     <>
       <script

@@ -5,6 +5,7 @@ import { blogPosts } from "@/data/blog";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { canStickyPin, isTouchFirst, refreshWhenIdle, viewportHeight, viewportWidth } from "@/lib/viewport";
 
 const TITLE_LINES = [
   { text: "Threat", align: "left" as const },
@@ -15,7 +16,7 @@ const TITLE_LINES = [
 
 function destFromCenter(inner: HTMLElement, index: number) {
   const vw = window.innerWidth;
-  const vh = window.innerHeight;
+  const vh = viewportHeight();
   const pad = Math.max(20, vw * 0.03);
   const gap = Math.max(12, vw * 0.012);
   const destW = (vw - pad * 2 - gap * 2) / 3;
@@ -32,7 +33,9 @@ function destFromCenter(inner: HTMLElement, index: number) {
 
 export default function InsightsBlog() {
   const reduce = useReducedMotion();
-  const [wide, setWide] = useState(true);
+  const [wide, setWide] = useState(
+    () => typeof window === "undefined" || window.matchMedia("(min-width: 768px)").matches
+  );
   const rootRef = useRef<HTMLElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -52,7 +55,9 @@ export default function InsightsBlog() {
     const ctx = gsap.context(() => {
       const lines = title.querySelectorAll<HTMLElement>("[data-title-line]");
       if (lines.length) {
-        gsap.set(lines, { yPercent: reduce ? 0 : 120, rotate: reduce ? 0 : 8 });
+        // y is reset because the effect re-runs when wide flips and GSAP would otherwise read the
+        // previous run's offset back in as pixels, leaving the title stuck under its mask.
+        gsap.set(lines, { y: 0, yPercent: reduce ? 0 : 120, rotate: reduce ? 0 : 8 });
         gsap.to(lines, {
           yPercent: 0,
           rotate: 0,
@@ -85,7 +90,7 @@ export default function InsightsBlog() {
         return;
       }
 
-      const below = () => window.innerHeight * 1.35;
+      const below = () => viewportHeight() * 1.35;
       inners.forEach((el, i) => {
         gsap.set(el, {
           xPercent: -50,
@@ -98,16 +103,23 @@ export default function InsightsBlog() {
       });
       gsap.set(explores, { opacity: 0 });
 
-      const hold = () => Math.round(window.innerHeight * 1.42);
+      const hold = () => Math.round(viewportHeight() * 1.42);
       const nextSec = () => document.querySelector<HTMLElement>("#certifications");
+      const sticky = canStickyPin();
+      // Native (touch) scrolling is already current when the ticker runs, so one call per frame suffices.
+      const nativeScroll = isTouchFirst();
 
+      // drive() is called from the ticker, scroll and ScrollTrigger; it only writes when its inputs move.
+      let lastKey = "";
       const sizePin = () => {
-        pin.style.height = `${Math.round(window.innerHeight * 2.8 + hold())}px`;
+        pin.style.height = `${Math.round(viewportHeight() * 2.8 + hold())}px`;
+        lastKey = "";
       };
       sizePin();
 
       const placeStage = (progress: number, covered: boolean) => {
         pin.dataset.deskProgress = progress.toFixed(3);
+        if (sticky) return;
         if (progress <= 0) {
           gsap.set(stage, { position: "absolute", top: 0, bottom: "auto", left: 0, right: 0 });
         } else if (covered) {
@@ -117,7 +129,12 @@ export default function InsightsBlog() {
         }
       };
 
-      gsap.set(stage, { position: "absolute", top: 0, left: 0, right: 0 });
+      gsap.set(
+        stage,
+        sticky
+          ? { position: "sticky", top: 0, bottom: "auto", left: 0, right: 0 }
+          : { position: "absolute", top: 0, left: 0, right: 0 }
+      );
 
       const tl = gsap.timeline({ paused: true, defaults: { ease: "none" } });
 
@@ -154,13 +171,16 @@ export default function InsightsBlog() {
 
       const drive = () => {
         const rect = pin.getBoundingClientRect();
-        const range = Math.max(1, pin.offsetHeight - window.innerHeight);
+        const range = Math.max(1, pin.offsetHeight - viewportHeight());
         const raw = gsap.utils.clamp(0, 1, -rect.top / range);
         const holdPx = hold();
         const moveUntil = Math.max(0.001, (range - holdPx) / range);
         const animP = gsap.utils.clamp(0, 1, raw / moveUntil);
         const next = nextSec();
         const covered = next ? next.getBoundingClientRect().top <= 0 : raw >= 1;
+        const key = `${raw}|${covered}|${viewportWidth()}|${viewportHeight()}`;
+        if (key === lastKey) return;
+        lastKey = key;
         placeStage(raw, covered);
         tl.progress(animP);
       };
@@ -169,7 +189,7 @@ export default function InsightsBlog() {
         trigger: pin,
         start: "top bottom",
         end: "bottom top",
-        onUpdate: drive,
+        onUpdate: nativeScroll ? undefined : () => drive(),
         onRefresh: () => {
           sizePin();
           drive();
@@ -177,11 +197,11 @@ export default function InsightsBlog() {
       });
       tickDrive = drive;
       gsap.ticker.add(drive);
-      window.addEventListener("scroll", drive, { passive: true });
+      if (!nativeScroll) window.addEventListener("scroll", drive, { passive: true });
       drive();
     }, root);
 
-    const refresh = () => ScrollTrigger.refresh();
+    const refresh = () => refreshWhenIdle();
     window.addEventListener("load", refresh);
     const kicks = [300, 900, 1800].map((t) => window.setTimeout(refresh, t));
     const mq = window.matchMedia("(min-width: 768px)");
