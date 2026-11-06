@@ -15,6 +15,7 @@ export default function AppsecRelated() {
               <h3 className="as-related__name">{practice.name}</h3>
               <p className="as-related__body">{practice.body}</p>
               <Link href={practice.href} className="as-related__link">
+                <span className="as-related__mark" aria-hidden="true">↳</span>
                 {practice.cta}
               </Link>
             </li>

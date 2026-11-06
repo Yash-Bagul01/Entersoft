@@ -72,6 +72,15 @@ export default function AppsecHero({ kickerRef, titleRef }: AppsecHeroProps) {
         </div>
 
         <figure id="hero-visual" className="as-map" data-hero-rise>
+          <svg className="as-map__schematic" viewBox="0 0 360 460" aria-hidden="true" focusable="false">
+            <g fill="none" stroke="currentColor" strokeWidth="1">
+              <path d="M28 28 H332 M28 28 V432 M180 28 V432 M332 28 V432" />
+              <path className="as-map__trace" d="M28 78 H150 V168 H250 V258 H120 V348 H300" />
+              <circle cx="150" cy="168" r="3" fill="currentColor" stroke="none" />
+              <circle cx="250" cy="258" r="3" fill="currentColor" stroke="none" />
+              <circle cx="120" cy="348" r="3" fill="currentColor" stroke="none" />
+            </g>
+          </svg>
           <ol className="as-map__flow" aria-label="Application trust map">
             {APPSEC_HERO.visualNodes.map((node, i) => (
               <li key={node} className="as-map__node">

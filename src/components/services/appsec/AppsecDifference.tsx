@@ -1,4 +1,5 @@
 import { APPSEC_DIFFERENCE } from "@/data/appsecPage";
+import AppsecPhoto from "@/components/services/appsec/AppsecPhoto";
 
 const MARKS = [
   "M4 16h16M12 8v16M8 12h8",
@@ -10,10 +11,18 @@ export default function AppsecDifference() {
   return (
     <section id="difference" className="as-section" aria-labelledby="difference-title">
       <div className="sc-wrap">
-        <h2 id="difference-title" className="sc-section__title as-section__title">
-          {APPSEC_DIFFERENCE.title}
-        </h2>
-        <p className="as-section__intro">{APPSEC_DIFFERENCE.intro}</p>
+        <div className="as-lead">
+          <div>
+            <h2 id="difference-title" className="sc-section__title as-section__title">
+              {APPSEC_DIFFERENCE.title}
+            </h2>
+            <p className="as-section__intro">{APPSEC_DIFFERENCE.intro}</p>
+          </div>
+          <AppsecPhoto
+            src="/images/outcomes/enterprise-desk.png"
+            alt="Developer workspace with application code, an interface layout and a phone."
+          />
+        </div>
         <ul className="as-values">
           {APPSEC_DIFFERENCE.values.map((value, i) => (
             <li key={value.title} className="as-value">

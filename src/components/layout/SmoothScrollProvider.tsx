@@ -92,8 +92,9 @@ export default function SmoothScrollProvider({
           const targetElement = document.querySelector(href);
           if (targetElement) {
             e.preventDefault();
+            const appsecTarget = (targetElement as HTMLElement).closest(".as-stage");
             lenis.scrollTo(targetElement as HTMLElement, {
-              offset: -80,
+              offset: appsecTarget ? -148 : -80,
               duration: shouldReduceMotion ? 0 : 1.4,
               easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             });

@@ -1,13 +1,22 @@
 import { APPSEC_METHOD } from "@/data/appsecPage";
+import AppsecPhoto from "@/components/services/appsec/AppsecPhoto";
 
 export default function AppsecMethod() {
   return (
     <section id="method" className="as-section" aria-labelledby="method-title">
       <div className="sc-wrap">
-        <h2 id="method-title" className="sc-section__title as-section__title">
-          {APPSEC_METHOD.title}
-        </h2>
-        <p className="as-section__intro">{APPSEC_METHOD.intro}</p>
+        <div className="as-lead as-lead--photo-first">
+          <div>
+            <h2 id="method-title" className="sc-section__title as-section__title">
+              {APPSEC_METHOD.title}
+            </h2>
+            <p className="as-section__intro">{APPSEC_METHOD.intro}</p>
+          </div>
+          <AppsecPhoto
+            src="/images/platform/runtime/api/center.jpg"
+            alt="Engineer working on connected equipment in a rack."
+          />
+        </div>
         <ol className="as-method">
           {APPSEC_METHOD.phases.map((phase) => (
             <li key={phase.heading} className="as-phase">

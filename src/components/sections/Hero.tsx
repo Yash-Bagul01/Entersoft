@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ChevronDown, ArrowRight } from "lucide-react";
 import { Button } from "../ui/Button";
@@ -10,6 +10,10 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useSmoothScroll } from "@/components/layout/SmoothScrollProvider";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+const HERO_VIDEO =
+  "https://new-entersoft-website2026.s3.ap-south-1.amazonaws.com/entersoft-command-plane.mp4";
+const HERO_VIDEO_FALLBACK = "/videos/hero-background-optimized.mp4";
 
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -23,6 +27,7 @@ export default function Hero() {
 
   const shouldReduceMotion = useReducedMotion();
   const lenis = useSmoothScroll();
+  const [videoSrc, setVideoSrc] = useState(HERO_VIDEO);
 
   const handleScrollToNext = (e?: React.MouseEvent) => {
     if (e) e.preventDefault();
@@ -108,14 +113,21 @@ export default function Hero() {
         const promise = video.play();
         if (promise !== undefined) {
           promise.catch((err) => {
+            if (err?.name === "NotSupportedError") return;
             console.warn("Autoplay fallback trigger required:", err);
           });
         }
       }
     };
 
-    video.addEventListener("canplaythrough", playVideo, { once: true });
-    video.addEventListener("loadeddata", playVideo, { once: true });
+    const useLocalCopy = () => {
+      setVideoSrc((current) => (current === HERO_VIDEO_FALLBACK ? current : HERO_VIDEO_FALLBACK));
+    };
+
+    if (video.error && videoSrc !== HERO_VIDEO_FALLBACK) useLocalCopy();
+    video.addEventListener("error", useLocalCopy);
+    video.addEventListener("canplaythrough", playVideo);
+    video.addEventListener("loadeddata", playVideo);
     
     playVideo();
 
@@ -131,11 +143,14 @@ export default function Hero() {
     window.addEventListener("touchstart", handleTrigger, { passive: true, once: true });
 
     return () => {
+      video.removeEventListener("error", useLocalCopy);
+      video.removeEventListener("canplaythrough", playVideo);
+      video.removeEventListener("loadeddata", playVideo);
       window.removeEventListener("scroll", handleTrigger);
       window.removeEventListener("click", handleTrigger);
       window.removeEventListener("touchstart", handleTrigger);
     };
-  }, [shouldReduceMotion]);
+  }, [shouldReduceMotion, videoSrc]);
 
   const creds = (
     <div className="hero-creds mt-3.5 md:mt-4 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[clamp(14.5px,1.15vw,17px)] font-medium leading-[1.45] tracking-[0.015em] text-white [text-shadow:0_1px_2px_rgba(0,0,0,0.9),0_0_16px_rgba(0,0,0,0.55)]">
@@ -167,15 +182,18 @@ export default function Hero() {
         ) : (
           <video
             ref={videoRef}
-            src="https://new-entersoft-website2026.s3.ap-south-1.amazonaws.com/entersoft-command-plane.mp4"
+            src={videoSrc}
             autoPlay
             muted
             loop
             playsInline
             preload="auto"
-            className="absolute inset-0 w-full h-full object-cover origin-center opacity-100 transform-gpu"
+            className="landing-hero__video absolute inset-0 w-full h-full object-cover origin-center opacity-100 transform-gpu"
             style={{ transform: "translateZ(0)", backfaceVisibility: "hidden" }}
             aria-hidden="true"
+            onError={() => {
+              setVideoSrc((current) => (current === HERO_VIDEO_FALLBACK ? current : HERO_VIDEO_FALLBACK));
+            }}
           />
         )}
 
