@@ -82,7 +82,6 @@ export default function AppsecCoverage() {
                     <li key={point}>{point}</li>
                   ))}
                 </ul>
-                <h4 className="as-cov__label">Output</h4>
                 <p className="as-cov__output">{domain.output}</p>
               </div>
             </details>

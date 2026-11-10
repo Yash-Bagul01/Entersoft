@@ -1,5 +1,5 @@
+import Image from "next/image";
 import { APPSEC_DIFFERENCE } from "@/data/appsecPage";
-import AppsecPhoto from "@/components/services/appsec/AppsecPhoto";
 
 const MARKS = [
   "M4 16h16M12 8v16M8 12h8",
@@ -11,18 +11,19 @@ export default function AppsecDifference() {
   return (
     <section id="difference" className="as-section" aria-labelledby="difference-title">
       <div className="sc-wrap">
-        <div className="as-lead">
-          <div>
-            <h2 id="difference-title" className="sc-section__title as-section__title">
-              {APPSEC_DIFFERENCE.title}
-            </h2>
-            <p className="as-section__intro">{APPSEC_DIFFERENCE.intro}</p>
-          </div>
-          <AppsecPhoto
-            src="/images/outcomes/enterprise-desk.png"
-            alt="Developer workspace with application code, an interface layout and a phone."
+        <h2 id="difference-title" className="sc-section__title as-section__title">
+          {APPSEC_DIFFERENCE.title}
+        </h2>
+        <p className="as-section__intro">{APPSEC_DIFFERENCE.intro}</p>
+        <figure className="as-frame">
+          <Image
+            src="/images/platform/ova/sast/s01.jpg"
+            alt="A developer working through source code on a laptop and desktop monitors."
+            width={1600}
+            height={1067}
+            sizes="(max-width: 800px) 100vw, 1120px"
           />
-        </div>
+        </figure>
         <ul className="as-values">
           {APPSEC_DIFFERENCE.values.map((value, i) => (
             <li key={value.title} className="as-value">

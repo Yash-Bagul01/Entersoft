@@ -44,6 +44,13 @@ const jsonLd = {
 export default function Home() {
   return (
     <>
+      <link
+        rel="preload"
+        as="video"
+        href="/videos/hero-background-optimized.mp4"
+        type="video/mp4"
+        fetchPriority="high"
+      />
       <Script
         id="home-jsonld"
         type="application/ld+json"

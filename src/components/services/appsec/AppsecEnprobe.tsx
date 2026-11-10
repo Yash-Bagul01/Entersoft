@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { APPSEC_ENPROBE } from "@/data/appsecPage";
 
 export default function AppsecEnprobe() {
@@ -8,6 +9,15 @@ export default function AppsecEnprobe() {
           {APPSEC_ENPROBE.title}
         </h2>
         <p className="as-section__intro">{APPSEC_ENPROBE.intro}</p>
+        <figure className="as-frame">
+          <Image
+            src="/images/solutions/open-source/hero-runtime.jpg"
+            alt="An application project open in a code editor, with the file tree beside the source."
+            width={1600}
+            height={1066}
+            sizes="(max-width: 800px) 100vw, 1120px"
+          />
+        </figure>
         <ul className="as-modules">
           {APPSEC_ENPROBE.modules.map((module) => (
             <li key={module.name} className="as-module">

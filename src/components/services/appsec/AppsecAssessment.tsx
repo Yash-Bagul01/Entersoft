@@ -1,9 +1,7 @@
 "use client";
 
-import { FormEvent, useEffect, useId, useRef, useState } from "react";
-import { createPortal } from "react-dom";
+import { FormEvent, useState } from "react";
 import { APPSEC_ASSESSMENT } from "@/data/appsecPage";
-import { useSmoothScroll } from "@/components/layout/SmoothScrollProvider";
 
 type FieldName = "fullName" | "workEmail" | "company" | "assessmentType" | "context";
 
@@ -31,71 +29,9 @@ function isEmail(value: string) {
 
 export default function AppsecAssessment() {
   const copy = APPSEC_ASSESSMENT;
-  const titleId = useId();
-  const lenis = useSmoothScroll();
-  const dialogRef = useRef<HTMLDivElement>(null);
-  const openerRef = useRef<HTMLButtonElement>(null);
-  const [open, setOpen] = useState(false);
   const [values, setValues] = useState<FormValues>(EMPTY);
   const [errors, setErrors] = useState<Partial<Record<FieldName, string>>>({});
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
-
-  useEffect(() => {
-    const openFromHash = () => {
-      if (window.location.hash === "#assessment") setOpen(true);
-    };
-    const onClick = (event: MouseEvent) => {
-      const anchor = (event.target as Element | null)?.closest?.("a[href='#assessment']");
-      if (anchor) setOpen(true);
-    };
-    openFromHash();
-    window.addEventListener("hashchange", openFromHash);
-    document.addEventListener("click", onClick);
-    return () => {
-      window.removeEventListener("hashchange", openFromHash);
-      document.removeEventListener("click", onClick);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!open) return;
-    const dialog = dialogRef.current;
-    const previous = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    lenis?.stop();
-    const root = document.documentElement;
-    const previousOverflow = root.style.overflow;
-    root.style.overflow = "hidden";
-    dialog?.querySelector<HTMLElement>("input, select, textarea, button")?.focus();
-
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setOpen(false);
-        return;
-      }
-      if (event.key !== "Tab" || !dialog) return;
-      const nodes = [...dialog.querySelectorAll<HTMLElement>("button, input, select, textarea")].filter(
-        (node) => !node.hasAttribute("disabled"),
-      );
-      const first = nodes[0];
-      const last = nodes[nodes.length - 1];
-      if (!first || !last) return;
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    };
-
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      root.style.overflow = previousOverflow;
-      lenis?.start();
-      previous?.focus();
-    };
-  }, [open, lenis]);
 
   const setField = (name: keyof FormValues, value: string) => {
     setValues((current) => ({ ...current, [name]: value }));
@@ -139,35 +75,8 @@ export default function AppsecAssessment() {
           {copy.titleLines[1]}
         </h2>
         <p className="as-section__intro">{copy.intro}</p>
-        <div className="as-discuss">
-          <button
-            ref={openerRef}
-            type="button"
-            className="as-discuss__hit"
-            onClick={() => setOpen(true)}
-          >
-            <span>Discuss your project</span>
-            <span className="as-discuss__arrow" aria-hidden="true">→</span>
-          </button>
-        </div>
-        {open
-          ? createPortal(
-              <div className="as-modal">
-                <button type="button" className="as-modal__veil" aria-label="Close" onClick={() => setOpen(false)} />
-                <div
-                  ref={dialogRef}
-                  className="as-modal__sheet"
-                  role="dialog"
-                  aria-modal="true"
-                  aria-labelledby={titleId}
-                >
-                  <div className="as-modal__bar">
-                    <button type="button" className="as-modal__close" onClick={() => setOpen(false)}>
-                      Close
-                    </button>
-                  </div>
-                  <form className="as-assess" method="post" action="#assessment" noValidate onSubmit={onSubmit}>
-          <h3 id={titleId} className="as-assess__title">{copy.formTitle}</h3>
+        <form className="as-assess" method="post" action="#assessment" noValidate onSubmit={onSubmit}>
+          <h3 className="as-assess__title">{copy.formTitle}</h3>
           <p className="as-assess__safety">{copy.safety}</p>
           <p className="as-assess__required">{copy.requiredNotice}</p>
           <div className="as-assess__grid">
@@ -291,11 +200,6 @@ export default function AppsecAssessment() {
             {status === "success" ? copy.success : status === "error" ? copy.failure : ""}
           </p>
         </form>
-                </div>
-              </div>,
-              document.body,
-            )
-          : null}
       </div>
     </section>
   );

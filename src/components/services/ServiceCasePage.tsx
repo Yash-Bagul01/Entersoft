@@ -47,6 +47,11 @@ export default function ServiceCasePage({ slug }: { slug: ServiceCaseSlug }) {
   const isAppsec = slug === "appsec";
 
   useLayoutEffect(() => {
+    if (isAppsec) {
+      transition?.markArrived(visual.href);
+      return;
+    }
+
     const kicker = kickerRef.current;
     const title = titleRef.current;
     if (!kicker || !title) return;
@@ -94,10 +99,10 @@ export default function ServiceCasePage({ slug }: { slug: ServiceCaseSlug }) {
     return () => {
       tl.kill();
     };
-  }, [reduce, transition, visual.href]);
+  }, [isAppsec, reduce, transition, visual.href]);
 
   useLayoutEffect(() => {
-    if (reduce || !articleRef.current) return;
+    if (isAppsec || reduce || !articleRef.current) return;
     gsap.registerPlugin(ScrollTrigger);
     const headings = articleRef.current.querySelectorAll<HTMLElement>(
       ".sc-section__label, .sc-section__title"
@@ -124,7 +129,7 @@ export default function ServiceCasePage({ slug }: { slug: ServiceCaseSlug }) {
       // The reduced-motion preference resolves after the first pass; never leave headings hidden.
       gsap.set(headings, { clearProps: "opacity,visibility,transform" });
     };
-  }, [reduce, slug]);
+  }, [isAppsec, reduce, slug]);
 
   const leadProse = copy.directionProse[0];
   const supportProse = copy.directionProse.slice(1);

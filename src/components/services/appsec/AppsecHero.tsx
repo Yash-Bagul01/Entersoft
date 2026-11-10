@@ -15,6 +15,19 @@ export default function AppsecHero({ kickerRef, titleRef }: AppsecHeroProps) {
 
   return (
     <header id="hero" className="as-hero">
+      <div className="as-hero__media" aria-hidden="true">
+        <video
+          className="as-hero__video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster="/images/solutions/open-source/hero-code.jpg"
+        >
+          <source src="/videos/solutions/open-source/hero-code.mp4" type="video/mp4" />
+        </video>
+      </div>
       <div className="as-hero__inner">
         <nav aria-label="Breadcrumb" className="as-crumbs" data-hero-rise>
           <ol>
