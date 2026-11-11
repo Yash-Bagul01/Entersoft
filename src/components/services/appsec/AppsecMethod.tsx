@@ -1,5 +1,14 @@
 import { APPSEC_METHOD } from "@/data/appsecPage";
 
+const ICONS = [
+  "M4 7h16v12H4zM8 7V5h8v2",
+  "M5 19l4-8 3 5 3-3 4 6",
+  "M10 4l1.5 4.5L16 10l-4.5 1.5L10 16l-1.5-4.5L4 10l4.5-1.5z",
+  "M5 12l4 4 10-10",
+  "M6 6h12v4H6zM6 14h8v4H6z",
+  "M12 4v4M12 16v4M4 12h4M16 12h4M7 7l2.5 2.5M14.5 14.5L17 17M17 7l-2.5 2.5M9.5 14.5L7 17",
+];
+
 export default function AppsecMethod() {
   return (
     <section id="method" className="as-section" aria-labelledby="method-title">
@@ -8,26 +17,19 @@ export default function AppsecMethod() {
           {APPSEC_METHOD.title}
         </h2>
         <p className="as-section__intro">{APPSEC_METHOD.intro}</p>
-        <figure className="as-reel as-reel--wide">
-          <video
-            className="as-reel__video"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            poster="/images/solutions/open-source/hero-runtime.jpg"
-            aria-label="An editor open on an application source file"
-          >
-            <source src="/videos/solutions/open-source/work-scan.mp4" type="video/mp4" />
-          </video>
-        </figure>
         <ol className="as-method">
-          {APPSEC_METHOD.phases.map((phase) => (
+          {APPSEC_METHOD.phases.map((phase, i) => (
             <li key={phase.heading} className="as-phase">
+              <span className="as-phase__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d={ICONS[i]} />
+                </svg>
+              </span>
               <h3 className="as-phase__title">{phase.heading}</h3>
-              <p className="as-phase__body">{phase.body}</p>
-              <p className="as-phase__output">{phase.output}</p>
+              <ul className="as-phase__points">
+                <li>{phase.body}</li>
+                <li>{phase.output}</li>
+              </ul>
             </li>
           ))}
         </ol>

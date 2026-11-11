@@ -23,7 +23,6 @@ export default function AppsecHero({ kickerRef, titleRef }: AppsecHeroProps) {
           loop
           playsInline
           preload="metadata"
-          poster="/images/solutions/open-source/hero-code.jpg"
         >
           <source src="/videos/solutions/open-source/hero-code.mp4" type="video/mp4" />
         </video>

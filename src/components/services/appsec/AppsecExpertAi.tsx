@@ -15,10 +15,10 @@ export default function AppsecExpertAi() {
         <p className="as-section__intro">{APPSEC_EXPERT_AI.intro}</p>
         <figure className="as-frame as-frame--wide">
           <Image
-            src="/images/platform/runtime/ai/wide.jpg"
-            alt="A robotic hand reaching toward a network of connected points."
+            src="/images/platform/runtime/ai/c01.jpg"
+            alt="Specialists in a working session around a conference table."
             width={1600}
-            height={1066}
+            height={1068}
             sizes="(max-width: 800px) 100vw, 1120px"
           />
         </figure>
