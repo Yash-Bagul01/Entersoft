@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { APPSEC_ASSESSMENT } from "@/data/appsecPage";
 
 type FieldName = "fullName" | "workEmail" | "company" | "assessmentType" | "context";
@@ -66,6 +66,17 @@ export default function AppsecAssessment() {
   const describedBy = (name: FieldName, helperId: string) =>
     errors[name] ? `${helperId} assessment-${name}-error` : helperId;
 
+  useEffect(() => {
+    const box = document.querySelector(".as-assess-drop");
+    if (!(box instanceof HTMLDetailsElement)) return;
+    const openIfRequested = () => {
+      if (window.location.hash === "#assessment") box.open = true;
+    };
+    openIfRequested();
+    window.addEventListener("hashchange", openIfRequested);
+    return () => window.removeEventListener("hashchange", openIfRequested);
+  }, []);
+
   return (
     <section id="assessment" className="as-section" aria-labelledby="assessment-title">
       <div className="sc-wrap">
@@ -75,8 +86,13 @@ export default function AppsecAssessment() {
           {copy.titleLines[1]}
         </h2>
         <p className="as-section__intro">{copy.intro}</p>
+        <details className="as-assess-drop">
+          <summary className="as-assess-drop__summary">
+            <span className="as-assess-drop__title">{copy.formTitle}</span>
+            <span className="as-assess-drop__action" aria-hidden="true" />
+          </summary>
         <form className="as-assess" method="post" action="#assessment" noValidate onSubmit={onSubmit}>
-          <h3 className="as-assess__title">{copy.formTitle}</h3>
+          <h3 className="as-assess__title" aria-hidden="true">{copy.formTitle}</h3>
           <p className="as-assess__safety">{copy.safety}</p>
           <p className="as-assess__required">{copy.requiredNotice}</p>
           <div className="as-assess__grid">
@@ -200,6 +216,7 @@ export default function AppsecAssessment() {
             {status === "success" ? copy.success : status === "error" ? copy.failure : ""}
           </p>
         </form>
+        </details>
       </div>
     </section>
   );

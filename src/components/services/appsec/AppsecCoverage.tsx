@@ -62,8 +62,10 @@ export default function AppsecCoverage() {
         </h2>
         <p className="as-section__intro">{APPSEC_COVERAGE.intro}</p>
         <div className="as-coverage">
-          {APPSEC_COVERAGE.domains.map((domain, i) => (
-            <details key={domain.anchor} id={domain.anchor} className="as-cov">
+          {[0, 1].map((side) => (
+          <div className="as-stack" key={side}>
+          {APPSEC_COVERAGE.domains.map((domain, i) => i % 2 === side ? (
+            <details key={domain.anchor} id={domain.anchor} className="as-cov" style={{ order: i }}>
               <summary className="as-cov__summary">
                 <span className="as-cov__index" aria-hidden="true">
                   {String(i + 1).padStart(2, "0")}
@@ -85,6 +87,8 @@ export default function AppsecCoverage() {
                 <p className="as-cov__output">{domain.output}</p>
               </div>
             </details>
+          ) : null)}
+          </div>
           ))}
         </div>
       </div>

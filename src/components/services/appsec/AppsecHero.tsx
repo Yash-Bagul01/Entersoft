@@ -16,16 +16,33 @@ export default function AppsecHero({ kickerRef, titleRef }: AppsecHeroProps) {
   return (
     <header id="hero" className="as-hero">
       <div className="as-hero__media" aria-hidden="true">
-        <video
-          className="as-hero__video"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-        >
-          <source src="/videos/solutions/open-source/hero-code.mp4" type="video/mp4" />
-        </video>
+        <svg className="as-hero__art" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" focusable="false">
+          <defs>
+            <radialGradient id="as-hero-violet" cx="70%" cy="20%" r="55%">
+              <stop offset="0%" stopColor="#7c6bff" stopOpacity="0.95" />
+              <stop offset="100%" stopColor="#7c6bff" stopOpacity="0" />
+            </radialGradient>
+            <radialGradient id="as-hero-amber" cx="88%" cy="70%" r="45%">
+              <stop offset="0%" stopColor="#ff8a3d" stopOpacity="0.85" />
+              <stop offset="100%" stopColor="#ff8a3d" stopOpacity="0" />
+            </radialGradient>
+            <radialGradient id="as-hero-teal" cx="12%" cy="80%" r="40%">
+              <stop offset="0%" stopColor="#3ec6d6" stopOpacity="0.55" />
+              <stop offset="100%" stopColor="#3ec6d6" stopOpacity="0" />
+            </radialGradient>
+          </defs>
+          <rect width="1440" height="900" fill="#100c28" />
+          <rect width="1440" height="900" fill="url(#as-hero-violet)" />
+          <rect width="1440" height="900" fill="url(#as-hero-amber)" />
+          <rect width="1440" height="900" fill="url(#as-hero-teal)" />
+          <g fill="#ffffff" opacity="0.28">
+            {Array.from({ length: 18 }, (_, row) =>
+              Array.from({ length: 28 }, (_, col) => (
+                <circle key={`${row}-${col}`} cx={40 + col * 52} cy={30 + row * 50} r={col % 5 === 0 ? 1.6 : 0.9} />
+              )),
+            )}
+          </g>
+        </svg>
       </div>
       <div className="as-hero__inner">
         <nav aria-label="Breadcrumb" className="as-crumbs" data-hero-rise>

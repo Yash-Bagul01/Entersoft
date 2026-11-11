@@ -50,8 +50,10 @@ export default function AppsecStandards() {
         </h2>
         <p className="as-section__intro">{APPSEC_STANDARDS.intro}</p>
         <div className="as-standards">
-          {APPSEC_STANDARDS.references.map((reference) => (
-            <details key={reference.name} className="as-standard">
+          {[0, 1].map((side) => (
+          <div className="as-stack" key={side}>
+          {APPSEC_STANDARDS.references.map((reference, i) => i % 2 === side ? (
+            <details key={reference.name} className="as-standard" style={{ order: i }}>
               <summary className="as-standard__summary">
                 <h3 className="as-standard__name">{reference.name}</h3>
                 <span className="as-standard__toggle" aria-hidden="true" />
@@ -60,6 +62,8 @@ export default function AppsecStandards() {
                 <Applicability body={reference.body} links={reference.links} />
               </div>
             </details>
+          ) : null)}
+          </div>
           ))}
         </div>
         <p className="as-standards__note">{APPSEC_STANDARDS.distinction}</p>

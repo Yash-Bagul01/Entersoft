@@ -8,13 +8,17 @@ export default function AppsecFaqs() {
           {APPSEC_FAQ_SECTION.title}
         </h2>
         <div className="as-faqs">
-          {APPSEC_FAQ_SECTION.items.map((item) => (
-            <details key={item.question} className="as-faq">
+          {[0, 1].map((side) => (
+          <div className="as-stack" key={side}>
+          {APPSEC_FAQ_SECTION.items.map((item, i) => i % 2 === side ? (
+            <details key={item.question} className="as-faq" style={{ order: i }}>
               <summary className="as-faq__summary">
                 <span className="as-faq__question">{item.question}</span>
               </summary>
               <p>{item.answer}</p>
             </details>
+          ) : null)}
+          </div>
           ))}
         </div>
       </div>

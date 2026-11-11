@@ -9,8 +9,10 @@ export default function AppsecScenarios() {
         </h2>
         <p className="as-section__intro">{APPSEC_SCENARIOS.intro}</p>
         <div className="as-scenarios">
-          {APPSEC_SCENARIOS.scenarios.map((scenario, i) => (
-            <details key={scenario.title} className="as-scene">
+          {[0, 1].map((side) => (
+          <div className="as-stack" key={side}>
+          {APPSEC_SCENARIOS.scenarios.map((scenario, i) => i % 2 === side ? (
+            <details key={scenario.title} className="as-scene" style={{ order: i }}>
               <summary className="as-scene__summary">
                 <span className="as-scene__index" aria-hidden="true">
                   {String(i + 1).padStart(2, "0")}
@@ -24,6 +26,8 @@ export default function AppsecScenarios() {
                 <p className="as-scene__evidence">{scenario.evidence}</p>
               </div>
             </details>
+          ) : null)}
+          </div>
           ))}
         </div>
       </div>

@@ -1,5 +1,14 @@
 import { APPSEC_DELIVERABLES } from "@/data/appsecPage";
 
+function DeliverableCards({ hidden = false }: { hidden?: boolean }) {
+  return APPSEC_DELIVERABLES.items.map((item) => (
+    <li key={hidden ? `${item.heading}-loop` : item.heading} className="as-deliverable" aria-hidden={hidden || undefined}>
+      <h3 className="as-deliverable__title">{item.heading}</h3>
+      <p className="as-deliverable__body">{item.body}</p>
+    </li>
+  ));
+}
+
 export default function AppsecDeliverables() {
   return (
     <section id="deliverables" className="as-section" aria-labelledby="deliverables-title">
@@ -8,14 +17,12 @@ export default function AppsecDeliverables() {
           {APPSEC_DELIVERABLES.title}
         </h2>
         <p className="as-section__intro">{APPSEC_DELIVERABLES.intro}</p>
-        <ul className="as-deliverables">
-          {APPSEC_DELIVERABLES.items.map((item) => (
-            <li key={item.heading} className="as-deliverable">
-              <h3 className="as-deliverable__title">{item.heading}</h3>
-              <p className="as-deliverable__body">{item.body}</p>
-            </li>
-          ))}
-        </ul>
+        <div className="as-deliverables">
+          <ul className="as-deliverables__track">
+            <DeliverableCards />
+            <DeliverableCards hidden />
+          </ul>
+        </div>
         <details id="evidence-example" className="as-evidence">
           <summary className="as-evidence__summary">
             <span className="as-evidence__label">{APPSEC_DELIVERABLES.example.label}</span>
