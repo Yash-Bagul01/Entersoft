@@ -93,8 +93,12 @@ export default function SmoothScrollProvider({
           if (targetElement) {
             e.preventDefault();
             const appsecTarget = (targetElement as HTMLElement).closest(".as-stage");
+            const scrollMargin = Number.parseFloat(getComputedStyle(targetElement).scrollMarginTop);
+            // Sections inside the stage already clear the pinned bar with scroll-margin.
+            // Adding the same offset again stops short, on the previous section.
+            const offset = appsecTarget ? (scrollMargin > 0 ? 0 : -148) : -80;
             lenis.scrollTo(targetElement as HTMLElement, {
-              offset: appsecTarget ? -148 : -80,
+              offset,
               duration: shouldReduceMotion ? 0 : 1.4,
               easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             });

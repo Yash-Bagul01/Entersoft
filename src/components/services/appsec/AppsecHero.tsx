@@ -18,30 +18,29 @@ export default function AppsecHero({ kickerRef, titleRef }: AppsecHeroProps) {
       <div className="as-hero__media" aria-hidden="true">
         <svg className="as-hero__art" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" focusable="false">
           <defs>
-            <radialGradient id="as-hero-violet" cx="70%" cy="20%" r="55%">
-              <stop offset="0%" stopColor="#7c6bff" stopOpacity="0.95" />
-              <stop offset="100%" stopColor="#7c6bff" stopOpacity="0" />
+            <radialGradient id="as-hero-violet" cx="82%" cy="6%" r="58%">
+              <stop offset="0%" stopColor="#8b7cff" stopOpacity="0.95" />
+              <stop offset="38%" stopColor="#3a2f86" stopOpacity="0.45" />
+              <stop offset="100%" stopColor="#070b16" stopOpacity="0" />
             </radialGradient>
-            <radialGradient id="as-hero-amber" cx="88%" cy="70%" r="45%">
-              <stop offset="0%" stopColor="#ff8a3d" stopOpacity="0.85" />
-              <stop offset="100%" stopColor="#ff8a3d" stopOpacity="0" />
+            <radialGradient id="as-hero-amber" cx="96%" cy="86%" r="42%">
+              <stop offset="0%" stopColor="#ffc2a0" stopOpacity="0.38" />
+              <stop offset="100%" stopColor="#070b16" stopOpacity="0" />
             </radialGradient>
-            <radialGradient id="as-hero-teal" cx="12%" cy="80%" r="40%">
-              <stop offset="0%" stopColor="#3ec6d6" stopOpacity="0.55" />
-              <stop offset="100%" stopColor="#3ec6d6" stopOpacity="0" />
+            <radialGradient id="as-hero-teal" cx="4%" cy="96%" r="40%">
+              <stop offset="0%" stopColor="#8ee7dc" stopOpacity="0.22" />
+              <stop offset="100%" stopColor="#070b16" stopOpacity="0" />
             </radialGradient>
           </defs>
-          <rect width="1440" height="900" fill="#100c28" />
+          <rect width="1440" height="900" fill="#070b16" />
           <rect width="1440" height="900" fill="url(#as-hero-violet)" />
           <rect width="1440" height="900" fill="url(#as-hero-amber)" />
           <rect width="1440" height="900" fill="url(#as-hero-teal)" />
-          <g fill="#ffffff" opacity="0.28">
-            {Array.from({ length: 18 }, (_, row) =>
-              Array.from({ length: 28 }, (_, col) => (
-                <circle key={`${row}-${col}`} cx={40 + col * 52} cy={30 + row * 50} r={col % 5 === 0 ? 1.6 : 0.9} />
-              )),
-            )}
+          <g className="as-drift" fill="none" stroke="#ffffff" strokeOpacity="0.14">
+            <rect x="980" y="120" width="280" height="180" rx="28" />
+            <rect x="1040" y="220" width="240" height="150" rx="24" />
           </g>
+          <circle cx="1180" cy="160" r="220" fill="none" stroke="#ffffff" strokeOpacity="0.08" />
         </svg>
       </div>
       <div className="as-hero__inner">
@@ -102,12 +101,16 @@ export default function AppsecHero({ kickerRef, titleRef }: AppsecHeroProps) {
 
         <figure id="hero-visual" className="as-map" data-hero-rise>
           <svg className="as-map__schematic" viewBox="0 0 360 460" aria-hidden="true" focusable="false">
-            <g fill="none" stroke="currentColor" strokeWidth="1">
-              <path d="M28 28 H332 M28 28 V432 M180 28 V432 M332 28 V432" />
-              <path className="as-map__trace" d="M28 78 H150 V168 H250 V258 H120 V348 H300" />
-              <circle cx="150" cy="168" r="3" fill="currentColor" stroke="none" />
-              <circle cx="250" cy="258" r="3" fill="currentColor" stroke="none" />
-              <circle cx="120" cy="348" r="3" fill="currentColor" stroke="none" />
+            <defs>
+              <radialGradient id="as-map-glow" cx="78%" cy="12%" r="70%">
+                <stop offset="0%" stopColor="#8b7cff" stopOpacity="0.45" />
+                <stop offset="100%" stopColor="#8b7cff" stopOpacity="0" />
+              </radialGradient>
+            </defs>
+            <rect width="360" height="460" fill="url(#as-map-glow)" />
+            <g fill="none" stroke="currentColor" strokeOpacity="0.28">
+              <circle cx="300" cy="72" r="86" />
+              <circle cx="48" cy="400" r="64" />
             </g>
           </svg>
           <ol className="as-map__flow" aria-label="Application trust map">

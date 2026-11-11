@@ -10,15 +10,34 @@ export default function AppsecPageNav() {
   const [active, setActive] = useState("");
   const [pinned, setPinned] = useState(false);
   const sentinelRef = useRef<HTMLDivElement>(null);
+  const slotRef = useRef<HTMLDivElement>(null);
+  const navRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const sentinel = sentinelRef.current;
     if (!sentinel) return;
     const observer = new IntersectionObserver(
-      ([entry]) => setPinned(!entry.isIntersecting),
-      { rootMargin: "-72px 0px 0px 0px", threshold: 0 },
+      ([entry]) => {
+        // A sentinel still below the fold is also "not intersecting".
+        // Pin only once it has actually passed the site header.
+        setPinned(entry.boundingClientRect.bottom < 84);
+      },
+      { threshold: 0 },
     );
     observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const slot = slotRef.current;
+    const nav = navRef.current;
+    if (!slot || !nav) return;
+    const sync = () => {
+      slot.style.height = `${nav.offsetHeight}px`;
+    };
+    sync();
+    const observer = new ResizeObserver(sync);
+    observer.observe(nav);
     return () => observer.disconnect();
   }, []);
 
@@ -46,10 +65,12 @@ export default function AppsecPageNav() {
   return (
     <>
     <div ref={sentinelRef} className="as-pagenav__sentinel" aria-hidden="true" />
-    <div className="as-pagenav-slot">
-    <nav aria-label="On this page" className={pinned ? "as-pagenav is-pinned" : "as-pagenav"}>
+    <div ref={slotRef} className="as-pagenav-slot">
+    <nav ref={navRef} aria-label="On this page" className={pinned ? "as-pagenav is-pinned" : "as-pagenav"}>
       <ul className="as-pagenav__list">
-        {APPSEC_PAGE_NAV.map((item) => {
+        {["coverage", "scenarios", "method", "enprobe", "deliverables", "standards", "faqs"].map((anchor) => {
+          const item = APPSEC_PAGE_NAV.find((entry) => entry.anchor === anchor);
+          if (!item) return null;
           const live = LIVE_ANCHORS.has(item.anchor);
           const current = live && active === item.anchor;
           return (

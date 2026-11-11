@@ -1,4 +1,5 @@
 import { APPSEC_DIFFERENCE } from "@/data/appsecPage";
+import AppsecInkStage from "@/components/services/appsec/AppsecInkStage";
 
 const MARKS = [
   "M4 16h16M12 8v16M8 12h8",
@@ -14,80 +15,62 @@ export default function AppsecDifference() {
           {APPSEC_DIFFERENCE.title}
         </h2>
         <p className="as-section__intro">{APPSEC_DIFFERENCE.intro}</p>
-        <figure className="as-frame as-illus" aria-hidden="true">
-          <svg viewBox="0 0 1200 280" preserveAspectRatio="xMidYMid meet" focusable="false">
-            <defs>
-              <linearGradient id="as-diff-bg" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stopColor="#efeaff" />
-                <stop offset="55%" stopColor="#f6f4ff" />
-                <stop offset="100%" stopColor="#e5f8f4" />
-              </linearGradient>
-              <radialGradient id="as-diff-glow" cx="78%" cy="18%" r="42%">
-                <stop offset="0%" stopColor="#c4b6ff" stopOpacity="0.85" />
-                <stop offset="100%" stopColor="#c4b6ff" stopOpacity="0" />
-              </radialGradient>
-              <filter id="as-diff-sh" x="-20%" y="-30%" width="140%" height="160%">
-                <feDropShadow dx="0" dy="12" stdDeviation="10" floodColor="#31267a" floodOpacity="0.16" />
-              </filter>
-            </defs>
-            <rect width="1200" height="280" fill="url(#as-diff-bg)" />
-            <rect width="1200" height="280" fill="url(#as-diff-glow)" />
-            <g fill="#8b7cf6" opacity="0.35">
-              {Array.from({ length: 7 }, (_, row) =>
-                Array.from({ length: 24 }, (_, col) => (
-                  <circle key={`${row}-${col}`} cx={28 + col * 50} cy={18 + row * 42} r="1.2" />
-                )),
-              )}
+        <figure className="as-frame as-illus as-illus--ink" aria-hidden="true">
+          <AppsecInkStage>
+          <svg viewBox="0 0 520 480" preserveAspectRatio="xMidYMid meet" focusable="false">
+            <g className="as-ink-ambient" fill="none" stroke="#d9d4ff" strokeOpacity="0.45">
+              <circle cx="260" cy="240" r="214" />
+              <circle className="as-spin" cx="260" cy="240" r="168" strokeDasharray="4 12" />
+              <circle className="as-ink-dot" cx="78" cy="86" r="4" fill="#d9d4ff" stroke="none" />
+              <circle className="as-ink-dot" cx="438" cy="390" r="4" fill="#635bff" stroke="none" />
+              <circle className="as-ink-dot" cx="430" cy="78" r="3" fill="#d9d4ff" stroke="none" />
             </g>
-            <path d="M120 196 C 280 70, 470 250, 690 120 S 980 40, 1100 150" fill="none" stroke="#635bff" strokeWidth="2" strokeDasharray="7 9" opacity="0.55" />
-            <circle cx="120" cy="196" r="5" fill="#f5a524" />
-            <circle cx="690" cy="120" r="5" fill="#635bff" />
-            <circle cx="1100" cy="150" r="5" fill="#0f9f8f" />
-            <g filter="url(#as-diff-sh)">
-              <rect x="36" y="36" width="330" height="208" rx="20" fill="#ffffff" />
-              <rect x="36" y="36" width="330" height="8" fill="#f5a524" />
-              <circle cx="78" cy="78" r="18" fill="#fff4dc" />
-              <path d="M78 68v14M78 88h.01" stroke="#b86e00" strokeWidth="2.2" strokeLinecap="round" />
-              <text x="108" y="74" fill="#8892a6" fontSize="13" fontFamily="Inter, sans-serif">Scanner</text>
-              <text x="108" y="98" fill="#0a2540" fontSize="20" fontWeight="600" fontFamily="Inter, sans-serif">Possible weakness</text>
-              <rect x="64" y="128" width="250" height="10" rx="5" fill="#f4efe4" />
-              <rect x="64" y="128" width="168" height="10" rx="5" fill="#f5a524" />
-              <rect x="64" y="148" width="250" height="10" rx="5" fill="#f4efe4" />
-              <rect x="64" y="148" width="96" height="10" rx="5" fill="#f0b45a" />
-              <rect x="64" y="168" width="250" height="10" rx="5" fill="#f4efe4" />
-              <rect x="64" y="168" width="210" height="10" rx="5" fill="#e8c98a" />
-              <text x="64" y="210" fill="#425466" fontSize="14" fontFamily="Inter, sans-serif">A candidate signal, not a confirmed issue.</text>
+            <g className="as-drift">
+            <g className="as-ink" fill="none" stroke="#d9d4ff" strokeWidth="1.35" strokeLinejoin="round" transform="translate(260 246) scale(1.22) translate(-600 -175)">
+              <path d="M600,158 L735.1,236 L600,314 L464.9,236 Z" />
+              <path d="M735.1,236 L735.1,250 L600,328 L600,314 Z" />
+              <path d="M464.9,236 L600,314 L600,328 L464.9,250 Z" />
+              <path d="M600,124 L735.1,202 L600,280 L464.9,202 Z" />
+              <path d="M735.1,202 L735.1,216 L600,294 L600,280 Z" />
+              <path d="M464.9,202 L600,280 L600,294 L464.9,216 Z" />
+              <path d="M600,90 L735.1,168 L600,246 L464.9,168 Z" />
+              <path d="M735.1,168 L735.1,182 L600,260 L600,246 Z" />
+              <path d="M464.9,168 L600,246 L600,260 L464.9,182 Z" />
+              <path d="M600,56 L735.1,134 L600,212 L464.9,134 Z" />
+              <path d="M735.1,134 L735.1,148 L600,226 L600,212 Z" />
+              <path d="M464.9,134 L600,212 L600,226 L464.9,148 Z" />
+              <path d="M600,22 L735.1,100 L600,178 L464.9,100 Z" />
+              <path d="M735.1,100 L735.1,114 L600,192 L600,178 Z" />
+              <path d="M464.9,100 L600,178 L600,192 L464.9,114 Z" />
+              <path d="M629.4,117 L626.4,118.6 L623.1,120 L619.6,121.2 L615.9,122.2 L612.1,123 L608.1,123.6 L604.1,123.9 L600,124 L595.9,123.9 L591.9,123.6 L587.9,123 L584.1,122.2 L580.4,121.2 L576.9,120 L573.6,118.6 L570.6,117 L567.8,115.3 L565.4,113.4 L563.3,111.3 L561.5,109.2 L560.2,107 L559.2,104.7 L558.6,102.4 L558.4,100 L558.6,97.6 L559.2,95.3 L560.2,93 L561.5,90.8 L563.3,88.7 L565.4,86.6 L567.8,84.7 L570.6,83 L573.6,81.4 L576.9,80 L580.4,78.8 L584.1,77.8 L587.9,77 L591.9,76.4 L595.9,76.1 L600,76 L604.1,76.1 L608.1,76.4 L612.1,77 L615.9,77.8 L619.6,78.8 L623.1,80 L626.4,81.4 L629.4,83 L632.2,84.7 L634.6,86.6 L636.7,88.7 L638.5,90.8 L639.8,93 L640.8,95.3 L641.4,97.6 L641.6,100 L641.4,102.4 L640.8,104.7 L639.8,107 L638.5,109.2 L636.7,111.3 L634.6,113.4 L632.2,115.3 L629.4,117 Z" />
+              <path d="M619.1,111 L617.1,112 L615,112.9 L612.7,113.7 L610.3,114.4 L607.8,114.9 L605.3,115.3 L602.6,115.5 L600,115.6 L597.4,115.5 L594.7,115.3 L592.2,114.9 L589.7,114.4 L587.3,113.7 L585,112.9 L582.9,112 L580.9,111 L579.2,109.9 L577.6,108.6 L576.2,107.3 L575.1,106 L574.2,104.5 L573.6,103 L573.2,101.5 L573.1,100 L573.2,98.5 L573.6,97 L574.2,95.5 L575.1,94 L576.2,92.7 L577.6,91.4 L579.2,90.1 L580.9,89 L582.9,88 L585,87.1 L587.3,86.3 L589.7,85.6 L592.2,85.1 L594.7,84.7 L597.4,84.5 L600,84.4 L602.6,84.5 L605.3,84.7 L607.8,85.1 L610.3,85.6 L612.7,86.3 L615,87.1 L617.1,88 L619.1,89 L620.8,90.1 L622.4,91.4 L623.8,92.7 L624.9,94 L625.8,95.5 L626.4,97 L626.8,98.5 L626.9,100 L626.8,101.5 L626.4,103 L625.8,104.5 L624.9,106 L623.8,107.3 L622.4,108.6 L620.8,109.9 L619.1,111 Z" />
+              <path d="M586.1,82 L631.2,108" />
+              <path d="M577.5,87 L622.5,113" />
+              <path d="M568.8,92 L613.9,118" />
             </g>
-            <g filter="url(#as-diff-sh)">
-              <rect x="434" y="36" width="332" height="208" rx="20" fill="#ffffff" />
-              <rect x="434" y="36" width="332" height="8" fill="#635bff" />
-              <circle cx="476" cy="78" r="18" fill="#ecebff" />
-              <path d="M468 78l6 6 12-13" fill="none" stroke="#635bff" strokeWidth="2.4" strokeLinecap="round" />
-              <text x="506" y="74" fill="#8892a6" fontSize="13" fontFamily="Inter, sans-serif">Assessment</text>
-              <text x="506" y="98" fill="#0a2540" fontSize="20" fontWeight="600" fontFamily="Inter, sans-serif">Confirmed issue</text>
-              <circle cx="478" cy="142" r="8" fill="#ecebff" />
-              <path d="M474 142l3 3 6-7" fill="none" stroke="#635bff" strokeWidth="1.6" strokeLinecap="round" />
-              <text x="496" y="146" fill="#425466" fontSize="14" fontFamily="Inter, sans-serif">Evidence and impact</text>
-              <circle cx="478" cy="174" r="8" fill="#ecebff" />
-              <path d="M474 174l3 3 6-7" fill="none" stroke="#635bff" strokeWidth="1.6" strokeLinecap="round" />
-              <text x="496" y="178" fill="#425466" fontSize="14" fontFamily="Inter, sans-serif">Business process included</text>
-              <rect x="462" y="198" width="120" height="26" rx="13" fill="#635bff" />
-              <text x="478" y="216" fill="#ffffff" fontSize="12" fontFamily="Inter, sans-serif">Validated</text>
-            </g>
-            <g filter="url(#as-diff-sh)">
-              <rect x="834" y="36" width="330" height="208" rx="20" fill="#ffffff" />
-              <rect x="834" y="36" width="330" height="8" fill="#0f9f8f" />
-              <circle cx="876" cy="78" r="18" fill="#e7f8f3" />
-              <path d="M868 74a12 12 0 1 1-2 10" fill="none" stroke="#0f9f8f" strokeWidth="2" strokeLinecap="round" />
-              <path d="M866 84l4-8 8 2" fill="none" stroke="#0f9f8f" strokeWidth="2" strokeLinecap="round" />
-              <text x="906" y="74" fill="#8892a6" fontSize="13" fontFamily="Inter, sans-serif">After the test</text>
-              <text x="906" y="98" fill="#0a2540" fontSize="20" fontWeight="600" fontFamily="Inter, sans-serif">Remediation</text>
-              <rect x="862" y="128" width="270" height="36" rx="10" fill="#f3fbf8" />
-              <text x="878" y="151" fill="#425466" fontSize="14" fontFamily="Inter, sans-serif">A practical fix to apply</text>
-              <rect x="862" y="174" width="270" height="36" rx="10" fill="#f3fbf8" />
-              <text x="878" y="197" fill="#425466" fontSize="14" fontFamily="Inter, sans-serif">Agreed retest stays open</text>
             </g>
           </svg>
+          </AppsecInkStage>
+          <div className="as-illus__notes">
+            <div>
+              <p className="as-illus__kicker">Scanner</p>
+              <p className="as-illus__title">Possible weakness</p>
+              <p className="as-illus__line">A candidate signal, not a confirmed issue.</p>
+            </div>
+            <div>
+              <p className="as-illus__kicker">Assessment</p>
+              <p className="as-illus__title">Confirmed issue</p>
+              <p className="as-illus__line">Evidence and impact</p>
+              <p className="as-illus__line">Business process included</p>
+              <span className="as-illus__pill">Validated</span>
+            </div>
+            <div>
+              <p className="as-illus__kicker">After the test</p>
+              <p className="as-illus__title">Remediation</p>
+              <p className="as-illus__line">A practical fix to apply</p>
+              <p className="as-illus__line">Agreed retest stays open</p>
+            </div>
+          </div>
         </figure>
         <ul className="as-values">
           {APPSEC_DIFFERENCE.values.map((value, i) => (

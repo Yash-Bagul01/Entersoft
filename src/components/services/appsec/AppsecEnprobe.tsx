@@ -1,4 +1,5 @@
 import { APPSEC_ENPROBE } from "@/data/appsecPage";
+import AppsecInkStage from "@/components/services/appsec/AppsecInkStage";
 
 export default function AppsecEnprobe() {
   return (
@@ -8,56 +9,48 @@ export default function AppsecEnprobe() {
           {APPSEC_ENPROBE.title}
         </h2>
         <p className="as-section__intro">{APPSEC_ENPROBE.intro}</p>
-        <figure className="as-frame as-illus" aria-hidden="true">
-          <svg viewBox="0 0 1200 280" preserveAspectRatio="xMidYMid meet" focusable="false">
-            <defs>
-              <linearGradient id="as-en-bg" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stopColor="#e7fff6" />
-                <stop offset="48%" stopColor="#eef1ff" />
-                <stop offset="100%" stopColor="#ffeaf3" />
-              </linearGradient>
-              <filter id="as-en-sh" x="-20%" y="-25%" width="140%" height="160%">
-                <feDropShadow dx="0" dy="12" stdDeviation="10" floodColor="#1a2458" floodOpacity="0.16" />
-              </filter>
-            </defs>
-            <rect width="1200" height="280" fill="url(#as-en-bg)" />
-            <circle cx="250" cy="140" r="108" fill="none" stroke="#c9c6f2" strokeDasharray="4 7" />
-            <circle cx="250" cy="140" r="68" fill="none" stroke="#d7c6ea" />
-            <g stroke="#9aa3d6" strokeWidth="1.5">
-              <path d="M250 140 L110 62" />
-              <path d="M250 140 L400 58" />
-              <path d="M250 140 L96 196" />
-              <path d="M250 140 L392 214" />
-              <path d="M250 140 L250 248" />
+        <figure className="as-frame as-illus as-illus--ink" aria-hidden="true">
+          <AppsecInkStage>
+          <svg viewBox="0 0 520 480" preserveAspectRatio="xMidYMid meet" focusable="false">
+            <g className="as-ink-ambient" fill="none" stroke="#d9d4ff" strokeOpacity="0.45">
+              <circle cx="260" cy="240" r="214" />
+              <circle className="as-spin" cx="260" cy="240" r="160" strokeDasharray="4 12" />
+              <circle className="as-ink-dot" cx="70" cy="96" r="4" fill="#d9d4ff" stroke="none" />
+              <circle className="as-ink-dot" cx="446" cy="392" r="4" fill="#635bff" stroke="none" />
+              <circle className="as-ink-dot" cx="448" cy="78" r="3" fill="#d9d4ff" stroke="none" />
             </g>
-            <g filter="url(#as-en-sh)">
-              <circle cx="250" cy="140" r="42" fill="#635bff" />
+            <g className="as-drift">
+            <g className="as-ink" fill="none" stroke="#d9d4ff" strokeWidth="1.35" strokeLinejoin="round" transform="translate(260 248) scale(1.45) translate(-580 -214)">
+              <path d="M645.4,104 L693.9,132 L645.4,160 L596.9,132 Z" />
+              <path d="M693.9,132 L693.9,210 L645.4,238 L645.4,160 Z" />
+              <path d="M596.9,132 L645.4,160 L645.4,238 L596.9,210 Z" />
+              <path d="M512.1,113 L570.9,147 L519,177 L460.1,143 Z" />
+              <path d="M570.9,147 L570.9,221 L519,251 L519,177 Z" />
+              <path d="M460.1,143 L519,177 L519,251 L460.1,217 Z" />
+              <path d="M640.2,187 L699.1,221 L647.2,251 L588.3,217 Z" />
+              <path d="M699.1,221 L699.1,295 L647.2,325 L647.2,251 Z" />
+              <path d="M588.3,217 L647.2,251 L647.2,325 L588.3,291 Z" />
+              <path d="M534.6,192 L583.1,220 L531.1,250 L482.6,222 Z" />
+              <path d="M583.1,220 L583.1,282 L531.1,312 L531.1,250 Z" />
+              <path d="M482.6,222 L531.1,250 L531.1,312 L482.6,284 Z" />
             </g>
-            <text x="250" y="136" textAnchor="middle" fill="#ffffff" fontSize="14" fontWeight="600" fontFamily="Inter, sans-serif">EnProbe</text>
-            <text x="250" y="154" textAnchor="middle" fill="#d9d6ff" fontSize="10" fontFamily="Inter, sans-serif">Shared view</text>
-            <g filter="url(#as-en-sh)">
-              <rect x="72" y="40" width="78" height="32" rx="16" fill="#ffffff" />
-              <rect x="362" y="36" width="78" height="32" rx="16" fill="#ffffff" />
-              <rect x="58" y="180" width="72" height="32" rx="16" fill="#ffffff" />
-              <rect x="356" y="198" width="72" height="32" rx="16" fill="#ffffff" />
-              <rect x="214" y="228" width="72" height="32" rx="16" fill="#ffffff" />
             </g>
-            <text x="111" y="61" textAnchor="middle" fill="#0a2540" fontSize="13" fontWeight="600" fontFamily="Inter, sans-serif">DAST</text>
-            <text x="401" y="57" textAnchor="middle" fill="#0a2540" fontSize="13" fontWeight="600" fontFamily="Inter, sans-serif">CSPM</text>
-            <text x="94" y="201" textAnchor="middle" fill="#0a2540" fontSize="13" fontWeight="600" fontFamily="Inter, sans-serif">SCA</text>
-            <text x="392" y="219" textAnchor="middle" fill="#0a2540" fontSize="13" fontWeight="600" fontFamily="Inter, sans-serif">GRC</text>
-            <text x="250" y="249" textAnchor="middle" fill="#0a2540" fontSize="13" fontWeight="600" fontFamily="Inter, sans-serif">ASPM</text>
-            <g filter="url(#as-en-sh)">
-              <rect x="500" y="28" width="664" height="224" rx="22" fill="#0a2540" />
-            </g>
-            <text x="532" y="66" fill="#ffffff" fontSize="20" fontWeight="600" fontFamily="Inter, sans-serif">What the platform connects</text>
-            <rect x="532" y="90" width="250" height="8" rx="4" fill="#635bff" />
-            <rect x="790" y="90" width="140" height="8" rx="4" fill="#2ec8c0" />
-            <text x="532" y="132" fill="#d6deea" fontSize="16" fontFamily="Inter, sans-serif">Running application checks</text>
-            <text x="532" y="164" fill="#d6deea" fontSize="16" fontFamily="Inter, sans-serif">Dependency exposure</text>
-            <text x="532" y="196" fill="#d6deea" fontSize="16" fontFamily="Inter, sans-serif">AWS and Azure configuration context</text>
-            <text x="532" y="228" fill="#d6deea" fontSize="16" fontFamily="Inter, sans-serif">Controls and evidence, beside the service</text>
           </svg>
+          </AppsecInkStage>
+          <div className="as-illus__notes">
+            <div>
+              <p className="as-illus__kicker">EnProbe</p>
+              <p className="as-illus__title">Shared view</p>
+              <p className="as-illus__chips">DAST · SCA · ASPM · CSPM · GRC</p>
+            </div>
+            <div>
+              <p className="as-illus__title">What the platform connects</p>
+              <p className="as-illus__line">Running application checks</p>
+              <p className="as-illus__line">Dependency exposure</p>
+              <p className="as-illus__line">AWS and Azure configuration context</p>
+              <p className="as-illus__line">Controls and evidence, beside the service</p>
+            </div>
+          </div>
         </figure>
         <div className="as-modules">
           <ul className="as-modules__track">
