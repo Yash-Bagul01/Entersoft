@@ -101,16 +101,13 @@ export default function AppsecHero({ kickerRef, titleRef }: AppsecHeroProps) {
 
         <figure id="hero-visual" className="as-map" data-hero-rise>
           <svg className="as-map__schematic" viewBox="0 0 360 460" aria-hidden="true" focusable="false">
-            <defs>
-              <radialGradient id="as-map-glow" cx="78%" cy="12%" r="70%">
-                <stop offset="0%" stopColor="#8b7cff" stopOpacity="0.45" />
-                <stop offset="100%" stopColor="#8b7cff" stopOpacity="0" />
-              </radialGradient>
-            </defs>
-            <rect width="360" height="460" fill="url(#as-map-glow)" />
-            <g fill="none" stroke="currentColor" strokeOpacity="0.28">
-              <circle cx="300" cy="72" r="86" />
-              <circle cx="48" cy="400" r="64" />
+            <g fill="none" stroke="currentColor" strokeOpacity="0.22" strokeWidth="1">
+              <path d="M36 48 H324" />
+              <path d="M36 48 V412" />
+              <path d="M36 128 H250" />
+              <path d="M36 208 H292" />
+              <path d="M36 288 H220" />
+              <path d="M36 368 H300" />
             </g>
           </svg>
           <ol className="as-map__flow" aria-label="Application trust map">

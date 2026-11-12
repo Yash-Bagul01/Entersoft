@@ -68,7 +68,7 @@ export default function AppsecPageNav() {
     <div ref={slotRef} className="as-pagenav-slot">
     <nav ref={navRef} aria-label="On this page" className={pinned ? "as-pagenav is-pinned" : "as-pagenav"}>
       <ul className="as-pagenav__list">
-        {["coverage", "scenarios", "method", "enprobe", "deliverables", "standards", "faqs"].map((anchor) => {
+        {["coverage", "scenarios", "method", "enprobe", "standards", "deliverables", "faqs"].map((anchor) => {
           const item = APPSEC_PAGE_NAV.find((entry) => entry.anchor === anchor);
           if (!item) return null;
           const live = LIVE_ANCHORS.has(item.anchor);
