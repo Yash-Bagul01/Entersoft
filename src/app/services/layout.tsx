@@ -13,7 +13,8 @@ export default function ServicesLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const isCase = pathname === "/services" || isServiceCasePath(pathname);
+  const isAdversarialValidation = pathname === "/services/adversarial-validation";
+  const isCase = pathname === "/services" || isServiceCasePath(pathname) || isAdversarialValidation;
 
   useEffect(() => {
     if (!isCase) return;
@@ -30,7 +31,9 @@ export default function ServicesLayout({
       <div
         data-page="solution-case"
         className={`min-h-screen text-white ${
-          pathname === "/services/application-security-testing" || pathname === "/services/appsec"
+          isAdversarialValidation
+            ? "bg-[#070b12]"
+            : pathname === "/services/application-security-testing" || pathname === "/services/appsec"
             ? "bg-[#101820]"
             : pathname === "/services/smart-contract-security"
               ? "bg-[#000104]"

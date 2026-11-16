@@ -1,4 +1,4 @@
-import { SERVICE_SLUGS, getServiceRoute } from "@/config/routes";
+import { ROUTES, SERVICE_SLUGS, getServiceRoute } from "@/config/routes";
 
 export type Service = {
   index: string
@@ -42,7 +42,7 @@ export const services: Service[] = [
     descriptor: 'PEN TESTING • RED TEAMING • ATTACK PATHS',
     hoverCardHeading: 'Adversarial Security Validation',
     hoverCardBody: 'Recreate real attacker behavior to expose attack paths, validate exploitability and prioritize what must be fixed.',
-    route: getServiceRoute("vapt"),
+    route: ROUTES.services.adversarialValidation,
     slug: 'vapt',
     legacyName: 'VAPT AUDIT SERVICES',
     image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=1400&auto=format&fit=crop',

@@ -11,7 +11,7 @@ import { SOLUTION_LANDING_PATHS } from "@/data/solutionLandings";
  */
 const SERVICE_PAGES = [
   ROUTES.services.appsec,
-  ROUTES.services.vapt,
+  ROUTES.services.adversarialValidation,
   ROUTES.services.cloud,
   ROUTES.services.compliance,
   ROUTES.services.siem,

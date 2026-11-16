@@ -34,7 +34,7 @@ const FEATURES = [
   {
     title: pillar.whereItFits[1].serviceName,
     body: pillar.whereItFits[1].description,
-    href: ROUTES.services.vapt,
+    href: ROUTES.services.adversarialValidation,
   },
 ];
 

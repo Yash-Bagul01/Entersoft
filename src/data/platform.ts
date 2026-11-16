@@ -74,7 +74,7 @@ export const platformPillars: Record<string, PlatformPillar> = {
       },
       {
         serviceName: "Adversarial Validation",
-        serviceHref: "/services/vapt",
+        serviceHref: "/services/adversarial-validation",
         description: "Provides penetration testing leads with exact code line locations for identified flaws."
       }
     ]
@@ -412,7 +412,7 @@ export const platformPillars: Record<string, PlatformPillar> = {
     whereItFits: [
       {
         serviceName: "Adversarial Validation",
-        serviceHref: "/services/vapt",
+        serviceHref: "/services/adversarial-validation",
         description: "Automates continuous dynamic security scanning between scheduled ethical penetration tests."
       },
       {
@@ -469,7 +469,7 @@ export const platformPillars: Record<string, PlatformPillar> = {
     whereItFits: [
       {
         serviceName: "Adversarial Validation",
-        serviceHref: "/services/vapt",
+        serviceHref: "/services/adversarial-validation",
         description: "Combines human ethical hacking expertise with AI agentic testing scale."
       },
       {
@@ -531,7 +531,7 @@ export const platformPillars: Record<string, PlatformPillar> = {
       },
       {
         serviceName: "Adversarial Validation",
-        serviceHref: "/services/vapt",
+        serviceHref: "/services/adversarial-validation",
         description: "Delivers deep-dive manual and automated penetration testing for enterprise APIs."
       }
     ]

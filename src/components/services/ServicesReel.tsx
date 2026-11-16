@@ -13,6 +13,7 @@ import {
   SERVICE_CASE_ORDER,
 } from "@/data/serviceCases";
 import { useOptionalSolutionTransition } from "@/components/solutions/SolutionTransitionContext";
+import { ROUTES } from "@/config/routes";
 
 interface ServiceReelItem {
   id: string;
@@ -42,7 +43,7 @@ const SERVICES_REEL: ServiceReelItem[] = SERVICE_CASE_ORDER.map((slug, index) =>
     description: visual.description,
     image: visual.menuImage,
     heroImage: visual.hero.src,
-    href: visual.href,
+    href: slug === "vapt" ? ROUTES.services.adversarialValidation : visual.href,
     coverBg: visual.coverBg,
     textColor: visual.textColor,
     accentColor: visual.accentColor,

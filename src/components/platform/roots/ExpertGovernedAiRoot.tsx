@@ -88,7 +88,7 @@ export default function ExpertGovernedAiRoot() {
               },
               {
                 name: "Adversarial Validation",
-                href: "/services/vapt",
+                href: "/services/adversarial-validation",
                 desc: "Combines human ethical hackers with AI-assisted exploit verification to maximize audit depth."
               }
             ].map((item) => (

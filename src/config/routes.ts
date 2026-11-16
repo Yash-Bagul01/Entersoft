@@ -65,6 +65,7 @@ export const ROUTES = {
   services: {
     appsec: `/services/${SERVICE_SLUGS.appsec}`,
     vapt: `/services/${SERVICE_SLUGS.vapt}`,
+    adversarialValidation: "/services/adversarial-validation",
     cloud: `/services/${SERVICE_SLUGS.cloud}`,
     compliance: `/services/${SERVICE_SLUGS.compliance}`,
     siem: `/services/${SERVICE_SLUGS.siem}`,

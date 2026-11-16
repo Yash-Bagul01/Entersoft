@@ -593,7 +593,7 @@ export const APPSEC_RELATED = {
       name: "Adversarial Validation",
       body: "For broader attack paths and objective-led testing across the authorised environment.",
       cta: "Explore Adversarial Validation",
-      href: "/services/penetration-testing",
+      href: "/services/adversarial-validation",
     },
     {
       name: "AI Systems Assurance",

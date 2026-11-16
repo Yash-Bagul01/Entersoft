@@ -21,7 +21,7 @@ export default function LightFooter() {
       title: "Offerings",
       links: [
         { label: "Application Assurance", href: "/services/appsec" },
-        { label: "Adversarial Validation", href: "/services/vapt" },
+        { label: "Adversarial Validation", href: "/services/adversarial-validation" },
         { label: "Cloud Resilience", href: "/services/cloud-resilience" },
         { label: "Digital Trust", href: "/services/compliance-management" },
       ],

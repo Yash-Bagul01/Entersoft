@@ -72,7 +72,7 @@ const COLUMNS: {
     title: "Services",
     links: [
       { name: serviceName("appsec"), href: ROUTES.services.appsec },
-      { name: serviceName("vapt"), href: ROUTES.services.vapt },
+      { name: serviceName("vapt"), href: ROUTES.services.adversarialValidation },
       { name: serviceName("cloud-resilience"), href: ROUTES.services.cloud },
       { name: serviceName("compliance-management"), href: ROUTES.services.compliance },
       { name: serviceName("siem"), href: ROUTES.services.siem },

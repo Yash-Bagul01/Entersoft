@@ -3919,3 +3919,17 @@ a.as-pagenav__link.is-active {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* Page-scoped focus ring. The light sub-navigation pill made the white outline invisible. */
+#solution-case .sc-afterhero--obscura .as-stage .as-pagenav :focus-visible {
+  outline: 2px solid #635bff !important;
+  outline-offset: -2px !important;
+}
+
+/* Pause a moving track while a keyboard user is in that section. Hover pause stays as it was. */
+#solution-case #deliverables:focus-within .as-deliverables__track,
+#solution-case #deliverables .as-deliverables:focus-within .as-deliverables__track,
+#solution-case #enprobe:focus-within .as-modules__track,
+#solution-case #enprobe .as-modules:focus-within .as-modules__track {
+  animation-play-state: paused;
+}

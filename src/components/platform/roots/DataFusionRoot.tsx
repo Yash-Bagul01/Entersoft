@@ -114,7 +114,7 @@ export default function DataFusionRoot() {
               },
               {
                 name: "Adversarial Validation",
-                href: "/services/vapt",
+                href: "/services/adversarial-validation",
                 desc: "Ingests penetration audit findings and correlates them against existing automated scanner outputs."
               }
             ].map((item) => (

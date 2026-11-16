@@ -177,7 +177,7 @@ export default function Navbar() {
             title: "Core Practices",
             items: [
               { name: serviceName("appsec"), href: ROUTES.services.appsec, desc: "Web, API & Mobile AST", icon: <Code className="w-4 h-4" /> },
-              { name: serviceName("vapt"), href: ROUTES.services.vapt, desc: "CREST-Accredited Pen Testing", icon: <Shield className="w-4 h-4" /> },
+              { name: serviceName("vapt"), href: ROUTES.services.adversarialValidation, desc: "CREST-Accredited Pen Testing", icon: <Shield className="w-4 h-4" /> },
               { name: serviceName("cloud-resilience"), href: ROUTES.services.cloud, desc: "AWS, Azure, GCP & Identity", icon: <Cloud className="w-4 h-4" /> },
               { name: serviceName("compliance-management"), href: ROUTES.services.compliance, desc: "ISO 27001, SOC 2, DPDP", icon: <CheckSquare className="w-4 h-4" /> }
             ]
@@ -530,6 +530,7 @@ export default function Navbar() {
             <div className="hidden lg:flex items-center gap-4 z-50">
               {/* Exo Ape Styled Header Menu Button */}
               <button
+                type="button"
                 onClick={() => setExoMenuOpen(true)}
                 className={cn(
                   familjen.className,
@@ -574,6 +575,7 @@ export default function Navbar() {
             <div className="lg:hidden z-50 flex items-center gap-4">
               {!isServicePage && !isLightPage && !isPlatformHub && !isExoCase && !isRuntimeBelowAgentic && !isSolutionsPage && !isSolutionCasePage && !isServicesHub && !isTrackKpis && <ThemeToggle />}
               <button
+                type="button"
                 onClick={() => setExoMenuOpen(true)}
                 className={cn(
                   familjen.className,

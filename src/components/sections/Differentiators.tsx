@@ -35,7 +35,7 @@ const WORK_IMAGES = [
 
 const WORK_HREFS = [
   ROUTES.services.appsec,
-  ROUTES.services.vapt,
+  ROUTES.services.adversarialValidation,
   ROUTES.services.compliance,
   ROUTES.services.appsec,
   ROUTES.services.compliance,

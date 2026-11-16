@@ -24,7 +24,12 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/services/vapt",
-        destination: "/services/penetration-testing",
+        destination: "/services/adversarial-validation",
+        permanent: true,
+      },
+      {
+        source: "/services/penetration-testing",
+        destination: "/services/adversarial-validation",
         permanent: true,
       },
       {

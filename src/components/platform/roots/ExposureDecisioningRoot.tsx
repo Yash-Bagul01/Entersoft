@@ -119,7 +119,7 @@ export default function ExposureDecisioningRoot() {
             {[
               {
                 name: "Adversarial Validation",
-                href: "/services/vapt",
+                href: "/services/adversarial-validation",
                 desc: "Empowers human penetration testers with algorithmic reachability data and verified attack paths."
               },
               {
