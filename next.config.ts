@@ -17,6 +17,26 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // M06: apex host on the Adversarial Validation paths only. These must
+      // stay ahead of the relative rules so the apex request does not chain.
+      {
+        source: "/services/adversarial-validation",
+        has: [{ type: "host", value: "entersoftsecurity.com" }],
+        destination: "https://www.entersoftsecurity.com/services/adversarial-validation",
+        permanent: true,
+      },
+      {
+        source: "/services/penetration-testing",
+        has: [{ type: "host", value: "entersoftsecurity.com" }],
+        destination: "https://www.entersoftsecurity.com/services/adversarial-validation",
+        permanent: true,
+      },
+      {
+        source: "/services/vapt",
+        has: [{ type: "host", value: "entersoftsecurity.com" }],
+        destination: "https://www.entersoftsecurity.com/services/adversarial-validation",
+        permanent: true,
+      },
       {
         source: "/services/appsec",
         destination: "/services/application-security-testing",

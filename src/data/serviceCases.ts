@@ -81,7 +81,7 @@ export const SERVICE_CASES: Record<ServiceCaseSlug, ServiceCaseVisual> = {
   },
   vapt: {
     slug: "vapt",
-    href: ROUTES.services.vapt,
+    href: ROUTES.services.adversarialValidation,
     title: vapt.displayName,
     navTitle: vapt.displayName,
     category: vapt.category,

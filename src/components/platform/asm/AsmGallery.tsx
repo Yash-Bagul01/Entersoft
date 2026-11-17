@@ -64,11 +64,13 @@ export default function AsmGallery() {
           <span className="n n5" />
           <span className="n n6" />
         </div>
+        {certifications.length === 0 ? null : (
         <ul className="asm-network-marks">
           {certifications.map((item) => (
             <li key={item.id}>{item.name}</li>
           ))}
         </ul>
+        )}
         <Link href={ROUTES.platform.enprobe} className="asm-btn asm-btn-dark">
           See the platform
         </Link>

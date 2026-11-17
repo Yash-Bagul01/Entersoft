@@ -262,7 +262,7 @@ export const SOLUTION_LANDINGS: SolutionLanding[] = [
     ctaBody: "Show us the tools you already run. We will show how correlation and expert validation sit on top of them.",
     related: [
       { label: "EnProbe ASPM", href: ROUTES.platform.aspm },
-      { label: "Penetration Testing", href: ROUTES.services.vapt },
+      { label: "Penetration Testing", href: ROUTES.services.adversarialValidation },
     ],
     metadataTitle: "Manage Vulnerabilities | Entersoft Solutions",
     metadataDescription:

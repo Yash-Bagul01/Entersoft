@@ -13,7 +13,6 @@ export default function CommandViewDashboard() {
       kpis: [
         { label: "Enterprise Risk Posture", value: "88 / 100", trend: "+4% vs Last Month" },
         { label: "Active Critical Exposures", value: "2", trend: "-85% Noise Filtered" },
-        { label: "Audit Readiness (ISO/SOC2)", value: "100%", trend: "Empanelled Certified" },
       ],
       insight: "Global security posture is healthy. All critical application and cloud ingress vectors are actively governed."
     },

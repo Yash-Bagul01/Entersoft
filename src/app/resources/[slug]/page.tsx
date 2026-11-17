@@ -44,7 +44,7 @@ const resourceDocs: Record<string, EditorialDoc> = {
   media: {
     slug: "media",
     title: "Media | Entersoft Security",
-    description: "Public record of Entersoft accreditation, ecosystem work and recognition.",
+    description: "Public record of Entersoft ecosystem work and recognition.",
     kicker: "Resources · Media",
     headline: "The public record, with the date still on it.",
     lede: "Announcements a buyer can check. Each item keeps its source, instead of collapsing into a row of logos.",
@@ -87,7 +87,7 @@ const resourceDocs: Record<string, EditorialDoc> = {
         items: [
           { title: "A scan, then a report", body: "Attendees can take a website scan. The report follows within 24 hours." },
           { title: "A posture read", body: "You leave with where the organisation stands, and what to change first." },
-          { title: "Time with the people who test", body: "OSCP-certified practitioners who have worked across 15 industries, 30 countries and 450-plus companies." },
+          { title: "Time with the people who test", body: "The people who test sit in the session." },
         ],
       },
       { kind: "steps", items: eventSteps.map((step) => ({ title: step.title, body: step.body })) },

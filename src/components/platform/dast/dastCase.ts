@@ -4,12 +4,7 @@ import type { ExoApeCase } from "@/components/platform/exoape/types";
 const u = (id: string, w = 1600) =>
   `https://images.unsplash.com/${id}?q=80&w=${w}&auto=format&fit=crop`;
 
-const RECOGNITION = [
-  { name: "CREST", detail: "Registered penetration testing services" },
-  { name: "CERT-In", detail: "Empanelled information security auditing organisation" },
-  { name: "ISO/IEC 27001", detail: "Certified information security management system" },
-  { name: "GDPR", detail: "Validated data processing controls" },
-];
+const RECOGNITION: { name: string; detail: string }[] = [];
 
 export const DAST_CASE: ExoApeCase = {
   id: "dast",

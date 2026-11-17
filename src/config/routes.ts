@@ -16,17 +16,6 @@ export const METADATA_BASE = (
   process.env.NEXT_PUBLIC_APP_URL || PRODUCTION_URL
 ).replace(/\/$/, "");
 
-/** Preview, staging and local builds must not be indexable. */
-export const IS_PRODUCTION_HOST = (() => {
-  try {
-    return ["www.entersoftsecurity.com", "entersoftsecurity.com"].includes(
-      new URL(METADATA_BASE).hostname
-    );
-  } catch {
-    return false;
-  }
-})();
-
 export const SERVICE_SLUGS = {
   appsec: "application-security-testing",
   vapt: "penetration-testing",

@@ -45,6 +45,9 @@ const PLATFORM_PAGES = [
   ROUTES.platform.threatIntelligence,
 ];
 
+/** Content modification instant for /services/adversarial-validation (SEO17). */
+const ADVERSARIAL_VALIDATION_LAST_MODIFIED = "2026-11-16T23:08:22+05:30";
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
 
@@ -75,7 +78,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     ...SERVICE_PAGES.map((path) => ({
       url: getCanonicalUrl(path),
-      lastModified,
+      lastModified:
+        path === ROUTES.services.adversarialValidation
+          ? ADVERSARIAL_VALIDATION_LAST_MODIFIED
+          : lastModified,
       changeFrequency: "monthly" as const,
       priority: 0.9,
     })),

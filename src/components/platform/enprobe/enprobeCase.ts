@@ -7,9 +7,6 @@ const u = (id: string, w = 1600) =>
 const POSTER = "/images/enprobe/product-poster.webp";
 
 const RECOGNITION = [
-  { name: "CERT-In", detail: "Empanelled information security auditing organisation" },
-  { name: "CREST", detail: "Approved penetration testing services" },
-  { name: "ISO/IEC 27001", detail: "Certified information security management system" },
   { name: "Tenant-safe evidence", detail: "Isolation, provenance and authorized publication" },
 ];
 
@@ -25,7 +22,7 @@ export const ENPROBE_CASE: ExoApeCase = {
     { label: "Capability", values: ["Exposure assurance"] },
     { label: "Application", values: ["ASPM, DAST, PTaaS"] },
     { label: "Cloud", values: ["CSPM, identity, drift"] },
-    { label: "Assurance", values: ["CERT-In · CREST · ISO/IEC 27001"] },
+    { label: "Assurance", values: ["Tenant-safe evidence"] },
   ],
   images: {
     hero: hubFront("enprobe"),

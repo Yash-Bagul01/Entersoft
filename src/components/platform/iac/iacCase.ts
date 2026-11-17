@@ -204,12 +204,7 @@ export const IAC_CASE: ExoApeCase = {
     role: "Infrastructure as Code security · Scan Code cluster",
     initials: "IaC",
   },
-  recognition: [
-    { name: "CREST", detail: "Registered penetration testing services" },
-    { name: "CERT-In", detail: "Empanelled information security auditing organisation" },
-    { name: "ISO/IEC 27001", detail: "Certified information security management system" },
-    { name: "GDPR", detail: "Validated data processing controls" },
-  ],
+  recognition: [],
   mockupCaption: "The snippet lands in the ticket.",
   floatNote: { label: "1. Plan phase", title: "You declare the estate. We keep it closed." },
   faqs: [

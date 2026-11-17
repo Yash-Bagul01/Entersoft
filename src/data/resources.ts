@@ -9,7 +9,7 @@ export const resourceNav = [
   {
     label: "Media",
     href: ROUTES.resources.media,
-    description: "Announcements, accreditation and public recognition.",
+    description: "Announcements and public recognition.",
   },
   {
     label: "FAQ",
@@ -41,7 +41,7 @@ export const blogEntries = [
     title: "Six VAPT tools worth knowing in 2024",
     teaser:
       "A scanner is a starting inventory. These are the classes of tool a test still leans on, and the flaw each one cannot see.",
-    href: ROUTES.services.vapt,
+    href: ROUTES.services.adversarialValidation,
     paragraphs: [
       "Vulnerability assessment and penetration testing still starts with an inventory: what is exposed, what answers, and which versions are standing behind the hostname. In 2024 the useful bench is a small set of tools with a person deciding what the output means.",
       "A proxy such as Burp Suite is where the real test happens, because it lets a tester change a request the application never expected. Nmap and similar scanners answer what is listening. Nikto and directory tools catch the forgotten path. SQLMap is for one class of injection, not for business logic. An API client such as Postman is how you walk roles. SSL checkers tell you whether the transport is the problem.",
@@ -83,7 +83,7 @@ export const blogEntries = [
     title: "Why automated scanners miss most business-logic flaws",
     teaser:
       "Signature scanners walk happy paths. The flaws that move money, skip a role, or trust a client-side total live between those paths.",
-    href: ROUTES.services.vapt,
+    href: ROUTES.services.adversarialValidation,
     paragraphs: [
       "A scanner is excellent at repeating a known request and matching a known response. It is poor at noticing that a refund can be called twice, that a price is trusted from the browser, or that step three of a workflow can be opened without step two.",
       "That gap is why a penetration test still has a person in it. The tester maps roles, objects and state, then tries the transitions the product never advertised. The report should show the request, the unintended state, and the fix a developer can replay.",
@@ -139,7 +139,7 @@ export const blogEntries = [
     title: "Black-box, grey-box and white-box are scopes, not slogans",
     teaser:
       "The difference is how much of the system the tester is allowed to see before the first request.",
-    href: ROUTES.services.vapt,
+    href: ROUTES.services.adversarialValidation,
     paragraphs: [
       "Black-box starts from the outside: a URL, an app binary, or a network range, and the same knowledge an outsider can gather. It is honest about exposure. It is slow on deep paths that need an account.",
       "Grey-box adds credentials, roles and a short walkthrough so the tester spends time on privileged paths instead of on the login form. White-box adds source, architecture and sometimes a debugger. Findings get more precise, and the test can name the line that has to change.",
@@ -163,14 +163,6 @@ export const blogEntries = [
 ] as const;
 
 export const mediaStories = [
-  {
-    kicker: "Accreditation",
-    date: "6 January 2026",
-    title: "CREST accredits Entersoft for penetration testing",
-    body: "CREST recognised Entersoft’s penetration testing practice, placing the company among a network of more than 500 accredited organisations. The accreditation sits alongside CERT-In empanelment in India and is the public check a buyer can verify without taking the firm’s word for it.",
-    source: "CREST",
-    href: "https://www.crest-approved.org/entersoft-secures-crest-accreditation-strengthening-its-commitment-to-global-cybersecurity-standards/",
-  },
   {
     kicker: "Ecosystem",
     date: "24 November 2025",
@@ -240,7 +232,7 @@ export const faqGroups = [
       },
       {
         q: "Are you allowed to perform these assessments?",
-        a: "Entersoft is ISO 27001 certified, CREST accredited for penetration testing, and a CERT-In empanelled auditing organisation. The people who test are certified practitioners. Ask for the current certificates rather than a logo on a slide.",
+        a: "Current applicable credentials available during supplier due diligence. Ask for the current certificates rather than a logo on a slide.",
       },
       {
         q: "Which tools show up in a test?",

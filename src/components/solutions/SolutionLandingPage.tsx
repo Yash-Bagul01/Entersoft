@@ -24,6 +24,7 @@ export default function SolutionLandingPage({ page }: { page: SolutionLanding })
         </div>
       </header>
 
+      {certifications.length === 0 ? null : (
       <section className="sl-trust" aria-label="Accreditations">
         <div className="sl-wrap">
           <p>Security programmes trust Entersoft</p>
@@ -34,6 +35,7 @@ export default function SolutionLandingPage({ page }: { page: SolutionLanding })
           </ul>
         </div>
       </section>
+      )}
 
       <section className="sl-problem">
         <div className="sl-wrap">

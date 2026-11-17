@@ -3,12 +3,7 @@ import type { ExoApeCase } from "@/components/platform/exoape/types";
 
 const img = (name: string) => `/images/platform/runtime/cloud/${name}.jpg`;
 
-const RECOGNITION = [
-  { name: "CREST", detail: "Registered penetration testing services" },
-  { name: "CERT-In", detail: "Empanelled information security auditing organisation" },
-  { name: "ISO/IEC 27001", detail: "Certified information security management system" },
-  { name: "GDPR", detail: "Validated data processing controls" },
-];
+const RECOGNITION: { name: string; detail: string }[] = [];
 
 export const CLOUD_APPSEC_CASE: ExoApeCase = {
   id: "cloud-appsec",

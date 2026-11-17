@@ -1407,7 +1407,7 @@ function InteractiveTour() {
             How it works in practice
           </h2>
           <p className="text-[12px] md:text-sm text-[var(--text-secondary)] font-sans max-w-[650px] leading-relaxed">
-            Web/API assurance is aligned to OWASP ASVS verification requirements, while mobile testing is aligned to OWASP MASVS requirements and MASTG testing guidance. Click or hover on a vulnerability category below to audit our specific <Link href="/services/vapt" className="text-[var(--accent)] hover:underline">penetration testing</Link> and application security approaches.
+            Web/API assurance is aligned to OWASP ASVS verification requirements, while mobile testing is aligned to OWASP MASVS requirements and MASTG testing guidance. Click or hover on a vulnerability category below to audit our specific <Link href="/services/adversarial-validation" className="text-[var(--accent)] hover:underline">penetration testing</Link> and application security approaches.
           </p>
         </div>
 

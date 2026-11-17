@@ -462,7 +462,7 @@ export default function ServiceCasePage({ slug }: { slug: ServiceCaseSlug }) {
             Back to top
           </button>
           <Link href={ROUTES.servicesHub}>All services</Link>
-          {isAppsec ? null : <span>{certifications.map((item) => item.name).join(" · ")}</span>}
+          {isAppsec || certifications.length === 0 ? null : <span>{certifications.map((item) => item.name).join(" · ")}</span>}
         </div>
       </div>
     </article>

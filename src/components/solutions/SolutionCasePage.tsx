@@ -265,7 +265,7 @@ export default function SolutionCasePage({ slug, heroOnly = false }: { slug: Sol
             Back to top
           </button>
           <Link href="/solutions">All solutions</Link>
-          <span>{certifications.map((item) => item.name).join(" · ")}</span>
+          {certifications.length === 0 ? null : <span>{certifications.map((item) => item.name).join(" · ")}</span>}
         </div>
       </div>
       </>

@@ -14,7 +14,7 @@ export const blogPosts: BlogPostItem[] = [
     title: "Why Automated Scanners Miss 80% of Business Logic Flaws",
     teaser: "Analyzing the delta between signature-based scanning patterns and deep logical verification in enterprise pipelines.",
     date: "JUNE 12, 2026",
-    link: "/services/penetration-testing"
+    link: "/services/adversarial-validation"
   },
   {
     id: "crowdstrike-workaround",

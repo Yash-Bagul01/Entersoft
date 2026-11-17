@@ -459,8 +459,6 @@ export default function FinalCTA({ theme = "dark" }: FinalCTAProps) {
                         <ShieldCheck className="w-3.5 h-3.5 text-cyan-500" />
                         <span>Confidential Enquiry</span>
                       </div>
-                      <span>•</span>
-                      <span>SOC 2 Type II ISMS</span>
                     </div>
                   </div>
                 </form>

@@ -11,25 +11,29 @@ export default function AdversarialValidationCoverage() {
         </h2>
         <p className="av-section__intro">{AV_COVERAGE.intro}</p>
         <div className="av-coverage__grid">
-          {AV_COVERAGE.areas.map((area) => (
-            <details key={area.id} id={area.id} className="av-cov">
-              <summary className="av-cov__summary">
-                <span className="av-cov__heading">
-                  <h3 className="av-cov__title">{area.title}</h3>
-                  <span className="av-cov__lede">{area.summary}</span>
-                </span>
-                <span className="av-cov__mark" aria-hidden="true" />
-              </summary>
-              <div className="av-cov__panel">
-                <p className="av-cov__body">{area.body}</p>
-                <ul className="av-cov__checks">
-                  {area.checks.map((check) => (
-                    <li key={check}>{check}</li>
-                  ))}
-                </ul>
-                <p className="av-cov__output">{area.output}</p>
-              </div>
-            </details>
+          {[0, 1].map((side) => (
+            <div className="av-stack" key={side}>
+              {AV_COVERAGE.areas.map((area, index) => index % 2 === side ? (
+                <details key={area.id} id={area.id} className="av-cov" style={{ order: index }}>
+                  <summary className="av-cov__summary">
+                    <span className="av-cov__heading">
+                      <h3 className="av-cov__title">{area.title}</h3>
+                      <span className="av-cov__lede">{area.summary}</span>
+                    </span>
+                    <span className="av-cov__mark" aria-hidden="true" />
+                  </summary>
+                  <div className="av-cov__panel">
+                    <p className="av-cov__body">{area.body}</p>
+                    <ul className="av-cov__checks">
+                      {area.checks.map((check) => (
+                        <li key={check}>{check}</li>
+                      ))}
+                    </ul>
+                    <p className="av-cov__output">{area.output}</p>
+                  </div>
+                </details>
+              ) : null)}
+            </div>
           ))}
         </div>
       </div>

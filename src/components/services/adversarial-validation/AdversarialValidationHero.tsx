@@ -9,27 +9,38 @@ export default function AdversarialValidationHero() {
       <div className="av-hero__media" aria-hidden="true">
         <svg className="av-hero__art" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" focusable="false">
           <defs>
-            <radialGradient id="av-hero-copper" cx="88%" cy="6%" r="54%">
-              <stop offset="0%" stopColor="#e7a27a" stopOpacity="0.62" />
-              <stop offset="38%" stopColor="#6a2e22" stopOpacity="0.32" />
-              <stop offset="100%" stopColor="#070b12" stopOpacity="0" />
+            <radialGradient id="av-hero-violet" cx="78%" cy="6%" r="54%">
+              <stop offset="0%" stopColor="#9aa3ff" stopOpacity="0.85" />
+              <stop offset="38%" stopColor="#5e6ad2" stopOpacity="0.32" />
+              <stop offset="100%" stopColor="#08090a" stopOpacity="0" />
             </radialGradient>
-            <radialGradient id="av-hero-ink" cx="4%" cy="100%" r="42%">
-              <stop offset="0%" stopColor="#f2d3b6" stopOpacity="0.18" />
-              <stop offset="100%" stopColor="#070b12" stopOpacity="0" />
+            <radialGradient id="av-hero-warm" cx="98%" cy="86%" r="42%">
+              <stop offset="0%" stopColor="#ffc2a0" stopOpacity="0.28" />
+              <stop offset="100%" stopColor="#08090a" stopOpacity="0" />
+            </radialGradient>
+            <radialGradient id="av-hero-teal" cx="4%" cy="96%" r="38%">
+              <stop offset="0%" stopColor="#8ee7dc" stopOpacity="0.16" />
+              <stop offset="100%" stopColor="#08090a" stopOpacity="0" />
             </radialGradient>
           </defs>
-          <rect width="1440" height="900" fill="#070b12" />
-          <rect width="1440" height="900" fill="url(#av-hero-copper)" />
-          <rect width="1440" height="900" fill="url(#av-hero-ink)" />
-          <g className="av-hero__trace" fill="none" stroke="#f3d2b8" strokeWidth="1.25">
-            <path d="M140 680 L390 540 L700 590 L980 310 L1260 210" />
-            <path d="M980 310 L1120 420" opacity="0.45" />
+          <rect width="1440" height="900" fill="#08090a" />
+          <rect width="1440" height="900" fill="url(#av-hero-violet)" />
+          <rect width="1440" height="900" fill="url(#av-hero-warm)" />
+          <rect width="1440" height="900" fill="url(#av-hero-teal)" />
+          <g className="av-hero__drift" fill="none" stroke="#ffffff" strokeOpacity="0.16">
+            <rect x="960" y="100" width="320" height="200" rx="28" />
+            <rect x="1040" y="200" width="260" height="160" rx="24" />
           </g>
-          <g className="av-hero__drift" fill="none" stroke="#ffffff" strokeOpacity="0.18">
-            <path d="M1040 140 H1300 V250 H1140 Z" />
-            <path d="M1110 210 H1340 V330 H1200 Z" />
-          </g>
+          <circle className="av-hero__spin" cx="1160" cy="160" r="230" fill="none" stroke="#ffffff" strokeOpacity="0.08" />
+          <path
+            className="av-hero__flow"
+            d="M980 430 C 1100 360, 1180 500, 1320 390 S 1560 300, 1680 360"
+            fill="none"
+            stroke="#9aa3ff"
+            strokeOpacity="0.4"
+            strokeWidth="1.5"
+            strokeDasharray="10 16"
+          />
         </svg>
       </div>
       <div className="av-hero__inner">
@@ -47,16 +58,23 @@ export default function AdversarialValidationHero() {
           </ol>
         </nav>
 
+        <div className="av-hero__layout">
         <div className="av-hero__copy">
-          <p className="av-hero__overline">{AV_HERO.overline}</p>
-          <h1 className="av-hero__title">{AV_HERO.h1}</h1>
+          <p className="av-hero__overline av-rise" style={{ animationDelay: "0.04s" }}>{AV_HERO.overline}</p>
+          <h1 className="av-hero__title">
+            {AV_HERO.h1.split(" ").map((word, index) => (
+              <span key={word} className="av-hero__line">
+                <span className="av-hero__word" style={{ animationDelay: `${0.12 + index * 0.1}s` }}>{word}</span>
+              </span>
+            ))}
+          </h1>
           <p className="av-hero__statement">
-            <span className="av-hero__statement-line">{AV_HERO.statement[0]}</span>
-            <span className="av-hero__statement-line">{AV_HERO.statement[1]}</span>
+            <span className="av-hero__statement-line av-rise" style={{ animationDelay: "0.34s" }}>{AV_HERO.statement[0]}</span>
+            <span className="av-hero__statement-line av-rise" style={{ animationDelay: "0.44s" }}>{AV_HERO.statement[1]}</span>
           </p>
-          <p className="av-hero__lead">{AV_HERO.lead}</p>
-          <p className="av-hero__proof">{AV_HERO.proof}</p>
-          <div className="av-hero__ctas">
+          <p className="av-hero__lead av-rise" style={{ animationDelay: "0.52s" }}>{AV_HERO.lead}</p>
+          <p className="av-hero__proof av-rise" style={{ animationDelay: "0.62s" }}>{AV_HERO.proof}</p>
+          <div className="av-hero__ctas av-rise" style={{ animationDelay: "0.72s" }}>
             <a className="av-btn av-btn--primary" href={AV_HERO.primaryCta.href}>
               {AV_HERO.primaryCta.label}
               <span aria-hidden="true">→</span>
@@ -67,8 +85,8 @@ export default function AdversarialValidationHero() {
             </a>
           </div>
         </div>
-
-        <AssessmentPath />
+          <AssessmentPath />
+        </div>
 
         <nav aria-label="On this page" className="av-nav">
           <ul className="av-nav__list">

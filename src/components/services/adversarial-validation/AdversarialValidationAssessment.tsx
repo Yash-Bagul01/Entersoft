@@ -77,17 +77,30 @@ export default function AdversarialValidationAssessment() {
   };
 
   useEffect(() => {
+    const box = document.querySelector(".av-assess-drop");
+    const openForm = () => {
+      if (box instanceof HTMLDetailsElement) box.open = true;
+    };
     const onClick = (event: MouseEvent) => {
       const target = event.target;
       if (!(target instanceof Element)) return;
-      const link = target.closest("a[href='#assessment'][data-format]");
+      const link = target.closest("a[href='#assessment']");
       if (!link) return;
+      openForm();
       const format = link.getAttribute("data-format") ?? "";
       if (!isFormatOption(format)) return;
       setValues((current) => ({ ...current, format }));
     };
+    const onHash = () => {
+      if (window.location.hash === "#assessment") openForm();
+    };
+    onHash();
+    window.addEventListener("hashchange", onHash);
     document.addEventListener("click", onClick, true);
-    return () => document.removeEventListener("click", onClick, true);
+    return () => {
+      window.removeEventListener("hashchange", onHash);
+      document.removeEventListener("click", onClick, true);
+    };
   }, []);
 
   return (
@@ -97,8 +110,13 @@ export default function AdversarialValidationAssessment() {
           {AV_ASSESSMENT.title}
         </h2>
         <p className="av-section__intro">{AV_ASSESSMENT.lead}</p>
+        <details className="av-assess-drop">
+          <summary className="av-assess-drop__summary">
+            <span className="av-assess-drop__title">{AV_ASSESSMENT.formTitle}</span>
+            <span className="av-assess-drop__action" aria-hidden="true" />
+          </summary>
         <form className="av-assessment__form" method="post" action="#assessment" noValidate onSubmit={onSubmit}>
-          <h3 className="av-assessment__form-title">{AV_ASSESSMENT.formTitle}</h3>
+          <h3 className="av-assess__title" aria-hidden="true">{AV_ASSESSMENT.formTitle}</h3>
           <p className="av-assessment__notice">{AV_ASSESSMENT.notice}</p>
           <p className="av-assessment__required">{AV_ASSESSMENT.required}</p>
           <div className="av-assessment__grid">
@@ -226,6 +244,7 @@ export default function AdversarialValidationAssessment() {
             {AV_ASSESSMENT.preview}
           </p>
         </form>
+        </details>
       </div>
     </section>
   );

@@ -139,18 +139,6 @@ export default function Hero() {
     };
   }, [shouldReduceMotion]);
 
-  const creds = (
-    <div className="hero-creds mt-3.5 md:mt-4 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[clamp(14.5px,1.15vw,17px)] font-medium leading-[1.45] tracking-[0.015em] text-white [text-shadow:0_1px_2px_rgba(0,0,0,0.9),0_0_16px_rgba(0,0,0,0.55)]">
-      <span>Since 2013 (13+ Years)</span>
-      <span className="text-white/80">·</span>
-      <span>CREST-accredited penetration testing</span>
-      <span className="text-white/80">·</span>
-      <span>CERT-In empanelled auditing organisation</span>
-      <span className="text-white/80">·</span>
-      <span>ISO/IEC 27001-certified ISMS</span>
-    </div>
-  );
-
   return (
     <section
       id="hero"
@@ -202,7 +190,6 @@ export default function Hero() {
           <p className="max-w-[22em] text-[clamp(1.5rem,2.6vw,2.5rem)] font-light leading-[1.32] tracking-[-0.018em] text-white">
             Entersoft combines the EnProbe platform with expert-led security engineering to discover, validate and close risk across applications, APIs, code, cloud, identity, AI systems and digital assets.
           </p>
-          {creds}
         </div>
       </div>
 
@@ -217,7 +204,6 @@ export default function Hero() {
               <br />
               modern enterprises.
             </h1>
-            {creds}
           </div>
           <div ref={buttonsRef} className="flex flex-wrap items-center gap-4">
             <MagneticButton>

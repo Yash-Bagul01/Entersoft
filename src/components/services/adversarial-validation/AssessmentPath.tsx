@@ -5,7 +5,11 @@ export default function AssessmentPath() {
     <figure className="av-path">
       <div className="av-path__plate">
         <p className="av-path__title">{AV_HERO.visualTitle}</p>
-        <ol className="av-path__list">
+        <div className="av-path__map">
+          <svg className="av-path__wires" viewBox="0 0 100 2" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+            <path pathLength="1" d="M0 1 H100" />
+          </svg>
+          <ol className="av-path__list">
           {AV_HERO.nodes.map((node, index) => (
             <li key={node} className="av-path__node">
               <span className="av-path__index" aria-hidden="true">
@@ -14,7 +18,8 @@ export default function AssessmentPath() {
               <span className="av-path__label">{node}</span>
             </li>
           ))}
-        </ol>
+          </ol>
+        </div>
         <p className="av-path__band">{AV_HERO.band}</p>
       </div>
       <figcaption className="av-path__caption">{AV_HERO.caption}</figcaption>

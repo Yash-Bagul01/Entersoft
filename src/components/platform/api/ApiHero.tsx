@@ -100,6 +100,7 @@ export default function ApiHero() {
 }
 
 export function ApiTrusted() {
+  if (certifications.length === 0) return null;
   return (
     <section className="api-trusted" aria-label="Independently verified credentials">
       <p className="api-mono">Trusted by</p>

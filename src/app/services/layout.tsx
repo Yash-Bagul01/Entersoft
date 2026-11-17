@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { services } from "@/data/services";
-import { getServiceKeyFromSlug, getServiceRoute } from "@/config/routes";
+import { getServiceKeyFromSlug } from "@/config/routes";
 import { isServiceCasePath } from "@/data/serviceCases";
 
 export default function ServicesLayout({
@@ -94,7 +94,7 @@ export default function ServicesLayout({
                 <React.Fragment key={service.slug}>
                   {index > 0 && <span className="hidden md:inline text-[var(--border-subtle)] select-none">·</span>}
                   <Link
-                    href={getServiceRoute(service.slug)}
+                    href={service.route}
                     className="text-[var(--text-tertiary)] hover:text-[var(--accent)] transition-colors duration-300"
                   >
                     {service.displayName}

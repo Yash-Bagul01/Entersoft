@@ -126,6 +126,7 @@ export default function AiBomIncreasePage({ page }: { page: SolutionLanding }) {
         </div>
       </header>
 
+      {certifications.length === 0 ? null : (
       <section className="inc-trust" aria-label="Accreditations">
         <div className="inc-wrap inc-trust__row">
           {certifications.map((item) => (
@@ -133,6 +134,7 @@ export default function AiBomIncreasePage({ page }: { page: SolutionLanding }) {
           ))}
         </div>
       </section>
+      )}
 
       <section className="inc-statement">
         <div className="inc-wrap inc-reveal">

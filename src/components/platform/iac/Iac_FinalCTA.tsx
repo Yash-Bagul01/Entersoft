@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, ShieldCheck, Sparkles, Terminal } from "lucide-react";
+import { ArrowRight, Sparkles, Terminal } from "lucide-react";
 
 export default function Iac_FinalCTA() {
   return (
@@ -75,21 +75,6 @@ export default function Iac_FinalCTA() {
           </a>
         </motion.div>
 
-        {/* Enterprise Trust Assurance */}
-        <div className="flex flex-wrap items-center justify-center gap-8 mt-12 text-white/50 font-mono text-xs">
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            <span className="text-[#E4E4E7]">SOC 2 Type II Certified</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            <span className="text-[#E4E4E7]">ISO 27001 Aligned</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            <span className="text-[#E4E4E7]">CIS Benchmark Verified</span>
-          </div>
-        </div>
       </div>
     </section>
   );

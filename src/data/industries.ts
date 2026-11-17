@@ -5,16 +5,34 @@ const assurance = [
   { title: "Exploit-first evidence", body: "Every finding includes a proof of concept and a statement of impact. A scanner line on its own is not a result." },
   { title: "Seventy negative checks", body: "Each application also gets a recorded set of checks that were attempted and did not reproduce. Absence is part of the evidence." },
   { title: "Fixes a developer can merge", body: "Diffs, sample code and pull-request notes, written against the stack the team already ships." },
-  { title: "Retest when the patch lands", body: "ReAuto is an on-demand retest from the portal. The same senior analysts stay on the account. Entersoft’s published record is thirteen years without a breach under that watch." },
+  { title: "Retest when the patch lands", body: "ReAuto is an on-demand retest from the portal. The same senior analysts stay on the account." },
 ];
 
 const engagement = [
   { title: "Pre-engagement", body: "We start from your priorities: what must not leak, what a regulator will ask, and which systems are actually in scope." },
   { title: "Secure onboarding", body: "Environments, domains and the testing approach are agreed before the first payload. Production impact is a decision, not a surprise." },
-  { title: "Assessment, then a person", body: "An automated pass is followed by a certified tester. The finding is a request that reproduces, not a scanner line on its own." },
+  { title: "Assessment, then a person", body: "An automated pass is followed by a tester. The finding is a request that reproduces, not a scanner line on its own." },
   { title: "Tracked fixes", body: "Issues are scored and kept in the vulnerability portal so your developers can see owner, severity and status in one place." },
   { title: "Report and retest", body: "The assessment report is the start. After patches land, a retest checks the closures and a final report records what held." },
 ];
+
+const industryEngagement = engagement.map((item) =>
+  item.title === "Assessment, then a person"
+    ? {
+        ...item,
+        body: "An automated pass is followed by a tester. The finding is a request that reproduces, not a scanner line on its own.",
+      }
+    : item,
+);
+
+const industryAssurance = assurance.map((item) =>
+  item.title === "Retest when the patch lands"
+    ? {
+        ...item,
+        body: "ReAuto is an on-demand retest from the portal. The same senior analysts stay on the account.",
+      }
+    : item,
+);
 
 export const industries: EditorialDoc[] = [
   {
@@ -80,12 +98,12 @@ export const industries: EditorialDoc[] = [
         kind: "prose",
         title: "How the work is run",
         paragraphs: [
-          "CREST-accredited and OSCP-certified testers run an e-commerce risk assessment with the methods the target actually needs: the catalogue, the cart, the account, the admin, the integrations.",
+          "Testers run an e-commerce risk assessment with the methods the target actually needs: the catalogue, the cart, the account, the admin, the integrations.",
           "The fix is designed with your stack. Security by design means the next release does not reintroduce the same checkout flaw because nobody wrote it down.",
         ],
       },
-      { kind: "steps", items: engagement },
-      { kind: "panels", items: assurance },
+      { kind: "steps", items: industryEngagement },
+      { kind: "panels", items: industryAssurance },
       { kind: "cta", title: "Scope a storefront.", href: ROUTES.contact, label: "Talk to the practice" },
     ],
   },
@@ -138,11 +156,11 @@ export const industries: EditorialDoc[] = [
         title: "Where this work lands",
         paragraphs: [
           "The same connected-asset problem shows up in infrastructure, healthcare, retail, hospitality and smart buildings. The method stays: find the entry, name the impact, fix it in the design rather than with a sticker.",
-          "CREST-accredited and OSCP-certified testers run the assessment. A single breach in this environment is downtime and safety, not only a leaked email.",
+          "A single breach in this environment is downtime and safety, not only a leaked email.",
         ],
       },
-      { kind: "steps", items: engagement },
-      { kind: "panels", items: assurance },
+      { kind: "steps", items: industryEngagement },
+      { kind: "panels", items: industryAssurance },
       { kind: "cta", title: "Assess a connected estate.", href: ROUTES.contact, label: "Start with a briefing" },
     ],
   },
@@ -199,12 +217,12 @@ export const industries: EditorialDoc[] = [
       {
         kind: "prose",
         paragraphs: [
-          "Entersoft’s healthtech work focuses on finding the exposure early: detection, protection of data in motion and at rest, and a retest after the fix. The testers are CREST-accredited and OSCP-certified practitioners.",
+          "Entersoft’s healthtech work focuses on finding the exposure early: detection, protection of data in motion and at rest, and a retest after the fix.",
           "Innovation in care does not reduce the target. It increases it. The security programme has to keep up with the product, not with last year’s policy.",
         ],
       },
-      { kind: "steps", items: engagement },
-      { kind: "panels", items: assurance },
+      { kind: "steps", items: industryEngagement },
+      { kind: "panels", items: industryAssurance },
       { kind: "cta", title: "Protect a health product.", href: ROUTES.contact, label: "Book a briefing" },
     ],
   },

@@ -360,6 +360,7 @@ export default function AiBomKryntPage({ page }: { page: SolutionLanding }) {
               </figure>
             ))}
           </div>
+          {certifications.length === 0 ? null : (
           <div className="kr-stats__row">
             {certifications.map((item) => (
               <article key={item.id}>
@@ -368,6 +369,7 @@ export default function AiBomKryntPage({ page }: { page: SolutionLanding }) {
               </article>
             ))}
           </div>
+          )}
         </div>
       </section>
 

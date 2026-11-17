@@ -1,9 +1,11 @@
 import type { MetadataRoute } from "next";
-import { APP_URL, IS_PRODUCTION_HOST } from "@/config/routes";
+import { isApprovedProductionRequest } from "@/config/indexing";
+import { APP_URL } from "@/config/routes";
 
-export default function robots(): MetadataRoute.Robots {
-  // Preview, staging and local builds must never be indexed.
-  if (!IS_PRODUCTION_HOST) {
+export default async function robots(): Promise<MetadataRoute.Robots> {
+  // Page robots metadata is the indexing control. This file must not
+  // advertise a non-production host as the indexable production site.
+  if (!(await isApprovedProductionRequest())) {
     return {
       rules: [{ userAgent: "*", disallow: "/" }],
     };

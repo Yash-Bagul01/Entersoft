@@ -36,7 +36,7 @@ export const APPSEC_HERO = {
   /** APP-004 */
   overline: "APPLICATION ASSURANCE",
   /** APP-005 */
-  lead: "Expert-led application security testing for web, mobile, APIs and connected systems. Entersoft combines 14 years of offensive security expertise with AI-assisted analysis to validate real risk and guide remediation.",
+  lead: "Expert-led application security testing for web, mobile, APIs and connected systems. Entersoft uses AI-assisted analysis to validate real risk and guide remediation.",
   /** APP-006, items separated by • */
   proof: ["Expert-led testing", "AI-assisted analysis", "Evidence-backed remediation"],
   /** APP-007 */

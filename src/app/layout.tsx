@@ -8,7 +8,8 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { SolutionTransitionProvider } from "@/components/solutions/SolutionTransitionContext";
 import { PlatformTransitionProvider } from "@/components/layout/PlatformPageTransition";
-import { IS_PRODUCTION_HOST, METADATA_BASE } from "@/config/routes";
+import { isApprovedProductionRequest } from "@/config/indexing";
+import { METADATA_BASE } from "@/config/routes";
 
 const interTight = Inter_Tight({
   variable: "--font-inter-tight",
@@ -40,37 +41,41 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-export const metadata: Metadata = {
-  title: SITE_TITLE,
-  description: SITE_DESCRIPTION,
-  metadataBase: new URL(METADATA_BASE),
-  applicationName: "Entersoft Security",
-  openGraph: {
+export async function generateMetadata(): Promise<Metadata> {
+  const indexable = await isApprovedProductionRequest();
+
+  return {
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
-    siteName: "Entersoft Security",
-    locale: "en_US",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: SITE_TITLE,
-    description: SITE_DESCRIPTION,
-  },
-  robots: IS_PRODUCTION_HOST
-    ? {
-        index: true,
-        follow: true,
-        googleBot: {
+    metadataBase: new URL(METADATA_BASE),
+    applicationName: "Entersoft Security",
+    openGraph: {
+      title: SITE_TITLE,
+      description: SITE_DESCRIPTION,
+      siteName: "Entersoft Security",
+      locale: "en_US",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: SITE_TITLE,
+      description: SITE_DESCRIPTION,
+    },
+    robots: indexable
+      ? {
           index: true,
           follow: true,
-          "max-image-preview": "large",
-          "max-snippet": -1,
-          "max-video-preview": -1,
-        },
-      }
-    : { index: false, follow: false },
-};
+          googleBot: {
+            index: true,
+            follow: true,
+            "max-image-preview": "large",
+            "max-snippet": -1,
+            "max-video-preview": -1,
+          },
+        }
+      : { index: false, follow: false },
+  };
+}
 
 export default function RootLayout({
   children,

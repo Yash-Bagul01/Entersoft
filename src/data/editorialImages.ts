@@ -47,7 +47,7 @@ export const editorialImages: Record<string, { src: string; alt: string }> = {
   ),
   awards: shot(
     "photo-1567427017947-545c5f8d16ad",
-    "Medal marking public recognition",
+    "Photograph of a medal",
   ),
   "responsible-disclosures": shot(
     "photo-1504639725590-34d0984388bd",
@@ -135,7 +135,7 @@ export const editorialFrames: Record<string, { src: string; alt: string }[]> = {
     frame("photo-1497366811353-6870744d04b2", "Shared office used for joint delivery"),
   ],
   awards: [
-    frame("photo-1579621970563-ebec7560ff3e", "Coins stacked as a mark of recognition"),
+    frame("photo-1579621970563-ebec7560ff3e", "Stacked coins"),
     frame("photo-1579621970795-87facc2f976d", "Gold pieces on a dark table"),
   ],
   "responsible-disclosures": [

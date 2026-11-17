@@ -86,15 +86,16 @@ function JitterScrollText({
   pinnedProgress: MotionValue<number>;
 }) {
   const total = lines.reduce((count, line) => count + line.length, 0);
-  let index = 0;
+  const lineOffsets = lines.map((_, lineIndex) =>
+    lines.slice(0, lineIndex).reduce((count, line) => count + line.length, 0)
+  );
 
   return (
     <h2 className="flex flex-col items-center gap-y-[0.06em] text-center font-display font-medium uppercase leading-[1.02] tracking-[-0.03em] text-[clamp(1.7rem,4.4vw,3.55rem)]">
       {lines.map((line, lineIndex) => (
         <span key={lineIndex} className="flex max-w-full flex-wrap justify-center gap-x-[0.22em]">
-          {line.map((token) => {
-            const wordIndex = index;
-            index += 1;
+          {line.map((token, tokenIndex) => {
+            const wordIndex = lineOffsets[lineIndex] + tokenIndex;
             return (
               <JitterWordSpan
                 key={wordIndex}
@@ -153,15 +154,6 @@ interface CardSpec {
 
 const PHILOSOPHY_LINES: PhilosophyToken[][] = [
   [
-    { text: "14", highlight: true },
-    { text: "YEARS", highlight: true },
-    { text: "OF", highlight: false },
-  ],
-  [
-    { text: "OFFENSIVE", highlight: false },
-    { text: "INTELLIGENCE.", highlight: false },
-  ],
-  [
     { text: "AI-NATIVE.", highlight: true },
     { text: "HUMAN-GOVERNED.", highlight: false },
   ],
@@ -191,14 +183,14 @@ const itemVariants = {
 
 const CARDS_DATA: CardSpec[] = [
   {
-    // CREST Accredited
-    value: "CREST",
+    // Penetration testing. Credential badge omitted.
+    value: "",
     label: "PENETRATION TESTING",
-    watermark: "CREST",
-    category: "CREST ACCREDITED",
-    description: "CREST-accredited penetration testing delivering internationally validated security assessments.",
-    badge: "CREST ACCREDITED",
-    metricDetail: "Penetration Testing",
+    watermark: "",
+    category: "",
+    description: "Current applicable credentials available during supplier due diligence.",
+    badge: "",
+    metricDetail: "",
     image: "/images/track-record/crest-bg.jpg",
     lightColors: {
       bgStart: "#FFF9FD",
@@ -230,92 +222,14 @@ const CARDS_DATA: CardSpec[] = [
     }
   },
   {
-    // CERT-In Empanelled
-    value: "CERT-In",
-    label: "AUDITING ORGANISATION",
-    watermark: "Empanelled",
-    category: "CERT-IN EMPANELLED",
-    description: "CERT-In empanelled auditing organisation authorized for corporate and government security assessments.",
-    badge: "CERT-IN EMPANELLED",
-    metricDetail: "Auditing Organisation",
-    image: "/images/track-record/certin-bg.jpg",
-    lightColors: {
-      bgStart: "#F5FAFE",
-      bgMid: "#D8ECFA",
-      bgEnd: "#8DB5D9",
-      accent: "#1E5782",
-      topCapHex: 0x8DB5D9,
-      backHex: "rgba(216, 236, 250, 0.55)",
-      watermark: "rgba(107, 153, 197, 0.18)",
-      border: "rgba(141, 181, 217, 0.85)",
-      chipBg: "rgba(215, 243, 253, 0.95)",
-      chipText: "#1E5782",
-      textColor: "#0A0A0A",
-      descColor: "#0E0E0C"
-    },
-    darkColors: {
-      bgStart: "#0A1729",
-      bgMid: "#122E4E",
-      bgEnd: "#1D4570",
-      accent: "#7DD3FC",
-      topCapHex: 0x7DD3FC,
-      backHex: "rgba(18, 46, 78, 0.65)",
-      watermark: "rgba(215, 243, 253, 0.14)",
-      border: "rgba(125, 211, 252, 0.65)",
-      chipBg: "rgba(18, 46, 78, 0.95)",
-      chipText: "#7DD3FC",
-      textColor: "#FFFFFF",
-      descColor: "#FAFAF6"
-    }
-  },
-  {
-    // ISO/IEC 27001
-    value: "ISO 27001",
-    label: "CERTIFIED ISMS",
-    watermark: "ISO 27001",
-    category: "ISO 27001 CERTIFIED",
-    description: "ISO/IEC 27001-certified ISMS adhering to international standards for information security management.",
-    badge: "ISO 27001 CERTIFIED",
-    metricDetail: "ISMS Certified",
-    image: "/images/track-record/iso-bg.jpg",
-    lightColors: {
-      bgStart: "#FCFAF6",
-      bgMid: "#F7EEE0",
-      bgEnd: "#E9C797",
-      accent: "#825922",
-      topCapHex: 0xE9C797,
-      backHex: "rgba(247, 238, 224, 0.55)",
-      watermark: "rgba(208, 169, 117, 0.18)",
-      border: "rgba(233, 199, 151, 0.85)",
-      chipBg: "rgba(245, 236, 224, 0.95)",
-      chipText: "#825922",
-      textColor: "#0A0A0A",
-      descColor: "#0E0E0C"
-    },
-    darkColors: {
-      bgStart: "#1E1812",
-      bgMid: "#332617",
-      bgEnd: "#523B20",
-      accent: "#FDE68A",
-      topCapHex: 0xFDE68A,
-      backHex: "rgba(51, 38, 23, 0.65)",
-      watermark: "rgba(233, 199, 151, 0.14)",
-      border: "rgba(253, 230, 138, 0.65)",
-      chipBg: "rgba(51, 38, 23, 0.95)",
-      chipText: "#FDE68A",
-      textColor: "#FFFFFF",
-      descColor: "#FAFAF6"
-    }
-  },
-  {
     // Founded 2013
     value: "2013",
     label: "FOUNDED IN 2013",
     watermark: "2013",
     category: "FOUNDED 2013",
-    description: "Founded in 2013 with over a decade of continuous cybersecurity and offensive testing expertise.",
+    description: "Founded in 2013.",
     badge: "FOUNDED 2013",
-    metricDetail: "Established Track Record",
+    metricDetail: "",
     image: "/images/track-record/founded-bg.jpg",
     lightColors: {
       bgStart: "#F4FDF8",
@@ -346,45 +260,6 @@ const CARDS_DATA: CardSpec[] = [
       descColor: "#FAFAF6"
     }
   },
-  {
-    // Verified Delivery
-    value: "100%",
-    label: "VERIFIED ENTERPRISE DELIVERY",
-    watermark: "Verified",
-    category: "VERIFIED DELIVERY",
-    description: "Verified enterprise delivery across banking, fintech, cloud, healthcare, and digital assets.",
-    badge: "VERIFIED DELIVERY",
-    metricDetail: "Enterprise Proven",
-    image: "/images/track-record/verified-bg.jpg",
-    lightColors: {
-      bgStart: "#F8F7FF",
-      bgMid: "#E8E5FF",
-      bgEnd: "#A78BFA",
-      accent: "#5B21B6",
-      topCapHex: 0xA78BFA,
-      backHex: "rgba(232, 229, 255, 0.55)",
-      watermark: "rgba(139, 92, 246, 0.18)",
-      border: "rgba(167, 139, 250, 0.85)",
-      chipBg: "rgba(238, 235, 255, 0.95)",
-      chipText: "#5B21B6",
-      textColor: "#0A0A0A",
-      descColor: "#0E0E0C"
-    },
-    darkColors: {
-      bgStart: "#141026",
-      bgMid: "#251D45",
-      bgEnd: "#3C2E6B",
-      accent: "#C4B5FD",
-      topCapHex: 0xC4B5FD,
-      backHex: "rgba(37, 29, 69, 0.65)",
-      watermark: "rgba(196, 181, 253, 0.14)",
-      border: "rgba(196, 181, 253, 0.65)",
-      chipBg: "rgba(37, 29, 69, 0.95)",
-      chipText: "#C4B5FD",
-      textColor: "#FFFFFF",
-      descColor: "#FAFAF6"
-    }
-  }
 ];
 
 function loadCardPhoto(src: string): Promise<HTMLImageElement | null> {
@@ -672,31 +547,6 @@ function drawCardFrontCanvas(
   ctx.lineTo(rightX, botY - 38);
   ctx.stroke();
 
-  ctx.beginPath();
-  ctx.arc(leftX + 18, botY, 18, 0, Math.PI * 2);
-  ctx.fillStyle = "#10B981";
-  ctx.fill();
-
-  ctx.strokeStyle = "#FFFFFF";
-  ctx.lineWidth = 3;
-  ctx.beginPath();
-  ctx.moveTo(leftX + 12, botY);
-  ctx.lineTo(leftX + 16, botY + 5);
-  ctx.lineTo(leftX + 24, botY - 4);
-  ctx.stroke();
-
-  ctx.shadowColor = isLight ? "rgba(255, 255, 255, 0.88)" : "rgba(0, 0, 0, 0.88)";
-  ctx.shadowBlur = 18;
-  ctx.font = "500 36px 'Inter Tight', 'Inter', sans-serif";
-  ctx.fillStyle = isLight ? "#060606" : "#FFFFFF";
-  ctx.textAlign = "left";
-  ctx.textBaseline = "middle";
-  ctx.fillText("Verified Live Metric", leftX + 48, botY);
-
-  ctx.font = "500 34px 'IBM Plex Mono', 'JetBrains Mono', monospace";
-  ctx.fillStyle = isLight ? "#060606" : "#FFFFFF";
-  ctx.fillText(`• ${spec.metricDetail}`, leftX + 430, botY);
-
   const aspmText = "EnProbe ASPM ↗";
   ctx.font = "600 26px 'IBM Plex Mono', 'JetBrains Mono', monospace";
   ctx.textAlign = "left";
@@ -977,7 +827,7 @@ export default function TrackRecord3DCylinder() {
     glassMatsRef.current = [];
 
     CARDS_DATA.forEach((spec, idx) => {
-      const centerAngle = (idx * Math.PI) / 2;
+      const centerAngle = (idx * Math.PI * 2) / CARDS_DATA.length;
       const thetaStart = centerAngle - sectorAngle / 2;
 
       // Outer curved front shell
@@ -1155,7 +1005,7 @@ export default function TrackRecord3DCylinder() {
 
       // Active card index calculation - Guard state update to prevent 60fps React re-renders
       const normAngle = ((-rotationAngle.current % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
-      const activeIdx = Math.round(normAngle / (Math.PI / 2)) % CARDS_DATA.length;
+      const activeIdx = Math.round(normAngle / ((Math.PI * 2) / CARDS_DATA.length)) % CARDS_DATA.length;
       if (prevActiveIdxRef.current !== activeIdx) {
         prevActiveIdxRef.current = activeIdx;
         setActiveIndex(activeIdx);

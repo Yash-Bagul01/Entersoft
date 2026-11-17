@@ -111,7 +111,7 @@ export const digitalTrustData: DigitalTrustDataset = {
     headline: 'Transform Regulatory Compliance into Board-Level Trust',
     subline:
       'Entersoft helps organizations establish, validate and continuously evidence security, privacy and regulatory controls across cloud, applications, infrastructure, third parties and operational environments.',
-    badge: 'ISO 27001 · SOC 2 · GDPR · RBI · CERT-In',
+    badge: 'Customer frameworks · ISO 27001 · SOC 2 · GDPR · RBI · CERT-In guidelines',
   },
   thesis: {
     eyebrow: 'EXECUTIVE THESIS',
@@ -303,8 +303,8 @@ export const digitalTrustData: DigitalTrustDataset = {
       category: 'Financial & Banking',
       mandate: 'Indian Computer Emergency Response Team directives on mandatory cybersecurity practices, log retention, and incident reporting.',
       enterSoftApproach:
-        'As a CERT-In empanelled organization, we ensure your log retention architecture meets the 180-day mandate, establish 6-hour incident reporting mechanisms, and deliver official empanelled security audit reports.',
-      deliverables: ['CERT-In Empanelled Audit Certificate', 'Log Retention Architecture Verification', 'Incident Reporting Playbook', 'VAPT Compliance Sign-Off'],
+        'We help align log retention to the 180-day directive and incident reporting to the 6-hour expectation, and document the evidence those reviews ask for.',
+      deliverables: ['Log Retention Architecture Verification', 'Incident Reporting Playbook', 'VAPT Compliance Sign-Off'],
     },
     {
       id: 'hipaa',

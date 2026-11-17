@@ -1026,7 +1026,7 @@ export default function ExoApeCaseStudy({ data, omitHero = false }: { data: ExoA
       </section>
 
       {/* ── RECOGNITION ──────────────────────────────────────────────────── */}
-      <section className="relative z-10 py-[16vh] px-6 md:px-10" style={{ backgroundColor: CREAM }}>
+      {data.recognition.length > 0 && <section className="relative z-10 py-[16vh] px-6 md:px-10" style={{ backgroundColor: CREAM }}>
         <div className="mx-auto max-w-[1440px] grid grid-cols-12 gap-y-10">
           <div className="col-span-12 md:col-start-4 md:col-span-2 md:pt-3">
             <Marker>Accreditation</Marker>
@@ -1051,7 +1051,7 @@ export default function ExoApeCaseStudy({ data, omitHero = false }: { data: ExoA
             </ul>
           </div>
         </div>
-      </section>
+      </section>}
 
       {/* ── FREQUENTLY ASKED QUESTIONS (AFTER ACCREDITATION) ─────────────── */}
       {data.faqs && data.faqs.length > 0 && (

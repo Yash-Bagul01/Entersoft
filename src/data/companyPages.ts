@@ -13,21 +13,19 @@ export const companyPages: EditorialDoc[] = [
       {
         kind: "prose",
         paragraphs: [
-          "Traditional testing slows a team down with reviews and a long back-and-forth. Entersoft’s published offer is the other shape: a scan in minutes, a result that lands in the developer workflow, and fixes drawn from more than a decade of remediation data. Every finding is checked by the practice, so the speed of the tooling sits next to a person who will stand behind it.",
-          "The firm describes itself as an award-winning application security company. The work is advisory and hands-on: risk monitoring, remediation, and root-cause analysis so the same bug does not return under a new ticket. The published return rate, once a finding is fixed, is 0.01%.",
+          "Traditional testing slows a team down with reviews and a long back-and-forth. Entersoft’s published offer is the other shape: a scan in minutes, a result that lands in the developer workflow, and fixes drawn from the practice’s remediation work. Every finding is checked by the practice, so the speed of the tooling sits next to a person who will stand behind it.",
+          "The work is advisory and hands-on: risk monitoring, remediation, and root-cause analysis so the same bug does not return under a new ticket. The published return rate, once a finding is fixed, is 0.01%.",
           "Active monitoring covers the noisy edge as well — phishing and social-media scams included — because an application is attacked through its users as often as through its code. Security begins at step one of application development. A scan at the end is not a programme.",
-          "The same practice is audit-ready for the bodies buyers ask about: CERT-In empanelment, ISO 27001, GDPR-shaped evidence, and CREST-accredited penetration testing. Findings can move into Azure DevOps, GitHub, Jira and ServiceNow instead of living in a PDF nobody opens.",
+          "Findings can move into Azure DevOps, GitHub, Jira and ServiceNow instead of living in a PDF nobody opens.",
         ],
       },
       {
         kind: "stats",
         items: [
           { value: "600+", label: "Clients secured" },
-          { value: "13 yrs", label: "Same senior bench. No churn in the published record." },
           { value: "12,000+", label: "Bugs proven, never assumed" },
           { value: "100,000+", label: "Checks where existence was validated, or non-existence proven" },
           { value: "0.01%", label: "Findings that return after a fix" },
-          { value: "0", label: "Breaches in 13 years under Entersoft’s watch" },
         ],
       },
       {
@@ -38,12 +36,10 @@ export const companyPages: EditorialDoc[] = [
           { title: "Zero-noise delivery", body: "Issues are reproduced in environments that behave like production, so a developer can see the same failure." },
           { title: "Developer-ready fixes", body: "Diffs, sample code and pull-request suggestions, written so the patch can be reviewed like any other change." },
           { title: "Retest on demand", body: "ReAuto is an anytime retest from the portal. Unlimited validations after the team says the fix is in." },
-          { title: "Continuity", body: "The same senior analysts stay on the account. The published record is thirteen years without attrition on that bench." },
+          { title: "Continuity", body: "The same senior analysts stay on the account." },
           { title: "Integration-native", body: "Azure DevOps, GitHub, Jira and ServiceNow. The ticket is created where the work already lives." },
-          { title: "Audit-ready", body: "CERT-In, ISO 27001, GDPR and CREST. Credentials a buyer can ask to see, listed on the accreditations page." },
         ],
       },
-      { kind: "cta", title: "Read the credentials, then talk.", href: ROUTES.company.accreditations, label: "Accreditations" },
     ],
   },
   {
@@ -83,8 +79,8 @@ export const companyPages: EditorialDoc[] = [
         kind: "prose",
         title: "How they hire the bench",
         paragraphs: [
-          "Entersoft’s public account of the team is specific: certified white-hat hackers, hired for creativity, speed, problem-solving and the ability to implement, with a combined experience they summarise as forty years of taking applications apart.",
-          "The certifications are the evidence. The standard they publish is offensive, fast, and trustworthy — and still accountable to the customer after the report.",
+          "Entersoft’s public account of the team is specific: white-hat hackers, hired for creativity, speed, problem-solving and the ability to implement.",
+          "The standard they publish is offensive, fast, and trustworthy — and still accountable to the customer after the report.",
         ],
       },
     ],
@@ -190,25 +186,11 @@ export const companyPages: EditorialDoc[] = [
   {
     slug: "awards",
     title: "Awards | Entersoft Security",
-    description: "Recognition for Entersoft’s application security work, including the ELETS BFSI Tech Innovation Awards.",
+    description: "A named award is not published on this page.",
     kicker: "Company · Awards",
-    headline: "Recognition for security that starts at step one.",
-    lede: "Entersoft’s public line on awards is not a trophy cabinet. It is a claim about when security begins: at the first step of building the application, not after a launch incident.",
-    blocks: [
-      {
-        kind: "split",
-        title: "ELETS BFSI Tech Innovation Awards",
-        body: "The firm records this recognition against its application-security work in financial services. The accompanying statement is the one they repeat: a culture of security, and protection that has to last longer than a single release.",
-        aside: "Excellence in cybersecurity",
-      },
-      {
-        kind: "prose",
-        paragraphs: [
-          "Awards sit next to things a buyer can check. CREST accreditation and CERT-In empanelment are on the accreditations page, with the bodies that issued them.",
-        ],
-      },
-      { kind: "cta", title: "Verify the credentials.", href: ROUTES.company.accreditations, label: "Accreditations" },
-    ],
+    headline: "Awards",
+    lede: "A named award is not published on this page.",
+    blocks: [],
   },
   {
     slug: "responsible-disclosures",

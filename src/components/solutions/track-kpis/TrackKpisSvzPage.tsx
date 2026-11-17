@@ -66,7 +66,7 @@ const STRIP = [
   IMG("track-appsec-kpis-try-590041"),
 ];
 
-const FRAMEWORKS = ["ISO 27001", "SOC 2", "PCI-DSS", "HIPAA", "RBI", "CERT-In", "CREST", "GDPR"];
+const FRAMEWORKS = ["ISO 27001", "SOC 2", "PCI-DSS", "HIPAA", "RBI", "CERT-In", "GDPR"];
 
 function syncTrackKpisNav() {
   const header = document.querySelector("header");

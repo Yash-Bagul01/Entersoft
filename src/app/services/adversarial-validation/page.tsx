@@ -15,18 +15,58 @@ import AdversarialValidationRelated from "@/components/services/adversarial-vali
 import AdversarialValidationAssessment from "@/components/services/adversarial-validation/AdversarialValidationAssessment";
 import AdversarialValidationOverview from "@/components/services/adversarial-validation/AdversarialValidationOverview";
 import ServiceBoundary from "@/components/services/adversarial-validation/ServiceBoundary";
+import { getCanonicalUrl, ROUTES } from "@/config/routes";
+import {
+  ORGANIZATION_ID,
+  breadcrumbNode,
+  organizationNode,
+  webPageNode,
+  websiteNode,
+} from "@/config/seo";
 import { AV_PAGE_FOOTER } from "@/data/adversarialValidationPage";
 
 const TITLE = "Adversarial Validation & Penetration Testing | Entersoft";
 const DESCRIPTION =
   "Expert-led penetration testing, attack-path validation and threat-led exercises. Understand exposure, test defences and prioritise verified improvements.";
+const CANONICAL = getCanonicalUrl(ROUTES.services.adversarialValidation);
+const SERVICE_NAME = "Adversarial Validation";
+const SERVICE_ID = `${CANONICAL}/#service`;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    organizationNode,
+    websiteNode,
+    webPageNode({
+      canonicalUrl: CANONICAL,
+      name: TITLE,
+      description: DESCRIPTION,
+      about: SERVICE_ID,
+      breadcrumb: `${CANONICAL}/#breadcrumb`,
+    }),
+    {
+      "@type": "Service",
+      "@id": SERVICE_ID,
+      name: SERVICE_NAME,
+      serviceType: SERVICE_NAME,
+      description: DESCRIPTION,
+      url: CANONICAL,
+      provider: { "@id": ORGANIZATION_ID },
+    },
+    breadcrumbNode(CANONICAL, [{ name: SERVICE_NAME, item: CANONICAL }]),
+  ],
+};
 
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
+  alternates: {
+    canonical: CANONICAL,
+  },
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,
+    url: CANONICAL,
     siteName: "Entersoft Security",
     locale: "en_US",
     type: "website",
@@ -40,7 +80,12 @@ export const metadata: Metadata = {
 
 export default function AdversarialValidationPage() {
   return (
-    <main id="main" className="av-page">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <main id="main" className="av-page">
       <AdversarialValidationAnchors />
       <AdversarialValidationHero />
       <div className="av-stage">
@@ -61,5 +106,6 @@ export default function AdversarialValidationPage() {
         <p className="av-close">{AV_PAGE_FOOTER}</p>
       </div>
     </main>
+    </>
   );
 }
