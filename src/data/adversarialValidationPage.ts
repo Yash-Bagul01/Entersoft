@@ -617,7 +617,7 @@ export const AV_RELATED = {
       title: "Digital Trust",
       body: "Connect the evidence to governance, assurance and applicable control obligations.",
       label: "Explore Digital Trust",
-      href: "/services/grc-compliance-privacy",
+      href: "/services/digital-trust",
     },
   ],
 } as const;

@@ -154,6 +154,15 @@ interface CardSpec {
 
 const PHILOSOPHY_LINES: PhilosophyToken[][] = [
   [
+    { text: "14", highlight: true },
+    { text: "YEARS", highlight: true },
+    { text: "OF", highlight: false },
+  ],
+  [
+    { text: "OFFENSIVE", highlight: false },
+    { text: "INTELLIGENCE.", highlight: false },
+  ],
+  [
     { text: "AI-NATIVE.", highlight: true },
     { text: "HUMAN-GOVERNED.", highlight: false },
   ],
@@ -183,15 +192,14 @@ const itemVariants = {
 
 const CARDS_DATA: CardSpec[] = [
   {
-    // Penetration testing. Credential badge omitted.
-    value: "",
-    label: "PENETRATION TESTING",
-    watermark: "",
-    category: "",
-    description: "Current applicable credentials available during supplier due diligence.",
-    badge: "",
-    metricDetail: "",
-    image: "/images/track-record/crest-bg.jpg",
+    value: "600+",
+    label: "CLIENTS SECURED",
+    watermark: "Enterprise",
+    category: "ENTERPRISE ASSURANCE",
+    description: "Securing global enterprises across Tier-1 banking, cloud infrastructure, and fintech ecosystems with zero breach history.",
+    badge: "GLOBAL TRUST",
+    metricDetail: "Fortune 500 & Fintech",
+    image: "/images/track-record/clients-secured.jpg",
     lightColors: {
       bgStart: "#FFF9FD",
       bgMid: "#F5E4F3",
@@ -222,47 +230,123 @@ const CARDS_DATA: CardSpec[] = [
     }
   },
   {
-    // Founded 2013
-    value: "2013",
-    label: "FOUNDED IN 2013",
-    watermark: "2013",
-    category: "FOUNDED 2013",
-    description: "Founded in 2013.",
-    badge: "FOUNDED 2013",
-    metricDetail: "",
-    image: "/images/track-record/founded-bg.jpg",
+    value: "12,000+",
+    label: "EXPLOITS PROVEN",
+    watermark: "Validation",
+    category: "POC VALIDATION",
+    description: "Every finding backed by deterministic Proof of Concept execution and demonstrable enterprise business impact.",
+    badge: "POC VERIFIED",
+    metricDetail: "0 False Positives",
+    image: "/images/track-record/exploits-proven.jpg",
     lightColors: {
-      bgStart: "#F4FDF8",
-      bgMid: "#DFF8EA",
-      bgEnd: "#34D399",
+      bgStart: "#F4FAFE",
+      bgMid: "#DBEDFA",
+      bgEnd: "#B4D0E8",
+      accent: "#1E5782",
+      topCapHex: 0x8DB5D9,
+      backHex: "rgba(219, 237, 250, 0.55)",
+      watermark: "rgba(107, 153, 197, 0.14)",
+      border: "rgba(141, 181, 217, 0.65)",
+      chipBg: "rgba(215, 243, 253, 0.95)",
+      chipText: "#1E5782",
+      textColor: "#0A0A0A",
+      descColor: "#323230"
+    },
+    darkColors: {
+      bgStart: "#0B1626",
+      bgMid: "#132A44",
+      bgEnd: "#1C3E63",
+      accent: "#7DD3FC",
+      topCapHex: 0x7DD3FC,
+      backHex: "rgba(19, 42, 68, 0.65)",
+      watermark: "rgba(215, 243, 253, 0.10)",
+      border: "rgba(141, 181, 217, 0.45)",
+      chipBg: "rgba(19, 42, 68, 0.95)",
+      chipText: "#7DD3FC",
+      textColor: "#FFFFFF",
+      descColor: "#DCDCD6"
+    }
+  },
+  {
+    value: "100,000+",
+    label: "MANUAL AUDIT HOURS",
+    watermark: "Adversarial",
+    category: "OFFENSIVE ADVERSARIAL",
+    description: "Deep manual test cases and bespoke red team attack flows executing business logic paths far beyond scanner capabilities.",
+    badge: "ELITE RED TEAM",
+    metricDetail: "14-Yr Avg Analyst Tenure",
+    image: "/images/track-record/audit-hours.jpg",
+    lightColors: {
+      bgStart: "#FCFAF7",
+      bgMid: "#F6EEE2",
+      bgEnd: "#E9C797",
+      accent: "#825922",
+      topCapHex: 0xE9C797,
+      backHex: "rgba(246, 238, 226, 0.55)",
+      watermark: "rgba(208, 169, 117, 0.14)",
+      border: "rgba(208, 169, 117, 0.65)",
+      chipBg: "rgba(245, 236, 224, 0.95)",
+      chipText: "#825922",
+      textColor: "#0A0A0A",
+      descColor: "#323230"
+    },
+    darkColors: {
+      bgStart: "#1C1712",
+      bgMid: "#2D2216",
+      bgEnd: "#48341E",
+      accent: "#FDE68A",
+      topCapHex: 0xFDE68A,
+      backHex: "rgba(45, 34, 22, 0.65)",
+      watermark: "rgba(233, 199, 151, 0.10)",
+      border: "rgba(233, 199, 151, 0.45)",
+      chipBg: "rgba(45, 34, 22, 0.95)",
+      chipText: "#FDE68A",
+      textColor: "#FFFFFF",
+      descColor: "#DCDCD6"
+    }
+  },
+  {
+    value: "0.01%",
+    label: "RECURRENCE RATE",
+    watermark: "Assurance",
+    category: "PERMANENT REMEDIATION",
+    description: "Unprecedented vulnerability elimination rate, ensuring discovered security flaws remain permanently eradicated post-verification.",
+    badge: "GUARANTEED SLA",
+    metricDetail: "Permanent Remediation",
+    image: "/images/track-record/recurrence-rate.jpg",
+    lightColors: {
+      bgStart: "#F4FDF7",
+      bgMid: "#E2F9EC",
+      bgEnd: "#A7F3D0",
       accent: "#047857",
       topCapHex: 0x34D399,
-      backHex: "rgba(223, 248, 234, 0.55)",
-      watermark: "rgba(5, 150, 105, 0.18)",
-      border: "rgba(52, 211, 153, 0.85)",
+      backHex: "rgba(226, 249, 236, 0.55)",
+      watermark: "rgba(5, 150, 105, 0.14)",
+      border: "rgba(52, 211, 153, 0.65)",
       chipBg: "rgba(230, 247, 240, 0.95)",
       chipText: "#047857",
       textColor: "#0A0A0A",
-      descColor: "#0E0E0C"
+      descColor: "#323230"
     },
     darkColors: {
-      bgStart: "#0B1D15",
-      bgMid: "#113827",
-      bgEnd: "#1A573D",
+      bgStart: "#0B1C14",
+      bgMid: "#103022",
+      bgEnd: "#184E38",
       accent: "#6EE7B7",
       topCapHex: 0x6EE7B7,
-      backHex: "rgba(17, 56, 39, 0.65)",
-      watermark: "rgba(167, 243, 208, 0.14)",
-      border: "rgba(110, 231, 183, 0.65)",
-      chipBg: "rgba(17, 56, 39, 0.95)",
+      backHex: "rgba(16, 48, 34, 0.65)",
+      watermark: "rgba(167, 243, 208, 0.10)",
+      border: "rgba(52, 211, 153, 0.45)",
+      chipBg: "rgba(16, 48, 34, 0.95)",
       chipText: "#6EE7B7",
       textColor: "#FFFFFF",
-      descColor: "#FAFAF6"
+      descColor: "#DCDCD6"
     }
   },
 ];
 
 function loadCardPhoto(src: string): Promise<HTMLImageElement | null> {
+  if (!src) return Promise.resolve(null);
   return new Promise((resolve) => {
     const img = new Image();
     if (/^https?:/i.test(src)) {

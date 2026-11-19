@@ -88,7 +88,7 @@ export default function ClosedLoopRemediationRoot() {
               },
               {
                 name: "Digital Trust",
-                href: "/services/compliance-management",
+                href: "/services/digital-trust",
                 desc: "Provides auditors with cryptographic proof of timely vulnerability closure within mandated SLA windows."
               }
             ].map((item) => (

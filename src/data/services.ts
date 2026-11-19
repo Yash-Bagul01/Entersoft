@@ -70,7 +70,7 @@ export const services: Service[] = [
     descriptor: 'GRC • PRIVACY • AUDIT READINESS',
     hoverCardHeading: 'Cyber Risk & Regulatory Assurance',
     hoverCardBody: 'Translate controls into board-ready risk decisions, audit-ready evidence and sustained compliance.',
-    route: getServiceRoute("compliance-management"),
+    route: "/services/digital-trust",
     slug: 'compliance-management',
     legacyName: 'COMPLIANCE MANAGEMENT',
     image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=1400&auto=format&fit=crop',

@@ -13,7 +13,7 @@ const SERVICE_PAGES = [
   ROUTES.services.appsec,
   ROUTES.services.adversarialValidation,
   ROUTES.services.cloud,
-  ROUTES.services.compliance,
+  ROUTES.services.digitalTrust,
   ROUTES.services.siem,
   ROUTES.services.smartContract,
   ROUTES.services.aiAst,

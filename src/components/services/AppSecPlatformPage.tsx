@@ -2019,7 +2019,7 @@ export default function AppSecPlatformPage({ faqs }: AppSecPlatformPageProps) {
               Continuous Validation & Proof of Remediation
             </h2>
             <p className="text-[11px] md:text-[12.5px] text-[var(--text-secondary)] font-sans leading-relaxed select-none">
-              Automated testing is conducted within agreed engagement environments and authorised testing windows, with rules of engagement, safety controls, and rollback procedures defined for production testing where applicable. Web/API assurance is aligned to OWASP ASVS verification requirements, while mobile testing aligns to OWASP MASVS requirements and MASTG testing guidance to support <Link href="/services/compliance-management" className="text-[var(--accent)] hover:underline">compliance management</Link> standards.
+              Automated testing is conducted within agreed engagement environments and authorised testing windows, with rules of engagement, safety controls, and rollback procedures defined for production testing where applicable. Web/API assurance is aligned to OWASP ASVS verification requirements, while mobile testing aligns to OWASP MASVS requirements and MASTG testing guidance to support <Link href="/services/digital-trust" className="text-[var(--accent)] hover:underline">compliance management</Link> standards.
             </p>
 
             {/* Visual Step Cards */}

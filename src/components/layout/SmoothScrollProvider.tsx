@@ -89,6 +89,7 @@ export default function SmoothScrollProvider({
       if (anchor) {
         const href = anchor.getAttribute("href");
         if (href && href.startsWith("#") && href.length > 1) {
+          if (anchor.closest(".dt-page")) return;
           const targetElement = document.querySelector(href);
           if (targetElement) {
             e.preventDefault();

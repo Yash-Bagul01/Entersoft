@@ -59,7 +59,12 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/services/compliance-management",
-        destination: "/services/grc-compliance-privacy",
+        destination: "/services/digital-trust",
+        permanent: true,
+      },
+      {
+        source: "/services/grc-compliance-privacy",
+        destination: "/services/digital-trust",
         permanent: true,
       },
       {

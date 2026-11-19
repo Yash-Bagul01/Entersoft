@@ -59,7 +59,7 @@ const FLYOUTS: Record<string, readonly { label: string; href: string }[]> = {
     { label: "Application assurance", href: ROUTES.services.appsec },
     { label: "Adversarial Validation", href: ROUTES.services.adversarialValidation },
     { label: "Cloud resilience", href: ROUTES.services.cloud },
-    { label: "Digital trust", href: ROUTES.services.compliance },
+    { label: "Digital trust", href: ROUTES.services.digitalTrust },
     { label: "Cyber defense operations", href: ROUTES.services.siem },
     { label: "Protocol assurance", href: ROUTES.services.smartContract },
     { label: "AI systems assurance", href: ROUTES.services.aiAst },

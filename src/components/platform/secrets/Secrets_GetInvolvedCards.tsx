@@ -64,7 +64,7 @@ const roleCards: RoleCard[] = [
       "Continuous policy enforcement",
       "Instant compliance export"
     ],
-    href: "/services/compliance-management",
+    href: "/services/digital-trust",
     icon: <FileCheck className="w-5 h-5 text-[#2563EB]" />
   }
 ];

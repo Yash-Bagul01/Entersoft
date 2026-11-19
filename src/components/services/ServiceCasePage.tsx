@@ -439,7 +439,11 @@ export default function ServiceCasePage({ slug }: { slug: ServiceCaseSlug }) {
           <p className="sc-section__label">See more projects</p>
           <div className="sc-more__grid">
             {more.map((item) => (
-              <Link key={item.slug} href={item.href} className="sc-more__card">
+              <Link
+                key={item.slug}
+                href={item.slug === "compliance-management" ? ROUTES.services.digitalTrust : item.href}
+                className="sc-more__card"
+              >
                 <Image
                   src={item.hero.src}
                   alt={item.hero.alt}

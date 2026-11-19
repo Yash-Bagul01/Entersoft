@@ -605,7 +605,7 @@ export const APPSEC_RELATED = {
       name: "Digital Trust",
       body: "For security governance, privacy requirements and evidence aligned to relevant obligations.",
       cta: "Explore Digital Trust",
-      href: "/services/grc-compliance-privacy",
+      href: "/services/digital-trust",
     },
   ],
 };

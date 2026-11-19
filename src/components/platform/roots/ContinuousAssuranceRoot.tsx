@@ -83,7 +83,7 @@ export default function ContinuousAssuranceRoot() {
             {[
               {
                 name: "Digital Trust",
-                href: "/services/compliance-management",
+                href: "/services/digital-trust",
                 desc: "Powers continuous readiness for ISO 27001, SOC 2, HIPAA, and regulatory compliance audits."
               },
               {

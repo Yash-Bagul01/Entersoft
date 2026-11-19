@@ -131,7 +131,7 @@ export const platformPillars: Record<string, PlatformPillar> = {
       },
       {
         serviceName: "Digital Trust",
-        serviceHref: "/services/compliance-management",
+        serviceHref: "/services/digital-trust",
         description: "Provides software supply chain security proof for SOC 2 and ISO 27001 audits."
       }
     ]
@@ -183,7 +183,7 @@ export const platformPillars: Record<string, PlatformPillar> = {
     whereItFits: [
       {
         serviceName: "Digital Trust",
-        serviceHref: "/services/compliance-management",
+        serviceHref: "/services/digital-trust",
         description: "Fulfills executive order and federal requirements for continuous SBOM generation."
       },
       {
@@ -302,7 +302,7 @@ export const platformPillars: Record<string, PlatformPillar> = {
       },
       {
         serviceName: "Digital Trust",
-        serviceHref: "/services/compliance-management",
+        serviceHref: "/services/digital-trust",
         description: "Automates continuous compliance evidence collection for cloud infrastructure."
       }
     ]
@@ -760,7 +760,7 @@ export const platformPillars: Record<string, PlatformPillar> = {
       },
       {
         serviceName: "Digital Trust",
-        serviceHref: "/services/compliance-management",
+        serviceHref: "/services/digital-trust",
         description: "Tracks SLA compliance and vulnerability remediation performance for executive reporting."
       }
     ]
@@ -812,7 +812,7 @@ export const platformPillars: Record<string, PlatformPillar> = {
     whereItFits: [
       {
         serviceName: "Digital Trust",
-        serviceHref: "/services/compliance-management",
+        serviceHref: "/services/digital-trust",
         description: "Powers continuous regulatory readiness and automated compliance evidence harvesting."
       },
       {

@@ -14,6 +14,7 @@ export default function ServicesLayout({
 }) {
   const pathname = usePathname();
   const isAdversarialValidation = pathname === "/services/adversarial-validation";
+  const isDigitalTrust = pathname === "/services/digital-trust";
   const isCase = pathname === "/services" || isServiceCasePath(pathname) || isAdversarialValidation;
 
   useEffect(() => {
@@ -25,6 +26,14 @@ export default function ServicesLayout({
       document.documentElement.removeAttribute("data-theme");
     };
   }, [isCase]);
+
+  if (isDigitalTrust) {
+    return (
+      <div data-page="digital-trust" className="min-h-screen bg-[#F5F4EF] text-[#102B24]">
+        {children}
+      </div>
+    );
+  }
 
   if (isCase) {
     return (

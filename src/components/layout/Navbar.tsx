@@ -179,7 +179,7 @@ export default function Navbar() {
               { name: serviceName("appsec"), href: ROUTES.services.appsec, desc: "Web, API & Mobile AST", icon: <Code className="w-4 h-4" /> },
               { name: serviceName("vapt"), href: ROUTES.services.adversarialValidation, desc: "Pen Testing", icon: <Shield className="w-4 h-4" /> },
               { name: serviceName("cloud-resilience"), href: ROUTES.services.cloud, desc: "AWS, Azure, GCP & Identity", icon: <Cloud className="w-4 h-4" /> },
-              { name: serviceName("compliance-management"), href: ROUTES.services.compliance, desc: "ISO 27001, SOC 2, DPDP", icon: <CheckSquare className="w-4 h-4" /> }
+              { name: serviceName("compliance-management"), href: ROUTES.services.digitalTrust, desc: "ISO 27001, SOC 2, DPDP", icon: <CheckSquare className="w-4 h-4" /> }
             ]
           },
           {

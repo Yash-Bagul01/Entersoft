@@ -9,7 +9,7 @@ const OTHER_SERVICES = [
   { name: "APPLICATION ASSURANCE", href: getServiceRoute("appsec") },
   { name: "ADVERSARIAL VALIDATION", href: ROUTES.services.adversarialValidation },
   { name: "CLOUD RESILIENCE", href: getServiceRoute("cloud-resilience") },
-  { name: "DIGITAL TRUST", href: getServiceRoute("compliance-management") },
+  { name: "DIGITAL TRUST", href: ROUTES.services.digitalTrust },
   { name: "CYBER DEFENSE OPERATIONS", href: getServiceRoute("siem") },
   { name: "PROTOCOL ASSURANCE", href: getServiceRoute("smart-contract-audits") },
   { name: "AI SYSTEMS ASSURANCE", href: getServiceRoute("ai-ast") },

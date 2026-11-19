@@ -74,7 +74,7 @@ const COLUMNS: {
       { name: serviceName("appsec"), href: ROUTES.services.appsec },
       { name: serviceName("vapt"), href: ROUTES.services.adversarialValidation },
       { name: serviceName("cloud-resilience"), href: ROUTES.services.cloud },
-      { name: serviceName("compliance-management"), href: ROUTES.services.compliance },
+      { name: serviceName("compliance-management"), href: ROUTES.services.digitalTrust },
       { name: serviceName("siem"), href: ROUTES.services.siem },
       { name: serviceName("smart-contract-audits"), href: ROUTES.services.smartContract },
       { name: serviceName("ai-ast"), href: ROUTES.services.aiAst },

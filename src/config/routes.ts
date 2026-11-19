@@ -57,6 +57,7 @@ export const ROUTES = {
     adversarialValidation: "/services/adversarial-validation",
     cloud: `/services/${SERVICE_SLUGS.cloud}`,
     compliance: `/services/${SERVICE_SLUGS.compliance}`,
+    digitalTrust: "/services/digital-trust",
     siem: `/services/${SERVICE_SLUGS.siem}`,
     smartContract: `/services/${SERVICE_SLUGS.smartContract}`,
     aiAst: `/services/${SERVICE_SLUGS.aiAst}`,
@@ -131,7 +132,7 @@ export function getServiceRoute(slug: string): string {
     case "managed-cloud-security":
       return ROUTES.services.cloud;
     case "compliance-management":
-      return ROUTES.services.compliance;
+      return ROUTES.services.digitalTrust;
     case "siem":
       return ROUTES.services.siem;
     case "smart-contract-audits":

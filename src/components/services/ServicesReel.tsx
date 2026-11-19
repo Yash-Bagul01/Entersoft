@@ -43,7 +43,12 @@ const SERVICES_REEL: ServiceReelItem[] = SERVICE_CASE_ORDER.map((slug, index) =>
     description: visual.description,
     image: visual.menuImage,
     heroImage: visual.hero.src,
-    href: slug === "vapt" ? ROUTES.services.adversarialValidation : visual.href,
+    href:
+      slug === "vapt"
+        ? ROUTES.services.adversarialValidation
+        : slug === "compliance-management"
+          ? ROUTES.services.digitalTrust
+          : visual.href,
     coverBg: visual.coverBg,
     textColor: visual.textColor,
     accentColor: visual.accentColor,

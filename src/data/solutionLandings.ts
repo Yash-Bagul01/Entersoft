@@ -418,7 +418,7 @@ export const SOLUTION_LANDINGS: SolutionLanding[] = [
     ctaBody: "Bring the tools and frameworks you already report on. We will show how Entersoft evidence lands in that pack.",
     related: [
       { label: "Compliance Reporting", href: ROUTES.platform.complianceReporting },
-      { label: "GRC, Privacy & Compliance", href: ROUTES.services.compliance },
+      { label: "GRC, Privacy & Compliance", href: ROUTES.services.digitalTrust },
     ],
     metadataTitle: "Track AppSec KPIs | Entersoft Solutions",
     metadataDescription:
