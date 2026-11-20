@@ -189,8 +189,8 @@ export default function Footer() {
         scrollTrigger: {
           trigger: root,
           start: digitalTrust ? "top bottom" : flushCloser ? "top 100%" : "top 95%",
-          end: digitalTrust ? "top 86%" : flushCloser ? "top 55%" : "top 20%",
-          scrub: digitalTrust ? 0.45 : 0.85,
+          end: digitalTrust ? "top 68%" : flushCloser ? "top 55%" : "top 20%",
+          scrub: digitalTrust ? 0.7 : 0.85,
           // Created before the pins above it (the track-record pin mounts later), so it must be
           // measured after them or it starts early and shrinks Certifications before it is reached.
           refreshPriority: -1,
@@ -201,9 +201,9 @@ export default function Footer() {
         gsap.set(prev, { transformOrigin: "50% 100%" });
         tl.fromTo(
           prev,
-          { scale: 1, borderRadius: 0 },
+          digitalTrust ? { y: 0 } : { scale: 1, borderRadius: 0 },
           digitalTrust
-            ? { scale: 0.992, borderRadius: 16, ease: "none" }
+            ? { y: -12, ease: "none" }
             : { scale: 0.9, borderRadius: 40, ease: "none" },
           0,
         );
@@ -212,11 +212,18 @@ export default function Footer() {
       tl.fromTo(
         sheet,
         {
-          y: reduce || flushCloser ? 0 : digitalTrust ? 28 : 0,
+          y: reduce || flushCloser ? 0 : digitalTrust ? 72 : 0,
           yPercent: reduce || flushCloser || digitalTrust ? 0 : 14,
-          borderRadius: reduce || flushCloser ? "0px" : digitalTrust ? "22px 22px 0 0" : "56px 56px 0 0",
+          borderRadius: reduce || flushCloser ? "0px" : digitalTrust ? "40px 40px 0 0" : "56px 56px 0 0",
+          boxShadow: digitalTrust && !reduce ? "0 -24px 50px rgba(0,0,0,0.28)" : "none",
         },
-        { y: 0, yPercent: 0, borderRadius: "0px", ease: "none" },
+        {
+          y: 0,
+          yPercent: 0,
+          borderRadius: "0px",
+          boxShadow: "0 0 0 rgba(0,0,0,0)",
+          ease: "none",
+        },
         0,
       );
     }, root);
@@ -233,7 +240,7 @@ export default function Footer() {
     <footer
       id="site-footer"
       ref={rootRef}
-      className={cn("site-footer relative z-20 w-full", digitalTrust && !reduce && "-mt-8")}
+      className={cn("site-footer relative z-20 w-full", digitalTrust && !reduce && "-mt-16")}
     >
       <div ref={sheetRef} className="site-footer-sheet relative overflow-hidden">
         <div className="site-footer-smoke" aria-hidden="true" />
