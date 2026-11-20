@@ -11,8 +11,13 @@ export default function DigitalTrustFaq() {
         <div className="dt-faq__list">
           {DT_FAQ.items.map((item) => (
             <details key={item.question} className="dt-faq__item">
-              <summary>{item.question}</summary>
-              <p>{item.answer}</p>
+              <summary className="dt-faq__summary">
+                <span className="dt-faq__question">{item.question}</span>
+                <span className="dt-faq__mark" aria-hidden="true" />
+              </summary>
+              <div className="dt-faq__panel">
+                <p>{item.answer}</p>
+              </div>
             </details>
           ))}
         </div>

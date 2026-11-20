@@ -89,7 +89,6 @@ export default function SmoothScrollProvider({
       if (anchor) {
         const href = anchor.getAttribute("href");
         if (href && href.startsWith("#") && href.length > 1) {
-          if (anchor.closest(".dt-page")) return;
           const targetElement = document.querySelector(href);
           if (targetElement) {
             e.preventDefault();
@@ -97,7 +96,11 @@ export default function SmoothScrollProvider({
             const scrollMargin = Number.parseFloat(getComputedStyle(targetElement).scrollMarginTop);
             // Sections inside the stage already clear the pinned bar with scroll-margin.
             // Adding the same offset again stops short, on the previous section.
-            const offset = appsecTarget ? (scrollMargin > 0 ? 0 : -148) : -80;
+            const offset = anchor.closest(".dt-page")
+              ? -96
+              : appsecTarget
+                ? (scrollMargin > 0 ? 0 : -148)
+                : -80;
             lenis.scrollTo(targetElement as HTMLElement, {
               offset,
               duration: shouldReduceMotion ? 0 : 1.4,

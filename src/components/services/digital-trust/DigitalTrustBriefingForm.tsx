@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DT_BRIEFING } from "@/data/digitalTrustPage";
 
 type Fields = {
@@ -40,6 +40,29 @@ export default function DigitalTrustBriefingForm() {
     setValues((current) => ({ ...current, [key]: value }));
   }
 
+  useEffect(() => {
+    const box = document.querySelector(".dt-briefing__drop");
+    const openForm = () => {
+      if (box instanceof HTMLDetailsElement) box.open = true;
+    };
+    const onClick = (event: MouseEvent) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      if (!target.closest("a[href='#briefing']")) return;
+      openForm();
+    };
+    const onHash = () => {
+      if (window.location.hash === "#briefing") openForm();
+    };
+    onHash();
+    window.addEventListener("hashchange", onHash);
+    document.addEventListener("click", onClick, true);
+    return () => {
+      window.removeEventListener("hashchange", onHash);
+      document.removeEventListener("click", onClick, true);
+    };
+  }, []);
+
   function reveal(event?: { preventDefault: () => void }) {
     event?.preventDefault();
     setAttempted(true);
@@ -57,13 +80,16 @@ export default function DigitalTrustBriefingForm() {
         }
       }}
     >
-      <p className="dt-form__preview" role="status">
-        {DT_BRIEFING.preview}
-      </p>
-      <p className="dt-form__notice">{DT_BRIEFING.notice}</p>
-      <p className="dt-form__privacy">{DT_BRIEFING.privacy}</p>
-      <p className="dt-form__required">{DT_BRIEFING.required}</p>
+      <div className="dt-form__notes">
+        <p className="dt-form__preview" role="status">
+          {DT_BRIEFING.preview}
+        </p>
+        <p className="dt-form__notice">{DT_BRIEFING.notice}</p>
+        <p className="dt-form__privacy">{DT_BRIEFING.privacy}</p>
+        <p className="dt-form__required">{DT_BRIEFING.required}</p>
+      </div>
 
+      <div className="dt-form__grid">
       <div className="dt-field">
         <label htmlFor="dt-name">{DT_BRIEFING.name.label}</label>
         <input
@@ -155,7 +181,8 @@ export default function DigitalTrustBriefingForm() {
         </select>
       </div>
 
-      <div className="dt-field">
+      </div>
+      <div className="dt-field dt-field--wide">
         <label htmlFor="dt-message">{DT_BRIEFING.message.label}</label>
         <textarea
           id="dt-message"

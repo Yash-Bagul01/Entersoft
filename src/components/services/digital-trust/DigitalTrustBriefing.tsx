@@ -12,7 +12,13 @@ export default function DigitalTrustBriefing() {
           </h2>
           <p className="dt-briefing__lead">{DT_BRIEFING.lead}</p>
         </div>
-        <DigitalTrustBriefingForm />
+        <details className="dt-briefing__drop">
+          <summary className="dt-briefing__summary">
+            <span>{DT_BRIEFING.button}</span>
+            <span className="dt-briefing__mark" aria-hidden="true" />
+          </summary>
+          <DigitalTrustBriefingForm />
+        </details>
         <div className="dt-related">
           <h2 className="dt-related__title">{DT_BRIEFING.relatedTitle}</h2>
           <ul>

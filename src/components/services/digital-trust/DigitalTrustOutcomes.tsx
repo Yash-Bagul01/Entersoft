@@ -12,9 +12,12 @@ export default function DigitalTrustOutcomes() {
           <p className="dt-outcomes__lead">{DT_OUTCOMES.lead}</p>
         </div>
         <ul className="dt-outcomes__grid">
-          {DT_OUTCOMES.cards.map((card) => (
-            <li key={card.title}>
+          {DT_OUTCOMES.cards.map((card, index) => (
+            <li key={card.title} className="dt-rise" style={{ animationDelay: `${0.08 + index * 0.1}s` }}>
               <article className="dt-outcome">
+                <span className="dt-outcome__index" aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
                 <h3 className="dt-outcome__title">{card.title}</h3>
                 <p className="dt-outcome__body">{card.body}</p>
               </article>

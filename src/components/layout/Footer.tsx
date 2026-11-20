@@ -168,6 +168,7 @@ export default function Footer() {
     pathname === "/platform" ||
     pathname === "/solutions" ||
     pathname === "/services";
+  const digitalTrust = pathname === "/services/digital-trust";
   const flushCloser =
     pathname === "/solutions/api-discovery" || pathname === "/solutions/track-appsec-kpis";
 
@@ -177,18 +178,19 @@ export default function Footer() {
     if (!root || !sheet || hideOn) return;
 
     gsap.registerPlugin(ScrollTrigger);
-    const prev =
-      document.querySelector<HTMLElement>("#certifications .ov-sheet") ||
-      document.querySelector<HTMLElement>("#certifications") ||
-      document.querySelector<HTMLElement>("main > section:last-of-type");
+    const prev = digitalTrust
+      ? document.querySelector<HTMLElement>(".dt-briefing__close")
+      : document.querySelector<HTMLElement>("#certifications .ov-sheet") ||
+        document.querySelector<HTMLElement>("#certifications") ||
+        document.querySelector<HTMLElement>("main > section:last-of-type");
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: root,
-          start: flushCloser ? "top 100%" : "top 95%",
-          end: flushCloser ? "top 55%" : "top 20%",
-          scrub: 0.85,
+          start: digitalTrust ? "top bottom" : flushCloser ? "top 100%" : "top 95%",
+          end: digitalTrust ? "top 86%" : flushCloser ? "top 55%" : "top 20%",
+          scrub: digitalTrust ? 0.45 : 0.85,
           // Created before the pins above it (the track-record pin mounts later), so it must be
           // measured after them or it starts early and shrinks Certifications before it is reached.
           refreshPriority: -1,
@@ -197,17 +199,25 @@ export default function Footer() {
 
       if (prev && !reduce && !flushCloser) {
         gsap.set(prev, { transformOrigin: "50% 100%" });
-        tl.fromTo(prev, { scale: 1, borderRadius: 0 }, { scale: 0.9, borderRadius: 40, ease: "none" }, 0);
+        tl.fromTo(
+          prev,
+          { scale: 1, borderRadius: 0 },
+          digitalTrust
+            ? { scale: 0.992, borderRadius: 16, ease: "none" }
+            : { scale: 0.9, borderRadius: 40, ease: "none" },
+          0,
+        );
       }
 
       tl.fromTo(
         sheet,
         {
-          yPercent: reduce || flushCloser ? 0 : 14,
-          borderRadius: reduce || flushCloser ? "0px" : "56px 56px 0 0",
+          y: reduce || flushCloser ? 0 : digitalTrust ? 28 : 0,
+          yPercent: reduce || flushCloser || digitalTrust ? 0 : 14,
+          borderRadius: reduce || flushCloser ? "0px" : digitalTrust ? "22px 22px 0 0" : "56px 56px 0 0",
         },
-        { yPercent: 0, borderRadius: "0px", ease: "none" },
-        0
+        { y: 0, yPercent: 0, borderRadius: "0px", ease: "none" },
+        0,
       );
     }, root);
 
@@ -220,11 +230,20 @@ export default function Footer() {
   if (hideOn) return null;
 
   return (
-    <footer id="site-footer" ref={rootRef} className="site-footer relative z-20 w-full">
+    <footer
+      id="site-footer"
+      ref={rootRef}
+      className={cn("site-footer relative z-20 w-full", digitalTrust && !reduce && "-mt-8")}
+    >
       <div ref={sheetRef} className="site-footer-sheet relative overflow-hidden">
         <div className="site-footer-smoke" aria-hidden="true" />
 
-        <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-[1600px] flex-col justify-between px-6 pt-[18vh] md:px-12 lg:px-16">
+        <div
+          className={cn(
+            "relative z-10 mx-auto flex max-w-[1600px] flex-col justify-between px-6 md:px-12 lg:px-16",
+            digitalTrust ? "min-h-0 pb-10 pt-14" : "min-h-[100svh] pt-[18vh]",
+          )}
+        >
           <div className="grid grid-cols-1 items-center gap-14 lg:grid-cols-12 lg:gap-16">
             <div className="lg:col-span-7">
               <p className="site-footer-kicker">Let&apos;s build work that holds.</p>
@@ -244,7 +263,12 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="mt-20 border-t border-white/10 pt-12">
+          <div
+            className={cn(
+              "border-t border-white/10 pt-12",
+              pathname === "/services/digital-trust" ? "mt-10" : "mt-20",
+            )}
+          >
             <p className="max-w-[46ch] text-[13px] leading-[1.55] text-[#bdbbb5]">
               EnProbe finds the exposure. Entersoft experts validate it and stay with the fix.
             </p>
