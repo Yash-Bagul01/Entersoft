@@ -1,13 +1,13 @@
 /** Sheet 01 column D. Do not paraphrase. DT-003–DT-018 and DT-019–DT-057. */
 
 export const DT_HERO = {
-  eyebrow: "GOVERNANCE · PRIVACY · THIRD-PARTY ASSURANCE",
+  eyebrow: "GOVERNANCE: PRIVACY: THIRD-PARTY ASSURANCE",
   h1: ["Digital Trust.", "Built on evidence."] as const,
-  lead: "Turn governance, privacy and third-party risk into clear decisions, owned actions and defensible evidence—with Entersoft experts guiding the work and EnProbe supporting the agreed workflows.",
+  lead: "Turn governance, privacy and third-party risk into clear decisions, owned actions and defensible evidence: with Entersoft experts guiding the work and EnProbe supporting the agreed workflows.",
   primary: { label: "Discuss your priorities", href: "#briefing" },
   secondary: { label: "Explore our services", href: "#services" },
   proof: "Built on 14 years of offensive security expertise.",
-  support: "Expert-led delivery · Evidence-backed reviews · Ongoing assurance",
+  support: "Expert-led delivery: Evidence-backed reviews: Ongoing assurance",
   breadcrumb: ["Home", "Services", "Digital Trust"] as const,
 } as const;
 
@@ -22,7 +22,7 @@ export const DT_OUTCOMES = {
     },
     {
       title: "Prepare with confidence",
-      body: "Build traceable evidence for customer reviews, management decisions and independent audits—without treating a dashboard as a certification.",
+      body: "Build traceable evidence for customer reviews, management decisions and independent audits: without treating a dashboard as a certification.",
     },
     {
       title: "Make informed supplier decisions",
@@ -125,7 +125,7 @@ export const DT_TPRM = {
   id: "third-party-risk",
   eyebrow: "THIRD-PARTY RISK ASSURANCE",
   title: "Trust works both ways.",
-  lead: "A dedicated service within Digital Trust—for organisations assessing suppliers and for suppliers answering customer reviews.",
+  lead: "A dedicated service within Digital Trust: for organisations assessing suppliers and for suppliers answering customer reviews.",
   programmeTitle: "What can an annual supplier programme include?",
   programme:
     "An agreed supplier inventory and tiering model; scheduled evidence reviews; authorised technical checks where needed; remediation tracking; periodic management reporting; and reassessment after material changes. Supplier volume, criticality, assessment depth and monitoring coverage determine the service scope.",
@@ -141,7 +141,7 @@ export const DT_TPRM = {
         "Review controls and validate relevant evidence.",
         "Track remediation, exceptions and reassessments.",
       ],
-      output: "Supplier risk register · Review reports · Decision records",
+      output: "Supplier risk register: Review reports: Decision records",
       cta: "Discuss supplier risk",
       href: "#briefing",
     },
@@ -154,7 +154,7 @@ export const DT_TPRM = {
         "Organise evidence and questionnaire responses.",
         "Close gaps and document the agreed follow-up.",
       ],
-      output: "Customer assurance pack · Gap plan · Evidence index",
+      output: "Customer assurance pack: Gap plan: Evidence index",
       cta: "Prepare for a customer review",
       href: "#briefing",
     },
@@ -166,11 +166,11 @@ export const DT_EVIDENCE = {
   id: "evidence",
   eyebrow: "HOW THE WORK BECOMES VISIBLE",
   title: "Show the evidence behind the decision.",
-  lead: "Connect the requirement, control owner, evidence reviewed and open action. Leaders see what is supported—and what still needs work.",
+  lead: "Connect the requirement, control owner, evidence reviewed and open action. Leaders see what is supported: and what still needs work.",
   caption: "Illustrative service view. Not customer data, an audit opinion or a live EnProbe screenshot.",
   recordTitle: "What each evidence record should contain",
   record:
-    "Control and requirement reference; asset, process or supplier scope; evidence source and review period; owner and reviewer; review conclusion; exception or limitation; next action and due date. Evidence supports a scoped judgement—it is not an automatic guarantee of compliance.",
+    "Control and requirement reference; asset, process or supplier scope; evidence source and review period; owner and reviewer; review conclusion; exception or limitation; next action and due date. Evidence supports a scoped judgement: it is not an automatic guarantee of compliance.",
   columns: ["Control area", "Evidence reviewed", "Review state", "Next action"] as const,
   rows: [
     {
@@ -199,7 +199,7 @@ export const DT_DELIVERY = {
   id: "delivery",
   eyebrow: "DELIVERY MODEL",
   title: "A clear path from gaps to evidence.",
-  lead: "Milestones are agreed around your scope and readiness—not a blanket promise of certification in 90 days.",
+  lead: "Milestones are agreed around your scope and readiness: not a blanket promise of certification in 90 days.",
   note: "Timing depends on scope, maturity, evidence history and independent assessor availability. Changes to production controls require explicit authorisation.",
   steps: [
     {
@@ -297,7 +297,7 @@ export const DT_EXPERTS = {
   id: "experts-platform",
   eyebrow: "EXPERTS + TECHNOLOGY",
   title: "AI assists. Experts stay accountable.",
-  lead: "Use technology to organise the work—not to replace professional judgement.",
+  lead: "Use technology to organise the work: not to replace professional judgement.",
   expertTitle: "Entersoft expert services",
   expertBody:
     "Define scope, review controls, challenge evidence and guide remediation. Your management team retains accountability for its controls and risk acceptance.",
@@ -437,7 +437,7 @@ export const DT_BRIEFING = {
   },
   timeline: {
     label: "Target timeframe",
-    options: ["Select if known", "Within 1 month", "1–3 months", "3–6 months", "Exploring options"],
+    options: ["Select if known", "Within 1 month", "1 to 3 months", "3 to 6 months", "Exploring options"],
   },
   message: {
     label: "What decision or requirement are you working towards?",
@@ -462,7 +462,7 @@ export const DT_BRIEFING = {
       href: "/services/ai-security-testing",
     },
   ],
-  statement: "Entersoft Digital Trust — governance, privacy and third-party assurance backed by evidence.",
+  statement: "Entersoft Digital Trust: governance, privacy and third-party assurance backed by evidence.",
   parent: "Services",
   page: "Digital Trust",
   copyright: "© Entersoft Security",

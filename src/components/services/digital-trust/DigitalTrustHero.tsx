@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { DT_HERO } from "@/data/digitalTrustPage";
-import DigitalTrustEvidencePanel from "@/components/services/digital-trust/DigitalTrustEvidencePanel";
 import DigitalTrustHeroCanvas from "@/components/services/digital-trust/DigitalTrustHeroCanvas";
 import DigitalTrustMotion from "@/components/services/digital-trust/DigitalTrustMotion";
 
@@ -13,13 +12,13 @@ export default function DigitalTrustHero() {
         <svg className="dt-hero__art" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" focusable="false">
           <defs>
             <radialGradient id="dt-hero-mint" cx="84%" cy="8%" r="52%">
-              <stop offset="0%" stopColor="#bdefcb" stopOpacity="0.55" />
-              <stop offset="42%" stopColor="#1f6b52" stopOpacity="0.28" />
-              <stop offset="100%" stopColor="#09251d" stopOpacity="0" />
+              <stop offset="0%" stopColor="#f4f4f2" stopOpacity="0.4" />
+              <stop offset="42%" stopColor="#6a6a6a" stopOpacity="0.22" />
+              <stop offset="100%" stopColor="#0c0c0c" stopOpacity="0" />
             </radialGradient>
             <radialGradient id="dt-hero-warm" cx="98%" cy="88%" r="40%">
               <stop offset="0%" stopColor="#f5f4ef" stopOpacity="0.16" />
-              <stop offset="100%" stopColor="#09251d" stopOpacity="0" />
+              <stop offset="100%" stopColor="#0c0c0c" stopOpacity="0" />
             </radialGradient>
           </defs>
           <rect width="1440" height="900" fill="url(#dt-hero-mint)" />
@@ -28,12 +27,12 @@ export default function DigitalTrustHero() {
             <rect x="980" y="110" width="300" height="188" rx="28" />
             <rect x="1050" y="210" width="250" height="156" rx="24" />
           </g>
-          <circle className="dt-hero__spin" cx="1180" cy="168" r="220" fill="none" stroke="#bdefcb" strokeOpacity="0.28" />
+          <circle className="dt-hero__spin" cx="1180" cy="168" r="220" fill="none" stroke="#f4f4f2" strokeOpacity="0.28" />
           <path
             className="dt-hero__flow"
             d="M860 520 C 1020 430, 1140 610, 1320 470"
             fill="none"
-            stroke="#bdefcb"
+            stroke="#f4f4f2"
             strokeWidth="1.5"
             strokeDasharray="8 14"
           />
@@ -98,7 +97,6 @@ export default function DigitalTrustHero() {
             </a>
             </div>
           </div>
-          <DigitalTrustEvidencePanel />
         </div>
       </div>
     </header>

@@ -13,11 +13,17 @@ export default function DigitalTrustFrameworks() {
         </div>
         <p className="dt-frameworks__note">{DT_FRAMEWORKS.note}</p>
         <div className="dt-frameworks__list">
-          {DT_FRAMEWORKS.items.map((item) => (
-            <details key={item.name} className="dt-framework">
-              <summary>{item.name}</summary>
-              <p>{item.detail}</p>
-            </details>
+          {[0, 1].map((column) => (
+            <div key={column} className="dt-frameworks__col">
+              {DT_FRAMEWORKS.items.map((item, index) =>
+                index % 2 === column ? (
+                  <details key={item.name} className="dt-framework" style={{ order: index }}>
+                    <summary>{item.name}</summary>
+                    <p>{item.detail}</p>
+                  </details>
+                ) : null,
+              )}
+            </div>
           ))}
         </div>
       </div>

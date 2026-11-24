@@ -31,7 +31,7 @@ export default function DigitalTrustHeroCanvas() {
     scene.add(group);
 
     const mint = new THREE.MeshBasicMaterial({
-      color: 0xbdefcb,
+      color: 0xf4f4f2,
       wireframe: true,
       transparent: true,
       opacity: 0.42,
@@ -60,7 +60,7 @@ export default function DigitalTrustHeroCanvas() {
     points.setAttribute("position", new THREE.BufferAttribute(positions, 3));
     const dust = new THREE.Points(
       points,
-      new THREE.PointsMaterial({ color: 0xbdefcb, size: 0.035, transparent: true, opacity: 0.7 }),
+      new THREE.PointsMaterial({ color: 0xf4f4f2, size: 0.035, transparent: true, opacity: 0.7 }),
     );
     group.add(dust);
 
