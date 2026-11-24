@@ -14,7 +14,9 @@ export default function DigitalTrustMotion() {
     if (reduced) return;
 
     const cleanups: Array<() => void> = [];
-    document.querySelectorAll(".dt-page details").forEach((details) => {
+    document.querySelectorAll(".dt-page details").forEach((node) => {
+      if (!(node instanceof HTMLDetailsElement)) return;
+      const details = node;
       const summary = details.querySelector(":scope > summary");
       if (!(summary instanceof HTMLElement)) return;
       const onClick = (event: Event) => {

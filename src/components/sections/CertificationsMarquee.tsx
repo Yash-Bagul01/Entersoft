@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 
 const familjen = Familjen_Grotesk({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: "400",
   display: "swap",
 });
 
